@@ -45,7 +45,7 @@ const Sidebar = () => {
 const SidebarWrapper = styled.div`
   background-color: ${Colors.red};
   height: 100%;
-  width: 249px;
+  min-width: 249px;
   padding-top: 80px;
   padding-bottom: 80px;
   padding-left: 40px;
