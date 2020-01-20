@@ -1,12 +1,23 @@
 import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
-import { Colors } from "../../../constants/Colors";
+import { Colors } from "../../../../constants/Colors";
 import Order from "./Order";
 
 const Orders = () => {
   return (
     <OrdersWrapper>
       <section>
+        <Order />
+        <Order />
+        <Order />
+        <Order />
+        <Order />
+        <Order />
+        <Order />
+        <Order />
+        <Order />
+        <Order />
+        <Order />
         <Order />
       </section>
     </OrdersWrapper>

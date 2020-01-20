@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { Colors } from "../../../constants/Colors";
+import { Colors } from "../../../../constants/Colors";
 import moment from "moment";
 
 const Order = () => {
-  const date = new Date();
-  console.log(date);
+  console.log(moment(new Date()).format("MMM DD, H:mm"));
+
   return (
     <OrderWrapper>
       <div>
@@ -36,6 +36,7 @@ const OrderWrapper = styled.div`
     color: "#000000";
     font-size: 14px;
     width: 180px;
+    min-width: 180px;
     margin-right: 24px;
   }
   p {
@@ -46,6 +47,7 @@ const OrderWrapper = styled.div`
   button {
     margin-left: auto;
     width: 112px;
+    min-width: 112px;
     height: 40px;
     background-color: ${Colors.blue};
     color: ${Colors.white};

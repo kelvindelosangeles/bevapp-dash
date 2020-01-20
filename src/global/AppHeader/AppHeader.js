@@ -27,7 +27,7 @@ const AppHeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 80px;
+  min-height: 80px;
   width: 100%;
   padding: 0 32px;
   background-color: ${Colors.white};

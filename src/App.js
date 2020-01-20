@@ -31,6 +31,7 @@ const AppWrapper = styled.div`
   height: 100vh;
   width: 100vw;
   min-height: 800px;
+  min-width: 1430px;
 `;
 
 const AppContainer = styled.div`
