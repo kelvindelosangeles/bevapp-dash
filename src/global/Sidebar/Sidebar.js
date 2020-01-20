@@ -20,13 +20,13 @@ const Sidebar = () => {
       </AppTitle>
 
       <NavWrapper>
-        <NavLink to="/">
+        <NavLink to="/dashboard">
           <DashboardIcon /> Dashboard
         </NavLink>
         <NavLink to="/rapidorder">
           <BoltIcon /> Rapid Order
         </NavLink>
-        <NavLink to="#">
+        <NavLink to="/">
           <StoreIcon /> Store
         </NavLink>
         <NavLink to="#">

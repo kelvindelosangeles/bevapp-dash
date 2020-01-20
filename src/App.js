@@ -2,12 +2,14 @@ import React from "react";
 import "./App.css";
 import { Route, Switch } from "react-router-dom";
 
+import styled from "styled-components";
+
 import Sidebar from "./global/Sidebar/Sidebar";
+import AppHeader from "./global/AppHeader/AppHeader";
 import Dashboard from "./applications/Dashboard/Dashboard";
 import RapidOrder from "./applications/Rapid Order/RapidOrder";
 
-import styled from "styled-components";
-import AppHeader from "./global/AppHeader/AppHeader";
+import { Colors } from "./constants/Colors";
 
 const App = () => {
   return (
@@ -16,7 +18,7 @@ const App = () => {
       <AppContainer>
         <AppHeader />
         <Switch>
-          <Route exact path="/" component={Dashboard} />
+          <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/rapidorder" component={RapidOrder} />
         </Switch>
       </AppContainer>
@@ -32,9 +34,11 @@ const AppWrapper = styled.div`
 `;
 
 const AppContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   height: 100%;
   width: 100%;
-  background-color: orange;
+  background-color: ${Colors.lightGrey};
 `;
 
 export default App;
