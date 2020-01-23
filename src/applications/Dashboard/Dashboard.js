@@ -6,7 +6,7 @@ import StatBar from "./components/StatBar";
 import DashboardSearch from "./components/DashboardSearch";
 import OrderHeader from "./components/OrderHeader";
 import Orders from "./components/Orders/Orders";
-import SingleOrder from "./components/Single Orders/SingleOrder";
+import SingleOrder from "./components/Single Order/SingleOrder";
 import { Colors } from "../../constants/Colors";
 
 const Dashboard = () => {

@@ -6,8 +6,8 @@ import styled from "styled-components";
 
 import Sidebar from "./global/Sidebar/Sidebar";
 import AppHeader from "./global/AppHeader/AppHeader";
-import Dashboard from "./applications/Dashboard/Dashboard";
-import RapidOrder from "./applications/Rapid Order/RapidOrder";
+import Dashboard from "./Applications/Dashboard/Dashboard";
+import RapidOrder from "./Applications/Rapid Order/RapidOrder";
 
 import { Colors } from "./constants/Colors";
 
