@@ -1,9 +1,27 @@
 import React from "react";
+import { connect } from "react-redux";
 import styled from "styled-components";
+
 import { Colors } from "../../../constants/Colors";
 import SingleOrderItem from "./SingleOrderItem";
 
-const ROrder = () => {
+const calcTotal = totalsArray => {
+  return totalsArray
+    .reduce((a, b) => {
+      return a + b;
+    })
+    .toFixed(2);
+};
+
+const ROrder = ({ order }) => {
+  const orderList = Object.values(order).map(item => {
+    return <SingleOrderItem item={item} key={item.id} />;
+  });
+
+  const totalCostArray = Object.values(order).map(i => {
+    return parseFloat((i.qty * parseFloat(i.price).toFixed(2)).toFixed(2));
+  });
+
   return (
     <ROrderWrapper>
       <div className="wrapper">
@@ -43,17 +61,12 @@ const ROrder = () => {
             <h6>Order</h6>
             <h6>Cost</h6>
           </header>
-          <main>
-            <SingleOrderItem />
-            <SingleOrderItem />
-            <SingleOrderItem />
-            <SingleOrderItem />
-            <SingleOrderItem />
-            <SingleOrderItem />
-          </main>
+          <main>{orderList}</main>
           <footer>
             <h6>Total Cost</h6>
-            <h6>$ 4,564.23</h6>
+            {/* TODO: Refactor, when there is no order this component will not be
+            shown */}
+            <h6>${totalCostArray.length > 0 && calcTotal(totalCostArray)}</h6>
           </footer>
         </OrderItems>
         <OrderActions>
@@ -152,4 +165,6 @@ const OrderActions = styled.section`
     background-color: ${Colors.green};
   }
 `;
-export default ROrder;
+export default connect(state => {
+  return { order: state.RapidOrderState.order };
+})(ROrder);

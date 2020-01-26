@@ -10,9 +10,11 @@ import { Provider } from "react-redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 
 import GlobalState from "./redux/reducers/GlobalState";
+import RapidOrderReducer from "./redux/reducers/RapidOrderReducer";
 
 const rootReducer = combineReducers({
-  GlobalState: GlobalState
+  GlobalState: GlobalState,
+  RapidOrderState: RapidOrderReducer
 });
 
 const initialState = {};

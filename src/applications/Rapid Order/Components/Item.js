@@ -1,13 +1,20 @@
 import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
+import { connect } from "react-redux";
 
-const Item = () => {
+const Item = ({ item, dispatch }) => {
+  const { description, price } = item;
+
+  const ToggleATC = () => {
+    dispatch({ type: "TOGGLE_ATC", item });
+  };
+
   return (
-    <ItemWrapper>
+    <ItemWrapper onClick={ToggleATC}>
       <div></div>
-      <h5>Pepsi 12oz can</h5>
-      <p>$12.99</p>
+      <h5>{description}</h5>
+      {/* <p>${price}</p> */}
     </ItemWrapper>
   );
 };
@@ -15,12 +22,14 @@ const Item = () => {
 const ItemWrapper = styled.div`
   background-color: ${Colors.white};
   height: 130px;
+  padding: 0 16px;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   box-shadow: 0px 2px 5px 0px rgba(179, 179, 179, 0.25);
+  cursor: pointer;
   div {
     height: 40px;
     width: 40px;
@@ -31,6 +40,7 @@ const ItemWrapper = styled.div`
   h5 {
     font-family: "AvenirNext-Bold", "Avenir Next", serif;
     font-size: 12px;
+    text-align: center;
     margin-bottom: 4px;
   }
   p {
@@ -39,4 +49,4 @@ const ItemWrapper = styled.div`
   }
 `;
 
-export default Item;
+export default connect()(Item);

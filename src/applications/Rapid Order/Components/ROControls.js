@@ -3,17 +3,38 @@ import styled from "styled-components";
 import SearchIcon from "@material-ui/icons/SearchRounded";
 import BoltIcon from "@material-ui/icons/OfflineBolt";
 
-const ROControls = () => {
+const ROControls = props => {
+  const [search, setSearch] = props.search;
+  const [rapidEntry, setRapidEntry] = props.RapidEntry;
+
   return (
     <ROControlsWrapper>
       <div>
         <form>
           <SearchIcon />
-          <input type="text" />
+          <input
+            type="text"
+            placeholder="Search"
+            name="search"
+            value={search}
+            onChange={e => setSearch(e.target.value.toUpperCase())}
+            onFocus={() => {
+              setRapidEntry("");
+            }}
+          />
         </form>
         <form>
           <BoltIcon />
-          <input type="text" />
+          <input
+            type="text"
+            placeholder="Enter a Code"
+            name="rapidentry"
+            value={rapidEntry}
+            onChange={e => setRapidEntry(e.target.value.toUpperCase())}
+            onFocus={() => {
+              setSearch("");
+            }}
+          />
         </form>
       </div>
     </ROControlsWrapper>
@@ -22,7 +43,6 @@ const ROControls = () => {
 
 const ROControlsWrapper = styled.div`
   grid-area: rocontrols;
-
   div {
     display: flex;
     justify-content: space-between;
@@ -41,6 +61,7 @@ const ROControlsWrapper = styled.div`
     input {
       height: 40px;
       border-radius: 4px;
+      padding-left: 24px;
       border: none;
       outline: none;
     }
@@ -50,4 +71,5 @@ const ROControlsWrapper = styled.div`
     }
   }
 `;
+
 export default ROControls;

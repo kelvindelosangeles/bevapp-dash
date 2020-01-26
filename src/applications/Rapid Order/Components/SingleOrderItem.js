@@ -1,20 +1,30 @@
 import React from "react";
 import styled from "styled-components";
 
-const SingleOrderItem = () => {
+const SingleOrderItem = ({ item }) => {
+  const { qty, description, price } = item;
+
+  const calcTotal = (qty, price) => {
+    // console.log(qty);
+    // console.log(parseFloat(price).toFixed(2));
+    // console.log(qty * parseFloat(price).toFixed(2));
+
+    return (qty * parseFloat(price).toFixed(2)).toFixed(2);
+  };
+
   return (
     <Order>
-      <div className="quantity">50</div>
+      <div className="quantity">{qty}</div>
       <span>x</span>
-      <p className="itemTitle">Pepsi 12 oz Can</p>
-      <p className="cost">$ 47.32</p>
+      <p className="itemTitle">{description}</p>
+      <p className="cost">${calcTotal(qty, price)}</p>
     </Order>
   );
 };
 
 const Order = styled.div`
   display: flex;
-  align-items: center;
+  align-items: baseline;
   margin-bottom: 16px;
   .quantity {
     width: 26px;
@@ -33,6 +43,7 @@ const Order = styled.div`
   .itemTitle {
     font-family: "AvenirNext-Regular", "Avenir Next", serif;
     font-size: 14px;
+    max-width: 150px;
   }
   .cost {
     font-family: "AvenirNext-Medium", "Avenir Next", serif;
