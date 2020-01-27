@@ -7,7 +7,6 @@ import ROItems from "./Components/ROItems";
 import ROrder from "./Components/ROrder";
 
 import AddToCart from "./Components/AddToCart";
-import { Colors } from "../../constants/Colors";
 import EmptyOrder from "./Components/EmptyOrder";
 
 const RapidOrder = ({ atcVisible, order }) => {
@@ -20,7 +19,7 @@ const RapidOrder = ({ atcVisible, order }) => {
       <ROControls search={search} RapidEntry={RapidEntry} />
       <ROItems filter={search[0]} />
       {OrderEmpty ? <EmptyOrder /> : <ROrder />}
-      {atcVisible && <AddToCart />}
+      {atcVisible && <AddToCart clearSearch={search[1]} />}
     </RapidOrderWrapper>
   );
 };
@@ -29,7 +28,7 @@ const RapidOrderWrapper = styled.div`
   position: relative;
   height: 100%;
   display: grid;
-  grid-template-columns: 1fr 360px;
+  grid-template-columns: 1fr 390px;
   grid-template-rows: auto 1fr;
   grid-template-areas:
     "rocontrols rorder"

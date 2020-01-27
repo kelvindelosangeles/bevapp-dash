@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-
+import moment from "moment";
+import uuid from "uuid";
 import { Colors } from "../../../constants/Colors";
 import SingleOrderItem from "./SingleOrderItem";
 
@@ -13,6 +14,8 @@ const calcTotal = totalsArray => {
     .toFixed(2);
 };
 
+const today = moment(new Date()).format("MMM DD, h:mm");
+
 const ROrder = ({ order }) => {
   const orderList = Object.values(order).map(item => {
     return <SingleOrderItem item={item} key={item.id} />;
@@ -21,6 +24,10 @@ const ROrder = ({ order }) => {
   const totalCostArray = Object.values(order).map(i => {
     return parseFloat((i.qty * parseFloat(i.price).toFixed(2)).toFixed(2));
   });
+
+  const OrderID = useMemo(() => {
+    return moment(new Date()).format("YYMMDD" + uuid().slice(2, 8)) + "cx";
+  }, []);
 
   return (
     <ROrderWrapper>
@@ -38,7 +45,7 @@ const ROrder = ({ order }) => {
           <div className="row">
             <div className="detail">
               <h6>Order ID</h6>
-              <p>XSKFNEWI392S</p>
+              <p>{OrderID}</p>
             </div>
             <div className="detail">
               <h6>Placed By</h6>
@@ -48,11 +55,11 @@ const ROrder = ({ order }) => {
           <div className="row">
             <div className="detail">
               <h6>Ordered On</h6>
-              <p>Jan 14, 16:52</p>
+              <p>{today}</p>
             </div>
             <div className="detail">
-              <h6>Status/Complete</h6>
-              <p>Pending Review</p>
+              <h6>Status</h6>
+              <p>New Order</p>
             </div>
           </div>
         </OrderDetails>
@@ -70,7 +77,7 @@ const ROrder = ({ order }) => {
           </footer>
         </OrderItems>
         <OrderActions>
-          <button className="complete">Complete Order</button>
+          <button>Complete Order</button>
         </OrderActions>
       </div>
     </ROrderWrapper>
@@ -93,7 +100,6 @@ const ROrderWrapper = styled.div`
     border-bottom: 1px solid ${Colors.lightGrey};
   }
 `;
-
 const CustomerDetails = styled.section`
   display: flex;
   justify-content: space-between;
@@ -107,7 +113,6 @@ const CustomerDetails = styled.section`
     font-size: 14px;
   }
 `;
-
 const OrderDetails = styled.section`
   .row {
     display: flex;
@@ -127,7 +132,6 @@ const OrderDetails = styled.section`
     font-size: 12px;
   }
 `;
-
 const OrderItems = styled.section`
   header {
     display: flex;
@@ -146,7 +150,6 @@ const OrderItems = styled.section`
     justify-content: space-between;
   }
 `;
-
 const OrderActions = styled.section`
   div {
     display: flex;
@@ -159,12 +162,11 @@ const OrderActions = styled.section`
     border: none;
     font-family: "AvenirNext-Medium", "Avenir Next", serif;
     font-size: 14px;
-  }
-  .complete {
     width: 100%;
     background-color: ${Colors.green};
   }
 `;
+
 export default connect(state => {
   return { order: state.RapidOrderState.order };
 })(ROrder);

@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { Colors } from "../../../constants/Colors";
 import Xicon from "@material-ui/icons/Close";
 
-const AddToCart = ({ dispatch, orderItem }) => {
+const AddToCart = ({ dispatch, orderItem, clearSearch }) => {
   const [qty, setQty] = useState("");
   const node = useRef();
   const inputNode = useRef();
@@ -18,6 +18,7 @@ const AddToCart = ({ dispatch, orderItem }) => {
 
   const submitHandler = e => {
     e.preventDefault();
+    clearSearch("");
     dispatch({
       type: "ADD_TO_CART",
       item: { ...orderItem, qty: qty === "" ? 1 : parseInt(qty) }
@@ -38,7 +39,7 @@ const AddToCart = ({ dispatch, orderItem }) => {
     return () => {
       document.removeEventListener("mousedown", checkForClickOutside);
     };
-  }, []);
+  });
 
   useEffect(() => {
     inputNode.current.focus();
