@@ -1,22 +1,30 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import moment from "moment";
 import uuid from "uuid";
+import moment from "moment";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import { TextField } from "@material-ui/core";
+
 import { Colors } from "../../../constants/Colors";
+import { CustomersArray } from "../../../Assets/Data/Customers";
+
 import SingleOrderItem from "./SingleOrderItem";
 
-const calcTotal = totalsArray => {
-  return totalsArray
+const calcTotal = x => {
+  return x
     .reduce((a, b) => {
       return a + b;
     })
     .toFixed(2);
 };
+const formatTel = tel => {
+  return `(${tel.slice(0, 3)}) ${tel.slice(3, 6)} ${tel.slice(6, 10)} `;
+};
 
-const today = moment(new Date()).format("MMM DD, h:mm");
+const ROrder = ({ order, dispatch }) => {
+  const [customer, setCustomer] = useState(null);
 
-const ROrder = ({ order }) => {
   const orderList = Object.values(order).map(item => {
     return <SingleOrderItem item={item} key={item.id} />;
   });
@@ -26,21 +34,66 @@ const ROrder = ({ order }) => {
   });
 
   const OrderID = useMemo(() => {
-    return moment(new Date()).format("YYMMDD" + uuid().slice(2, 8)) + "cx";
+    return moment(new Date()).format("YYMMDD") + uuid().slice(0, 8) + "aa";
   }, []);
+
+  const today = useMemo(() => {
+    return moment(new Date()).format("MMM DD, h:mm");
+  });
+
+  const customerChangeHandler = (event, value) => {
+    setCustomer(value);
+  };
+
+  const cancelOrder = () => {
+    window.confirm("Are you sure you want to cancel this order") &&
+      dispatch({
+        type: "CANCEL_ORDER"
+      });
+  };
+
+  // GROUPING CUSTOMERS
+  const options = CustomersArray.map(x => {
+    const firstLetter = x.name[0].toUpperCase();
+    return {
+      firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
+      ...x
+    };
+  });
 
   return (
     <ROrderWrapper>
       <div className="wrapper">
-        <CustomerDetails>
-          <div>
-            <h3>106 Columbus</h3>
-            <p>945 Amsterdam Ave</p>
-            <p>917-543-8677</p>
-            <p>NYC</p>
-          </div>
-          <div> Map Image</div>
-        </CustomerDetails>
+        <CustomerSelect>
+          <Autocomplete
+            id="combo-box-demo"
+            options={options.sort(
+              (a, b) => -b.firstLetter.localeCompare(a.firstLetter)
+            )}
+            groupBy={option => option.firstLetter}
+            getOptionLabel={option => option.name.toUpperCase()}
+            renderInput={params => (
+              <TextField
+                {...params}
+                label="Select a Customer"
+                variant="standard"
+                fullWidth
+              />
+            )}
+            onChange={customerChangeHandler}
+          />
+        </CustomerSelect>
+        {customer && (
+          <CustomerDetails>
+            <div>
+              <h3>{customer.name.toUpperCase()}</h3>
+              <p>{customer.address}</p>
+              <p>{formatTel(customer.telephone)}</p>
+              <p>NYC</p>
+            </div>
+            <div> Map Image</div>
+          </CustomerDetails>
+        )}
         <OrderDetails>
           <div className="row">
             <div className="detail">
@@ -49,7 +102,7 @@ const ROrder = ({ order }) => {
             </div>
             <div className="detail">
               <h6>Placed By</h6>
-              <p>Kelvin De Los Angeles</p>
+              <p>Administrator Account</p>
             </div>
           </div>
           <div className="row">
@@ -59,7 +112,7 @@ const ROrder = ({ order }) => {
             </div>
             <div className="detail">
               <h6>Status</h6>
-              <p>New Order</p>
+              <p id="status">New Order</p>
             </div>
           </div>
         </OrderDetails>
@@ -71,13 +124,12 @@ const ROrder = ({ order }) => {
           <main>{orderList}</main>
           <footer>
             <h6>Total Cost</h6>
-            {/* TODO: Refactor, when there is no order this component will not be
-            shown */}
-            <h6>${totalCostArray.length > 0 && calcTotal(totalCostArray)}</h6>
+            <h6>${calcTotal(totalCostArray)}</h6>
           </footer>
         </OrderItems>
         <OrderActions>
           <button>Complete Order</button>
+          <button onClick={cancelOrder}>Cancel</button>
         </OrderActions>
       </div>
     </ROrderWrapper>
@@ -100,6 +152,8 @@ const ROrderWrapper = styled.div`
     border-bottom: 1px solid ${Colors.lightGrey};
   }
 `;
+const CustomerSelect = styled.section``;
+
 const CustomerDetails = styled.section`
   display: flex;
   justify-content: space-between;
@@ -107,10 +161,12 @@ const CustomerDetails = styled.section`
     font-family: "AvenirNext-Heavy", "Avenir Next", serif;
     font-size: 18px;
     margin-bottom: 8px;
+    max-width: 210px;
   }
   p {
     font-family: "AvenirNext-Medium", "Avenir Next", serif;
     font-size: 14px;
+    text-transform: uppercase;
   }
 `;
 const OrderDetails = styled.section`
@@ -122,6 +178,10 @@ const OrderDetails = styled.section`
   }
   .detail {
     flex: 1;
+  }
+  #status {
+    color: #22aa99;
+    font-family: "AvenirNext-Bold", "Avenir Next", serif;
   }
   h6 {
     font-family: "AvenirNext-Bold", "Avenir Next", serif;
@@ -151,11 +211,8 @@ const OrderItems = styled.section`
   }
 `;
 const OrderActions = styled.section`
-  div {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 24px;
-  }
+  display: flex;
+
   button {
     height: 40px;
     border-radius: 5px;
@@ -163,7 +220,13 @@ const OrderActions = styled.section`
     font-family: "AvenirNext-Medium", "Avenir Next", serif;
     font-size: 14px;
     width: 100%;
+    color: ${Colors.white};
     background-color: ${Colors.green};
+    cursor: pointer;
+    :nth-of-type(2) {
+      background-color: ${Colors.red};
+      margin-left: 16px;
+    }
   }
 `;
 

@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.css";
 import { Route, Switch } from "react-router-dom";
-
 import styled from "styled-components";
 
 import Sidebar from "./global/Sidebar/Sidebar";
@@ -10,6 +9,7 @@ import Dashboard from "./Applications/Dashboard/Dashboard";
 import RapidOrder from "./Applications/Rapid Order/RapidOrder";
 
 import { Colors } from "./constants/Colors";
+import Store from "./Applications/Store/Store";
 
 const App = () => {
   return (
@@ -20,6 +20,7 @@ const App = () => {
         <Switch>
           <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/rapidorder" component={RapidOrder} />
+          <Route exact path="/store" component={Store} />
         </Switch>
       </AppContainer>
     </AppWrapper>

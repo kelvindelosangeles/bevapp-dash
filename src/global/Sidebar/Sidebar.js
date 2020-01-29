@@ -26,7 +26,7 @@ const Sidebar = () => {
         <NavLink to="/rapidorder">
           <BoltIcon /> Rapid Order
         </NavLink>
-        <NavLink to="/">
+        <NavLink to="/store">
           <StoreIcon /> Store
         </NavLink>
         <NavLink to="#">

@@ -23,6 +23,11 @@ const RapidOrderReducer = (state = initialState, action) => {
         atcVisible: false,
         order: { ...state.order, [action.item.id]: action.item }
       };
+    case "CANCEL_ORDER":
+      return {
+        ...state,
+        order: {}
+      };
     case "REMOVE_ITEM":
       // destructure to remove a key from an object
       const { [action.id]: removed, ...newOrder } = state.order;
