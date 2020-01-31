@@ -6,12 +6,14 @@ import { connect } from "react-redux";
 const Item = ({ item, dispatch }) => {
   const { description } = item;
 
-  const ToggleATC = () => {
-    dispatch({ type: "TOGGLE_ATC", item });
+  const ToggleModal = () => {
+    item.hasOwnProperty("flavors")
+      ? dispatch({ type: "TOGGLE_ATCF", item })
+      : dispatch({ type: "TOGGLE_ATC", item });
   };
 
   return (
-    <ItemWrapper onClick={ToggleATC}>
+    <ItemWrapper onClick={ToggleModal}>
       <div></div>
       <h5>{description}</h5>
     </ItemWrapper>

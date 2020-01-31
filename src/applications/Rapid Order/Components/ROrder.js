@@ -25,6 +25,8 @@ const formatTel = tel => {
 const ROrder = ({ order, dispatch }) => {
   const [customer, setCustomer] = useState(null);
 
+  const [error, showError] = useState(false);
+
   const orderList = Object.values(order).map(item => {
     return <SingleOrderItem item={item} key={item.id} />;
   });
@@ -33,7 +35,7 @@ const ROrder = ({ order, dispatch }) => {
     return parseFloat((i.qty * parseFloat(i.price).toFixed(2)).toFixed(2));
   });
 
-  const OrderID = useMemo(() => {
+  const orderID = useMemo(() => {
     return moment(new Date()).format("YYMMDD") + uuid().slice(0, 8) + "aa";
   }, []);
 
@@ -42,6 +44,7 @@ const ROrder = ({ order, dispatch }) => {
   });
 
   const customerChangeHandler = (event, value) => {
+    showError(false);
     setCustomer(value);
   };
 
@@ -50,6 +53,24 @@ const ROrder = ({ order, dispatch }) => {
       dispatch({
         type: "CANCEL_ORDER"
       });
+  };
+
+  const submitOrder = () => {
+    if (!customer) {
+      showError(true);
+    } else {
+      dispatch({
+        type: "SUBMIT_ORDER",
+        order,
+        customer,
+        details: {
+          orderID,
+          complete: false,
+          createdAt: today,
+          new: true
+        }
+      });
+    }
   };
 
   // GROUPING CUSTOMERS
@@ -98,7 +119,7 @@ const ROrder = ({ order, dispatch }) => {
           <div className="row">
             <div className="detail">
               <h6>Order ID</h6>
-              <p>{OrderID}</p>
+              <p>{orderID}</p>
             </div>
             <div className="detail">
               <h6>Placed By</h6>
@@ -127,8 +148,13 @@ const ROrder = ({ order, dispatch }) => {
             <h6>${calcTotal(totalCostArray)}</h6>
           </footer>
         </OrderItems>
+        {error && (
+          <ErrorMessage>
+            <p>Please Add a Customer</p>
+          </ErrorMessage>
+        )}
         <OrderActions>
-          <button>Complete Order</button>
+          <button onClick={submitOrder}>Complete Order</button>
           <button onClick={cancelOrder}>Cancel</button>
         </OrderActions>
       </div>
@@ -227,6 +253,14 @@ const OrderActions = styled.section`
       background-color: ${Colors.red};
       margin-left: 16px;
     }
+  }
+`;
+const ErrorMessage = styled.section`
+  p {
+    font-family: "AvenirNext-Medium", "Avenir Next", serif;
+    color: ${Colors.red};
+    text-align: center;
+    /* margin-bottom: 16px; */
   }
 `;
 

@@ -11,10 +11,12 @@ import { composeWithDevTools } from "redux-devtools-extension";
 
 import GlobalState from "./redux/reducers/GlobalState";
 import RapidOrderReducer from "./redux/reducers/RapidOrderReducer";
+import DashboardReducer from "./redux/reducers/DashboardReducer";
 
 const rootReducer = combineReducers({
   GlobalState: GlobalState,
-  RapidOrderState: RapidOrderReducer
+  RapidOrderState: RapidOrderReducer,
+  DashboardState: DashboardReducer
 });
 
 const initialState = {};

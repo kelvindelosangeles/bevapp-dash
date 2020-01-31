@@ -8,8 +8,9 @@ import ROrder from "./Components/ROrder";
 
 import AddToCart from "./Components/AddToCart";
 import EmptyOrder from "./Components/EmptyOrder";
+import AddtoCartFlavors from "./Components/AddtoCartFlavors";
 
-const RapidOrder = ({ atcVisible, order }) => {
+const RapidOrder = ({ atcVisible, atcfVisible, order }) => {
   const search = useState("");
   const RapidEntry = useState("");
   const OrderEmpty = Object.values(order).length < 1;
@@ -20,6 +21,7 @@ const RapidOrder = ({ atcVisible, order }) => {
       <ROItems filter={search[0]} />
       {OrderEmpty ? <EmptyOrder /> : <ROrder />}
       {atcVisible && <AddToCart clearSearch={search[1]} />}
+      {atcfVisible && <AddtoCartFlavors clearSearch={search[1]} />}
     </RapidOrderWrapper>
   );
 };
@@ -38,6 +40,7 @@ const RapidOrderWrapper = styled.div`
 export default connect(state => {
   return {
     atcVisible: state.RapidOrderState.atcVisible,
+    atcfVisible: state.RapidOrderState.atcfVisible,
     order: state.RapidOrderState.order
   };
 })(RapidOrder);

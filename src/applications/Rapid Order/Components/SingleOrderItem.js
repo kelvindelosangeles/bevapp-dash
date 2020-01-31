@@ -16,21 +16,44 @@ const SingleOrderItem = ({ item, dispatch }) => {
       dispatch({ type: "REMOVE_ITEM", id: item.id });
   };
 
-  const ToggleATC = () => {
-    dispatch({ type: "TOGGLE_ATC", item });
+  const ToggleModal = () => {
+    item.hasOwnProperty("flavors")
+      ? dispatch({ type: "TOGGLE_ATCF", item })
+      : dispatch({ type: "TOGGLE_ATC", item });
   };
 
+  const flavors =
+    item.hasOwnProperty("flavorsQuantity") &&
+    Object.entries(item.flavorsQuantity)
+      .filter(i => {
+        console.log(i);
+        return Number(i[1] > 0);
+      })
+      .map(i => {
+        console.log(i);
+        return (
+          <Flavor>
+            <p>{i[1]}</p>
+            <span>x</span>
+            <p>{i[0]}</p>
+          </Flavor>
+        );
+      });
+
   return (
-    <Order>
-      <div className="quantity" onClick={ToggleATC}>
-        {qty}
-      </div>
-      <span>x</span>
-      <p className="itemTitle">{description}</p>
-      <p className="cost">
-        ${calcTotal(qty, price)} <TrashIcon onClick={removeItem} />
-      </p>
-    </Order>
+    <React.Fragment>
+      <Order>
+        <div className="quantity" onClick={ToggleModal}>
+          {qty}
+        </div>
+        <span>x</span>
+        <p className="itemTitle">{description}</p>
+        <p className="cost">
+          $ {calcTotal(qty, price)} <TrashIcon onClick={removeItem} />
+        </p>
+      </Order>
+      {flavors}
+    </React.Fragment>
   );
 };
 
@@ -40,7 +63,7 @@ const Order = styled.div`
   margin-bottom: 16px;
   .quantity {
     width: 26px;
-    font-family: "AvenirNext-DemiBold", "Avenir Next", serif;
+    font-family: "AvenirNext-Bold", "Avenir Next", serif;
     font-size: 14px;
     text-align: right;
     margin-right: 8px;
@@ -58,14 +81,14 @@ const Order = styled.div`
     margin-right: 16px;
   }
   .itemTitle {
-    font-family: "AvenirNext-Demibold", "Avenir Next", serif;
+    font-family: "AvenirNext-Medium", "Avenir Next", serif;
     font-size: 14px;
     max-width: 150px;
-    letter-spacing: 0.5px;
-    text-transform: capitalize;
+    /* letter-spacing: 0.5px; */
+    text-transform: uppercase;
   }
   .cost {
-    font-family: "AvenirNext-Medium", "Avenir Next", serif;
+    font-family: "AvenirNext-Bold", "Avenir Next", serif;
     font-size: 14px;
     margin-left: auto;
     display: flex;
@@ -82,4 +105,19 @@ const Order = styled.div`
   }
 `;
 
+const Flavor = styled.div`
+  display: flex;
+  align-items: center;
+  padding-left: 80px;
+  margin-bottom: 8px;
+  p,
+  span {
+    font-family: AvenirNext-Bold;
+    font-size: 12px;
+    margin-right: 8px;
+    :last-child {
+      text-transform: uppercase;
+    }
+  }
+`;
 export default connect()(SingleOrderItem);

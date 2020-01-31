@@ -15,7 +15,6 @@ const AddToCart = ({ dispatch, orderItem, clearSearch }) => {
   const qtyChangeHandler = e => {
     qty.length > 2 ? setQty(qty.slice(0, 2)) : setQty(e.target.value);
   };
-
   const submitHandler = e => {
     e.preventDefault();
     clearSearch("");
@@ -28,7 +27,6 @@ const AddToCart = ({ dispatch, orderItem, clearSearch }) => {
     setQty("");
     dispatch({ type: "CLOSE_ATC" });
   };
-
   const checkForClickOutside = e => {
     !node.current.contains(e.target) && cancelHandler();
   };
@@ -40,7 +38,6 @@ const AddToCart = ({ dispatch, orderItem, clearSearch }) => {
       document.removeEventListener("mousedown", checkForClickOutside);
     };
   });
-
   useEffect(() => {
     inputNode.current.focus();
   }, []);
@@ -53,7 +50,7 @@ const AddToCart = ({ dispatch, orderItem, clearSearch }) => {
           <div id="details">
             <p>{id}</p>
             <p>{description}</p>
-            <p>${price}</p>
+            <p>$ {price}</p>
           </div>
         </section>
         <QuantityForm onSubmit={submitHandler}>
@@ -104,7 +101,9 @@ const AddToCartWrapper = styled.div`
     margin-bottom: 80px;
     p {
       margin: 8px 0;
-      font-family: "AvenirNext-Bold", "Avenir Next", serif;
+      font-family: AvenirNext-Bold;
+      font-size: 18px;
+      max-width: 200px;
 
       svg {
         margin-right: 8px;
@@ -113,10 +112,10 @@ const AddToCartWrapper = styled.div`
   }
   #logo {
     border-radius: 50%;
-    height: 130px;
-    width: 130px;
+    height: 110px;
+    width: 110px;
     margin-right: 40px;
-    background-color: red;
+    background-color: salmon;
   }
 `;
 

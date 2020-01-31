@@ -17,7 +17,10 @@ const ROItems = ({ filter }) => {
 
   let filterdItems = Object.values(Store)
     .filter(x => {
-      return x.description.toLowerCase().includes(filter.toLowerCase());
+      return (
+        x.description.toLowerCase().includes(filter.toLowerCase()) ||
+        x.id.toLowerCase().includes(filter.toLowerCase())
+      );
     })
     .map(i => {
       return <Item item={i} key={i.id} />;

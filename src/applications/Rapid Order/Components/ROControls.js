@@ -10,12 +10,14 @@ const ROControls = props => {
   return (
     <ROControlsWrapper>
       <div>
-        <form>
+        <form onSubmit={e => e.preventDefault()}>
           <SearchIcon />
           <input
             type="text"
             placeholder="Search"
             name="search"
+            autoComplete="off"
+            autoFocus
             value={search}
             onChange={e => setSearch(e.target.value.toUpperCase())}
             onFocus={() => {
@@ -23,7 +25,7 @@ const ROControls = props => {
             }}
           />
         </form>
-        <form>
+        <form onSubmit={e => e.preventDefault()}>
           <BoltIcon />
           <input
             type="text"
