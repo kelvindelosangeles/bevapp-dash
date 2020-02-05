@@ -1,12 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import TrashIcon from "@material-ui/icons/Delete";
-import { Colors } from "../../../constants/Colors";
+import { Colors } from "../../constants/Colors";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
-const SingleOrderItem = ({ item, dispatch }) => {
+const SingleOrderItem = ({ item, dispatch, location }) => {
   const { qty, description, price } = item;
-
+  const readOnly = location.pathname.includes("dashboard");
   const calcTotal = (qty, price) => {
     return (qty * parseFloat(price).toFixed(2)).toFixed(2);
   };
@@ -17,7 +18,7 @@ const SingleOrderItem = ({ item, dispatch }) => {
   };
 
   const ToggleModal = () => {
-    item.hasOwnProperty("flavors")
+    !readOnly && item.hasOwnProperty("flavors")
       ? dispatch({ type: "TOGGLE_ATCF", item })
       : dispatch({ type: "TOGGLE_ATC", item });
   };
@@ -26,11 +27,9 @@ const SingleOrderItem = ({ item, dispatch }) => {
     item.hasOwnProperty("flavorsQuantity") &&
     Object.entries(item.flavorsQuantity)
       .filter(i => {
-        console.log(i);
         return Number(i[1] > 0);
       })
       .map(i => {
-        console.log(i);
         return (
           <Flavor>
             <p>{i[1]}</p>
@@ -42,14 +41,15 @@ const SingleOrderItem = ({ item, dispatch }) => {
 
   return (
     <React.Fragment>
-      <Order>
+      <Order readOnly={readOnly}>
         <div className="quantity" onClick={ToggleModal}>
           {qty}
         </div>
         <span>x</span>
         <p className="itemTitle">{description}</p>
         <p className="cost">
-          $ {calcTotal(qty, price)} <TrashIcon onClick={removeItem} />
+          $ {calcTotal(qty, price)}{" "}
+          {!readOnly && <TrashIcon onClick={removeItem} />}
         </p>
       </Order>
       {flavors}
@@ -67,10 +67,16 @@ const Order = styled.div`
     font-size: 14px;
     text-align: right;
     margin-right: 8px;
-    cursor: pointer;
-    :hover {
-      color: ${Colors.blue};
-      transform: scale(1.2);
+    cursor: ${props => {
+      return props.readOnly ? "default" : "pointer";
+    }};
+       :hover {
+      color: ${props => {
+        return props.readOnly ? Colors.black : Colors.blue;
+      }};
+      transform: ${props => {
+        return props.readOnly ? "scale(1)" : "scale(1.2)";
+      }};
     }
   }
   span {
@@ -120,4 +126,5 @@ const Flavor = styled.div`
     }
   }
 `;
-export default connect()(SingleOrderItem);
+
+export default connect()(withRouter(SingleOrderItem));

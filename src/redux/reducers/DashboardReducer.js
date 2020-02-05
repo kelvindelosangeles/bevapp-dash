@@ -1,3 +1,5 @@
+import { Order } from "../../Models/Order";
+
 const initialState = {
   orders: {},
   activeOrder: {}
@@ -6,15 +8,12 @@ const initialState = {
 const DashboardReducer = (state = initialState, action) => {
   switch (action.type) {
     case "SUBMIT_ORDER":
+      const { customer, details, order } = action;
       return {
         ...state,
         orders: {
           ...state.orders,
-          [action.details.orderID]: {
-            order: action.order,
-            customer: action.customer,
-            details: action.details
-          }
+          [action.details.orderID]: new Order(customer, details, order)
         }
       };
     case "TOGGLE_ORDER":

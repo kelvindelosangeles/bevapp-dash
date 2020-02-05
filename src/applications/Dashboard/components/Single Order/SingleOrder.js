@@ -5,13 +5,11 @@ import styled from "styled-components";
 import { Colors } from "../../../../constants/Colors";
 import SingleOrderItem from "./SingleOrderItem";
 import CustomerDetails from "../../../../global/OrderPreview/CustomerDetails";
+import OrderDetails from "../../../../global/OrderPreview/OrderDetails";
+import OrderItems from "../../../../global/OrderPreview/OrderItems";
 
-const SingleOrder = ({ order }) => {
-  const { customer, details } = order;
-
-  const OrdersArray = Object.values(order.order).map(i => {
-    return <SingleOrderItem orderDetails={i} />;
-  });
+const SingleOrder = props => {
+  const { customer, details, order } = props.order;
 
   return (
     <SingleOrderWrapper>
@@ -21,40 +19,14 @@ const SingleOrder = ({ order }) => {
           address={customer.address}
           telephone={customer.telephone}
         />
-        <OrderDetails>
-          <div className="row">
-            <div className="detail">
-              <h6>Order ID</h6>
-              <p>{details.orderID}</p>
-            </div>
-            <div className="detail">
-              <h6>Placed By</h6>
-              <p>Kelvin De Los Angeles</p>
-            </div>
-          </div>
-          <div className="row">
-            <div className="detail">
-              <h6>Ordered On</h6>
-              <p>{details.createdAt}</p>
-            </div>
-            <div className="detail">
-              <h6>Status/Complete</h6>
-              <p>Pending Review</p>
-            </div>
-          </div>
-        </OrderDetails>
 
-        <OrderItems>
-          <header>
-            <h6>Order</h6>
-            <h6>Cost</h6>
-          </header>
-          <main>{OrdersArray}</main>
-          <footer>
-            <h6>Total Cost</h6>
-            <h6>$ 4,564.23</h6>
-          </footer>
-        </OrderItems>
+        <OrderDetails
+          orderID={details.orderID}
+          createdAt={details.createdAt}
+          status="Pending Review"
+        />
+
+        <OrderItems order={order} />
 
         <OrderActions>
           <div>
@@ -84,43 +56,6 @@ const SingleOrderWrapper = styled.div`
   }
 `;
 
-const OrderDetails = styled.section`
-  .row {
-    display: flex;
-    :first-of-type {
-      margin-bottom: 24px;
-    }
-  }
-  .detail {
-    flex: 1;
-  }
-  h6 {
-    font-family: "AvenirNext-Bold", "Avenir Next", serif;
-    font-size: 14px;
-  }
-  p {
-    font-family: "AvenirNext-Medium", "Avenir Next", serif;
-    font-size: 12px;
-  }
-`;
-const OrderItems = styled.section`
-  header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 40px;
-  }
-  h6 {
-    font-family: "AvenirNext-Bold", "Avenir Next", serif;
-    font-size: 16px;
-  }
-  main {
-    margin-bottom: 40px;
-  }
-  footer {
-    display: flex;
-    justify-content: space-between;
-  }
-`;
 const OrderActions = styled.section`
   div {
     display: flex;
