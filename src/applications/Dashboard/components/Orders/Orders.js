@@ -1,25 +1,18 @@
 import React from "react";
 import styled from "styled-components";
+import { connect } from "react-redux";
+
 import { Colors } from "../../../../constants/Colors";
 import Order from "./Order";
 
-const Orders = () => {
+const Orders = ({ orders }) => {
+  const OrdersArray = Object.values(orders).map(i => {
+    return <Order orderDetails={i} />;
+  });
+
   return (
     <OrdersWrapper>
-      <section>
-        <Order />
-        <Order />
-        <Order />
-        <Order />
-        <Order />
-        <Order />
-        <Order />
-        <Order />
-        <Order />
-        <Order />
-        <Order />
-        <Order />
-      </section>
+      <section>{OrdersArray}</section>
     </OrdersWrapper>
   );
 };
@@ -38,4 +31,6 @@ const OrdersWrapper = styled.div`
     overflow-y: scroll;
   }
 `;
-export default Orders;
+export default connect(state => {
+  return { orders: state.DashboardState.orders };
+})(Orders);

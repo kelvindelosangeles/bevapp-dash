@@ -1,17 +1,22 @@
 import React from "react";
+import { connect } from "react-redux";
 
 import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
 
-const StatBar = () => {
+const StatBar = ({ orders }) => {
+  const newOrders = Object.values(orders).filter(i => {
+    return i.details.new;
+  }).length;
+
   return (
     <StatBarWrapper>
       <Stat color={Colors.blue}>
         <h6>New Orders</h6>
-        <p>32</p>
+        <p>{newOrders}</p>
       </Stat>
       <Stat color={Colors.green}>
-        <h6>Total Revenue</h6>
+        <h6>Daily Revenue</h6>
         <p>$1346.00</p>
       </Stat>
     </StatBarWrapper>
@@ -48,4 +53,6 @@ const Stat = styled.div`
   }
 `;
 
-export default StatBar;
+export default connect(state => {
+  return { orders: state.DashboardState.orders };
+})(StatBar);

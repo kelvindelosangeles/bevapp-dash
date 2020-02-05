@@ -1,14 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 
-const SingleOrderItem = () => {
+const SingleOrderItem = ({ orderDetails }) => {
   return (
     <Order>
-      <div className="quantity">50</div>
+      <div className="quantity">{orderDetails.qty}</div>
       <span>x</span>
       <div className="logo" />
-      <p className="itemTitle">Pepsi 12 oz Can</p>
-      <p className="cost">$ 47.32</p>
+      <p className="itemTitle">{orderDetails.description}</p>
+      <p className="cost">$ {orderDetails.price}</p>
     </Order>
   );
 };

@@ -1,28 +1,31 @@
 import React from "react";
+import { connect } from "react-redux";
 
 import styled from "styled-components";
 import { Colors } from "../../../../constants/Colors";
 import SingleOrderItem from "./SingleOrderItem";
+import CustomerDetails from "../../../../global/OrderPreview/CustomerDetails";
 
-const SingleOrder = () => {
+const SingleOrder = ({ order }) => {
+  const { customer, details } = order;
+
+  const OrdersArray = Object.values(order.order).map(i => {
+    return <SingleOrderItem orderDetails={i} />;
+  });
+
   return (
     <SingleOrderWrapper>
       <div className="wrapper">
-        <CustomerDetails>
-          <div>
-            <h3>106 Columbus</h3>
-            <p>945 Amsterdam Ave</p>
-            <p>917-543-8677</p>
-            <p>NYC</p>
-          </div>
-          <div> Map Image</div>
-        </CustomerDetails>
-
+        <CustomerDetails
+          name={customer.name}
+          address={customer.address}
+          telephone={customer.telephone}
+        />
         <OrderDetails>
           <div className="row">
             <div className="detail">
               <h6>Order ID</h6>
-              <p>XSKFNEWI392S</p>
+              <p>{details.orderID}</p>
             </div>
             <div className="detail">
               <h6>Placed By</h6>
@@ -32,7 +35,7 @@ const SingleOrder = () => {
           <div className="row">
             <div className="detail">
               <h6>Ordered On</h6>
-              <p>Jan 14, 16:52</p>
+              <p>{details.createdAt}</p>
             </div>
             <div className="detail">
               <h6>Status/Complete</h6>
@@ -46,18 +49,7 @@ const SingleOrder = () => {
             <h6>Order</h6>
             <h6>Cost</h6>
           </header>
-          <main>
-            <SingleOrderItem />
-            <SingleOrderItem />
-            <SingleOrderItem />
-            <SingleOrderItem />
-            <SingleOrderItem />
-            <SingleOrderItem />
-            <SingleOrderItem />
-            <SingleOrderItem />
-            <SingleOrderItem />
-            <SingleOrderItem />
-          </main>
+          <main>{OrdersArray}</main>
           <footer>
             <h6>Total Cost</h6>
             <h6>$ 4,564.23</h6>
@@ -92,19 +84,6 @@ const SingleOrderWrapper = styled.div`
   }
 `;
 
-const CustomerDetails = styled.section`
-  display: flex;
-  justify-content: space-between;
-  h3 {
-    font-family: "AvenirNext-Heavy", "Avenir Next", serif;
-    font-size: 18px;
-    margin-bottom: 8px;
-  }
-  p {
-    font-family: "AvenirNext-Medium", "Avenir Next", serif;
-    font-size: 14px;
-  }
-`;
 const OrderDetails = styled.section`
   .row {
     display: flex;
@@ -124,7 +103,6 @@ const OrderDetails = styled.section`
     font-size: 12px;
   }
 `;
-
 const OrderItems = styled.section`
   header {
     display: flex;
@@ -162,9 +140,10 @@ const OrderActions = styled.section`
   }
 `;
 const SmallButton = styled.button`
-    width: 80px;
-    ${props => console.log(props.color)}
-    background-color: ${props => props.color};
-    `;
+  width: 80px;
+  background-color: ${props => props.color};
+`;
 
-export default SingleOrder;
+export default connect(state => {
+  return { order: state.DashboardState.activeOrder };
+})(SingleOrder);

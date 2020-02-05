@@ -19,7 +19,11 @@ const RapidOrder = ({ atcVisible, atcfVisible, order }) => {
     <RapidOrderWrapper>
       <ROControls search={search} RapidEntry={RapidEntry} />
       <ROItems filter={search[0]} />
-      {OrderEmpty ? <EmptyOrder /> : <ROrder />}
+      {OrderEmpty ? (
+        <EmptyOrder message="Add an item to create a new order" />
+      ) : (
+        <ROrder />
+      )}
       {atcVisible && <AddToCart clearSearch={search[1]} />}
       {atcfVisible && <AddtoCartFlavors clearSearch={search[1]} />}
     </RapidOrderWrapper>

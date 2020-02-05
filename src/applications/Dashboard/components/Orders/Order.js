@@ -1,21 +1,35 @@
 import React from "react";
+import { connect } from "react-redux";
 import styled from "styled-components";
 import { Colors } from "../../../../constants/Colors";
-import moment from "moment";
 
-const Order = () => {
-  console.log(moment(new Date()).format("MMM DD, H:mm"));
+const Order = ({ orderDetails, dispatch }) => {
+  const total = Object.values(orderDetails.order)
+    .map(i => {
+      const total = parseFloat(i.qty * parseFloat(i.price));
+      return total;
+    })
+    .reduce((a, b) => {
+      return a + b;
+    })
+    .toFixed(2);
+
+  const viewHandler = () => {
+    dispatch({
+      type: "SET_ACTIVE_ORDER",
+      order: orderDetails
+    });
+  };
 
   return (
     <OrderWrapper>
       <div>
-        <h6>XUWKEOSME38SN</h6>
-        <p>Jan 14, 16:42</p>
+        <h6>{orderDetails.details.orderID}</h6>
+        <p>{orderDetails.details.createdAt}</p>
       </div>
-
-      <h6>945 Amsterdam Ave</h6>
-      <h6>$1342.59</h6>
-      <button>View</button>
+      <h6>{orderDetails.customer.name}</h6>
+      <h6>$ {total} </h6>
+      <button onClick={viewHandler}>View</button>
     </OrderWrapper>
   );
 };
@@ -38,6 +52,7 @@ const OrderWrapper = styled.div`
     width: 180px;
     min-width: 180px;
     margin-right: 24px;
+    text-transform: capitalize;
   }
   p {
     font-family: "AvenirNext-Medium", "Avenir Next", serif;
@@ -58,4 +73,4 @@ const OrderWrapper = styled.div`
   }
 `;
 
-export default Order;
+export default connect()(Order);

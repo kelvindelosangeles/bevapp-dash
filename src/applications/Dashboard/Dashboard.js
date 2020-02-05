@@ -1,15 +1,24 @@
 import React from "react";
 
+import { connect } from "react-redux";
 import styled from "styled-components";
+import { Colors } from "../../constants/Colors";
 
 import StatBar from "./components/StatBar";
 import DashboardSearch from "./components/DashboardSearch";
 import OrderHeader from "./components/OrderHeader";
 import Orders from "./components/Orders/Orders";
 import SingleOrder from "./components/Single Order/SingleOrder";
-import { Colors } from "../../constants/Colors";
+import EmptyOrder from "../Rapid Order/Components/EmptyOrder";
 
-const Dashboard = () => {
+const Dashboard = ({ activeOrder }) => {
+  const OrderPreview =
+    Object.values(activeOrder).length > 0 ? (
+      <SingleOrder />
+    ) : (
+      <EmptyOrder message="Select an order to view it's details" />
+    );
+
   return (
     <DashboardWrapper>
       <Main>
@@ -18,9 +27,7 @@ const Dashboard = () => {
         <OrderHeader />
         <Orders />
       </Main>
-      <Aside>
-        <SingleOrder />
-      </Aside>
+      <Aside>{OrderPreview}</Aside>
     </DashboardWrapper>
   );
 };
@@ -37,9 +44,12 @@ const Main = styled.div`
 `;
 const Aside = styled.div`
   display: flex;
-  max-width: 360px;
+  width: 390px;
+  max-width: 390px;
   flex: 1;
   background-color: ${Colors.white};
 `;
 
-export default Dashboard;
+export default connect(state => {
+  return { activeOrder: state.DashboardState.activeOrder };
+})(Dashboard);

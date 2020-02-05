@@ -10,6 +10,7 @@ import { Colors } from "../../../constants/Colors";
 import { CustomersArray } from "../../../Assets/Data/Customers";
 
 import SingleOrderItem from "./SingleOrderItem";
+import CustomerDetails from "../../../global/OrderPreview/CustomerDetails";
 
 const calcTotal = x => {
   return x
@@ -105,16 +106,13 @@ const ROrder = ({ order, dispatch }) => {
           />
         </CustomerSelect>
         {customer && (
-          <CustomerDetails>
-            <div>
-              <h3>{customer.name.toUpperCase()}</h3>
-              <p>{customer.address}</p>
-              <p>{formatTel(customer.telephone)}</p>
-              <p>NYC</p>
-            </div>
-            <div> Map Image</div>
-          </CustomerDetails>
+          <CustomerDetails
+            name={customer.name}
+            address={customer.address}
+            telephone={customer.telephone}
+          />
         )}
+
         <OrderDetails>
           <div className="row">
             <div className="detail">
@@ -180,21 +178,6 @@ const ROrderWrapper = styled.div`
 `;
 const CustomerSelect = styled.section``;
 
-const CustomerDetails = styled.section`
-  display: flex;
-  justify-content: space-between;
-  h3 {
-    font-family: "AvenirNext-Heavy", "Avenir Next", serif;
-    font-size: 18px;
-    margin-bottom: 8px;
-    max-width: 210px;
-  }
-  p {
-    font-family: "AvenirNext-Medium", "Avenir Next", serif;
-    font-size: 14px;
-    text-transform: uppercase;
-  }
-`;
 const OrderDetails = styled.section`
   .row {
     display: flex;
