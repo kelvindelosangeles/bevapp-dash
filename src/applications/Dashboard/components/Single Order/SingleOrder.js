@@ -7,9 +7,18 @@ import SingleOrderItem from "./SingleOrderItem";
 import CustomerDetails from "../../../../global/OrderPreview/CustomerDetails";
 import OrderDetails from "../../../../global/OrderPreview/OrderDetails";
 import OrderItems from "../../../../global/OrderPreview/OrderItems";
+import { withRouter } from "react-router-dom";
 
 const SingleOrder = props => {
   const { customer, details, order } = props.order;
+
+  const editOrderHandler = () => {
+    props.dispatch({
+      type: "EDIT_ORDER",
+      order: props.order
+    });
+    props.history.push("/rapidorder");
+  };
 
   return (
     <SingleOrderWrapper>
@@ -19,20 +28,18 @@ const SingleOrder = props => {
           address={customer.address}
           telephone={customer.telephone}
         />
-
         <OrderDetails
           orderID={details.orderID}
           createdAt={details.createdAt}
           status="Pending Review"
         />
-
         <OrderItems order={order} />
 
         <OrderActions>
           <div>
-            <SmallButton color={Colors.yellow}>Edit</SmallButton>
-            <SmallButton color={Colors.blue}>Print</SmallButton>
-            <SmallButton color={Colors.red}>Delete</SmallButton>
+            <SmallButton onClick={editOrderHandler}>Edit</SmallButton>
+            <SmallButton>Print</SmallButton>
+            <SmallButton>Delete</SmallButton>
           </div>
           <button className="complete">Complete Order</button>
         </OrderActions>
@@ -76,9 +83,17 @@ const OrderActions = styled.section`
 `;
 const SmallButton = styled.button`
   width: 80px;
-  background-color: ${props => props.color};
+  :first-of-type {
+    background-color: ${Colors.yellow};
+  }
+  :nth-of-type(2) {
+    background-color: ${Colors.blue};
+  }
+  :nth-of-type(3) {
+    background-color: ${Colors.red};
+  }
 `;
 
 export default connect(state => {
   return { order: state.DashboardState.activeOrder };
-})(SingleOrder);
+})(withRouter(SingleOrder));

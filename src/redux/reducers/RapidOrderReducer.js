@@ -2,7 +2,9 @@ const initialState = {
   atcVisible: false,
   atcfVisible: false,
   orderItem: {},
-  order: {}
+  order: {},
+  editMode: false,
+  orderToEdit: {}
 };
 
 const RapidOrderReducer = (state = initialState, action) => {
@@ -19,6 +21,8 @@ const RapidOrderReducer = (state = initialState, action) => {
         atcfVisible: !state.atcVisible,
         orderItem: { ...action.item }
       };
+    case "EDIT_MODE_ON":
+      return { ...state, editMode: true };
     case "CLOSE_ATC":
       return {
         ...state,
@@ -49,6 +53,8 @@ const RapidOrderReducer = (state = initialState, action) => {
         ...state,
         order: { ...newOrder }
       };
+    case "EDIT_ORDER":
+      return { ...state, orderToEdit: { ...action.order } };
     default:
       return state;
   }
