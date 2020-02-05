@@ -24,7 +24,11 @@ const DashboardReducer = (state = initialState, action) => {
           [action.details.orderID]: {
             ...state.orders[action.details.orderID],
             editedOrder: {
-              ...new Order(action.customer, action.details, action.order)
+              order: { ...action.order },
+              details: {
+                editedAt: action.details.createdAt,
+                editedBy: "admin"
+              }
             }
           }
         }
@@ -33,6 +37,15 @@ const DashboardReducer = (state = initialState, action) => {
       return { ...state, activeOrder: { ...action.order } };
     case "SET_ACTIVE_ORDER":
       return { ...state, activeOrder: { ...action.order } };
+    case "DELETE_ORDER":
+      const { [action.orderID]: removed, ...newOrders } = state.orders;
+      return {
+        ...state,
+        activeOrder: {},
+        orders: {
+          ...newOrders
+        }
+      };
     default:
       return state;
   }

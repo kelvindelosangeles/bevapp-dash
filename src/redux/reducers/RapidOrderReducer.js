@@ -21,8 +21,7 @@ const RapidOrderReducer = (state = initialState, action) => {
         atcfVisible: !state.atcVisible,
         orderItem: { ...action.item }
       };
-    case "EDIT_MODE_ON":
-      return { ...state, editMode: true };
+
     case "CLOSE_ATC":
       return {
         ...state,

@@ -20,6 +20,16 @@ const SingleOrder = props => {
     props.history.push("/rapidorder");
   };
 
+  const deleteOrderHandler = () => {
+    window.confirm(
+      "Are you sure you want to delete this order?  This action is irreversable."
+    ) &&
+      props.dispatch({
+        type: "DELETE_ORDER",
+        orderID: details.orderID
+      });
+  };
+
   return (
     <SingleOrderWrapper>
       <div className="wrapper">
@@ -39,7 +49,7 @@ const SingleOrder = props => {
           <div>
             <SmallButton onClick={editOrderHandler}>Edit</SmallButton>
             <SmallButton>Print</SmallButton>
-            <SmallButton>Delete</SmallButton>
+            <SmallButton onClick={deleteOrderHandler}>Delete</SmallButton>
           </div>
           <button className="complete">Complete Order</button>
         </OrderActions>
@@ -62,7 +72,6 @@ const SingleOrderWrapper = styled.div`
     border-bottom: 1px solid ${Colors.lightGrey};
   }
 `;
-
 const OrderActions = styled.section`
   div {
     display: flex;
