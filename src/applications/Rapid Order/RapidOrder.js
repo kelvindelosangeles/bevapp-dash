@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import ROControls from "./Components/ROControls";
 import ROItems from "./Components/ROItems";
-import ROrder from "./Components/ROrder";
+import ROPreview from "./Components/ROPreview";
 
 import AddToCart from "./Components/AddToCart";
 import EmptyOrder from "./Components/EmptyOrder";
@@ -14,16 +14,17 @@ const RapidOrder = ({ atcVisible, atcfVisible, order }) => {
   const search = useState("");
   const RapidEntry = useState("");
   const OrderEmpty = Object.values(order).length < 1;
+  const OrderPreview = OrderEmpty ? (
+    <EmptyOrder message="Add an item to create a new order" />
+  ) : (
+    <ROPreview />
+  );
 
   return (
     <RapidOrderWrapper>
       <ROControls search={search} RapidEntry={RapidEntry} />
       <ROItems filter={search[0]} />
-      {OrderEmpty ? (
-        <EmptyOrder message="Add an item to create a new order" />
-      ) : (
-        <ROrder />
-      )}
+      {OrderPreview}
       {atcVisible && <AddToCart clearSearch={search[1]} />}
       {atcfVisible && <AddtoCartFlavors clearSearch={search[1]} />}
     </RapidOrderWrapper>

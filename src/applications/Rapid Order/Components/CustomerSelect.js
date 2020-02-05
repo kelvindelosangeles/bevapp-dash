@@ -1,0 +1,40 @@
+import React from "react";
+
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import { TextField } from "@material-ui/core";
+
+import { CustomersArray } from "../../../Assets/Data/Customers";
+
+const CustomerSelect = ({ customerChangeHandler }) => {
+  const options = CustomersArray.map(x => {
+    const firstLetter = x.name[0].toUpperCase();
+    return {
+      firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
+      ...x
+    };
+  });
+
+  return (
+    <section>
+      <Autocomplete
+        id="combo-box-demo"
+        options={options.sort(
+          (a, b) => -b.firstLetter.localeCompare(a.firstLetter)
+        )}
+        groupBy={option => option.firstLetter}
+        getOptionLabel={option => option.name.toUpperCase()}
+        renderInput={params => (
+          <TextField
+            {...params}
+            label="Select a Customer"
+            variant="standard"
+            fullWidth
+          />
+        )}
+        onChange={customerChangeHandler}
+      />
+    </section>
+  );
+};
+
+export default CustomerSelect;

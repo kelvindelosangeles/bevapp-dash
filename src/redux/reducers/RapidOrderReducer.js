@@ -39,12 +39,21 @@ const RapidOrderReducer = (state = initialState, action) => {
     case "CANCEL_ORDER":
       return {
         ...state,
-        order: {}
+        order: {},
+        editMode: false,
+        orderToEdit: {}
       };
     case "SUBMIT_ORDER":
       return {
         ...state,
         order: {}
+      };
+    case "SUBMIT_EDIT":
+      return {
+        ...state,
+        order: {},
+        editMode: false,
+        orderToEdit: {}
       };
     case "REMOVE_ITEM":
       // destructure to remove a key from an object
@@ -54,7 +63,12 @@ const RapidOrderReducer = (state = initialState, action) => {
         order: { ...newOrder }
       };
     case "EDIT_ORDER":
-      return { ...state, orderToEdit: { ...action.order } };
+      return {
+        ...state,
+        order: { ...action.order.order },
+        orderToEdit: { ...action.order },
+        editMode: true
+      };
     default:
       return state;
   }

@@ -1,10 +1,8 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import uuid from "uuid";
 import moment from "moment";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import { TextField } from "@material-ui/core";
 
 import { Colors } from "../../../constants/Colors";
 import { CustomersArray } from "../../../Assets/Data/Customers";
@@ -12,13 +10,18 @@ import { CustomersArray } from "../../../Assets/Data/Customers";
 import CustomerDetails from "../../../global/OrderPreview/CustomerDetails";
 import OrderDetails from "../../../global/OrderPreview/OrderDetails";
 import OrderItems from "../../../global/OrderPreview/OrderItems";
+import CustomerSelect from "./CustomerSelect";
 
 const formatTel = tel => {
   return `(${tel.slice(0, 3)}) ${tel.slice(3, 6)} ${tel.slice(6, 10)} `;
 };
-const ROrder = ({ order, dispatch }) => {
+const ROPreview = ({ order, dispatch, editMode, orderToEdit }) => {
   const [customer, setCustomer] = useState(null);
   const [error, showError] = useState(false);
+
+  useEffect(() => {
+    editMode && setCustomer({ ...orderToEdit.customer });
+  }, []);
 
   const orderID = useMemo(() => {
     return moment(new Date()).format("YYMMDD") + uuid().slice(0, 8) + "aa";
@@ -27,7 +30,7 @@ const ROrder = ({ order, dispatch }) => {
     return moment(new Date()).format("MMM DD, h:mm");
   });
 
-  const customerChangeHandler = (event, value) => {
+  const customerChangeHandler = (e, value) => {
     showError(false);
     setCustomer(value);
   };
@@ -38,53 +41,47 @@ const ROrder = ({ order, dispatch }) => {
       });
   };
   const submitOrder = () => {
-    if (!customer) {
-      showError(true);
-    } else {
-      dispatch({
-        type: "SUBMIT_ORDER",
-        order,
-        customer,
-        details: {
-          orderID,
-          createdAt: createdAt,
-          createdBy: "Admin"
-        }
-      });
-    }
+    return !customer
+      ? showError(true)
+      : dispatch({
+          type: "SUBMIT_ORDER",
+          order,
+          customer,
+          details: {
+            orderID,
+            createdAt,
+            createdBy: "Admin"
+          }
+        });
   };
-
-  // GROUPING CUSTOMERS
-  const options = CustomersArray.map(x => {
-    const firstLetter = x.name[0].toUpperCase();
-    return {
-      firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
-      ...x
-    };
-  });
+  const submitEdit = () => {
+    return window.confirm("Are you sure you want to submit this edit")
+      ? dispatch({
+          type: "SUBMIT_EDIT",
+          order,
+          customer,
+          details: {
+            orderID: orderToEdit.details.orderID,
+            createdAt,
+            createdBy: "Admin"
+          }
+        })
+      : null;
+  };
 
   return (
     <ROrderWrapper>
       <div className="wrapper">
-        <CustomerSelect>
-          <Autocomplete
-            id="combo-box-demo"
-            options={options.sort(
-              (a, b) => -b.firstLetter.localeCompare(a.firstLetter)
-            )}
-            groupBy={option => option.firstLetter}
-            getOptionLabel={option => option.name.toUpperCase()}
-            renderInput={params => (
-              <TextField
-                {...params}
-                label="Select a Customer"
-                variant="standard"
-                fullWidth
-              />
-            )}
-            onChange={customerChangeHandler}
-          />
-        </CustomerSelect>
+        {/* NOTIFICATION TO LET THE CUSTOMER KNOW THEY ARE IN EDIT MODE */}
+        {editMode && (
+          <EditMode>
+            <h3>EDIT MODE</h3>
+          </EditMode>
+        )}
+        {/* THE CUSTOMER SELECT FEATURE IS ONLY FOR NEW ORDERS */}
+        {!editMode && (
+          <CustomerSelect customerChangeHandler={customerChangeHandler} />
+        )}
         {customer && (
           <CustomerDetails
             name={customer.name}
@@ -93,9 +90,10 @@ const ROrder = ({ order, dispatch }) => {
           />
         )}
         <OrderDetails
-          orderID={orderID}
+          // THE ORDER ID DISPLAYED WILL EITHER BE NEW OR FROM THE EDITED ORDER
+          orderID={editMode ? orderToEdit.details.orderID : orderID}
           createdAt={createdAt}
-          status="New Order"
+          status={editMode ? "Editing Order" : "New Order"}
         />
         <OrderItems order={order} />
         {error && (
@@ -103,10 +101,17 @@ const ROrder = ({ order, dispatch }) => {
             <p>Please Add a Customer</p>
           </ErrorMessage>
         )}
-        <OrderActions>
-          <button onClick={submitOrder}>Complete Order</button>
-          <button onClick={cancelOrder}>Cancel</button>
-        </OrderActions>
+        {editMode ? (
+          <EditActions>
+            <button onClick={submitEdit}>Submit Edit</button>
+            <button onClick={cancelOrder}>Cancel</button>
+          </EditActions>
+        ) : (
+          <OrderActions>
+            <button onClick={submitOrder}>Complete Order</button>
+            <button onClick={cancelOrder}>Cancel</button>
+          </OrderActions>
+        )}
       </div>
     </ROrderWrapper>
   );
@@ -128,7 +133,13 @@ const ROrderWrapper = styled.div`
     border-bottom: 1px solid ${Colors.lightGrey};
   }
 `;
-const CustomerSelect = styled.section``;
+
+const EditMode = styled.section`
+  background-color: ${Colors.yellow};
+  color: ${Colors.black};
+  text-align: center;
+  font-family: "AvenirNext-Heavy", "Avenir Next", serif;
+`;
 
 const OrderActions = styled.section`
   display: flex;
@@ -144,9 +155,17 @@ const OrderActions = styled.section`
     background-color: ${Colors.green};
     cursor: pointer;
     :nth-of-type(2) {
+      color: ${Colors.white};
       background-color: ${Colors.red};
       margin-left: 16px;
     }
+  }
+`;
+
+const EditActions = styled(OrderActions)`
+  button {
+    background-color: ${Colors.yellow};
+    color: ${Colors.black};
   }
 `;
 const ErrorMessage = styled.section`
@@ -159,5 +178,9 @@ const ErrorMessage = styled.section`
 `;
 
 export default connect(state => {
-  return { order: state.RapidOrderState.order };
-})(ROrder);
+  return {
+    order: state.RapidOrderState.order,
+    editMode: state.RapidOrderState.editMode,
+    orderToEdit: state.RapidOrderState.orderToEdit
+  };
+})(ROPreview);

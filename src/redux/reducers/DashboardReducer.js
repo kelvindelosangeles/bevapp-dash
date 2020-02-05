@@ -16,6 +16,19 @@ const DashboardReducer = (state = initialState, action) => {
           [action.details.orderID]: new Order(customer, details, order)
         }
       };
+    case "SUBMIT_EDIT":
+      return {
+        ...state,
+        orders: {
+          ...state.orders,
+          [action.details.orderID]: {
+            ...state.orders[action.details.orderID],
+            editedOrder: {
+              ...new Order(action.customer, action.details, action.order)
+            }
+          }
+        }
+      };
     case "TOGGLE_ORDER":
       return { ...state, activeOrder: { ...action.order } };
     case "SET_ACTIVE_ORDER":
