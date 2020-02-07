@@ -31,7 +31,8 @@ const DashboardReducer = (state = initialState, action) => {
               }
             }
           }
-        }
+        },
+        activeOrder: {}
       };
     case "TOGGLE_ORDER":
       return { ...state, activeOrder: { ...action.order } };

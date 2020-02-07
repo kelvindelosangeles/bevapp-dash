@@ -5,7 +5,6 @@ import uuid from "uuid";
 import moment from "moment";
 
 import { Colors } from "../../../constants/Colors";
-import { CustomersArray } from "../../../Assets/Data/Customers";
 
 import CustomerDetails from "../../../global/OrderPreview/CustomerDetails";
 import OrderDetails from "../../../global/OrderPreview/OrderDetails";
@@ -15,7 +14,7 @@ import CustomerSelect from "./CustomerSelect";
 const formatTel = tel => {
   return `(${tel.slice(0, 3)}) ${tel.slice(3, 6)} ${tel.slice(6, 10)} `;
 };
-const ROPreview = ({ order, dispatch, editMode, orderToEdit }) => {
+const ROPreview = ({ order, dispatch, editMode, orderToEdit, activeOrder }) => {
   const [customer, setCustomer] = useState(null);
   const [error, showError] = useState(false);
 
@@ -95,6 +94,7 @@ const ROPreview = ({ order, dispatch, editMode, orderToEdit }) => {
           createdAt={createdAt}
           status={editMode ? "Editing Order" : "New Order"}
         />
+
         <OrderItems order={order} />
         {error && (
           <ErrorMessage>

@@ -1,16 +1,20 @@
-import React from "react";
+import React, { useState, useRef } from "react";
+import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-
 import styled from "styled-components";
+import ReactToPrint from "react-to-print";
+
 import { Colors } from "../../../../constants/Colors";
-import SingleOrderItem from "./SingleOrderItem";
+
 import CustomerDetails from "../../../../global/OrderPreview/CustomerDetails";
 import OrderDetails from "../../../../global/OrderPreview/OrderDetails";
 import OrderItems from "../../../../global/OrderPreview/OrderItems";
-import { withRouter } from "react-router-dom";
+import CustomerCopy from "../../../../global/PrintTemplates/CustomerCopy";
 
 const SingleOrder = props => {
   const { customer, details, order } = props.order;
+  const [editedOrder, toggleEditedOrder] = useState(false);
+  const customerCopy = useRef();
 
   const editOrderHandler = () => {
     props.dispatch({
@@ -43,16 +47,44 @@ const SingleOrder = props => {
           createdAt={details.createdAt}
           status="Pending Review"
         />
-        <OrderItems order={order} />
+        {props.order.editedOrder.order && (
+          <EditedOrderToggle editedOrder={editedOrder}>
+            <button
+              onClick={() => {
+                toggleEditedOrder(false);
+              }}
+            >
+              Original
+            </button>
+            <button
+              onClick={() => {
+                toggleEditedOrder(true);
+              }}
+            >
+              Edited
+            </button>
+          </EditedOrderToggle>
+        )}
+
+        <OrderItems
+          order={!editedOrder ? order : props.activeOrder.editedOrder.order}
+        />
 
         <OrderActions>
           <div>
             <SmallButton onClick={editOrderHandler}>Edit</SmallButton>
-            <SmallButton>Print</SmallButton>
+            <ReactToPrint
+              trigger={() => <SmallButton>Print</SmallButton>}
+              content={() => customerCopy.current}
+            />
             <SmallButton onClick={deleteOrderHandler}>Delete</SmallButton>
           </div>
           <button className="complete">Complete Order</button>
         </OrderActions>
+      </div>
+
+      <div style={{ display: "none" }}>
+        <CustomerCopy reference={customerCopy} />
       </div>
     </SingleOrderWrapper>
   );
@@ -103,6 +135,35 @@ const SmallButton = styled.button`
   }
 `;
 
+const EditedOrderToggle = styled.section`
+  display: flex;
+  justify-content: space-evenly;
+  button {
+    width: 40%;
+    padding: 18px 0;
+    border: none;
+    font-family: Gilroy-ExtraBold;
+    font-size: 16px;
+
+    cursor: pointer;
+    :first-of-type {
+      border-bottom: 4px solid
+        ${props => {
+          return props.editedOrder ? "white" : "black";
+        }};
+    }
+    :last-of-type {
+      border-bottom: 4px solid
+        ${props => {
+          return props.editedOrder ? "black" : "white";
+        }};
+    }
+  }
+`;
+
 export default connect(state => {
-  return { order: state.DashboardState.activeOrder };
+  return {
+    order: state.DashboardState.activeOrder,
+    activeOrder: state.DashboardState.activeOrder
+  };
 })(withRouter(SingleOrder));
