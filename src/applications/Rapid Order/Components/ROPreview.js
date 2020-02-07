@@ -6,9 +6,9 @@ import moment from "moment";
 
 import { Colors } from "../../../constants/Colors";
 
-import CustomerDetails from "../../../global/OrderPreview/CustomerDetails";
-import OrderDetails from "../../../global/OrderPreview/OrderDetails";
-import OrderItems from "../../../global/OrderPreview/OrderItems";
+import CustomerDetails from "../../../Global/OrderPreview/CustomerDetails";
+import OrderDetails from "../../../Global/OrderPreview/OrderDetails";
+import OrderItems from "../../../Global/OrderPreview/OrderItems";
 import CustomerSelect from "./CustomerSelect";
 
 const formatTel = tel => {

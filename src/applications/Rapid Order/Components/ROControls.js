@@ -25,7 +25,7 @@ const ROControls = props => {
             }}
           />
         </form>
-        <form onSubmit={e => e.preventDefault()}>
+        {/* <form onSubmit={e => e.preventDefault()}>
           <BoltIcon />
           <input
             type="text"
@@ -37,7 +37,7 @@ const ROControls = props => {
               setSearch("");
             }}
           />
-        </form>
+        </form> */}
       </div>
     </ROControlsWrapper>
   );
