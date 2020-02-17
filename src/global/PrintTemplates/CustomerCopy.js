@@ -40,7 +40,6 @@ class CustomerCopy extends React.Component {
     const total = totalCostArray.reduce((a, b) => {
       return a + b;
     });
-    console.log(this.props.activeOrder.order);
 
     return (
       <CustomerCopyWrapper ref={this.props.reference}>

@@ -12,6 +12,7 @@ const calcTotal = x => {
 
 const OrderItems = props => {
   const { order, readOnly = false } = props;
+  console.log(order);
 
   const orderArray = Object.values(order).map(item => {
     return <SingleOrderItem item={item} key={item.id} readOnly={readOnly} />;

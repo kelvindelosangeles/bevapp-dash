@@ -65,12 +65,28 @@ const DashPreview = props => {
             </button>
           </EditedOrderToggle>
         )}
-
-        <OrderItems
-          order={!editedOrder ? order : props.activeOrder.editedOrder.order}
-          readOnly={true}
-        />
-
+        FIXME:
+        {/* ===================== */}
+        {/* ===================== */}
+        {/* ===================== */}
+        {/* edited order toggle is on show edited order */}
+        {/* Or check that the new clicked on order has an editfirst */}
+        {/* Then Show*/}
+        {!editedOrder ? (
+          <OrderItems order={props.activeOrder.order} readOnly={true} />
+        ) : Object.values(props.activeOrder.editedOrder).length > 0 ? (
+          <OrderItems
+            order={props.activeOrder.editedOrder.order}
+            readOnly={true}
+          />
+        ) : (
+          toggleEditedOrder(false) && (
+            <OrderItems order={props.activeOrder.order} readOnly={true} />
+          )
+        )}
+        {/* ===================== */}
+        {/* ===================== */}
+        {/* ===================== */}
         <OrderActions>
           <div>
             <SmallButton onClick={editOrderHandler}>Edit</SmallButton>

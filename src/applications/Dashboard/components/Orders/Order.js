@@ -15,6 +15,7 @@ const Order = ({ orderDetails, dispatch, activeOrder }) => {
     .toFixed(2);
 
   const viewHandler = () => {
+    console.log(orderDetails);
     dispatch({
       type: "SET_ACTIVE_ORDER",
       order: orderDetails
