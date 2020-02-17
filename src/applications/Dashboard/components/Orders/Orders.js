@@ -21,11 +21,11 @@ const OrdersWrapper = styled.div`
   position: relative;
   overflow: hidden;
   background-color: ${Colors.white};
-  padding: 24px;
   border-radius: 8px;
   flex-grow: 1;
   section {
-    width: calc(100% - 48px);
+    width: 100%;
+    padding: 24px 0;
     position: absolute;
     height: 100%;
     overflow-y: scroll;

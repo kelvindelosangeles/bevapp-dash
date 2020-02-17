@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { Colors } from "../../../../constants/Colors";
 
-const Order = ({ orderDetails, dispatch }) => {
+const Order = ({ orderDetails, dispatch, activeOrder }) => {
   const total = Object.values(orderDetails.order)
     .map(i => {
       const total = parseFloat(i.qty * parseFloat(i.price));
@@ -20,26 +20,51 @@ const Order = ({ orderDetails, dispatch }) => {
       order: orderDetails
     });
   };
+  const clearHandler = () => {
+    dispatch({
+      type: "CLEAR_ORDER"
+    });
+  };
+
+  const activeOrderID =
+    Object.values(activeOrder).length > 0 ? activeOrder.details.orderID : null;
+
+  const OrderIsActive = activeOrderID == orderDetails.details.orderID;
 
   return (
-    <OrderWrapper>
+    <OrderWrapper active={OrderIsActive}>
       <div>
         <h6>{orderDetails.details.orderID}</h6>
         <p>{orderDetails.details.createdAt}</p>
       </div>
       <h6>{orderDetails.customer.name}</h6>
       <h6>$ {total} </h6>
-      <button onClick={viewHandler}>View</button>
+      {OrderIsActive ? (
+        <Close onClick={clearHandler}>Close</Close>
+      ) : (
+        <button onClick={viewHandler}>View</button>
+      )}
     </OrderWrapper>
   );
 };
 
 const OrderWrapper = styled.div`
-  display: flex;
-  justify-content: start;
-  margin-bottom: 32px;
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr 2fr;
+  grid-template-rows: 1fr;
+  grid-gap: 48px;
+  padding: 24px;
+  border-bottom: 1px solid ${Colors.lightGrey};
+  background-color: ${props => {
+    return props.active && Colors.lightGrey;
+  }};
   :last-of-type {
-    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  :hover {
+    background-color: ${Colors.lightGrey};
+    transition: all ease-in-out;
   }
   div {
     display: flex;
@@ -49,9 +74,9 @@ const OrderWrapper = styled.div`
     font-family: "AvenirNext-DemiBold", "Avenir Next", serif;
     color: "#000000";
     font-size: 14px;
-    width: 180px;
-    min-width: 180px;
-    margin-right: 24px;
+    /* width: 180px; */
+    /* min-width: 180px; */
+    /* margin-right: 24px; */
     text-transform: capitalize;
   }
   p {
@@ -70,7 +95,25 @@ const OrderWrapper = styled.div`
     font-size: 14px;
     border-radius: 4px;
     border: none;
+    cursor: pointer;
   }
 `;
 
-export default connect()(Order);
+const Close = styled.button`
+  margin-left: auto;
+  width: 112px;
+  min-width: 112px;
+  height: 40px;
+  background-color: ${Colors.red}!important;
+  color: ${Colors.white};
+  font-family: "AvenirNext-Medium", "Avenir Next", serif;
+  font-size: 14px;
+  border-radius: 4px;
+  border: none;
+`;
+
+export default connect(state => {
+  return {
+    activeOrder: state.DashboardState.activeOrder
+  };
+})(Order);

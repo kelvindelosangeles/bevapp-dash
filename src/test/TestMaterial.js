@@ -1,5 +1,4 @@
-import { Order } from "../../Models/Order";
-
+// Dashbaord orders
 const initialState = {
   orders: {
     "20021704d1142daa": {
@@ -514,56 +513,56 @@ const initialState = {
   activeOrder: {}
 };
 
-const DashboardReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case "SUBMIT_ORDER":
-      const { customer, details, order } = action;
-      return {
-        ...state,
-        orders: {
-          ...state.orders,
-          [action.details.orderID]: new Order(customer, details, order)
-        }
-      };
-    case "SUBMIT_EDIT":
-      return {
-        ...state,
-        orders: {
-          ...state.orders,
-          [action.details.orderID]: {
-            ...state.orders[action.details.orderID],
-            editedOrder: {
-              order: { ...action.order },
-              details: {
-                editedAt: action.details.createdAt,
-                editedBy: "admin"
-              }
-            }
-          }
-        },
-        activeOrder: {}
-      };
-    case "TOGGLE_ORDER":
-      return { ...state, activeOrder: { ...action.order } };
-    case "CLEAR_ORDER":
-      return {
-        ...state,
-        activeOrder: {}
-      };
-    case "SET_ACTIVE_ORDER":
-      return { ...state, activeOrder: { ...action.order } };
-    case "DELETE_ORDER":
-      const { [action.orderID]: removed, ...newOrders } = state.orders;
-      return {
-        ...state,
-        activeOrder: {},
-        orders: {
-          ...newOrders
-        }
-      };
-    default:
-      return state;
-  }
-};
 
-export default DashboardReducer;
+const order = {
+  "A&W2LI": {
+    brand: "A&W",
+    id: "A&W2LI",
+    category: "soda",
+    description: "A&W 2liter bottle",
+    packaging: "bottle",
+    size: "2liter",
+    price: "9.69",
+    qty: 1
+  },
+  AMS12P: {
+    brand: "Amstel Lite",
+    id: "AMS12P",
+    category: "beer",
+    description: "Amstel Lite 12oz bottle 12pk",
+    packaging: "bottle",
+    size: "12oz",
+    price: "32.65",
+    qty: 1
+  },
+  AMS12B: {
+    brand: "Amstel Lite",
+    id: "AMS12B",
+    category: "beer",
+    description: "Amstel Lite 12oz bottle",
+    packaging: "bottle",
+    size: "12oz",
+    price: "33.95",
+    qty: 1
+  },
+  ALO16B: {
+    brand: "Aloevine",
+    id: "ALO16B",
+    category: "juice",
+    description: "Aloevine 16oz bottle",
+    packaging: "bottle",
+    size: "16oz",
+    price: "16.95",
+    qty: 1
+  },
+  "ALO1.5": {
+    brand: "Aloe",
+    id: "ALO1.5",
+    category: "juice",
+    description: "Aloe 1.5liter bottle",
+    packaging: "bottle",
+    size: "1.5liter",
+    price: "21.95",
+    qty: 1
+  }
+},
