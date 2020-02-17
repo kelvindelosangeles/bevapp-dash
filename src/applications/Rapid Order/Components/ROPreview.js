@@ -68,6 +68,9 @@ const ROPreview = ({ order, dispatch, editMode, orderToEdit, activeOrder }) => {
       : null;
   };
 
+  // Prevents the last item from being deleted while editing
+  const disabled = Object.values(order).length < 2;
+
   return (
     <ROrderWrapper>
       <div className="wrapper">
@@ -102,8 +105,10 @@ const ROPreview = ({ order, dispatch, editMode, orderToEdit, activeOrder }) => {
           </ErrorMessage>
         )}
         {editMode ? (
-          <EditActions>
-            <button onClick={submitEdit}>Submit Edit</button>
+          <EditActions disabled={disabled}>
+            <button onClick={submitEdit} disabled={disabled}>
+              Submit Edit
+            </button>
             <button onClick={cancelOrder}>Cancel</button>
           </EditActions>
         ) : (
@@ -164,8 +169,12 @@ const OrderActions = styled.section`
 
 const EditActions = styled(OrderActions)`
   button {
-    background-color: ${Colors.yellow};
-    color: ${Colors.black};
+    background-color: ${props => {
+      return props.disabled ? Colors.grey : Colors.yellow;
+    }};
+    color: ${props => {
+      return props.disabled ? Colors.white : Colors.black;
+    }};
   }
 `;
 const ErrorMessage = styled.section`
