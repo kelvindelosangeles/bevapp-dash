@@ -5,9 +5,9 @@ import { Colors } from "../../constants/Colors";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-const SingleOrderItem = ({ item, dispatch, location }) => {
+const SingleOrderItem = ({ item, dispatch, location, readOnly }) => {
   const { qty, description, price } = item;
-  const readOnly = location.pathname.includes("dashboard");
+  // const readOnly = location.pathname.includes("dashboard");
   const calcTotal = (qty, price) => {
     return (qty * parseFloat(price).toFixed(2)).toFixed(2);
   };
@@ -18,7 +18,9 @@ const SingleOrderItem = ({ item, dispatch, location }) => {
   };
 
   const ToggleModal = () => {
-    !readOnly && item.hasOwnProperty("flavors")
+    return readOnly
+      ? null
+      : item.hasOwnProperty("flavors")
       ? dispatch({ type: "TOGGLE_ATCF", item })
       : dispatch({ type: "TOGGLE_ATC", item });
   };
@@ -49,7 +51,7 @@ const SingleOrderItem = ({ item, dispatch, location }) => {
         <p className="itemTitle">{description}</p>
         <p className="cost">
           $ {calcTotal(qty, price)}{" "}
-          {!readOnly && <TrashIcon onClick={removeItem} />}
+          {readOnly ? null : <TrashIcon onClick={removeItem} />}
         </p>
       </Order>
       {flavors}

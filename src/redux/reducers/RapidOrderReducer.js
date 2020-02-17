@@ -2,7 +2,60 @@ const initialState = {
   atcVisible: false,
   atcfVisible: false,
   orderItem: {},
-  order: {},
+  // order: {},
+  order: {
+    "A&W2LI": {
+      brand: "A&W",
+      id: "A&W2LI",
+      category: "soda",
+      description: "A&W 2liter bottle",
+      packaging: "bottle",
+      size: "2liter",
+      price: "9.69",
+      qty: 1
+    },
+    AMS12P: {
+      brand: "Amstel Lite",
+      id: "AMS12P",
+      category: "beer",
+      description: "Amstel Lite 12oz bottle 12pk",
+      packaging: "bottle",
+      size: "12oz",
+      price: "32.65",
+      qty: 1
+    },
+    AMS12B: {
+      brand: "Amstel Lite",
+      id: "AMS12B",
+      category: "beer",
+      description: "Amstel Lite 12oz bottle",
+      packaging: "bottle",
+      size: "12oz",
+      price: "33.95",
+      qty: 1
+    },
+    ALO16B: {
+      brand: "Aloevine",
+      id: "ALO16B",
+      category: "juice",
+      description: "Aloevine 16oz bottle",
+      packaging: "bottle",
+      size: "16oz",
+      price: "16.95",
+      qty: 1
+    },
+    "ALO1.5": {
+      brand: "Aloe",
+      id: "ALO1.5",
+      category: "juice",
+      description: "Aloe 1.5liter bottle",
+      packaging: "bottle",
+      size: "1.5liter",
+      price: "21.95",
+      qty: 1
+    }
+  },
+
   editMode: false,
   orderToEdit: {}
 };

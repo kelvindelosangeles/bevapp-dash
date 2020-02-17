@@ -11,10 +11,10 @@ const calcTotal = x => {
 };
 
 const OrderItems = props => {
-  const { order } = props;
+  const { order, readOnly = false } = props;
 
   const orderArray = Object.values(order).map(item => {
-    return <SingleOrderItem item={item} key={item.id} />;
+    return <SingleOrderItem item={item} key={item.id} readOnly={readOnly} />;
   });
 
   const totalCostArray = Object.values(order).map(i => {

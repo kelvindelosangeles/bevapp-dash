@@ -8,13 +8,13 @@ import StatBar from "./components/StatBar";
 import DashboardSearch from "./components/DashboardSearch";
 import OrderHeader from "./components/OrderHeader";
 import Orders from "./components/Orders/Orders";
-import SingleOrder from "./components/Single Order/SingleOrder";
+import DashPreview from "./components/DashPreview";
 import EmptyOrder from "../Rapid Order/Components/EmptyOrder";
 
 const Dashboard = ({ activeOrder }) => {
   const OrderPreview =
     Object.values(activeOrder).length > 0 ? (
-      <SingleOrder />
+      <DashPreview />
     ) : (
       <EmptyOrder message="Select an order to view it's details" />
     );

@@ -4,14 +4,14 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import ReactToPrint from "react-to-print";
 
-import { Colors } from "../../../../constants/Colors";
+import { Colors } from "../../../constants/Colors";
 
-import CustomerDetails from "../../../../Global/OrderPreview/CustomerDetails";
-import OrderDetails from "../../../../Global/OrderPreview/OrderDetails";
-import OrderItems from "../../../../Global/OrderPreview/OrderItems";
-import CustomerCopy from "../../../../Global/PrintTemplates/CustomerCopy";
+import CustomerDetails from "../../../Global/OrderPreview/CustomerDetails";
+import OrderDetails from "../../../Global/OrderPreview/OrderDetails";
+import OrderItems from "../../../Global/OrderPreview/OrderItems";
+import CustomerCopy from "../../../Global/PrintTemplates/CustomerCopy";
 
-const SingleOrder = props => {
+const DashPreview = props => {
   const { customer, details, order } = props.order;
   const [editedOrder, toggleEditedOrder] = useState(false);
   const customerCopy = useRef();
@@ -35,7 +35,7 @@ const SingleOrder = props => {
   };
 
   return (
-    <SingleOrderWrapper>
+    <DashPreviewWrapper>
       <div className="wrapper">
         <CustomerDetails
           name={customer.name}
@@ -68,6 +68,7 @@ const SingleOrder = props => {
 
         <OrderItems
           order={!editedOrder ? order : props.activeOrder.editedOrder.order}
+          readOnly={true}
         />
 
         <OrderActions>
@@ -86,11 +87,11 @@ const SingleOrder = props => {
       <div style={{ display: "none" }}>
         <CustomerCopy reference={customerCopy} />
       </div>
-    </SingleOrderWrapper>
+    </DashPreviewWrapper>
   );
 };
 
-const SingleOrderWrapper = styled.div`
+const DashPreviewWrapper = styled.div`
   position: relative;
   flex: 1;
   .wrapper {
@@ -166,4 +167,4 @@ export default connect(state => {
     order: state.DashboardState.activeOrder,
     activeOrder: state.DashboardState.activeOrder
   };
-})(withRouter(SingleOrder));
+})(withRouter(DashPreview));
