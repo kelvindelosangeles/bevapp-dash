@@ -6,10 +6,10 @@ import ReactToPrint from "react-to-print";
 
 import { Colors } from "../../../../constants/Colors";
 
-import CustomerDetails from "../../../../global/OrderPreview/CustomerDetails";
-import OrderDetails from "../../../../global/OrderPreview/OrderDetails";
-import OrderItems from "../../../../global/OrderPreview/OrderItems";
-import CustomerCopy from "../../../../global/PrintTemplates/CustomerCopy";
+import CustomerDetails from "../../../../Global/OrderPreview/CustomerDetails";
+import OrderDetails from "../../../../Global/OrderPreview/OrderDetails";
+import OrderItems from "../../../../Global/OrderPreview/OrderItems";
+import CustomerCopy from "../../../../Global/PrintTemplates/CustomerCopy";
 
 const SingleOrder = props => {
   const { customer, details, order } = props.order;

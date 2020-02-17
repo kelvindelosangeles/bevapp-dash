@@ -3,8 +3,8 @@ import "./App.css";
 import { Route, Switch } from "react-router-dom";
 import styled from "styled-components";
 
-import Sidebar from "./global/Sidebar/Sidebar";
-import AppHeader from "./global/AppHeader/AppHeader";
+import Sidebar from "./Global/Sidebar/Sidebar";
+import AppHeader from "./Global/AppHeader/AppHeader";
 import Dashboard from "./Applications/Dashboard/Dashboard";
 import RapidOrder from "./Applications/Rapid Order/RapidOrder";
 
