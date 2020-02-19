@@ -4,7 +4,7 @@ import styled from "styled-components";
 import moment from "moment";
 import UserIcon from "@material-ui/icons/PeopleAlt";
 
-import { Colors } from "../../constants/Colors";
+import { Colors } from "../../Constants/Colors";
 
 const AppHeader = () => {
   const theDate = moment().format("dddd,  MMM Do YYYY");

@@ -6,9 +6,9 @@ import ROControls from "./Components/ROControls";
 import ROItems from "./Components/ROItems";
 import ROPreview from "./Components/ROPreview";
 
-import AddToCart from "./Components/AddToCart";
 import EmptyOrder from "../../Global/Empty Order/EmptyOrder";
-import AddtoCartFlavors from "./Components/AddtoCartFlavors";
+import AddtoCartFlavors from "./Components/AddToCart/AddtoCartFlavors";
+import AddToCart from "./Components/AddToCart/AddToCart";
 
 const RapidOrder = ({ atcVisible, atcfVisible, cart }) => {
   const search = useState("");

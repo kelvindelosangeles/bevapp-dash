@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import CartItem from "./CartItem";
 
@@ -11,7 +11,7 @@ const calcTotal = x => {
 };
 
 const OrderCart = ({ order, readOnly = false }) => {
-  console.log(order);
+  const [editedOrder, toggleEditedOrder] = useState(false);
 
   const orderArray = Object.values(order).map(item => {
     return <CartItem item={item} key={item.id} readOnly={readOnly} />;
@@ -23,6 +23,22 @@ const OrderCart = ({ order, readOnly = false }) => {
 
   return (
     <OrderCartWrapper>
+      <EditedOrderToggle editedOrder={editedOrder}>
+        <button
+          onClick={() => {
+            toggleEditedOrder(false);
+          }}
+        >
+          Original
+        </button>
+        <button
+          onClick={() => {
+            toggleEditedOrder(true);
+          }}
+        >
+          Edited
+        </button>
+      </EditedOrderToggle>
       <header>
         <h6>Order</h6>
         <h6>Cost</h6>
@@ -52,6 +68,32 @@ const OrderCartWrapper = styled.section`
   footer {
     display: flex;
     justify-content: space-between;
+  }
+`;
+
+const EditedOrderToggle = styled.section`
+  display: flex;
+  justify-content: space-evenly;
+  button {
+    width: 40%;
+    padding: 18px 0;
+    border: none;
+    font-family: Gilroy-ExtraBold;
+    font-size: 16px;
+
+    cursor: pointer;
+    :first-of-type {
+      border-bottom: 4px solid
+        ${props => {
+          return props.editedOrder ? "white" : "black";
+        }};
+    }
+    :last-of-type {
+      border-bottom: 4px solid
+        ${props => {
+          return props.editedOrder ? "black" : "white";
+        }};
+    }
   }
 `;
 

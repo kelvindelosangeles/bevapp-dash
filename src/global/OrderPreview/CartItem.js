@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import TrashIcon from "@material-ui/icons/Delete";
-import { Colors } from "../../constants/Colors";
+import { Colors } from "../../Constants/Colors";
 import { connect } from "react-redux";
 
 const CartItem = ({ item, dispatch, readOnly }) => {

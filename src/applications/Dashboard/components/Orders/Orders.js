@@ -2,12 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 
-import { Colors } from "../../../../constants/Colors";
+import { Colors } from "../../../../Constants/Colors";
 import Order from "./Order";
 
 const Orders = ({ newOrders }) => {
   const OrdersArray = Object.values(newOrders).map(i => {
-    return <Order orderDetails={i} />;
+    return <Order newOrder={i} />;
   });
 
   return (

@@ -4,31 +4,31 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import ReactToPrint from "react-to-print";
 
-import { Colors } from "../../../constants/Colors";
+import { Colors } from "../../../Constants/Colors";
 
 import CustomerDetails from "../../../Global/OrderPreview/CustomerDetails";
 import OrderDetails from "../../../Global/OrderPreview/OrderDetails";
 import OrderCart from "../../../Global/OrderPreview/OrderCart";
 import CustomerCopy from "../../../Global/PrintTemplates/CustomerCopy";
 
-const DBPreview = props => {
-  const { customer, details, order } = props.order;
+const DBPreview = ({ activeOrder, dispatch, history }) => {
   const [editedOrder, toggleEditedOrder] = useState(false);
   const customerCopy = useRef();
+  const { customer, details } = activeOrder;
 
   const editOrderHandler = () => {
-    props.dispatch({
+    dispatch({
       type: "EDIT_ORDER",
-      order: props.order
+      order: activeOrder
     });
-    props.history.push("/rapidorder");
+    history.push("/rapidorder");
   };
 
   const deleteOrderHandler = () => {
     window.confirm(
       "Are you sure you want to delete this order?  This action is irreversable."
     ) &&
-      props.dispatch({
+      dispatch({
         type: "DELETE_ORDER",
         orderID: details.orderID
       });
@@ -47,7 +47,7 @@ const DBPreview = props => {
           createdAt={details.createdAt}
           status="Pending Review"
         />
-        {props.order.editedOrder.order && (
+        {activeOrder.editedOrder.order && (
           <EditedOrderToggle editedOrder={editedOrder}>
             <button
               onClick={() => {
@@ -73,15 +73,12 @@ const DBPreview = props => {
         {/* Or check that the new clicked on order has an editfirst */}
         {/* Then Show*/}
         {!editedOrder ? (
-          <OrderCart order={props.activeOrder.order} readOnly={true} />
-        ) : Object.values(props.activeOrder.editedOrder).length > 0 ? (
-          <OrderCart
-            order={props.activeOrder.editedOrder.order}
-            readOnly={true}
-          />
+          <OrderCart order={activeOrder.cart} readOnly={true} />
+        ) : Object.values(activeOrder.editedOrder).length > 0 ? (
+          <OrderCart order={activeOrder.editedOrder.cart} readOnly={true} />
         ) : (
           toggleEditedOrder(false) && (
-            <OrderCart order={props.activeOrder.order} readOnly={true} />
+            <OrderCart order={activeOrder.cart} readOnly={true} />
           )
         )}
         {/* ===================== */}
@@ -181,7 +178,6 @@ const EditedOrderToggle = styled.section`
 
 export default connect(state => {
   return {
-    order: state.DashboardState.activeOrder,
     activeOrder: state.DashboardState.activeOrder
   };
 })(withRouter(DBPreview));

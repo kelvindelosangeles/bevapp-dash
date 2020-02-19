@@ -3,7 +3,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
-import { Colors } from "../../constants/Colors";
+import { Colors } from "../../Constants/Colors";
 
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import BoltIcon from "@material-ui/icons/OfflineBolt";

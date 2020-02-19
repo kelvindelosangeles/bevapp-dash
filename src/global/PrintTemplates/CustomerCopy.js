@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 class CustomerCopy extends React.Component {
   render() {
-    const ordersArray = Object.values(this.props.activeOrder.order).map(i => {
+    const ordersArray = Object.values(this.props.activeOrder.cart).map(i => {
       const flavorsArray =
         i.hasOwnProperty("flavorsQuantity") &&
         Object.entries(i.flavorsQuantity)
@@ -32,11 +32,9 @@ class CustomerCopy extends React.Component {
         </React.Fragment>
       );
     });
-    const totalCostArray = Object.values(this.props.activeOrder.order).map(
-      i => {
-        return parseFloat((i.qty * parseFloat(i.price)).toFixed(2));
-      }
-    );
+    const totalCostArray = Object.values(this.props.activeOrder.cart).map(i => {
+      return parseFloat((i.qty * parseFloat(i.price)).toFixed(2));
+    });
     const total = totalCostArray.reduce((a, b) => {
       return a + b;
     });

@@ -4,7 +4,7 @@ import styled from "styled-components";
 import uuid from "uuid";
 import moment from "moment";
 
-import { Colors } from "../../../constants/Colors";
+import { Colors } from "../../../Constants/Colors";
 
 import CustomerDetails from "../../../Global/OrderPreview/CustomerDetails";
 import OrderDetails from "../../../Global/OrderPreview/OrderDetails";

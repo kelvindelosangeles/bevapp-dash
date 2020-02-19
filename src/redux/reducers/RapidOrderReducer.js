@@ -57,15 +57,15 @@ const RapidOrderReducer = (state = initialState, action) => {
       };
     case "REMOVE_ITEM":
       // destructure to remove a key from an object
-      const { [action.id]: removed, ...cart } = state.cart;
+      const { [action.id]: removed, ...items } = state.cart;
       return {
         ...state,
-        cart: { ...cart }
+        cart: { ...items }
       };
     case "EDIT_ORDER":
       return {
         ...state,
-        cart: { ...action.order.order },
+        cart: { ...action.order.cart },
         orderToEdit: { ...action.order },
         editMode: true
       };
