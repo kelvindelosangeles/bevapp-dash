@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import { Colors } from "../../../constants/Colors";
+import { Colors } from "../../../Constants/Colors";
 
 import ItemDetails from "./AddToCartModal/ItemDetails";
 import FlavorsInput from "./AddToCartModal/FlavorsInput";

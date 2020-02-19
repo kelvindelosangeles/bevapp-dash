@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 
-import { Colors } from "../../../constants/Colors";
+import { Colors } from "../../../Constants/Colors";
 import Xicon from "@material-ui/icons/Close";
 
 const AddToCart = ({ dispatch, orderItem, clearSearch }) => {

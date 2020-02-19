@@ -1,7 +1,7 @@
 import React from "react";
 
 import styled from "styled-components";
-import { Colors } from "../../../constants/Colors";
+import { Colors } from "../../../Constants/Colors";
 
 const _OrderHeader = () => {
   return (

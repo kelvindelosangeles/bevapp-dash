@@ -8,7 +8,7 @@ import AppHeader from "./Global/AppHeader/AppHeader";
 import Dashboard from "./Applications/Dashboard/Dashboard";
 import RapidOrder from "./Applications/Rapid Order/RapidOrder";
 
-import { Colors } from "./constants/Colors";
+import { Colors } from "./Constants/Colors";
 import Store from "./Applications/Store/Store";
 
 const App = () => {

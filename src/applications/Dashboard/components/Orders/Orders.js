@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 
-import { Colors } from "../../../../constants/Colors";
+import { Colors } from "../../../../Constants/Colors";
 import Order from "./Order";
 
 const Orders = ({ orders }) => {

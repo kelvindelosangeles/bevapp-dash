@@ -8,34 +8,38 @@ import { Colors } from "../../../Constants/Colors";
 
 import CustomerDetails from "../../../Global/OrderPreview/CustomerDetails";
 import OrderDetails from "../../../Global/OrderPreview/OrderDetails";
-import OrderItems from "../../../Global/OrderPreview/OrderItems";
+import OrderCart from "../../../Global/OrderPreview/OrderCart";
 import CustomerCopy from "../../../Global/PrintTemplates/CustomerCopy";
 
-const DashPreview = props => {
-  const { customer, details, order } = props.order;
-  const [editedOrder, toggleEditedOrder] = useState(false);
+const DBPreview = ({ activeOrder, dispatch, history }) => {
   const customerCopy = useRef();
+  const [editedOrder, toggleEditedOrder] = useState(false);
+  const { customer, details } = activeOrder;
 
   const editOrderHandler = () => {
-    props.dispatch({
+    dispatch({
       type: "EDIT_ORDER",
-      order: props.order
+      order: activeOrder
     });
-    props.history.push("/rapidorder");
+    history.push("/rapidorder");
   };
 
   const deleteOrderHandler = () => {
     window.confirm(
       "Are you sure you want to delete this order?  This action is irreversable."
     ) &&
-      props.dispatch({
+      dispatch({
         type: "DELETE_ORDER",
         orderID: details.orderID
       });
   };
 
+  const showEditToggle = Object.values(activeOrder.editedOrder).length > 0;
+
+  const editedCart = editedOrder && activeOrder.editedOrder.cart;
+
   return (
-    <DashPreviewWrapper>
+    <DBPreviewWrapper>
       <div className="wrapper">
         <CustomerDetails
           name={customer.name}
@@ -47,7 +51,7 @@ const DashPreview = props => {
           createdAt={details.createdAt}
           status="Pending Review"
         />
-        {props.order.editedOrder.order && (
+        {showEditToggle && (
           <EditedOrderToggle editedOrder={editedOrder}>
             <button
               onClick={() => {
@@ -65,51 +69,36 @@ const DashPreview = props => {
             </button>
           </EditedOrderToggle>
         )}
-        {/* FIXME: */}
-        {/* ===================== */}
-        {/* ===================== */}
-        {/* ===================== */}
-        {/* edited order toggle is on show edited order */}
-        {/* Or check that the new clicked on order has an editfirst */}
-        {/* Then Show*/}
-        {!editedOrder ? (
-          <OrderItems order={props.activeOrder.order} readOnly={true} />
-        ) : Object.values(props.activeOrder.editedOrder).length > 0 ? (
-          <OrderItems
-            order={props.activeOrder.editedOrder.order}
-            readOnly={true}
-          />
-        ) : (
-          toggleEditedOrder(false) && (
-            <OrderItems order={props.activeOrder.order} readOnly={true} />
-          )
-        )}
-        {/* ===================== */}
-        {/* ===================== */}
-        {/* ===================== */}
-        {!editedOrder && (
-          <OrderActions>
-            <div>
-              <SmallButton onClick={editOrderHandler}>Edit</SmallButton>
-              <ReactToPrint
-                trigger={() => <SmallButton>Print</SmallButton>}
-                content={() => customerCopy.current}
-              />
-              <SmallButton onClick={deleteOrderHandler}>Delete</SmallButton>
-            </div>
-            <button className="complete">Complete Order</button>
-          </OrderActions>
-        )}
+        <OrderCart
+          cart={editedOrder ? editedCart : activeOrder.cart}
+          readOnly={true}
+          key={activeOrder.details.orderID}
+        />
+        <OrderActions>
+          <div>
+            <SmallButton onClick={editOrderHandler}>Edit</SmallButton>
+            <ReactToPrint
+              trigger={() => <SmallButton>Print</SmallButton>}
+              content={() => customerCopy.current}
+            />
+            <SmallButton onClick={deleteOrderHandler}>Delete</SmallButton>
+          </div>
+          <button className="complete">Complete Order</button>
+        </OrderActions>
       </div>
 
       <div style={{ display: "none" }}>
-        <CustomerCopy reference={customerCopy} />
+        <CustomerCopy
+          reference={customerCopy}
+          key={activeOrder.orderID}
+          edited={editedOrder}
+        />
       </div>
-    </DashPreviewWrapper>
+    </DBPreviewWrapper>
   );
 };
 
-const DashPreviewWrapper = styled.div`
+const DBPreviewWrapper = styled.div`
   position: relative;
   flex: 1;
   .wrapper {
@@ -153,7 +142,6 @@ const SmallButton = styled.button`
     background-color: ${Colors.red};
   }
 `;
-
 const EditedOrderToggle = styled.section`
   display: flex;
   justify-content: space-evenly;
@@ -182,7 +170,6 @@ const EditedOrderToggle = styled.section`
 
 export default connect(state => {
   return {
-    order: state.DashboardState.activeOrder,
     activeOrder: state.DashboardState.activeOrder
   };
-})(withRouter(DashPreview));
+})(withRouter(DBPreview));

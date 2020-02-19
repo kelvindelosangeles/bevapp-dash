@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import styled from "styled-components";
-import { Colors } from "../../../constants/Colors";
+import { Colors } from "../../../Constants/Colors";
 
 const StatBar = ({ orders }) => {
   const newOrders = Object.values(orders).filter(i => {
