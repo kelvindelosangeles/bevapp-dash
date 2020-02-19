@@ -99,8 +99,7 @@ const ROPreview = ({ cart, dispatch, editMode, orderToEdit }) => {
           createdAt={createdAt}
           status={editMode ? "Editing Order" : "New Order"}
         />
-        {console.log("this is the order", cart)}
-        <OrderCart order={cart} />
+        <OrderCart cart={cart} />
         {error && (
           <ErrorMessage>
             <p>Please Add a Customer</p>

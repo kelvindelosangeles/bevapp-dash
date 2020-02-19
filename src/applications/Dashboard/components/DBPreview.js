@@ -12,8 +12,8 @@ import OrderCart from "../../../Global/OrderPreview/OrderCart";
 import CustomerCopy from "../../../Global/PrintTemplates/CustomerCopy";
 
 const DBPreview = ({ activeOrder, dispatch, history }) => {
-  const [editedOrder, toggleEditedOrder] = useState(false);
   const customerCopy = useRef();
+  const [editedOrder, toggleEditedOrder] = useState(false);
   const { customer, details } = activeOrder;
 
   const editOrderHandler = () => {
@@ -34,6 +34,10 @@ const DBPreview = ({ activeOrder, dispatch, history }) => {
       });
   };
 
+  const showEditToggle = Object.values(activeOrder.editedOrder).length > 0;
+
+  const editedCart = editedOrder && activeOrder.editedOrder.cart;
+
   return (
     <DBPreviewWrapper>
       <div className="wrapper">
@@ -47,7 +51,7 @@ const DBPreview = ({ activeOrder, dispatch, history }) => {
           createdAt={details.createdAt}
           status="Pending Review"
         />
-        {activeOrder.editedOrder.order && (
+        {showEditToggle && (
           <EditedOrderToggle editedOrder={editedOrder}>
             <button
               onClick={() => {
@@ -65,42 +69,30 @@ const DBPreview = ({ activeOrder, dispatch, history }) => {
             </button>
           </EditedOrderToggle>
         )}
-        {/* FIXME: */}
-        {/* ===================== */}
-        {/* ===================== */}
-        {/* ===================== */}
-        {/* edited order toggle is on show edited order */}
-        {/* Or check that the new clicked on order has an editfirst */}
-        {/* Then Show*/}
-        {!editedOrder ? (
-          <OrderCart order={activeOrder.cart} readOnly={true} />
-        ) : Object.values(activeOrder.editedOrder).length > 0 ? (
-          <OrderCart order={activeOrder.editedOrder.cart} readOnly={true} />
-        ) : (
-          toggleEditedOrder(false) && (
-            <OrderCart order={activeOrder.cart} readOnly={true} />
-          )
-        )}
-        {/* ===================== */}
-        {/* ===================== */}
-        {/* ===================== */}
-        {!editedOrder && (
-          <OrderActions>
-            <div>
-              <SmallButton onClick={editOrderHandler}>Edit</SmallButton>
-              <ReactToPrint
-                trigger={() => <SmallButton>Print</SmallButton>}
-                content={() => customerCopy.current}
-              />
-              <SmallButton onClick={deleteOrderHandler}>Delete</SmallButton>
-            </div>
-            <button className="complete">Complete Order</button>
-          </OrderActions>
-        )}
+        <OrderCart
+          cart={editedOrder ? editedCart : activeOrder.cart}
+          readOnly={true}
+          key={activeOrder.details.orderID}
+        />
+        <OrderActions>
+          <div>
+            <SmallButton onClick={editOrderHandler}>Edit</SmallButton>
+            <ReactToPrint
+              trigger={() => <SmallButton>Print</SmallButton>}
+              content={() => customerCopy.current}
+            />
+            <SmallButton onClick={deleteOrderHandler}>Delete</SmallButton>
+          </div>
+          <button className="complete">Complete Order</button>
+        </OrderActions>
       </div>
 
       <div style={{ display: "none" }}>
-        <CustomerCopy reference={customerCopy} />
+        <CustomerCopy
+          reference={customerCopy}
+          key={activeOrder.orderID}
+          edited={editedOrder}
+        />
       </div>
     </DBPreviewWrapper>
   );
