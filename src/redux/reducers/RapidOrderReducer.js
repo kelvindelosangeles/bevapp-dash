@@ -2,7 +2,7 @@ const initialState = {
   atcVisible: false,
   atcfVisible: false,
   orderItem: {},
-  order: {},
+  newOrder: {},
   editMode: false,
   orderToEdit: {}
 };
@@ -26,14 +26,15 @@ const RapidOrderReducer = (state = initialState, action) => {
       return {
         ...state,
         atcVisible: false,
-        atcfVisible: false
+        atcfVisible: false,
+        orderItem: {}
       };
     case "ADD_TO_CART":
       return {
         ...state,
         atcVisible: false,
         atcfVisible: false,
-        order: { ...state.order, [action.item.id]: action.item }
+        newOrder: { ...state.order, [action.item.id]: action.item }
       };
     case "CANCEL_ORDER":
       return {

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Item from "./Item";
 
 import { Store } from "../../../Assets/Data/Store";
+// TODO: This will comes from firebase
 
 const ROItems = ({ filter }) => {
   const filterIsEmpty = filter === "";
@@ -14,7 +15,6 @@ const ROItems = ({ filter }) => {
     .map(i => {
       return <Item item={i} key={i.id} />;
     });
-
   let filterdItems = Object.values(Store)
     .filter(x => {
       return (
@@ -25,7 +25,6 @@ const ROItems = ({ filter }) => {
     .map(i => {
       return <Item item={i} key={i.id} />;
     });
-
   if (filter !== "" && filterdItems.length < 1) {
     filterdItems = <NoMatch>No Match Found</NoMatch>;
   }

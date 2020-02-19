@@ -12,7 +12,6 @@ const ROControls = props => {
   const rapidEntryChangeHandler = e => {
     setRapidEntry(e.target.value);
   };
-
   const rapidEntrySubmitHandler = e => {
     e.preventDefault();
 
@@ -68,6 +67,7 @@ const ROControls = props => {
           <input
             type="text"
             placeholder="34-AMS12B"
+            autoComplete="off"
             name="rapidentry"
             value={rapidEntry}
             onChange={rapidEntryChangeHandler}

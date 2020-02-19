@@ -9,7 +9,7 @@ import DashboardSearch from "./components/DashboardSearch";
 import OrderHeader from "./components/OrderHeader";
 import Orders from "./components/Orders/Orders";
 import DashPreview from "./components/DashPreview";
-import EmptyOrder from "../Rapid Order/Components/EmptyOrder";
+import EmptyOrder from "../../Global/Empty Order/EmptyOrder";
 
 const Dashboard = ({ activeOrder }) => {
   const OrderPreview =

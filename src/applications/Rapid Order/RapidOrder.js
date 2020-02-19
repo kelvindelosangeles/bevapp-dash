@@ -7,13 +7,13 @@ import ROItems from "./Components/ROItems";
 import ROPreview from "./Components/ROPreview";
 
 import AddToCart from "./Components/AddToCart";
-import EmptyOrder from "./Components/EmptyOrder";
+import EmptyOrder from "../../Global/Empty Order/EmptyOrder";
 import AddtoCartFlavors from "./Components/AddtoCartFlavors";
 
-const RapidOrder = ({ atcVisible, atcfVisible, order }) => {
+const RapidOrder = ({ atcVisible, atcfVisible, newOrder }) => {
   const search = useState("");
   const RapidEntry = useState("");
-  const OrderEmpty = Object.values(order).length < 1;
+  const OrderEmpty = Object.values(newOrder).length < 1;
   const OrderPreview = OrderEmpty ? (
     <EmptyOrder message="Add an item to create a new order" />
   ) : (
@@ -46,6 +46,6 @@ export default connect(state => {
   return {
     atcVisible: state.RapidOrderState.atcVisible,
     atcfVisible: state.RapidOrderState.atcfVisible,
-    order: state.RapidOrderState.order
+    newOrder: state.RapidOrderState.newOrder
   };
 })(RapidOrder);

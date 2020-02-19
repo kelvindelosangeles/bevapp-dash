@@ -185,6 +185,7 @@ const QuantityForm = styled.form`
     }
   }
 `;
+
 export default connect(state => {
   return { orderItem: state.RapidOrderState.orderItem };
 })(AddToCart);
