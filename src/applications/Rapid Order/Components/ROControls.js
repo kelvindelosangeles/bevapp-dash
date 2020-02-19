@@ -18,7 +18,7 @@ const ROControls = props => {
 
     try {
       // Create the id and the quantity
-      let qty = rapidEntry.split("-")[0];
+      let qty = rapidEntry.slice(0, 3).split("-")[0];
       let ID = rapidEntry.split("-")[1].toUpperCase();
 
       // if theres no error then check if that store item exists

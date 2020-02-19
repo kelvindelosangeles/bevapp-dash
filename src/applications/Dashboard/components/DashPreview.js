@@ -65,7 +65,7 @@ const DashPreview = props => {
             </button>
           </EditedOrderToggle>
         )}
-        FIXME:
+        {/* FIXME: */}
         {/* ===================== */}
         {/* ===================== */}
         {/* ===================== */}
@@ -87,17 +87,19 @@ const DashPreview = props => {
         {/* ===================== */}
         {/* ===================== */}
         {/* ===================== */}
-        <OrderActions>
-          <div>
-            <SmallButton onClick={editOrderHandler}>Edit</SmallButton>
-            <ReactToPrint
-              trigger={() => <SmallButton>Print</SmallButton>}
-              content={() => customerCopy.current}
-            />
-            <SmallButton onClick={deleteOrderHandler}>Delete</SmallButton>
-          </div>
-          <button className="complete">Complete Order</button>
-        </OrderActions>
+        {!editedOrder && (
+          <OrderActions>
+            <div>
+              <SmallButton onClick={editOrderHandler}>Edit</SmallButton>
+              <ReactToPrint
+                trigger={() => <SmallButton>Print</SmallButton>}
+                content={() => customerCopy.current}
+              />
+              <SmallButton onClick={deleteOrderHandler}>Delete</SmallButton>
+            </div>
+            <button className="complete">Complete Order</button>
+          </OrderActions>
+        )}
       </div>
 
       <div style={{ display: "none" }}>
