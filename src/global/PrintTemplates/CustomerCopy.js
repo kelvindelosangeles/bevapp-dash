@@ -60,11 +60,11 @@ class CustomerCopy extends React.Component {
             <h3>October 16th 2019</h3>
           </div>
         </SecondaryHeader>
-        <OrderHeader>
+        <DBOrderHeader>
           <h3>Cases</h3>
           <h3>Description</h3>
           <h3>Total</h3>
-        </OrderHeader>
+        </DBOrderHeader>
         <OrderContainer>
           <h3>Cases</h3>
           <h3>Description</h3>
@@ -147,7 +147,7 @@ const SecondaryHeader = styled.div`
   }
 `;
 
-const OrderHeader = styled.div`
+const DBOrderHeader = styled.div`
   display: grid;
   grid-gap: 10px 16px;
   grid-template-columns: auto 1fr auto;

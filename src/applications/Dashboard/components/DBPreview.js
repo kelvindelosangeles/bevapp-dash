@@ -8,10 +8,10 @@ import { Colors } from "../../../constants/Colors";
 
 import CustomerDetails from "../../../Global/OrderPreview/CustomerDetails";
 import OrderDetails from "../../../Global/OrderPreview/OrderDetails";
-import OrderItems from "../../../Global/OrderPreview/OrderItems";
+import OrderCart from "../../../Global/OrderPreview/OrderCart";
 import CustomerCopy from "../../../Global/PrintTemplates/CustomerCopy";
 
-const DashPreview = props => {
+const DBPreview = props => {
   const { customer, details, order } = props.order;
   const [editedOrder, toggleEditedOrder] = useState(false);
   const customerCopy = useRef();
@@ -35,7 +35,7 @@ const DashPreview = props => {
   };
 
   return (
-    <DashPreviewWrapper>
+    <DBPreviewWrapper>
       <div className="wrapper">
         <CustomerDetails
           name={customer.name}
@@ -73,15 +73,15 @@ const DashPreview = props => {
         {/* Or check that the new clicked on order has an editfirst */}
         {/* Then Show*/}
         {!editedOrder ? (
-          <OrderItems order={props.activeOrder.order} readOnly={true} />
+          <OrderCart order={props.activeOrder.order} readOnly={true} />
         ) : Object.values(props.activeOrder.editedOrder).length > 0 ? (
-          <OrderItems
+          <OrderCart
             order={props.activeOrder.editedOrder.order}
             readOnly={true}
           />
         ) : (
           toggleEditedOrder(false) && (
-            <OrderItems order={props.activeOrder.order} readOnly={true} />
+            <OrderCart order={props.activeOrder.order} readOnly={true} />
           )
         )}
         {/* ===================== */}
@@ -105,11 +105,11 @@ const DashPreview = props => {
       <div style={{ display: "none" }}>
         <CustomerCopy reference={customerCopy} />
       </div>
-    </DashPreviewWrapper>
+    </DBPreviewWrapper>
   );
 };
 
-const DashPreviewWrapper = styled.div`
+const DBPreviewWrapper = styled.div`
   position: relative;
   flex: 1;
   .wrapper {
@@ -153,7 +153,6 @@ const SmallButton = styled.button`
     background-color: ${Colors.red};
   }
 `;
-
 const EditedOrderToggle = styled.section`
   display: flex;
   justify-content: space-evenly;
@@ -185,4 +184,4 @@ export default connect(state => {
     order: state.DashboardState.activeOrder,
     activeOrder: state.DashboardState.activeOrder
   };
-})(withRouter(DashPreview));
+})(withRouter(DBPreview));

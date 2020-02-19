@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import SingleOrderItem from "./SingleOrderItem";
+import CartItem from "./CartItem";
 
 const calcTotal = x => {
   return x
@@ -10,12 +10,11 @@ const calcTotal = x => {
     .toFixed(2);
 };
 
-const OrderItems = props => {
-  const { order, readOnly = false } = props;
+const OrderCart = ({ order, readOnly = false }) => {
   console.log(order);
 
   const orderArray = Object.values(order).map(item => {
-    return <SingleOrderItem item={item} key={item.id} readOnly={readOnly} />;
+    return <CartItem item={item} key={item.id} readOnly={readOnly} />;
   });
 
   const totalCostArray = Object.values(order).map(i => {
@@ -23,7 +22,7 @@ const OrderItems = props => {
   });
 
   return (
-    <OrderItemsWrapper>
+    <OrderCartWrapper>
       <header>
         <h6>Order</h6>
         <h6>Cost</h6>
@@ -33,11 +32,11 @@ const OrderItems = props => {
         <h6>Total Cost</h6>
         <h6>${calcTotal(totalCostArray)}</h6>
       </footer>
-    </OrderItemsWrapper>
+    </OrderCartWrapper>
   );
 };
 
-const OrderItemsWrapper = styled.section`
+const OrderCartWrapper = styled.section`
   header {
     display: flex;
     justify-content: space-between;
@@ -56,4 +55,4 @@ const OrderItemsWrapper = styled.section`
   }
 `;
 
-export default OrderItems;
+export default OrderCart;

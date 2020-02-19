@@ -1,9 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const OrderDetails = props => {
-  const { orderID, createdAt, status } = props;
-
+const OrderDetails = ({ orderID, createdAt, status }) => {
   return (
     <OrderDetailsWrapper>
       <div className="row">

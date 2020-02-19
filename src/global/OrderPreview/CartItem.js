@@ -3,20 +3,17 @@ import styled from "styled-components";
 import TrashIcon from "@material-ui/icons/Delete";
 import { Colors } from "../../constants/Colors";
 import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
 
-const SingleOrderItem = ({ item, dispatch, location, readOnly }) => {
+const CartItem = ({ item, dispatch, readOnly }) => {
   const { qty, description, price } = item;
-  // const readOnly = location.pathname.includes("dashboard");
   const calcTotal = (qty, price) => {
     return (qty * parseFloat(price).toFixed(2)).toFixed(2);
   };
-
   const removeItem = () => {
+    console.log(item);
     window.confirm(`Remove ${item.description}?`) &&
       dispatch({ type: "REMOVE_ITEM", id: item.id });
   };
-
   const ToggleModal = () => {
     return readOnly
       ? null
@@ -24,7 +21,6 @@ const SingleOrderItem = ({ item, dispatch, location, readOnly }) => {
       ? dispatch({ type: "TOGGLE_ATCF", item })
       : dispatch({ type: "TOGGLE_ATC", item });
   };
-
   const flavors =
     item.hasOwnProperty("flavorsQuantity") &&
     Object.entries(item.flavorsQuantity)
@@ -129,4 +125,4 @@ const Flavor = styled.div`
   }
 `;
 
-export default connect()(withRouter(SingleOrderItem));
+export default connect()(CartItem);

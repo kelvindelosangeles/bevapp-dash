@@ -2,19 +2,20 @@ import React from "react";
 
 import { connect } from "react-redux";
 import styled from "styled-components";
+
 import { Colors } from "../../constants/Colors";
 
-import StatBar from "./components/StatBar";
-import DashboardSearch from "./components/DashboardSearch";
-import OrderHeader from "./components/OrderHeader";
+import DBStatBar from "./components/DBStatBar";
+import DBSearch from "./components/DBSearch";
+import DBOrderHeader from "./components/DBOrderHeader";
 import Orders from "./components/Orders/Orders";
-import DashPreview from "./components/DashPreview";
+import DBPreview from "./components/DBPreview";
 import EmptyOrder from "../../Global/Empty Order/EmptyOrder";
 
 const Dashboard = ({ activeOrder }) => {
   const OrderPreview =
     Object.values(activeOrder).length > 0 ? (
-      <DashPreview />
+      <DBPreview />
     ) : (
       <EmptyOrder message="Select an order to view it's details" />
     );
@@ -22,9 +23,9 @@ const Dashboard = ({ activeOrder }) => {
   return (
     <DashboardWrapper>
       <Main>
-        <StatBar />
-        <DashboardSearch />
-        <OrderHeader />
+        <DBStatBar />
+        {/* <DBSearch /> */}
+        <DBOrderHeader />
         <Orders />
       </Main>
       <Aside>{OrderPreview}</Aside>

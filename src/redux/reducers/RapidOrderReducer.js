@@ -2,7 +2,7 @@ const initialState = {
   atcVisible: false,
   atcfVisible: false,
   orderItem: {},
-  newOrder: {},
+  cart: {},
   editMode: false,
   orderToEdit: {}
 };
@@ -34,38 +34,38 @@ const RapidOrderReducer = (state = initialState, action) => {
         ...state,
         atcVisible: false,
         atcfVisible: false,
-        newOrder: { ...state.order, [action.item.id]: action.item }
+        cart: { ...state.cart, [action.item.id]: action.item }
       };
     case "CANCEL_ORDER":
       return {
         ...state,
-        order: {},
+        cart: {},
         editMode: false,
         orderToEdit: {}
       };
     case "SUBMIT_ORDER":
       return {
         ...state,
-        order: {}
+        cart: {}
       };
     case "SUBMIT_EDIT":
       return {
         ...state,
-        order: {},
+        cart: {},
         editMode: false,
         orderToEdit: {}
       };
     case "REMOVE_ITEM":
       // destructure to remove a key from an object
-      const { [action.id]: removed, ...newOrder } = state.order;
+      const { [action.id]: removed, ...cart } = state.cart;
       return {
         ...state,
-        order: { ...newOrder }
+        cart: { ...cart }
       };
     case "EDIT_ORDER":
       return {
         ...state,
-        order: { ...action.order.order },
+        cart: { ...action.order.order },
         orderToEdit: { ...action.order },
         editMode: true
       };

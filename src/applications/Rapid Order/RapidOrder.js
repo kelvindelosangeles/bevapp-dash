@@ -10,10 +10,10 @@ import AddToCart from "./Components/AddToCart";
 import EmptyOrder from "../../Global/Empty Order/EmptyOrder";
 import AddtoCartFlavors from "./Components/AddtoCartFlavors";
 
-const RapidOrder = ({ atcVisible, atcfVisible, newOrder }) => {
+const RapidOrder = ({ atcVisible, atcfVisible, cart }) => {
   const search = useState("");
   const RapidEntry = useState("");
-  const OrderEmpty = Object.values(newOrder).length < 1;
+  const OrderEmpty = Object.values(cart).length < 1;
   const OrderPreview = OrderEmpty ? (
     <EmptyOrder message="Add an item to create a new order" />
   ) : (
@@ -46,6 +46,6 @@ export default connect(state => {
   return {
     atcVisible: state.RapidOrderState.atcVisible,
     atcfVisible: state.RapidOrderState.atcfVisible,
-    newOrder: state.RapidOrderState.newOrder
+    cart: state.RapidOrderState.cart
   };
 })(RapidOrder);

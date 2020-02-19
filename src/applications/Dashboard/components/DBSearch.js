@@ -3,15 +3,15 @@ import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../../constants/Colors";
 
-const DashboardSearch = () => {
+const DBSearch = () => {
   return (
-    <DashboardSearchWrapper>
+    <DBSearchWrapper>
       <input type="text" placeholder="Search" />
-    </DashboardSearchWrapper>
+    </DBSearchWrapper>
   );
 };
 
-const DashboardSearchWrapper = styled.form`
+const DBSearchWrapper = styled.form`
   margin-bottom: 32px;
   input {
     /* height: 40px; */
@@ -31,4 +31,4 @@ const DashboardSearchWrapper = styled.form`
   }
 `;
 
-export default DashboardSearch;
+export default DBSearch;

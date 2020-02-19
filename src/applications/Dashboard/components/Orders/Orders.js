@@ -5,8 +5,8 @@ import { connect } from "react-redux";
 import { Colors } from "../../../../constants/Colors";
 import Order from "./Order";
 
-const Orders = ({ orders }) => {
-  const OrdersArray = Object.values(orders).map(i => {
+const Orders = ({ newOrders }) => {
+  const OrdersArray = Object.values(newOrders).map(i => {
     return <Order orderDetails={i} />;
   });
 
@@ -32,5 +32,5 @@ const OrdersWrapper = styled.div`
   }
 `;
 export default connect(state => {
-  return { orders: state.DashboardState.orders };
+  return { newOrders: state.DashboardState.newOrders };
 })(Orders);

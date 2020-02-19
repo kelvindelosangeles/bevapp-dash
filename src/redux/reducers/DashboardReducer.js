@@ -1,7 +1,7 @@
 import { Order } from "../../Models/Order";
 
 const initialState = {
-  orders: {},
+  newOrders: {},
   activeOrder: {}
 };
 
@@ -44,12 +44,12 @@ const DashboardReducer = (state = initialState, action) => {
     case "SET_ACTIVE_ORDER":
       return { ...state, activeOrder: { ...action.order } };
     case "DELETE_ORDER":
-      const { [action.orderID]: removed, ...newOrders } = state.orders;
+      const { [action.orderID]: removed, ...carts } = state.orders;
       return {
         ...state,
         activeOrder: {},
         orders: {
-          ...newOrders
+          ...carts
         }
       };
     default:

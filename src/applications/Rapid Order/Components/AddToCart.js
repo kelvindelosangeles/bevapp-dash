@@ -30,7 +30,6 @@ const AddToCart = ({ dispatch, orderItem, clearSearch }) => {
   const checkForClickOutside = e => {
     !node.current.contains(e.target) && cancelHandler();
   };
-
   useEffect(() => {
     document.addEventListener("mousedown", checkForClickOutside);
 
