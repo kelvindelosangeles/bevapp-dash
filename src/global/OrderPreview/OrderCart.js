@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import CartItem from "./CartItem";
-import { connect } from "react-redux";
 
 const calcTotal = x => {
   return x
@@ -18,6 +17,9 @@ const OrderCart = ({ cart, readOnly = false }) => {
   const totalCostArray = Object.values(cart).map(i => {
     return parseFloat((i.qty * parseFloat(i.price).toFixed(2)).toFixed(2));
   });
+  console.log(cart);
+  console.log(cartArray);
+  console.log(totalCostArray);
 
   return (
     <OrderCartWrapper>
@@ -53,8 +55,4 @@ const OrderCartWrapper = styled.section`
   }
 `;
 
-export default connect(state => {
-  return {
-    activeOrder: state.DashboardState.activeOrder
-  };
-})(OrderCart);
+export default OrderCart;
