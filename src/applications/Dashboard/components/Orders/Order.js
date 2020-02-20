@@ -58,7 +58,7 @@ const OrderWrapper = styled.div`
     return props.active && Colors.lightGrey;
   }};
   :last-of-type {
-    padding-bottom: 0;
+    /* padding-bottom: 0; */
     border-bottom: none;
   }
   :hover {

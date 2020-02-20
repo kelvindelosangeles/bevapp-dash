@@ -26,7 +26,7 @@ const OrdersWrapper = styled.div`
   border-radius: 8px;
   section {
     width: 100%;
-    padding: 24px 0;
+    padding: 24px;
     position: absolute;
     height: 100%;
     overflow-y: scroll;

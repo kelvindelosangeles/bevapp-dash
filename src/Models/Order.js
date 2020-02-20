@@ -1,5 +1,5 @@
 export class Order {
-  constructor(customer, details, cart, editedOrder) {
+  constructor(customer, details, cart) {
     this.customer = customer;
     this.details = {
       new: true,
@@ -9,6 +9,6 @@ export class Order {
       orderID: details.orderID
     };
     this.cart = cart || {};
-    this.editedOrder = editedOrder || {};
+    this.editedOrder = null;
   }
 }

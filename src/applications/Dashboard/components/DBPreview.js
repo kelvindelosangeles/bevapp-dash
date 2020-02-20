@@ -1,6 +1,8 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import ReactToPrint from "react-to-print";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
 import { Colors } from "../../../Constants/Colors";
 
@@ -8,11 +10,12 @@ import CustomerDetails from "../../../Global/OrderPreview/CustomerDetails";
 import OrderDetails from "../../../Global/OrderPreview/OrderDetails";
 import OrderCart from "../../../Global/OrderPreview/OrderCart";
 import CustomerCopy from "../../../Global/PrintTemplates/CustomerCopy";
+import WarehouseCopy from "../../../Global/PrintTemplates/WarehouseCopy";
 
 const DBPreview = ({ activeOrder, dispatch, history }) => {
   const customerCopy = useRef();
-  const [editedOrder, toggleEditedOrder] = useState(false);
-  const { customer, details } = activeOrder;
+  const warehouseCopy = useRef();
+  const [showEditedOrder, toggleShowEditedOrder] = useState(false);
 
   const editOrderHandler = () => {
     dispatch({
@@ -28,78 +31,102 @@ const DBPreview = ({ activeOrder, dispatch, history }) => {
     ) &&
       dispatch({
         type: "DELETE_ORDER",
-        orderID: details.orderID
+        orderID: activeOrder.details.orderID
       });
   };
+
+  const OrderCartLogic = () => {
+    try {
+      return (
+        <OrderCart
+          cart={
+            showEditedOrder ? activeOrder.editedOrder.cart : activeOrder.cart
+          }
+          readOnly={true}
+        />
+      );
+    } catch (error) {
+      return <OrderCart cart={activeOrder.cart} readOnly={true} />;
+    }
+  };
+
+  const ShowEditToggle = activeOrder.editedOrder && (
+    <EditedOrderToggle editedOrder={showEditedOrder}>
+      <button
+        onClick={() => {
+          toggleShowEditedOrder(false);
+        }}
+      >
+        Original
+      </button>
+      <button
+        onClick={() => {
+          toggleShowEditedOrder(true);
+        }}
+      >
+        Edited
+      </button>
+    </EditedOrderToggle>
+  );
+
+  const showOrderActions = !showEditedOrder ? (
+    <OrderActions>
+      <Edit onClick={editOrderHandler}>Edit</Edit>
+      <ReactToPrint
+        trigger={() => <PrintC>Print CX</PrintC>}
+        content={() => customerCopy.current}
+      />
+      <ReactToPrint
+        trigger={() => <PrintWH>Print WH</PrintWH>}
+        content={() => warehouseCopy.current}
+      />
+      <Complete>Complete </Complete>
+      <Delete onClick={deleteOrderHandler}>Delete</Delete>
+    </OrderActions>
+  ) : (
+    <OrderActions>
+      <ReactToPrint
+        trigger={() => <EPrintC>Print CX</EPrintC>}
+        content={() => customerCopy.current}
+      />
+      <ReactToPrint
+        trigger={() => <EPrintWH>Print WH</EPrintWH>}
+        content={() => warehouseCopy.current}
+      />
+      <EDelete onClick={deleteOrderHandler}>Delete</EDelete>
+    </OrderActions>
+  );
 
   return (
     <DBPreviewWrapper>
       <div className="wrapper">
         <CustomerDetails
-          name={customer.name}
-          address={customer.address}
-          telephone={customer.telephone}
+          name={activeOrder.customer.name}
+          address={activeOrder.customer.address}
+          telephone={activeOrder.customer.telephone}
         />
         <OrderDetails
-          orderID={details.orderID}
-          createdAt={details.createdAt}
+          orderID={activeOrder.details.orderID}
+          createdAt={activeOrder.details.createdAt}
           status="Pending Review"
         />
-        {activeOrder.editedOrder.cart && (
-          <EditedOrderToggle editedOrder={editedOrder}>
-            <button
-              onClick={() => {
-                toggleEditedOrder(false);
-              }}
-            >
-              Original
-            </button>
-            <button
-              onClick={() => {
-                toggleEditedOrder(true);
-              }}
-            >
-              Edited
-            </button>
-          </EditedOrderToggle>
-        )}
-        {/* FIXME: */}
-        {/* ===================== */}
-        {/* ===================== */}
-        {/* ===================== */}
-        {/* edited order toggle is on show edited order */}
-        {/* Or check that the new clicked on order has an editfirst */}
-        {/* Then Show*/}
-        {!editedOrder ? (
-          <OrderCart cart={activeOrder.cart} readOnly={true} />
-        ) : Object.values(activeOrder.editedOrder).length > 0 ? (
-          <OrderCart cart={activeOrder.editedOrder.cart} readOnly={true} />
-        ) : (
-          toggleEditedOrder(false) && (
-            <OrderCart cart={activeOrder.cart} readOnly={true} />
-          )
-        )}
-        {/* ===================== */}
-        {/* ===================== */}
-        {/* ===================== */}
-        {!editedOrder && (
-          <OrderActions>
-            <div>
-              <SmallButton onClick={editOrderHandler}>Edit</SmallButton>
-              <ReactToPrint
-                trigger={() => <SmallButton>Print</SmallButton>}
-                content={() => customerCopy.current}
-              />
-              <SmallButton onClick={deleteOrderHandler}>Delete</SmallButton>
-            </div>
-            <button className="complete">Complete Order</button>
-          </OrderActions>
-        )}
+        {ShowEditToggle}
+        {OrderCartLogic()}
+        {showOrderActions}
       </div>
 
-      <div style={{ display: "none" }}>
-        <CustomerCopy reference={customerCopy} />
-      </div>
+      <PrintContainer>
+        <CustomerCopy
+          reference={customerCopy}
+          editedCopy={showEditedOrder}
+          activeOrder={activeOrder}
+        />
+        <WarehouseCopy
+          reference={warehouseCopy}
+          editedCopy={showEditedOrder}
+          activeOrder={activeOrder}
+        />
+      </PrintContainer>
     </DBPreviewWrapper>
   );
 };
@@ -120,35 +147,57 @@ const DBPreviewWrapper = styled.div`
   }
 `;
 const OrderActions = styled.section`
-  div {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 24px;
-  }
-  button {
-    height: 40px;
-    border-radius: 5px;
-    border: none;
-    font-family: "AvenirNext-Medium", "Avenir Next", serif;
-    font-size: 14px;
-  }
-  .complete {
-    width: 100%;
-    background-color: ${Colors.green};
-  }
+  display: grid;
+  grid-column-gap: 16px;
+  grid-row-gap: 24px;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-areas:
+    "a a a a b b b b c c c c"
+    "d d d d d d e e e e e e";
 `;
-const SmallButton = styled.button`
-  width: 80px;
-  :first-of-type {
-    background-color: ${Colors.yellow};
-  }
-  :nth-of-type(2) {
-    background-color: ${Colors.blue};
-  }
-  :nth-of-type(3) {
-    background-color: ${Colors.red};
-  }
+
+const Action = styled.button`
+  height: 40px;
+  width: 100%;
+  border-radius: 5px;
+  border: none;
+  font-family: "AvenirNext-Medium", "Avenir Next", serif;
+  font-size: 14px;
 `;
+
+const Edit = styled(Action)`
+  background-color: ${Colors.yellow};
+  grid-area: a;
+`;
+const PrintC = styled(Action)`
+  background-color: ${Colors.blue};
+  grid-area: b;
+`;
+const PrintWH = styled(Action)`
+  background-color: lightblue;
+  grid-area: c;
+`;
+const Complete = styled(Action)`
+  background-color: ${Colors.green};
+  grid-area: d;
+`;
+const Delete = styled(Action)`
+  background-color: ${Colors.red};
+  grid-area: e;
+`;
+const EPrintC = styled(Action)`
+  background-color: ${Colors.blue};
+  grid-area: a;
+`;
+const EPrintWH = styled(Action)`
+  background-color: lightblue;
+  grid-area: b;
+`;
+const EDelete = styled(Action)`
+  background-color: ${Colors.red};
+  grid-area: c;
+`;
+
 const EditedOrderToggle = styled.section`
   display: flex;
   justify-content: space-evenly;
@@ -175,4 +224,8 @@ const EditedOrderToggle = styled.section`
   }
 `;
 
-export default DBPreview;
+const PrintContainer = styled.div`
+  display: none;
+`;
+
+export default connect()(withRouter(DBPreview));

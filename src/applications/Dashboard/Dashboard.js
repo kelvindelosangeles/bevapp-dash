@@ -11,7 +11,7 @@ import EmptyOrder from "../../Global/Empty Order/EmptyOrder";
 
 const Dashboard = ({ activeOrder }) => {
   const OrderPreview = activeOrder ? (
-    <DBPreview order={activeOrder} />
+    <DBPreview activeOrder={activeOrder} />
   ) : (
     <EmptyOrder message="Select an order to view it's details" />
   );

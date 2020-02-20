@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 
-class CustomerCopy extends React.Component {
+class WarehouseCopy extends React.Component {
   render() {
     const ordersArray = Object.values(
       !this.props.editedCopy
@@ -27,12 +27,13 @@ class CustomerCopy extends React.Component {
       };
       return (
         <React.Fragment>
-          <Quantity>{i.qty}</Quantity>
+          <Quantity></Quantity>
+          <p>{i.qty}</p>
           <div className="description">
-            <p>{i.description}</p>
+            <p className="price">$ {i.description}</p>
             {flavorsArray}
           </div>
-          <p className="price">$ {calcTotal(i.qty, i.price)}</p>
+          <Quantity></Quantity>
         </React.Fragment>
       );
     });
@@ -48,7 +49,7 @@ class CustomerCopy extends React.Component {
     });
 
     return (
-      <CustomerCopyWrapper ref={this.props.reference}>
+      <WarehouseCopyWrapper ref={this.props.reference}>
         <Header>
           <h5>Alex Beverage</h5>
           <p>Beer &amp; Soda Distributor</p>
@@ -67,14 +68,16 @@ class CustomerCopy extends React.Component {
           </div>
         </SecondaryHeader>
         <DBOrderHeader>
+          <h3>Warehouse</h3>
           <h3>Cases</h3>
           <h3>Description</h3>
-          <h3>Total</h3>
+          <h3>CHK</h3>
         </DBOrderHeader>
         <OrderContainer>
+          <h3>Warehouse</h3>
           <h3>Cases</h3>
           <h3>Description</h3>
-          <h3>Total</h3>
+          <h3>CHK</h3>
           {ordersArray}
         </OrderContainer>
         <Footer>
@@ -93,18 +96,21 @@ class CustomerCopy extends React.Component {
             <p>Date _____________________</p>
           </div>
         </Footer>
-      </CustomerCopyWrapper>
+      </WarehouseCopyWrapper>
     );
   }
 }
 
-const CustomerCopyWrapper = styled.div`
+const WarehouseCopyWrapper = styled.div`
   width: 100%;
   margin: auto;
   padding: 0 16px;
   display: flex;
   flex-direction: column;
   height: 100vh;
+  .description .price {
+    margin-bottom: 4px;
+  }
   h3 {
     font-family: OpenSans-SemiBold;
     font-size: 9px;
@@ -155,8 +161,8 @@ const SecondaryHeader = styled.div`
 
 const DBOrderHeader = styled.div`
   display: grid;
-  grid-gap: 10px 16px;
-  grid-template-columns: auto 1fr auto;
+  grid-gap: 10px 32px;
+  grid-template-columns: 62px 32px minmax(180px, 200px) auto;
   justify-items: flex-start;
   padding: 8px;
   border-top: 1px dotted black;
@@ -165,9 +171,11 @@ const DBOrderHeader = styled.div`
 
 const OrderContainer = styled.div`
   display: grid;
-  grid-gap: 10px 16px;
-  grid-template-columns: auto 1fr auto;
+  grid-gap: 10px 32px;
+  grid-template-columns: 62px 32px minmax(180px, 200px) auto;
   justify-items: flex-start;
+
+  align-items: flex-start;
   padding: 0 8px;
   font-family: OpenSans-SemiBold;
   font-size: 10px;
@@ -180,7 +188,8 @@ const OrderContainer = styled.div`
 const Quantity = styled.p`
   padding: 4px;
   border: 1px solid black;
-  width: 100%;
+  width: 28px;
+  min-height: 28px;
   text-align: center;
   height: fit-content;
 `;
@@ -225,7 +234,15 @@ const Flavor = styled.div`
   display: flex;
   p {
     margin-right: 8px;
+    :first-of-type {
+      min-width: 20px;
+      text-align: right;
+    }
   }
 `;
 
-export default CustomerCopy;
+export default connect(state => {
+  return {
+    activeOrder: state.DashboardState.activeOrder
+  };
+})(WarehouseCopy);

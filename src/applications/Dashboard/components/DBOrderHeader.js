@@ -19,8 +19,9 @@ const DBOrderHeader = styled.div`
   grid-template-columns: 2fr 2fr 1fr 2fr;
   grid-template-rows: 1fr;
   grid-gap: 48px;
-  padding: 0 24px;
+  padding: 0 48px;
   margin: 24px;
+  margin-bottom: 0;
   p {
     font-family: "AvenirNext-Bold", "Avenir Next", serif;
     color: ${Colors.black};

@@ -11,6 +11,7 @@ import RapidOrder from "./Applications/Rapid Order/RapidOrder";
 import { Colors } from "./Constants/Colors";
 import Store from "./Applications/Store/Store";
 import SpecialPricing from "./Applications/Special Pricing/SpecialPricing";
+import WarehouseCopy from "./Global/PrintTemplates/WarehouseCopy";
 
 const App = () => {
   return (
@@ -22,7 +23,7 @@ const App = () => {
           <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/rapidorder" component={RapidOrder} />
           <Route exact path="/store" component={Store} />
-          <Route exact path="/specialpricing" component={SpecialPricing} />
+          <Route exact path="/specialpricing" component={WarehouseCopy} />
         </Switch>
       </AppContainer>
     </AppWrapper>

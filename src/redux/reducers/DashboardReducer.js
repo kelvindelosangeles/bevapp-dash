@@ -1,8 +1,72 @@
 import { Order } from "../../Models/Order";
 
 const initialState = {
-  newOrders: {},
-  activeOrder: null
+  newOrders: {
+    "200220a2f8d33baa": {
+      customer: {
+        firstLetter: "0-9",
+        name: "1978 1st ave news stand",
+        address: "1978 frst ave",
+        city: "nyc",
+        telephone: "6467642159",
+        cr: "bb",
+        active: true,
+        sla: null
+      },
+      details: {
+        new: true,
+        complete: false,
+        createdAt: "Feb 20, 4:15",
+        createdBy: "Admin",
+        orderID: "200220a2f8d33baa"
+      },
+      cart: {
+        "7UP2LI": {
+          brand: "7UP",
+          id: "7UP2LI",
+          category: "soda",
+          description: "7UP 2liter bottle",
+          packaging: "bottle",
+          size: "2liter",
+          price: "9.95",
+          qty: 1
+        }
+      },
+      editedOrder: null
+    }
+  },
+  activeOrder: {
+    customer: {
+      firstLetter: "0-9",
+      name: "1978 1st ave news stand",
+      address: "1978 frst ave",
+      city: "nyc",
+      telephone: "6467642159",
+      cr: "bb",
+      active: true,
+      sla: null
+    },
+    details: {
+      new: true,
+      complete: false,
+      createdAt: "Feb 20, 4:15",
+      createdBy: "Admin",
+      orderID: "200220a2f8d33baa"
+    },
+    cart: {
+      "7UP2LI": {
+        brand: "7UP",
+        id: "7UP2LI",
+        category: "soda",
+        description: "7UP 2liter bottle",
+        packaging: "bottle",
+        size: "2liter",
+        price: "9.95",
+        qty: 1
+      }
+    },
+    editedOrder: null
+  }
 };
 
 const DashboardReducer = (state = initialState, action) => {
