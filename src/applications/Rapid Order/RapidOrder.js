@@ -38,8 +38,8 @@ const RapidOrderWrapper = styled.div`
   grid-template-columns: 1fr 390px;
   grid-template-rows: auto 1fr;
   grid-template-areas:
-    "rocontrols rorder"
-    "roitems rorder";
+    "rocontrols preview"
+    "roitems preview";
 `;
 
 export default connect(state => {

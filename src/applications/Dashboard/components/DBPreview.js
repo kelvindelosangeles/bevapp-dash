@@ -1,6 +1,4 @@
 import React, { useState, useRef } from "react";
-import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
 import styled from "styled-components";
 import ReactToPrint from "react-to-print";
 
@@ -107,8 +105,9 @@ const DBPreview = ({ activeOrder, dispatch, history }) => {
 };
 
 const DBPreviewWrapper = styled.div`
+  grid-area: preview;
   position: relative;
-  flex: 1;
+  background-color: ${Colors.white};
   .wrapper {
     position: absolute;
     height: 100%;
@@ -176,8 +175,4 @@ const EditedOrderToggle = styled.section`
   }
 `;
 
-export default connect(state => {
-  return {
-    activeOrder: state.DashboardState.activeOrder
-  };
-})(withRouter(DBPreview));
+export default DBPreview;

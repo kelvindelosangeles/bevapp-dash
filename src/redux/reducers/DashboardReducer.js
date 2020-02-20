@@ -2,7 +2,7 @@ import { Order } from "../../Models/Order";
 
 const initialState = {
   newOrders: {},
-  activeOrder: {}
+  activeOrder: null
 };
 
 const DashboardReducer = (state = initialState, action) => {
@@ -13,7 +13,7 @@ const DashboardReducer = (state = initialState, action) => {
         ...state,
         newOrders: {
           ...state.newOrders,
-          [details.orderID]: new Order(customer, details, cart)
+          [action.details.orderID]: new Order(customer, details, cart)
         }
       };
     case "SUBMIT_EDIT":
@@ -32,24 +32,24 @@ const DashboardReducer = (state = initialState, action) => {
             }
           }
         },
-        activeOrder: {}
+        activeOrder: null
       };
     case "TOGGLE_ORDER":
       return { ...state, activeOrder: { ...action.order } };
     case "CLEAR_ORDER":
       return {
         ...state,
-        activeOrder: {}
+        activeOrder: null
       };
     case "SET_ACTIVE_ORDER":
       return { ...state, activeOrder: { ...action.order } };
     case "DELETE_ORDER":
-      const { [action.orderID]: removed, ...orders } = state.newOrders;
+      const { [action.orderID]: removed, ...remainingOrders } = state.newOrders;
       return {
         ...state,
-        activeOrder: {},
+        activeOrder: null,
         newOrders: {
-          ...orders
+          ...remainingOrders
         }
       };
     default:

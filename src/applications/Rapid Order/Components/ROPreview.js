@@ -125,7 +125,7 @@ const ROPreview = ({ cart, dispatch, editMode, orderToEdit }) => {
 
 const ROrderWrapper = styled.div`
   position: relative;
-  grid-area: rorder;
+  grid-area: preview;
   height: 100%;
   background-color: ${Colors.white};
   .wrapper {

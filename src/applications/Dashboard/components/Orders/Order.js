@@ -26,8 +26,7 @@ const Order = ({ newOrder, dispatch, activeOrder }) => {
     });
   };
 
-  const activeOrderID =
-    Object.values(activeOrder).length > 0 ? activeOrder.details.orderID : null;
+  const activeOrderID = activeOrder ? activeOrder.details.orderID : null;
 
   const OrderIsActive = activeOrderID == newOrder.details.orderID;
 

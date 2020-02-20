@@ -3,52 +3,37 @@ import React from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 
-import { Colors } from "../../Constants/Colors";
-
 import DBStatBar from "./components/DBStatBar";
-import DBSearch from "./components/DBSearch";
 import DBOrderHeader from "./components/DBOrderHeader";
 import Orders from "./components/Orders/Orders";
 import DBPreview from "./components/DBPreview";
 import EmptyOrder from "../../Global/Empty Order/EmptyOrder";
 
 const Dashboard = ({ activeOrder }) => {
-  const OrderPreview =
-    Object.values(activeOrder).length > 0 ? (
-      <DBPreview />
-    ) : (
-      <EmptyOrder message="Select an order to view it's details" />
-    );
-
+  const OrderPreview = activeOrder ? (
+    <DBPreview order={activeOrder} />
+  ) : (
+    <EmptyOrder message="Select an order to view it's details" />
+  );
   return (
     <DashboardWrapper>
-      <Main>
-        <DBStatBar />
-        {/* <DBSearch /> */}
-        <DBOrderHeader />
-        <Orders />
-      </Main>
-      <Aside>{OrderPreview}</Aside>
+      <DBStatBar />
+      <DBOrderHeader />
+      <Orders />
+      {OrderPreview}
     </DashboardWrapper>
   );
 };
 
 const DashboardWrapper = styled.div`
-  display: flex;
-  flex: 1;
-`;
-const Main = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  padding: 24px;
-`;
-const Aside = styled.div`
-  display: flex;
-  width: 390px;
-  max-width: 390px;
-  flex: 1;
-  background-color: ${Colors.white};
+  display: grid;
+  height: 100%;
+  grid-template-columns: 1fr 390px;
+  grid-template-rows: auto auto 1fr;
+  grid-template-areas:
+    "statbar preview"
+    "orderheader preview"
+    "orders preview";
 `;
 
 export default connect(state => {

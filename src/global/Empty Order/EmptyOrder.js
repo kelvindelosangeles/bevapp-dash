@@ -11,7 +11,7 @@ const EmptyOrder = ({ message }) => {
 };
 
 const EmptyOrderWrapper = styled.div`
-  grid-area: rorder;
+  grid-area: preview;
   background-color: ${Colors.white};
   display: flex;
   justify-content: center;

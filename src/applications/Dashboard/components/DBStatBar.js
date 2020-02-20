@@ -24,9 +24,10 @@ const DBStatBar = ({ newOrders }) => {
 };
 
 const DBStatBarWrapper = styled.div`
+  grid-area: statbar;
   height: 129px;
   display: flex;
-  margin-bottom: 32px;
+  margin: 24px;
 `;
 const Stat = styled.div`
   display: flex;

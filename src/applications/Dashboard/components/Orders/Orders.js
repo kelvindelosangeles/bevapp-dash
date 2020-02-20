@@ -18,11 +18,12 @@ const Orders = ({ newOrders }) => {
 };
 
 const OrdersWrapper = styled.div`
+  grid-area: orders;
+  margin: 24px;
   position: relative;
   overflow: hidden;
   background-color: ${Colors.white};
   border-radius: 8px;
-  flex-grow: 1;
   section {
     width: 100%;
     padding: 24px 0;
