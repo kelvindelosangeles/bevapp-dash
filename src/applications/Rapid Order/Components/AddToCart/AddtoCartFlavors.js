@@ -9,7 +9,7 @@ import FlavorsInput from "./FlavorsInput";
 const AddtoCartFlavors = ({ orderItem, dispatch }) => {
   const [flavorsQuantity, setFlavorsQuantity] = useState({});
   const node = useRef();
-
+  console.log(orderItem);
   useEffect(() => {
     const flavors = orderItem.flavors.reduce((o, key) => {
       return Object.assign(o, { [key]: "" });
@@ -70,7 +70,7 @@ const AddtoCartFlavors = ({ orderItem, dispatch }) => {
     dispatch({ type: "CLOSE_ATC" });
   };
 
-  const Flavors = orderItem.flavors.sort().map(i => {
+  const Flavors = orderItem.flavors.map(i => {
     return (
       <FlavorsInput
         key={i}
@@ -80,6 +80,7 @@ const AddtoCartFlavors = ({ orderItem, dispatch }) => {
       />
     );
   });
+  // FIXME: Sorting not allowed
 
   return (
     <Overlay>

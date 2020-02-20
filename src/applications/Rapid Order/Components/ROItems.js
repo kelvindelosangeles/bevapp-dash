@@ -1,21 +1,20 @@
 import React from "react";
+import { connect } from "react-redux";
+
 import styled from "styled-components";
 import Item from "./Item";
 
-import { Store } from "../../../Assets/Data/Store";
-// TODO: This will comes from firebase
-
-const ROItems = ({ filter }) => {
+const ROItems = ({ filter, store }) => {
   const filterIsEmpty = filter === "";
 
-  const popularItems = Object.values(Store)
+  const popularItems = Object.values(store)
     .filter((x, index) => {
       return index < 12;
     })
     .map(i => {
       return <Item item={i} key={i.id} />;
     });
-  let filterdItems = Object.values(Store)
+  let filterdItems = Object.values(store)
     .filter(x => {
       return (
         x.description.toLowerCase().includes(filter.toLowerCase()) ||
@@ -54,4 +53,8 @@ const NoMatch = styled.p`
   padding: 80px 0;
 `;
 
-export default ROItems;
+export default connect(state => {
+  return {
+    store: state.Firestore.data.inventory.beverages
+  };
+})(ROItems);

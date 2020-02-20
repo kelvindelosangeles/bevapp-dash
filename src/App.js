@@ -11,10 +11,19 @@ import RapidOrder from "./Applications/Rapid Order/RapidOrder";
 import { Colors } from "./Constants/Colors";
 import Store from "./Applications/Store/Store";
 import SpecialPricing from "./Applications/Special Pricing/SpecialPricing";
-import WarehouseCopy from "./Global/PrintTemplates/WarehouseCopy";
 
-const App = () => {
-  return (
+import { firestoreConnect, isLoaded } from "react-redux-firebase";
+import { compose } from "redux";
+import { connect } from "react-redux";
+import Spinner from "./Global/Spinner/Spinner";
+
+const App = props => {
+  console.log(props);
+  console.log(props.inventory);
+
+  return !isLoaded(props.inventory) ? (
+    <Spinner />
+  ) : (
     <AppWrapper>
       <Sidebar />
       <AppContainer>
@@ -23,7 +32,7 @@ const App = () => {
           <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/rapidorder" component={RapidOrder} />
           <Route exact path="/store" component={Store} />
-          <Route exact path="/specialpricing" component={WarehouseCopy} />
+          <Route exact path="/specialpricing" component={SpecialPricing} />
         </Switch>
       </AppContainer>
     </AppWrapper>
@@ -46,4 +55,15 @@ const AppContainer = styled.div`
   background-color: ${Colors.lightGrey};
 `;
 
-export default App;
+export default compose(
+  connect(state => {
+    return { inventory: state.Firestore.data.inventory };
+  }),
+  firestoreConnect(() => {
+    return [
+      {
+        collection: "inventory"
+      }
+    ];
+  })
+)(App);

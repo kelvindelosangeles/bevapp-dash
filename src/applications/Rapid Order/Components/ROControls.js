@@ -3,7 +3,6 @@ import styled from "styled-components";
 import SearchIcon from "@material-ui/icons/SearchRounded";
 import BoltIcon from "@material-ui/icons/OfflineBolt";
 import { connect } from "react-redux";
-import { Store } from "../../../Assets/Data/Store";
 
 const ROControls = props => {
   const [search, setSearch] = props.search;
@@ -21,7 +20,7 @@ const ROControls = props => {
       let ID = rapidEntry.split("-")[1].toUpperCase();
 
       // if theres no error then check if that store item exists
-      if (Store[ID] === undefined) {
+      if (props.store[ID] === undefined) {
         // if it doesnt throw an item doesnt exist error because the format is correct
         setRapidEntry("");
         console.log(ID);
@@ -29,10 +28,10 @@ const ROControls = props => {
       } else {
         // if it is add the item to the cart
         setRapidEntry("");
-        console.log(Store[ID]);
+        console.log(props.store[ID]);
         props.dispatch({
           type: "ADD_TO_CART",
-          item: { ...Store[ID], qty }
+          item: { ...props.store[ID], qty }
         });
       }
       // any other errors and throw an error and clear the cart
@@ -112,4 +111,6 @@ const ROControlsWrapper = styled.div`
   }
 `;
 
-export default connect()(ROControls);
+export default connect(state => {
+  return { store: state.Firestore.data.inventory.beverages };
+})(ROControls);
