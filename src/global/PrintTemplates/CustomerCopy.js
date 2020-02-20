@@ -3,12 +3,18 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 
 class CustomerCopy extends React.Component {
-  render() {
-    const ordersArray = Object.values(
-      !this.props.editedCopy
+  cart = () => {
+    try {
+      return !this.props.editedCopy
         ? this.props.activeOrder.cart
-        : this.props.activeOrder.editedOrder.cart
-    ).map(i => {
+        : this.props.activeOrder.editedOrder.cart;
+    } catch (error) {
+      return this.props.activeOrder.cart;
+    }
+  };
+
+  render() {
+    const ordersArray = Object.values(this.cart()).map(i => {
       const flavorsArray =
         i.hasOwnProperty("flavorsQuantity") &&
         Object.entries(i.flavorsQuantity)
@@ -36,11 +42,7 @@ class CustomerCopy extends React.Component {
         </React.Fragment>
       );
     });
-    const totalCostArray = Object.values(
-      !this.props.editedCopy
-        ? this.props.activeOrder.cart
-        : this.props.activeOrder.editedOrder.cart
-    ).map(i => {
+    const totalCostArray = Object.values(this.cart()).map(i => {
       return parseFloat((i.qty * parseFloat(i.price)).toFixed(2));
     });
     const total = totalCostArray.reduce((a, b) => {
