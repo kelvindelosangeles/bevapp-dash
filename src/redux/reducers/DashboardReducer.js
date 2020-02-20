@@ -1,30 +1,30 @@
 import { Order } from "../../Models/Order";
 
 const initialState = {
-  orders: {},
+  newOrders: {},
   activeOrder: {}
 };
 
 const DashboardReducer = (state = initialState, action) => {
   switch (action.type) {
     case "SUBMIT_ORDER":
-      const { customer, details, order } = action;
+      const { customer, details, cart } = action;
       return {
         ...state,
-        orders: {
-          ...state.orders,
-          [action.details.orderID]: new Order(customer, details, order)
+        newOrders: {
+          ...state.newOrders,
+          [details.orderID]: new Order(customer, details, cart)
         }
       };
     case "SUBMIT_EDIT":
       return {
         ...state,
-        orders: {
-          ...state.orders,
+        newOrders: {
+          ...state.newOrders,
           [action.details.orderID]: {
-            ...state.orders[action.details.orderID],
+            ...state.newOrders[action.details.orderID],
             editedOrder: {
-              order: { ...action.order },
+              cart: { ...action.cart },
               details: {
                 editedAt: action.details.createdAt,
                 editedBy: "admin"
@@ -44,12 +44,12 @@ const DashboardReducer = (state = initialState, action) => {
     case "SET_ACTIVE_ORDER":
       return { ...state, activeOrder: { ...action.order } };
     case "DELETE_ORDER":
-      const { [action.orderID]: removed, ...newOrders } = state.orders;
+      const { [action.orderID]: removed, ...orders } = state.newOrders;
       return {
         ...state,
         activeOrder: {},
-        orders: {
-          ...newOrders
+        newOrders: {
+          ...orders
         }
       };
     default:

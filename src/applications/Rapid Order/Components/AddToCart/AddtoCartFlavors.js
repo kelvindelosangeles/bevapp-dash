@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import { Colors } from "../../../Constants/Colors";
 
-import ItemDetails from "./AddToCartModal/ItemDetails";
-import FlavorsInput from "./AddToCartModal/FlavorsInput";
+import { Colors } from "../../../../Constants/Colors";
+import ItemDetails from "./ItemDetails";
+import FlavorsInput from "./FlavorsInput";
 
 const AddtoCartFlavors = ({ orderItem, dispatch }) => {
+  const [flavorsQuantity, setFlavorsQuantity] = useState({});
+  const node = useRef();
+
   useEffect(() => {
     const flavors = orderItem.flavors.reduce((o, key) => {
       return Object.assign(o, { [key]: "" });
@@ -21,13 +24,10 @@ const AddtoCartFlavors = ({ orderItem, dispatch }) => {
       document.removeEventListener("mousedown", checkForClickOutside);
     };
   });
-  const node = useRef();
 
   const checkForClickOutside = e => {
     !node.current.contains(e.target) && cancelHandler();
   };
-
-  const [flavorsQuantity, setFlavorsQuantity] = useState({});
 
   const FlavorChangeHandler = e => {
     const value = e.target.value;
@@ -41,6 +41,7 @@ const AddtoCartFlavors = ({ orderItem, dispatch }) => {
           return { ...prevState, [name]: value };
         });
   };
+
   const submitHandler = e => {
     e.preventDefault();
 
@@ -63,24 +64,22 @@ const AddtoCartFlavors = ({ orderItem, dispatch }) => {
           }
         });
   };
+
   const cancelHandler = () => {
     setFlavorsQuantity({});
     dispatch({ type: "CLOSE_ATC" });
   };
 
-  const Flavors = orderItem.flavors
-    .sort()
-    .map(i => {
-      return (
-        <FlavorsInput
-          key={i}
-          name={i}
-          FlavorChangeHandler={FlavorChangeHandler}
-          flavorsQuantity={flavorsQuantity}
-        />
-      );
-    })
-    .sort((a, b) => a > b);
+  const Flavors = orderItem.flavors.sort().map(i => {
+    return (
+      <FlavorsInput
+        key={i}
+        name={i}
+        FlavorChangeHandler={FlavorChangeHandler}
+        flavorsQuantity={flavorsQuantity}
+      />
+    );
+  });
 
   return (
     <Overlay>

@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { Colors } from "../../../../Constants/Colors";
 
-const Order = ({ orderDetails, dispatch, activeOrder }) => {
-  const total = Object.values(orderDetails.order)
+const Order = ({ newOrder, dispatch, activeOrder }) => {
+  const total = Object.values(newOrder.cart)
     .map(i => {
       const total = parseFloat(i.qty * parseFloat(i.price));
       return total;
@@ -15,10 +15,9 @@ const Order = ({ orderDetails, dispatch, activeOrder }) => {
     .toFixed(2);
 
   const viewHandler = () => {
-    console.log(orderDetails);
     dispatch({
       type: "SET_ACTIVE_ORDER",
-      order: orderDetails
+      order: newOrder
     });
   };
   const clearHandler = () => {
@@ -30,15 +29,15 @@ const Order = ({ orderDetails, dispatch, activeOrder }) => {
   const activeOrderID =
     Object.values(activeOrder).length > 0 ? activeOrder.details.orderID : null;
 
-  const OrderIsActive = activeOrderID == orderDetails.details.orderID;
+  const OrderIsActive = activeOrderID == newOrder.details.orderID;
 
   return (
     <OrderWrapper active={OrderIsActive}>
       <div>
-        <h6>{orderDetails.details.orderID}</h6>
-        <p>{orderDetails.details.createdAt}</p>
+        <h6>{newOrder.details.orderID}</h6>
+        <p>{newOrder.details.createdAt}</p>
       </div>
-      <h6>{orderDetails.customer.name}</h6>
+      <h6>{newOrder.customer.name}</h6>
       <h6>$ {total} </h6>
       {OrderIsActive ? (
         <Close onClick={clearHandler}>Close</Close>

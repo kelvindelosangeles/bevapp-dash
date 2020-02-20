@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 class CustomerCopy extends React.Component {
   render() {
-    const ordersArray = Object.values(this.props.activeOrder.order).map(i => {
+    const ordersArray = Object.values(this.props.activeOrder.cart).map(i => {
       const flavorsArray =
         i.hasOwnProperty("flavorsQuantity") &&
         Object.entries(i.flavorsQuantity)
@@ -32,11 +32,9 @@ class CustomerCopy extends React.Component {
         </React.Fragment>
       );
     });
-    const totalCostArray = Object.values(this.props.activeOrder.order).map(
-      i => {
-        return parseFloat((i.qty * parseFloat(i.price)).toFixed(2));
-      }
-    );
+    const totalCostArray = Object.values(this.props.activeOrder.cart).map(i => {
+      return parseFloat((i.qty * parseFloat(i.price)).toFixed(2));
+    });
     const total = totalCostArray.reduce((a, b) => {
       return a + b;
     });
@@ -60,11 +58,11 @@ class CustomerCopy extends React.Component {
             <h3>October 16th 2019</h3>
           </div>
         </SecondaryHeader>
-        <OrderHeader>
+        <DBOrderHeader>
           <h3>Cases</h3>
           <h3>Description</h3>
           <h3>Total</h3>
-        </OrderHeader>
+        </DBOrderHeader>
         <OrderContainer>
           <h3>Cases</h3>
           <h3>Description</h3>
@@ -147,7 +145,7 @@ const SecondaryHeader = styled.div`
   }
 `;
 
-const OrderHeader = styled.div`
+const DBOrderHeader = styled.div`
   display: grid;
   grid-gap: 10px 16px;
   grid-template-columns: auto 1fr auto;

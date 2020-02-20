@@ -1,5 +1,5 @@
 export class Order {
-  constructor(customer, details, order, editedOrder) {
+  constructor(customer, details, cart, editedOrder) {
     this.customer = customer;
     this.details = {
       new: true,
@@ -8,7 +8,7 @@ export class Order {
       createdBy: details.createdBy || "default admin",
       orderID: details.orderID
     };
-    this.order = order || {};
+    this.cart = cart || {};
     this.editedOrder = editedOrder || {};
   }
 }

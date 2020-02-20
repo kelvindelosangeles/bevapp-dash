@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 
-import { Colors } from "../../../Constants/Colors";
+import { Colors } from "../../../../Constants/Colors";
 import Xicon from "@material-ui/icons/Close";
 
 const AddToCart = ({ dispatch, orderItem, clearSearch }) => {
@@ -30,7 +30,6 @@ const AddToCart = ({ dispatch, orderItem, clearSearch }) => {
   const checkForClickOutside = e => {
     !node.current.contains(e.target) && cancelHandler();
   };
-
   useEffect(() => {
     document.addEventListener("mousedown", checkForClickOutside);
 
@@ -185,6 +184,7 @@ const QuantityForm = styled.form`
     }
   }
 `;
+
 export default connect(state => {
   return { orderItem: state.RapidOrderState.orderItem };
 })(AddToCart);

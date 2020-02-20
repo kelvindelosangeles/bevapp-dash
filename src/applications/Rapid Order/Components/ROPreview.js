@@ -8,13 +8,14 @@ import { Colors } from "../../../Constants/Colors";
 
 import CustomerDetails from "../../../Global/OrderPreview/CustomerDetails";
 import OrderDetails from "../../../Global/OrderPreview/OrderDetails";
-import OrderItems from "../../../Global/OrderPreview/OrderItems";
+import OrderCart from "../../../Global/OrderPreview/OrderCart";
 import CustomerSelect from "./CustomerSelect";
 
 const formatTel = tel => {
   return `(${tel.slice(0, 3)}) ${tel.slice(3, 6)} ${tel.slice(6, 10)} `;
 };
-const ROPreview = ({ order, dispatch, editMode, orderToEdit, activeOrder }) => {
+
+const ROPreview = ({ cart, dispatch, editMode, orderToEdit }) => {
   const [customer, setCustomer] = useState(null);
   const [error, showError] = useState(false);
 
@@ -44,12 +45,13 @@ const ROPreview = ({ order, dispatch, editMode, orderToEdit, activeOrder }) => {
       ? showError(true)
       : dispatch({
           type: "SUBMIT_ORDER",
-          order,
+          cart,
           customer,
           details: {
             orderID,
             createdAt,
             createdBy: "Admin"
+            // TODO: Change this when auth added
           }
         });
   };
@@ -57,7 +59,7 @@ const ROPreview = ({ order, dispatch, editMode, orderToEdit, activeOrder }) => {
     return window.confirm("Are you sure you want to submit this edit")
       ? dispatch({
           type: "SUBMIT_EDIT",
-          order,
+          cart,
           customer,
           details: {
             orderID: orderToEdit.details.orderID,
@@ -69,7 +71,7 @@ const ROPreview = ({ order, dispatch, editMode, orderToEdit, activeOrder }) => {
   };
 
   // Prevents the last item from being deleted while editing
-  const disabled = Object.values(order).length < 2;
+  const disabled = Object.values(cart).length < 2;
 
   return (
     <ROrderWrapper>
@@ -97,8 +99,7 @@ const ROPreview = ({ order, dispatch, editMode, orderToEdit, activeOrder }) => {
           createdAt={createdAt}
           status={editMode ? "Editing Order" : "New Order"}
         />
-
-        <OrderItems order={order} />
+        <OrderCart cart={cart} />
         {error && (
           <ErrorMessage>
             <p>Please Add a Customer</p>
@@ -188,7 +189,7 @@ const ErrorMessage = styled.section`
 
 export default connect(state => {
   return {
-    order: state.RapidOrderState.order,
+    cart: state.RapidOrderState.cart,
     editMode: state.RapidOrderState.editMode,
     orderToEdit: state.RapidOrderState.orderToEdit
   };

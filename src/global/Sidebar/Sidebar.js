@@ -29,7 +29,7 @@ const Sidebar = () => {
         <NavLink to="/store">
           <StoreIcon /> Store
         </NavLink>
-        <NavLink to="#">
+        <NavLink to="/specialpricing">
           <SpePricingIcon /> Special Pricing
         </NavLink>
       </NavWrapper>
