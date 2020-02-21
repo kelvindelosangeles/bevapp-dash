@@ -13,6 +13,9 @@ import AddToCart from "./Components/AddToCart/AddToCart";
 const RapidOrder = ({ atcVisible, atcfVisible, cart }) => {
   const search = useState("");
   const RapidEntry = useState("");
+  const SmartEntryQty = useState("");
+  const SmartEntryID = useState("");
+
   const OrderEmpty = Object.values(cart).length < 1;
   const OrderPreview = OrderEmpty ? (
     <EmptyOrder message="Add an item to create a new order" />
@@ -22,7 +25,12 @@ const RapidOrder = ({ atcVisible, atcfVisible, cart }) => {
 
   return (
     <RapidOrderWrapper>
-      <ROControls search={search} RapidEntry={RapidEntry} />
+      <ROControls
+        search={search}
+        RapidEntry={RapidEntry}
+        SmartEntryQty={SmartEntryQty}
+        SmartEntryID={SmartEntryID}
+      />
       <ROItems filter={search[0]} />
       {OrderPreview}
       {atcVisible && <AddToCart clearSearch={search[1]} />}

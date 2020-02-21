@@ -2,11 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import SearchIcon from "@material-ui/icons/SearchRounded";
 import BoltIcon from "@material-ui/icons/OfflineBolt";
+import BoltIcon2 from "@material-ui/icons/LinearScaleRounded";
 import { connect } from "react-redux";
 
 const ROControls = props => {
   const [search, setSearch] = props.search;
   const [rapidEntry, setRapidEntry] = props.RapidEntry;
+  const [smartEntryID, setSmartEntryID] = props.SmartEntryID;
+  const [SmartEntryQty, setSmartEntryQty] = props.SmartEntryQty;
 
   const rapidEntryChangeHandler = e => {
     setRapidEntry(e.target.value);
@@ -75,6 +78,35 @@ const ROControls = props => {
             }}
           />
         </form>
+        <form onSubmit={rapidEntrySubmitHandler} className="smart-entry">
+          <BoltIcon2 />
+          <input
+            className="seqty"
+            type="text"
+            placeholder="34-AMS12B"
+            autoComplete="off"
+            name="rapidentry"
+            value={rapidEntry}
+            onChange={rapidEntryChangeHandler}
+            onFocus={() => {
+              setSearch("");
+              setRapidEntry("");
+            }}
+          />
+          <input
+            className="seid"
+            type="text"
+            placeholder="34-AMS12B"
+            autoComplete="off"
+            name="rapidentry"
+            value={rapidEntry}
+            onChange={rapidEntryChangeHandler}
+            onFocus={() => {
+              setSearch("");
+              setRapidEntry("");
+            }}
+          />
+        </form>
       </div>
     </ROControlsWrapper>
   );
@@ -97,6 +129,9 @@ const ROControlsWrapper = styled.div`
         width: 100%;
       }
     }
+    :nth-of-type(2) {
+      padding-right: 24px;
+    }
     input {
       height: 40px;
       border-radius: 4px;
@@ -108,6 +143,8 @@ const ROControlsWrapper = styled.div`
       margin-right: 24px;
       font-size: 32px;
     }
+  }
+  .smartEntry {
   }
 `;
 
