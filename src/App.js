@@ -18,10 +18,7 @@ import { connect } from "react-redux";
 import Spinner from "./Global/Spinner/Spinner";
 
 const App = props => {
-  console.log(props);
-  console.log(props.inventory);
-
-  return !isLoaded(props.inventory) ? (
+  return !isLoaded(props.inventory) || !isLoaded(props.orders) ? (
     <Spinner />
   ) : (
     <AppWrapper>
@@ -57,13 +54,12 @@ const AppContainer = styled.div`
 
 export default compose(
   connect(state => {
-    return { inventory: state.Firestore.data.inventory };
+    return {
+      inventory: state.Firestore.data.inventory,
+      orders: state.Firestore.data.orders
+    };
   }),
   firestoreConnect(() => {
-    return [
-      {
-        collection: "inventory"
-      }
-    ];
+    return [{ collection: "inventory" }, { collection: "orders" }];
   })
 )(App);

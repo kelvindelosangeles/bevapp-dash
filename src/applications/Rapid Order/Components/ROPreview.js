@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { connect } from "react-redux";
+import { firestoreConnect } from "react-redux-firebase";
 import styled from "styled-components";
 import uuid from "uuid";
 import moment from "moment";
@@ -10,12 +11,14 @@ import CustomerDetails from "../../../Global/OrderPreview/CustomerDetails";
 import OrderDetails from "../../../Global/OrderPreview/OrderDetails";
 import OrderCart from "../../../Global/OrderPreview/OrderCart";
 import CustomerSelect from "./CustomerSelect";
+import { compose } from "redux";
+import { Order } from "../../../Models/Order";
 
 const formatTel = tel => {
   return `(${tel.slice(0, 3)}) ${tel.slice(3, 6)} ${tel.slice(6, 10)} `;
 };
 
-const ROPreview = ({ cart, dispatch, editMode, orderToEdit }) => {
+const ROPreview = ({ cart, dispatch, editMode, orderToEdit, firestore }) => {
   const [customer, setCustomer] = useState(null);
   const [error, showError] = useState(false);
 
@@ -24,12 +27,15 @@ const ROPreview = ({ cart, dispatch, editMode, orderToEdit }) => {
   }, []);
 
   const orderID = useMemo(() => {
-    return moment(new Date()).format("YYMMDD") + uuid().slice(0, 8) + "aa";
+    return (
+      moment(new Date()).format("YYMMDD") +
+      uuid().slice(0, 8) +
+      "ga"
+    ).toUpperCase();
   }, []);
   const createdAt = useMemo(() => {
     return moment(new Date()).format("MMM DD, h:mm");
   });
-
   const customerChangeHandler = (e, value) => {
     showError(false);
     setCustomer(value);
@@ -41,37 +47,82 @@ const ROPreview = ({ cart, dispatch, editMode, orderToEdit }) => {
       });
   };
   const submitOrder = () => {
+    const NewOrder = {
+      customer,
+      details: {
+        new: true,
+        complete: false,
+        createdAt,
+        createdBy: "General Admin",
+        orderID
+      },
+      cart,
+      editedOrder: null
+    };
+
     return !customer
       ? showError(true)
-      : dispatch({
-          type: "SUBMIT_ORDER",
-          cart,
-          customer,
-          details: {
-            orderID,
-            createdAt,
-            createdBy: "Admin"
-            // TODO: Change this when auth added
-          }
-        });
+      : firestore
+          .set(
+            {
+              collection: "orders",
+              doc: orderID
+            },
+            NewOrder
+          )
+          .then(() => {
+            console.log("success");
+            dispatch({ type: "SUBMIT_ORDER" });
+          })
+          .catch(err => {
+            console.log(err);
+          });
   };
   const submitEdit = () => {
     return window.confirm("Are you sure you want to submit this edit")
-      ? dispatch({
-          type: "SUBMIT_EDIT",
-          cart,
-          customer,
-          details: {
-            orderID: orderToEdit.details.orderID,
-            createdAt,
-            createdBy: "Admin"
-          }
-        })
+      ? firestore
+          .update(
+            {
+              collection: "orders",
+              doc: orderToEdit.details.orderID
+            },
+            {
+              editedOrder: {
+                cart,
+                details: {
+                  editedAt: createdAt,
+                  editdBy: "General Admin"
+                }
+              }
+            }
+          )
+          .then(() => {
+            dispatch({
+              type: "SUBMIT_EDIT"
+            });
+            console.log("success");
+          })
+          .catch(err => {
+            console.log(err);
+          })
       : null;
+    // return window.confirm("Are you sure you want to submit this edit")
+    //   ? dispatch({
+    //       type: "SUBMIT_EDIT",
+    //       cart,
+    //       customer,
+    //       details: {
+    //         orderID: orderToEdit.details.orderID,
+    //         createdAt,
+    //         createdBy: "Admin"
+    //       }
+    //     })
+    //   : null;
   };
 
   // Prevents the last item from being deleted while editing
   const disabled = Object.values(cart).length < 2;
+  // const disabled = false;
 
   return (
     <ROrderWrapper>
@@ -139,14 +190,12 @@ const ROrderWrapper = styled.div`
     border-bottom: 1px solid ${Colors.lightGrey};
   }
 `;
-
 const EditMode = styled.section`
   background-color: ${Colors.yellow};
   color: ${Colors.black};
   text-align: center;
   font-family: "AvenirNext-Heavy", "Avenir Next", serif;
 `;
-
 const OrderActions = styled.section`
   display: flex;
 
@@ -167,7 +216,6 @@ const OrderActions = styled.section`
     }
   }
 `;
-
 const EditActions = styled(OrderActions)`
   button {
     background-color: ${props => {
@@ -187,10 +235,13 @@ const ErrorMessage = styled.section`
   }
 `;
 
-export default connect(state => {
-  return {
-    cart: state.RapidOrderState.cart,
-    editMode: state.RapidOrderState.editMode,
-    orderToEdit: state.RapidOrderState.orderToEdit
-  };
-})(ROPreview);
+export default compose(
+  connect(state => {
+    return {
+      cart: state.RapidOrderState.cart,
+      editMode: state.RapidOrderState.editMode,
+      orderToEdit: state.RapidOrderState.orderToEdit
+    };
+  }),
+  firestoreConnect()
+)(ROPreview);

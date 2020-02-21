@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { Colors } from "../../../../Constants/Colors";
 
-const Order = ({ newOrder, dispatch, activeOrder }) => {
-  const total = Object.values(newOrder.cart)
+const Order = ({ order, dispatch, activeOrder }) => {
+  const total = Object.values(order.cart)
     .map(i => {
       const total = parseFloat(i.qty * parseFloat(i.price));
       return total;
@@ -17,7 +17,7 @@ const Order = ({ newOrder, dispatch, activeOrder }) => {
   const viewHandler = () => {
     dispatch({
       type: "SET_ACTIVE_ORDER",
-      order: newOrder
+      order: order
     });
   };
   const clearHandler = () => {
@@ -28,15 +28,15 @@ const Order = ({ newOrder, dispatch, activeOrder }) => {
 
   const activeOrderID = activeOrder ? activeOrder.details.orderID : null;
 
-  const OrderIsActive = activeOrderID == newOrder.details.orderID;
+  const OrderIsActive = activeOrderID == order.details.orderID;
 
   return (
     <OrderWrapper active={OrderIsActive}>
       <div>
-        <h6>{newOrder.details.orderID}</h6>
-        <p>{newOrder.details.createdAt}</p>
+        <h6>{order.details.orderID}</h6>
+        <p>{order.details.createdAt}</p>
       </div>
-      <h6>{newOrder.customer.name}</h6>
+      <h6>{order.customer.name}</h6>
       <h6>$ {total} </h6>
       {OrderIsActive ? (
         <Close onClick={clearHandler}>Close</Close>

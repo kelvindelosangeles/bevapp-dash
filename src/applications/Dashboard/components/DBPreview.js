@@ -11,8 +11,10 @@ import OrderDetails from "../../../Global/OrderPreview/OrderDetails";
 import OrderCart from "../../../Global/OrderPreview/OrderCart";
 import CustomerCopy from "../../../Global/PrintTemplates/CustomerCopy";
 import WarehouseCopy from "../../../Global/PrintTemplates/WarehouseCopy";
+import { compose } from "redux";
+import { firestoreConnect } from "react-redux-firebase";
 
-const DBPreview = ({ activeOrder, dispatch, history }) => {
+const DBPreview = ({ activeOrder, dispatch, history, firestore }) => {
   const customerCopy = useRef();
   const warehouseCopy = useRef();
   const [showEditedOrder, toggleShowEditedOrder] = useState(false);
@@ -29,10 +31,29 @@ const DBPreview = ({ activeOrder, dispatch, history }) => {
     window.confirm(
       "Are you sure you want to delete this order?  This action is irreversable."
     ) &&
-      dispatch({
-        type: "DELETE_ORDER",
-        orderID: activeOrder.details.orderID
-      });
+      firestore
+        .set(
+          {
+            collection: "deletedOrders",
+            doc: activeOrder.details.orderID
+          },
+          activeOrder
+        )
+        .then(() => {
+          firestore.delete({
+            collection: "orders",
+            doc: activeOrder.details.orderID
+          });
+        })
+        .then(() => {
+          dispatch({
+            type: "DELETE_ORDER"
+          });
+        })
+        .catch(err => {
+          console.log(err);
+          alert("Something Went Wrong Please Contact Admin");
+        });
   };
 
   const OrderCartLogic = () => {
@@ -228,4 +249,4 @@ const PrintContainer = styled.div`
   display: none;
 `;
 
-export default connect()(withRouter(DBPreview));
+export default compose(connect(), firestoreConnect())(withRouter(DBPreview));

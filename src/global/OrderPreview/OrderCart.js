@@ -17,9 +17,6 @@ const OrderCart = ({ cart, readOnly = false }) => {
   const totalCostArray = Object.values(cart).map(i => {
     return parseFloat((i.qty * parseFloat(i.price).toFixed(2)).toFixed(2));
   });
-  console.log(cart);
-  console.log(cartArray);
-  console.log(totalCostArray);
 
   return (
     <OrderCartWrapper>

@@ -4,10 +4,12 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { Colors } from "../../../Constants/Colors";
 
-const DBStatBar = ({ newOrders }) => {
-  const newOrdersCount = Object.values(newOrders).filter(i => {
+const DBStatBar = ({ orders }) => {
+  const newOrdersCount = orders.filter(i => {
     return i.details.new;
   }).length;
+
+  console.log(orders);
 
   return (
     <DBStatBarWrapper>
@@ -17,7 +19,7 @@ const DBStatBar = ({ newOrders }) => {
       </Stat>
       <Stat color={Colors.green}>
         <h6>Daily Revenue</h6>
-        <p>$1346.00</p>
+        <p>$ - - -</p>
       </Stat>
     </DBStatBarWrapper>
   );
@@ -55,5 +57,5 @@ const Stat = styled.div`
 `;
 
 export default connect(state => {
-  return { newOrders: state.DashboardState.newOrders };
+  return { orders: state.Firestore.ordered.orders };
 })(DBStatBar);

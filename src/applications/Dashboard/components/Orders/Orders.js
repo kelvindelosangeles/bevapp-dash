@@ -5,9 +5,9 @@ import { connect } from "react-redux";
 import { Colors } from "../../../../Constants/Colors";
 import Order from "./Order";
 
-const Orders = ({ newOrders }) => {
-  const OrdersArray = Object.values(newOrders).map(i => {
-    return <Order newOrder={i} />;
+const Orders = ({ orders }) => {
+  const OrdersArray = orders.map(i => {
+    return <Order order={i} key={i} />;
   });
 
   return (
@@ -33,5 +33,5 @@ const OrdersWrapper = styled.div`
   }
 `;
 export default connect(state => {
-  return { newOrders: state.DashboardState.newOrders };
+  return { orders: state.Firestore.ordered.orders };
 })(Orders);

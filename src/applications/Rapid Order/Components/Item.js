@@ -7,7 +7,6 @@ const Item = ({ item, dispatch }) => {
   const { description } = item;
 
   const ToggleModal = () => {
-    console.log(item);
     item.hasOwnProperty("flavors")
       ? dispatch({ type: "TOGGLE_ATCF", item })
       : dispatch({ type: "TOGGLE_ATC", item });
