@@ -17,19 +17,21 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import Spinner from "./Global/Spinner/Spinner";
 
+import { customers } from "./Assets/Data/Customers";
+
 const App = props => {
-  return !isLoaded(props.inventory) || !isLoaded(props.orders) ? (
-    <Spinner />
-  ) : (
+  return !isLoaded(props.inventory) ||
+    !isLoaded(props.orders) ||
+    !isLoaded(props.store) ? null : ( // <Spinner />
     <AppWrapper>
       <Sidebar />
       <AppContainer>
         <AppHeader />
         <Switch>
           <Route exact path="/dashboard" component={Dashboard} />
-          <Route exact path="/rapidorder" component={RapidOrder} />
-          <Route exact path="/store" component={Store} />
-          <Route exact path="/specialpricing" component={SpecialPricing} />
+          <Route path="/rapidorder" component={RapidOrder} />
+          <Route path="/store" component={Store} />
+          <Route path="/specialpricing" component={SpecialPricing} />
         </Switch>
       </AppContainer>
     </AppWrapper>
@@ -56,10 +58,15 @@ export default compose(
   connect(state => {
     return {
       inventory: state.Firestore.data.inventory,
-      orders: state.Firestore.data.orders
+      orders: state.Firestore.data.orders,
+      store: state.Firestore.data.store
     };
   }),
   firestoreConnect(() => {
-    return [{ collection: "inventory" }, { collection: "orders" }];
+    return [
+      { collection: "inventory" },
+      { collection: "orders" },
+      { collection: "store" }
+    ];
   })
 )(App);
