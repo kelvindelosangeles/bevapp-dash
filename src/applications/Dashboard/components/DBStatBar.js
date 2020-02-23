@@ -42,13 +42,13 @@ const Stat = styled.div`
   border-radius: 8px;
   margin-right: 24px;
   h6 {
-    font-family: "AvenirNext-Bold", "Avenir Next", serif;
+    font-family: "AvenirNext-Bold";
     color: ${Colors.black};
     font-size: 16px;
     margin-bottom: 8px;
   }
   p {
-    font-family: "AvenirNext-Bold", "Avenir Next", serif;
+    font-family: "AvenirNext-Bold";
     color: ${props => {
       return props.color;
     }};

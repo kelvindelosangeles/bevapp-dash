@@ -24,14 +24,14 @@ const CustomerDetailsWrapper = styled.section`
   display: flex;
   justify-content: space-between;
   h3 {
-    font-family: "AvenirNext-Heavy", "Avenir Next", serif;
+    font-family: "AvenirNext-Heavy";
     font-size: 18px;
     margin-bottom: 8px;
     max-width: 210px;
     text-transform: uppercase;
   }
   p {
-    font-family: "AvenirNext-Medium", "Avenir Next", serif;
+    font-family: "AvenirNext-Medium";
     font-size: 14px;
     text-transform: uppercase;
   }

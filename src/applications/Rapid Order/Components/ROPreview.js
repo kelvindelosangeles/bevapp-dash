@@ -194,7 +194,7 @@ const EditMode = styled.section`
   background-color: ${Colors.yellow};
   color: ${Colors.black};
   text-align: center;
-  font-family: "AvenirNext-Heavy", "Avenir Next", serif;
+  font-family: "AvenirNext-Heavy";
 `;
 const OrderActions = styled.section`
   display: flex;
@@ -203,7 +203,7 @@ const OrderActions = styled.section`
     height: 40px;
     border-radius: 5px;
     border: none;
-    font-family: "AvenirNext-Medium", "Avenir Next", serif;
+    font-family: "AvenirNext-Medium";
     font-size: 14px;
     width: 100%;
     color: ${Colors.white};
@@ -228,7 +228,7 @@ const EditActions = styled(OrderActions)`
 `;
 const ErrorMessage = styled.section`
   p {
-    font-family: "AvenirNext-Medium", "Avenir Next", serif;
+    font-family: "AvenirNext-Medium";
     color: ${Colors.red};
     text-align: center;
     /* margin-bottom: 16px; */

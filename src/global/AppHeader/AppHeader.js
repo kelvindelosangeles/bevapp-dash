@@ -34,7 +34,7 @@ const AppHeaderWrapper = styled.div`
 `;
 
 const TodaysDate = styled.p`
-  font-family: "AvenirNext-Regular", "Avenir Next", serif;
+  font-family: "AvenirNext-Regular";
   color: ${Colors.black};
   font-size: 12px;
 `;
@@ -42,11 +42,11 @@ const TodaysDate = styled.p`
 const User = styled.div`
   display: flex;
   h6 {
-    font-family: "AvenirNext-DemiBold", "Avenir Next", serif;
+    font-family: "AvenirNext-DemiBold";
     font-size: 14px;
   }
   p {
-    font-family: "AvenirNext-Regular", "Avenir Next", serif;
+    font-family: "AvenirNext-Regular";
     color: ${Colors.greyText};
     font-size: 12px;
   }

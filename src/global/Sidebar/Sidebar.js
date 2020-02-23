@@ -59,7 +59,7 @@ const AppTitle = styled.div`
   margin-bottom: 160px;
   h3,
   p {
-    font-family: "AvenirNext-Bold", "Avenir Next", serif;
+    font-family: "AvenirNext-Bold";
     color: ${Colors.white};
     font-size: 18px;
   }
@@ -75,7 +75,7 @@ const NavWrapper = styled.div`
   flex-direction: column;
   flex-grow: 1;
   a {
-    font-family: "AvenirNext-DemiBold", "Avenir Next", serif;
+    font-family: "AvenirNext-DemiBold";
     color: ${Colors.white};
     font-size: 14;
     text-decoration: none;
@@ -90,7 +90,7 @@ const NavWrapper = styled.div`
 `;
 
 const Signout = styled.div`
-  font-family: "AvenirNext-DemiBold", "Avenir Next", serif;
+  font-family: "AvenirNext-DemiBold";
   color: ${Colors.white};
   font-size: 14;
   text-decoration: none;

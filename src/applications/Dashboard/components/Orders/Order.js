@@ -33,7 +33,7 @@ const Order = ({ order, dispatch, activeOrder }) => {
   return (
     <OrderWrapper active={OrderIsActive}>
       <div>
-        <h6>{order.details.orderID}</h6>
+        <h6>{order.details.orderID.slice(6)}</h6>
         <p>{order.details.createdAt}</p>
       </div>
       <h6>{order.customer.name}</h6>
@@ -49,7 +49,7 @@ const Order = ({ order, dispatch, activeOrder }) => {
 
 const OrderWrapper = styled.div`
   display: grid;
-  grid-template-columns: 2fr 2fr 1fr 2fr;
+  grid-template-columns: 100px 2fr 1fr 2fr;
   grid-template-rows: 1fr;
   grid-gap: 48px;
   padding: 24px;
@@ -58,7 +58,6 @@ const OrderWrapper = styled.div`
     return props.active && Colors.lightGrey;
   }};
   :last-of-type {
-    /* padding-bottom: 0; */
     border-bottom: none;
   }
   :hover {
@@ -70,16 +69,14 @@ const OrderWrapper = styled.div`
     flex-direction: column;
   }
   h6 {
-    font-family: "AvenirNext-DemiBold", "Avenir Next", serif;
+    font-family: "AvenirNext-DemiBold";
     color: "#000000";
     font-size: 14px;
-    /* width: 180px; */
-    /* min-width: 180px; */
-    /* margin-right: 24px; */
+
     text-transform: capitalize;
   }
   p {
-    font-family: "AvenirNext-Medium", "Avenir Next", serif;
+    font-family: "AvenirNext-Medium";
     color: ${Colors.grey};
     font-size: 11px;
   }
@@ -90,7 +87,7 @@ const OrderWrapper = styled.div`
     height: 40px;
     background-color: ${Colors.blue};
     color: ${Colors.white};
-    font-family: "AvenirNext-Medium", "Avenir Next", serif;
+    font-family: "AvenirNext-Medium";
     font-size: 14px;
     border-radius: 4px;
     border: none;
@@ -105,7 +102,7 @@ const Close = styled.button`
   height: 40px;
   background-color: ${Colors.red}!important;
   color: ${Colors.white};
-  font-family: "AvenirNext-Medium", "Avenir Next", serif;
+  font-family: "AvenirNext-Medium";
   font-size: 14px;
   border-radius: 4px;
   border: none;

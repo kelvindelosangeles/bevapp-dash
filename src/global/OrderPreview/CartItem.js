@@ -61,7 +61,7 @@ const Order = styled.div`
   margin-bottom: 16px;
   .quantity {
     width: 26px;
-    font-family: "AvenirNext-Bold", "Avenir Next", serif;
+    font-family: "AvenirNext-Bold";
     font-size: 14px;
     text-align: right;
     margin-right: 8px;
@@ -78,21 +78,21 @@ const Order = styled.div`
     }
   }
   span {
-    font-family: "AvenirNext-Medium", "Avenir Next", serif;
+    font-family: "AvenirNext-Medium";
     font-size: 11px;
     letter-spacing: 0;
     line-height: 0.4;
     margin-right: 16px;
   }
   .itemTitle {
-    font-family: "AvenirNext-Medium", "Avenir Next", serif;
+    font-family: "AvenirNext-Medium";
     font-size: 14px;
     max-width: 150px;
     /* letter-spacing: 0.5px; */
     text-transform: uppercase;
   }
   .cost {
-    font-family: "AvenirNext-Bold", "Avenir Next", serif;
+    font-family: "AvenirNext-Bold";
     font-size: 14px;
     margin-left: auto;
     display: flex;

@@ -224,12 +224,13 @@ const Form = styled.form`
   }
   input,
   select {
-    height: 45px;
+    height: 56px;
     width: 100%;
     padding: 16px 8px;
     border: none;
     border-radius: 4px;
     background-color: ${Colors.lightGrey};
+    -webkit-appearance: none;
   }
   button {
     padding: 18px 0;

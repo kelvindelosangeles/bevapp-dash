@@ -16,14 +16,14 @@ const _DBOrderHeader = () => {
 const DBOrderHeader = styled.div`
   grid-area: orderheader;
   display: grid;
-  grid-template-columns: 2fr 2fr 1fr 2fr;
+  grid-template-columns: 100px 2fr 1fr 2fr;
   grid-template-rows: 1fr;
   grid-gap: 48px;
   padding: 0 48px;
   margin: 24px;
   margin-bottom: 0;
   p {
-    font-family: "AvenirNext-Bold", "Avenir Next", serif;
+    font-family: "AvenirNext-Bold";
     color: ${Colors.black};
     font-size: 14;
   }

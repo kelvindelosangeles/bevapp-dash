@@ -169,7 +169,7 @@ const ROControls = props => {
               setRapidEntry("");
             }}
           />
-          <button type="submit"></button>
+          <button style={{ display: "none" }} type="submit"></button>
         </form>
       </div>
     </ROControlsWrapper>
@@ -204,7 +204,7 @@ const ROControlsWrapper = styled.div`
       outline: none;
     }
     svg {
-      margin-right: 24px;
+      margin-right: 16px;
       font-size: 32px;
     }
   }

@@ -40,7 +40,7 @@ const OrderCartWrapper = styled.section`
     margin-bottom: 40px;
   }
   h6 {
-    font-family: "AvenirNext-Bold", "Avenir Next", serif;
+    font-family: "AvenirNext-Bold";
     font-size: 16px;
   }
   main {

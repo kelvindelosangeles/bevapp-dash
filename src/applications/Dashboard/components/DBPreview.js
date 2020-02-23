@@ -182,7 +182,7 @@ const Action = styled.button`
   width: 100%;
   border-radius: 5px;
   border: none;
-  font-family: "AvenirNext-Medium", "Avenir Next", serif;
+  font-family: "AvenirNext-Medium";
   font-size: 14px;
 `;
 

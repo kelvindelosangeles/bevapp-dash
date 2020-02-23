@@ -7,7 +7,7 @@ const OrderDetails = ({ orderID, createdAt, status }) => {
       <div className="row">
         <div className="detail">
           <h6>Order ID</h6>
-          <p>{orderID}</p>
+          <p>{orderID.slice(6)}</p>
         </div>
         <div className="detail">
           <h6>Placed By</h6>
@@ -40,14 +40,14 @@ const OrderDetailsWrapper = styled.section`
   }
   #status {
     color: #22aa99;
-    font-family: "AvenirNext-Bold", "Avenir Next", serif;
+    font-family: "AvenirNext-Bold";
   }
   h6 {
-    font-family: "AvenirNext-Bold", "Avenir Next", serif;
+    font-family: "AvenirNext-Bold";
     font-size: 14px;
   }
   p {
-    font-family: "AvenirNext-Medium", "Avenir Next", serif;
+    font-family: "AvenirNext-Medium";
     font-size: 12px;
   }
 `;

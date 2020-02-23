@@ -61,7 +61,7 @@ const CustomerSearch = styled.form`
     padding-left: 24px;
     margin-bottom: 24px;
     ::placeholder {
-      font-family: "AvenirNext-Medium", "Avenir Next", serif;
+      font-family: "AvenirNext-Medium";
       color: "#777777";
       font-size: 17px;
     }

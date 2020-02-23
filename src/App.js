@@ -3,14 +3,15 @@ import "./App.css";
 import { Route, Switch } from "react-router-dom";
 import styled from "styled-components";
 
-import Sidebar from "./Global/Sidebar/Sidebar";
 import AppHeader from "./Global/AppHeader/AppHeader";
+import Sidebar from "./Global/Sidebar/Sidebar";
 import Dashboard from "./Applications/Dashboard/Dashboard";
 import RapidOrder from "./Applications/Rapid Order/RapidOrder";
-
-import { Colors } from "./Constants/Colors";
 import Store from "./Applications/Store/Store";
 import SpecialPricing from "./Applications/Special Pricing/SpecialPricing";
+
+import { Colors } from "./Constants/Colors";
+import GlobalFonts from "./Assets/Fonts/Fonts";
 
 import { firestoreConnect, isLoaded } from "react-redux-firebase";
 import { compose } from "redux";
@@ -21,8 +22,11 @@ const App = props => {
   return !isLoaded(props.inventory) ||
     !isLoaded(props.orders) ||
     // !isLoaded(props.test) ||
-    !isLoaded(props.store) ? null : ( // <Spinner />
+    !isLoaded(props.store) ? (
+    <Spinner />
+  ) : (
     <AppWrapper>
+      <GlobalFonts />
       <Sidebar />
       <AppContainer>
         <AppHeader />
@@ -42,7 +46,7 @@ const AppWrapper = styled.div`
   height: 100vh;
   width: 100vw;
   min-height: 800px;
-  min-width: 1430px;
+  min-width: 1360px;
 `;
 
 const AppContainer = styled.div`

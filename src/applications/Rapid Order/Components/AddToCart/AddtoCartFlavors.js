@@ -124,7 +124,7 @@ const FlavorsFormActions = styled.div`
   button {
     width: 160px;
     height: 50px;
-    font-family: "AvenirNext-Bold", "Avenir Next", serif;
+    font-family: "AvenirNext-Bold";
     color: ${Colors.white};
     background-color: ${Colors.black};
     border-radius: 8px;

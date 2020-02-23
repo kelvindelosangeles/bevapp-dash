@@ -39,14 +39,14 @@ const ItemWrapper = styled.div`
     margin-bottom: 16px;
   }
   h5 {
-    font-family: "AvenirNext-Demibold", "Avenir Next", serif;
+    font-family: "AvenirNext-Demibold";
     font-size: 12px;
     text-align: center;
     margin-bottom: 4px;
     text-transform: capitalize;
   }
   p {
-    font-family: "AvenirNext-Medium", "Avenir Next", serif;
+    font-family: "AvenirNext-Medium";
     font-size: 12px;
   }
 `;

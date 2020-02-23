@@ -143,7 +143,7 @@ const QuantityForm = styled.form`
     grid-area: QTY;
     height: 100px;
     font-size: 91px;
-    font-family: "AvenirNext-Bold", "Avenir Next", serif;
+    font-family: "AvenirNext-Bold";
     text-align: center;
     border: none;
     -webkit-appearance: none;
@@ -155,7 +155,7 @@ const QuantityForm = styled.form`
     }
   }
   p {
-    font-family: "AvenirNext-Bold", "Avenir Next", serif;
+    font-family: "AvenirNext-Bold";
     font-size: 16px;
     grid-area: label;
     text-align: center;
@@ -169,7 +169,7 @@ const QuantityForm = styled.form`
     button {
       width: 153px;
       height: 54px;
-      font-family: "AvenirNext-Bold", "Avenir Next", serif;
+      font-family: "AvenirNext-Bold";
       color: ${Colors.white};
       background-color: ${Colors.black};
       border-radius: 8px;
