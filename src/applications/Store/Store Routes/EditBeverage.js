@@ -69,16 +69,35 @@ const EditBeverage = props => {
   };
 
   const deleteHandler = () => {
-    // const {}
-
-    itemID !== "" &&
+    const {
+      [itemID]: removed,
+      ["id"]: omit,
+      ...updatedInventory
+    } = props.inventory;
+    window.confirm(`Are you sure you would like to delete ${itemID}`) &&
+      itemID !== "" &&
       brand &&
       category &&
       packaging &&
       description !== "" &&
       size !== "" &&
       price !== "" &&
-      console.log("hello");
+      props.firestore
+        .set(
+          {
+            collection: "inventory",
+            doc: "beverages"
+          },
+          updatedInventory
+        )
+        .then(() => {
+          console.log("success");
+          props.history.push("/store/home");
+        })
+        .catch(err => {
+          console.log(err);
+          alert(err);
+        });
   };
 
   const brandOptions = () => {
@@ -197,8 +216,12 @@ const EditBeverage = props => {
             }}
           />
         </div>
-        <button style={{ gridArea: "h" }}>Submit</button>
-        <button style={{ gridArea: "i" }}>Delete</button>
+        <button style={{ gridArea: "h" }} type="submit">
+          Submit
+        </button>
+        <button style={{ gridArea: "i" }} type="button" onClick={deleteHandler}>
+          Delete
+        </button>
       </Form>
     </EditBeverageWrapper>
   );
@@ -250,12 +273,16 @@ const Form = styled.form`
     font-size: 14px;
   }
   button {
-    padding: 18px 0;
+    padding: 16px 0;
     border-radius: 4px;
     background-color: ${Colors.green};
     font-family: AvenirNext-Bold;
     font-size: 16px;
     color: ${Colors.white};
+    cursor: pointer;
+    :last-of-type {
+      background-color: ${Colors.red};
+    }
   }
 `;
 
@@ -263,7 +290,7 @@ export default compose(
   firestoreConnect(),
   connect(state => {
     return {
-      inventory: state.Firestore.ordered.inventory[0]
+      inventory: state.Firestore.data.inventory.beverages
     };
   })
 )(withRouter(EditBeverage));

@@ -61,7 +61,7 @@ const STBeveragesWrspper = styled.div`
     position: absolute;
     overflow: hidden;
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-gap: 24px;
     align-content: flex-start;
     overflow: scroll;
@@ -89,8 +89,8 @@ const BeverageSearch = styled.form`
 
 const ItemWrapper = styled.div`
   background-color: ${Colors.white};
-  height: 130px;
-  padding: 0 16px;
+  min-height: 130px;
+  padding: 16px;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -121,6 +121,6 @@ const ItemWrapper = styled.div`
 
 export default connect(state => {
   return {
-    beverages: state.Firestore.ordered.inventory[0]
+    beverages: state.Firestore.data.inventory.beverages
   };
 })(STBeverages);
