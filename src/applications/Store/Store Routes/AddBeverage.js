@@ -58,6 +58,7 @@ const AddBeverage = props => {
           })
           .catch(e => {
             console.log(e);
+            alert(e);
           })
       );
     }

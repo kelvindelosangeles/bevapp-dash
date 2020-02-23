@@ -68,6 +68,19 @@ const EditBeverage = props => {
     );
   };
 
+  const deleteHandler = () => {
+    // const {}
+
+    itemID !== "" &&
+      brand &&
+      category &&
+      packaging &&
+      description !== "" &&
+      size !== "" &&
+      price !== "" &&
+      console.log("hello");
+  };
+
   const brandOptions = () => {
     let brands = brandsList.map(i => i[0]);
     brands = [...new Set(brands)].map(i => {

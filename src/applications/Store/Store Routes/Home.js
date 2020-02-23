@@ -10,11 +10,11 @@ const Home = () => {
   return (
     <HomeWrapper>
       <Card to="/store/addcustomer">
-        <img src={AddBeverageIcon} alt="" />
+        <img src={AddCustomerIcon} alt="" />
         <button>Add A New Customer</button>
       </Card>
       <Card to="/store/addbeverage">
-        <img src={AddCustomerIcon} alt="" />
+        <img src={AddBeverageIcon} alt="" />
         <button>Add A New Beverage</button>
       </Card>
     </HomeWrapper>
