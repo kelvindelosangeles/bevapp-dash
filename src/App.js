@@ -17,89 +17,14 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import Spinner from "./Global/Spinner/Spinner";
 
-// import { customers } from "./Assets/Data/Customers";
-
 const App = props => {
-  const test = () => {
-    props.firestore
-      .set(
-        {
-          collection: "test",
-          doc: "my doc"
-        },
-        {
-          ARI1GA: {
-            brand: "Arizona",
-            category: "juice",
-            description: "Arizona 1 gallon",
-            flavors: [
-              "fruit punch",
-              "mango",
-              "grape",
-              "kiwi",
-              "iced tea",
-              "half & half"
-            ],
-            id: "ARI1GA",
-            packaging: "bottle",
-            price: "11.99",
-            size: "1 gallon"
-          },
-          ARI20B: {
-            brand: "Arizona",
-            category: "juice",
-            description: "Arizona 20oz bottle",
-            id: "ARI20B",
-            packaging: "bottle",
-            price: "17.39",
-            size: "20oz"
-          },
-          ARI24C: {
-            brand: "Arizona",
-            category: "juice",
-            description: "Arizona 24oz can",
-            id: "ARI24C",
-            packaging: "can",
-            price: "17.49",
-            size: "24oz"
-          },
-          ASA12B: {
-            brand: "Asahi",
-            category: "beer",
-            description: "Asahi 12oz bottle",
-            id: "ASA12B",
-            packaging: "bottle",
-            price: "36.39",
-            size: "12oz"
-          },
-          ASA22B: {
-            brand: "Asahi",
-            category: "beer",
-            description: "Asahi 22oz bottle",
-            id: "ASA22B",
-            packaging: "bottle",
-            price: "40.49",
-            size: "22oz"
-          }
-        }
-      )
-      .then(e => {
-        console.log(e);
-        console.log("success");
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-
   return !isLoaded(props.inventory) ||
     !isLoaded(props.orders) ||
-    !isLoaded(props.test) ||
+    // !isLoaded(props.test) ||
     !isLoaded(props.store) ? null : ( // <Spinner />
     <AppWrapper>
       <Sidebar />
       <AppContainer>
-        <button onClick={test}>TEST</button>
         <AppHeader />
         <Switch>
           <Route exact path="/dashboard" component={Dashboard} />
@@ -133,7 +58,7 @@ export default compose(
     return {
       inventory: state.Firestore.data.inventory,
       orders: state.Firestore.data.orders,
-      test: state.Firestore.data.test,
+      // test: state.Firestore.data.test,
       store: state.Firestore.data.store
     };
   }),
@@ -141,7 +66,7 @@ export default compose(
     return [
       { collection: "inventory" },
       { collection: "orders" },
-      { collection: "test" },
+      // { collection: "test" },
       { collection: "store" }
     ];
   })

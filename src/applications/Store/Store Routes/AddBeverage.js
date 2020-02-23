@@ -26,41 +26,46 @@ const AddBeverage = props => {
       );
       setItemID("");
     } else {
-      return (
-        itemID !== "" &&
-        brand &&
-        category &&
-        packaging &&
-        description !== "" &&
-        size !== "" &&
-        price !== "" &&
-        props.firestore
-          .update(
-            {
-              collection: "inventory",
-              doc: "beverages"
-            },
-            {
-              [itemID]: {
-                brand,
-                id: itemID,
-                category,
-                description,
-                packaging,
-                size,
-                price
+      if (isNaN(Number(price))) {
+        alert("The Price must be a number in this format 34.99");
+        setPrice("");
+      } else {
+        return (
+          itemID !== "" &&
+          brand &&
+          category &&
+          packaging &&
+          description !== "" &&
+          size !== "" &&
+          price !== "" &&
+          props.firestore
+            .update(
+              {
+                collection: "inventory",
+                doc: "beverages"
+              },
+              {
+                [itemID]: {
+                  brand,
+                  id: itemID,
+                  category,
+                  description,
+                  packaging,
+                  size,
+                  price
+                }
               }
-            }
-          )
-          .then(() => {
-            console.log("success");
-            props.history.push("/store/home");
-          })
-          .catch(e => {
-            console.log(e);
-            alert(e);
-          })
-      );
+            )
+            .then(() => {
+              console.log("success");
+              props.history.push("/store/home");
+            })
+            .catch(e => {
+              console.log(e);
+              alert(e);
+            })
+        );
+      }
     }
   };
 
