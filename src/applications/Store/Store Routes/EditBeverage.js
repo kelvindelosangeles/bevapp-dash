@@ -32,6 +32,7 @@ const EditBeverage = props => {
   console.log(props.inventory[props.match.params.id]);
 
   const submitHandler = e => {
+    e.preventDefault();
     return (
       itemID !== "" &&
       brand &&
@@ -68,7 +69,8 @@ const EditBeverage = props => {
     );
   };
 
-  const deleteHandler = () => {
+  const deleteHandler = e => {
+    e.preventDefault();
     const {
       [itemID]: removed,
       ["id"]: omit,

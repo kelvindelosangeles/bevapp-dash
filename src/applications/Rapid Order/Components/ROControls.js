@@ -7,97 +7,58 @@ import { connect } from "react-redux";
 import { useEffect } from "react";
 
 const ROControls = props => {
+  const seid = useRef();
   const seqty = useRef();
   const [search, setSearch] = props.search;
-  const [rapidEntry, setRapidEntry] = props.RapidEntry;
   const [smartEntryID, setSmartEntryID] = props.SmartEntryID;
   const [smartEntryQty, setSmartEntryQty] = props.SmartEntryQty;
 
   useEffect(() => {
-    seqty.current.focus();
-  }, [smartEntryQty]);
+    seid.current.focus();
+  }, []);
 
-  const rapidEntryChangeHandler = e => {
-    setRapidEntry(e.target.value);
-  };
   const smartEntryQtyChangeHandler = e => {
     smartEntryQty.length > 2
       ? setSmartEntryQty(smartEntryQty.slice(0, 2))
       : setSmartEntryQty(e.target.value);
   };
   const smartEntryIDChangeHandler = e => {
+    smartEntryID.length > 4 && seqty.current.focus();
     setSmartEntryID(e.target.value.toUpperCase());
   };
-
-  const rapidEntrySubmitHandler = e => {
-    e.preventDefault();
-
-    try {
-      // Create the id and the quantity
-      let qty = rapidEntry.slice(0, 3).split("-")[0];
-      let ID = rapidEntry.split("-")[1].toUpperCase();
-
-      // if theres no error then check if that store item exists
-      if (props.store[ID] === undefined) {
-        // if it doesnt throw an item doesnt exist error because the format is correct
-        setRapidEntry("");
-        console.log(ID);
-        window.alert("That item does not exist");
-      } else {
-        // check if the item has flavors if so default to flavors modal
-        if (props.store[ID].hasOwnProperty("flavors")) {
-          console.log("this item has flavors");
-          setRapidEntry("");
-          props.dispatch({ type: "TOGGLE_ATCF", item: props.store[ID] });
-          // if it is add the item to the cart
-        } else {
-          setRapidEntry("");
-          console.log(props.store[ID]);
-          props.dispatch({
-            type: "ADD_TO_CART",
-            item: { ...props.store[ID], qty }
-          });
-        }
-      }
-      // any other errors and throw an error and clear the cart
-      // Most likely a formating error
-    } catch (err) {
-      setRapidEntry("");
-      console.log(err);
-      window.alert("Incorrect Format");
-    }
-  };
-
   const smartEntrySubmitHandler = e => {
     e.preventDefault();
-    console.log(smartEntryQty + smartEntryID);
-
     try {
-      if (props.store[smartEntryID] === undefined) {
-        // if it doesnt throw an item doesnt exist error because the format is correct
-        setSmartEntryID("");
-        setSmartEntryQty("");
-        console.log(smartEntryID);
-        return window.alert("That item does not exist");
-      } else {
-        if (props.store[smartEntryID].hasOwnProperty("flavors")) {
-          console.log("this item has flavors");
+      if (smartEntryQty !== "") {
+        if (props.store[smartEntryID] === undefined) {
+          // if it doesnt throw an item doesnt exist error because the format is correct
           setSmartEntryID("");
           setSmartEntryQty("");
-          props.dispatch({
-            type: "TOGGLE_ATCF",
-            item: props.store[smartEntryID]
-          });
-          // if it is add the item to the cart
+          seid.current.focus();
+          return window.alert("That item does not exist");
         } else {
-          console.log(props.store[smartEntryID]);
-          setSmartEntryID("");
-          setSmartEntryQty("");
-          return props.dispatch({
-            type: "ADD_TO_CART",
-            item: { ...props.store[smartEntryID], qty: smartEntryQty }
-          });
+          if (props.store[smartEntryID].hasOwnProperty("flavors")) {
+            console.log("this item has flavors");
+            setSmartEntryID("");
+            setSmartEntryQty("");
+            props.dispatch({
+              type: "TOGGLE_ATCF",
+              item: props.store[smartEntryID]
+            });
+            // if it is add the item to the cart
+          } else {
+            console.log(props.store[smartEntryID]);
+            setSmartEntryID("");
+            setSmartEntryQty("");
+            seid.current.focus();
+            return props.dispatch({
+              type: "ADD_TO_CART",
+              item: { ...props.store[smartEntryID], qty: smartEntryQty }
+            });
+          }
         }
+      } else {
+        alert("Please Enter a Quantity");
       }
     } catch (error) {
       console.log(error);
@@ -119,44 +80,13 @@ const ROControls = props => {
             autoComplete="off"
             value={search}
             onChange={e => setSearch(e.target.value.toUpperCase())}
-            onFocus={() => {
-              setRapidEntry("");
-            }}
-          />
-        </form>
-        <form onSubmit={rapidEntrySubmitHandler}>
-          <BoltIcon />
-          <input
-            type="text"
-            placeholder="34-AMS12B"
-            autoComplete="off"
-            name="rapidentry"
-            value={rapidEntry}
-            onChange={rapidEntryChangeHandler}
-            onFocus={() => {
-              setSearch("");
-            }}
           />
         </form>
 
         <form onSubmit={smartEntrySubmitHandler} className="smart-entry">
-          <BoltIcon2 onClick={smartEntrySubmitHandler} />
+          <BoltIcon2 />
           <input
-            className="seqty"
-            ref={seqty}
-            type="number"
-            min="1"
-            max="999"
-            placeholder="34"
-            autoFocus
-            value={smartEntryQty}
-            onChange={smartEntryQtyChangeHandler}
-            onFocus={() => {
-              setSearch("");
-              setRapidEntry("");
-            }}
-          />
-          <input
+            ref={seid}
             className="seid"
             type="text"
             placeholder="AMS12B"
@@ -164,10 +94,17 @@ const ROControls = props => {
             name="rapidentry"
             value={smartEntryID}
             onChange={smartEntryIDChangeHandler}
-            onFocus={() => {
-              setSearch("");
-              setRapidEntry("");
-            }}
+          />
+          <input
+            ref={seqty}
+            className="seqty"
+            type="number"
+            min="1"
+            max="999"
+            placeholder="34"
+            autoFocus
+            value={smartEntryQty}
+            onChange={smartEntryQtyChangeHandler}
           />
           <button style={{ display: "none" }} type="submit"></button>
         </form>
@@ -215,8 +152,10 @@ const ROControlsWrapper = styled.div`
     }
     .seqty {
       -webkit-appearance: none;
-      margin-right: 16px;
       padding: 0 24px;
+    }
+    .seid {
+      margin-right: 16px;
     }
   }
 `;

@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import { Route, Switch } from "react-router-dom";
 import styled from "styled-components";
+import "./App.css";
 
 import AppHeader from "./Global/AppHeader/AppHeader";
 import Sidebar from "./Global/Sidebar/Sidebar";
