@@ -25,7 +25,9 @@ class CustomerCopy extends React.Component {
           .map(i => {
             return (
               <Flavor>
-                <p>{i[1]}</p> <p>x</p> <p> {i[0]}</p>
+                <p>{i[1]}</p>
+                <p>x</p>
+                <p> {i[0]}</p>
               </Flavor>
             );
           });
@@ -40,12 +42,6 @@ class CustomerCopy extends React.Component {
           <p className="price">$ {OrderModel.CalculateItem(i)}</p>
         </React.Fragment>
       );
-    });
-    const totalCostArray = Object.values(this.cart()).map(i => {
-      return parseFloat((i.qty * parseFloat(i.price)).toFixed(2));
-    });
-    const total = totalCostArray.reduce((a, b) => {
-      return a + b;
     });
 
     return (
@@ -81,7 +77,7 @@ class CustomerCopy extends React.Component {
         <Footer>
           <div className="order-data">
             <p>Total Cases : 17</p>
-            <p>invoice Total: $ {total}</p>
+            <p>invoice Total: $ {OrderModel.CalculateCart(this.cart())}</p>
           </div>
           <p className="credit">Credits ______________________</p>
           <div className="balances">
