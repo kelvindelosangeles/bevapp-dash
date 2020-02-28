@@ -19,7 +19,7 @@ const EmptyOrderWrapper = styled.div`
   width: 100%;
   p {
     font-family: "AvenirNext-Bold";
-    font-size: 14px;
+    font-size: 16px;
   }
 `;
 

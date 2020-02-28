@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import styled from "styled-components";
+import { connect } from "react-redux";
 
 import STToggle from "./Components/STToggle";
 
@@ -11,7 +12,7 @@ import Home from "./Store Routes/Home";
 import AddBeverage from "./Store Routes/AddBeverage";
 import EditBeverage from "./Store Routes/EditBeverage";
 
-const Store = () => {
+const Store = ({ sidebarExpanded }) => {
   const [storeToggle, setStoreToggle] = useState(true);
 
   const toggleStore = () => {
@@ -19,7 +20,7 @@ const Store = () => {
   };
 
   return (
-    <StoreWrapper>
+    <StoreWrapper expand={sidebarExpanded}>
       <main>
         <STToggle storeToggle={storeToggle} toggleStore={toggleStore} />
         {storeToggle ? <STBeverages /> : <STCustomers />}
@@ -38,7 +39,8 @@ const Store = () => {
 
 const StoreWrapper = styled.div`
   display: grid;
-  grid-template-columns: 1fr 390px;
+  grid-template-columns: ${({ expand }) =>
+    expand ? "1fr 390px" : "1fr 500px"};
   grid-template-areas: "main preview";
   position: relative;
   height: 100%;
@@ -56,4 +58,8 @@ const StoreWrapper = styled.div`
   }
 `;
 
-export default Store;
+export default connect(state => {
+  return {
+    sidebarExpanded: state.GlobalState.sidebarExpanded
+  };
+})(Store);

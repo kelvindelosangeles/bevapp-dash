@@ -204,7 +204,7 @@ const OrderActions = styled.section`
     border-radius: 5px;
     border: none;
     font-family: "AvenirNext-Medium";
-    font-size: 14px;
+    font-size: 16px;
     width: 100%;
     color: ${Colors.white};
     background-color: ${Colors.green};

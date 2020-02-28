@@ -40,14 +40,14 @@ const ItemWrapper = styled.div`
   }
   h5 {
     font-family: "AvenirNext-Demibold";
-    font-size: 12px;
+    font-size: 14px;
     text-align: center;
     margin-bottom: 4px;
     text-transform: capitalize;
   }
   p {
     font-family: "AvenirNext-Medium";
-    font-size: 12px;
+    font-size: 14px;
   }
 `;
 

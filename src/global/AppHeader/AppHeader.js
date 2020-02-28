@@ -36,19 +36,19 @@ const AppHeaderWrapper = styled.div`
 const TodaysDate = styled.p`
   font-family: "AvenirNext-Regular";
   color: ${Colors.black};
-  font-size: 12px;
+  font-size: 14px;
 `;
 
 const User = styled.div`
   display: flex;
   h6 {
     font-family: "AvenirNext-DemiBold";
-    font-size: 14px;
+    font-size: 16px;
   }
   p {
     font-family: "AvenirNext-Regular";
     color: ${Colors.greyText};
-    font-size: 12px;
+    font-size: 14px;
   }
   svg {
     font-size: 18px;

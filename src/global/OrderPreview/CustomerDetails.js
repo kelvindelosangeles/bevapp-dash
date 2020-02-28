@@ -32,7 +32,7 @@ const CustomerDetailsWrapper = styled.section`
   }
   p {
     font-family: "AvenirNext-Medium";
-    font-size: 14px;
+    font-size: 16px;
     text-transform: uppercase;
   }
 `;

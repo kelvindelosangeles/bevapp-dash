@@ -10,7 +10,7 @@ import EmptyOrder from "../../Global/Empty Order/EmptyOrder";
 import AddtoCartFlavors from "./Components/AddToCart/AddtoCartFlavors";
 import AddToCart from "./Components/AddToCart/AddToCart";
 
-const RapidOrder = ({ atcVisible, atcfVisible, cart }) => {
+const RapidOrder = ({ atcVisible, atcfVisible, cart, sidebarExpanded }) => {
   const search = useState("");
   const RapidEntry = useState("");
   const SmartEntryQty = useState("");
@@ -24,7 +24,7 @@ const RapidOrder = ({ atcVisible, atcfVisible, cart }) => {
   );
 
   return (
-    <RapidOrderWrapper>
+    <RapidOrderWrapper expand={sidebarExpanded}>
       <ROControls
         search={search}
         RapidEntry={RapidEntry}
@@ -43,7 +43,8 @@ const RapidOrderWrapper = styled.div`
   position: relative;
   height: 100%;
   display: grid;
-  grid-template-columns: 1fr 390px;
+  grid-template-columns: ${({ expand }) =>
+    expand ? "1fr 390px" : "1fr 500px"};
   grid-template-rows: auto 1fr;
   grid-template-areas:
     "rocontrols preview"
@@ -54,6 +55,7 @@ export default connect(state => {
   return {
     atcVisible: state.RapidOrderState.atcVisible,
     atcfVisible: state.RapidOrderState.atcfVisible,
-    cart: state.RapidOrderState.cart
+    cart: state.RapidOrderState.cart,
+    sidebarExpanded: state.GlobalState.sidebarExpanded
   };
 })(RapidOrder);

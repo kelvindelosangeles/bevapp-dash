@@ -272,7 +272,7 @@ const Form = styled.form`
     border-radius: 4px;
     background-color: ${Colors.lightGrey};
     font-family: AvenirNext-Demibold;
-    font-size: 14px;
+    font-size: 16px;
   }
   button {
     padding: 16px 0;

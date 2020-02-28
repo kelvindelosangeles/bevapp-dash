@@ -176,16 +176,14 @@ const OrderActions = styled.section`
     "a a a a b b b b c c c c"
     "d d d d d d e e e e e e";
 `;
-
 const Action = styled.button`
   height: 40px;
   width: 100%;
   border-radius: 5px;
   border: none;
   font-family: "AvenirNext-Medium";
-  font-size: 14px;
+  font-size: 16px;
 `;
-
 const Edit = styled(Action)`
   background-color: ${Colors.yellow};
   grid-area: a;
@@ -218,7 +216,6 @@ const EDelete = styled(Action)`
   background-color: ${Colors.red};
   grid-area: c;
 `;
-
 const EditedOrderToggle = styled.section`
   display: flex;
   justify-content: space-evenly;
@@ -244,7 +241,6 @@ const EditedOrderToggle = styled.section`
     }
   }
 `;
-
 const PrintContainer = styled.div`
   display: none;
 `;

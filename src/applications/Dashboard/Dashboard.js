@@ -9,14 +9,14 @@ import Orders from "./components/Orders/Orders";
 import DBPreview from "./components/DBPreview";
 import EmptyOrder from "../../Global/Empty Order/EmptyOrder";
 
-const Dashboard = ({ activeOrder }) => {
+const Dashboard = ({ activeOrder, sidebarExpanded }) => {
   const OrderPreview = activeOrder ? (
     <DBPreview activeOrder={activeOrder} />
   ) : (
     <EmptyOrder message="Select an order to view it's details" />
   );
   return (
-    <DashboardWrapper>
+    <DashboardWrapper expand={sidebarExpanded}>
       <DBStatBar />
       <DBOrderHeader />
       <Orders />
@@ -28,7 +28,8 @@ const Dashboard = ({ activeOrder }) => {
 const DashboardWrapper = styled.div`
   display: grid;
   height: 100%;
-  grid-template-columns: 1fr 390px;
+  grid-template-columns: ${({ expand }) =>
+    expand ? "1fr 390px" : "1fr 500px"};
   grid-template-rows: auto auto 1fr;
   grid-template-areas:
     "statbar preview"
@@ -37,5 +38,8 @@ const DashboardWrapper = styled.div`
 `;
 
 export default connect(state => {
-  return { activeOrder: state.DashboardState.activeOrder };
+  return {
+    activeOrder: state.DashboardState.activeOrder,
+    sidebarExpanded: state.GlobalState.sidebarExpanded
+  };
 })(Dashboard);

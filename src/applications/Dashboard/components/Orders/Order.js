@@ -71,7 +71,7 @@ const OrderWrapper = styled.div`
   h6 {
     font-family: "AvenirNext-DemiBold";
     color: "#000000";
-    font-size: 14px;
+    font-size: 16px;
 
     text-transform: capitalize;
   }
@@ -82,13 +82,13 @@ const OrderWrapper = styled.div`
   }
   button {
     margin-left: auto;
-    width: 112px;
-    min-width: 112px;
+    width: 114px;
+    min-width: 114px;
     height: 40px;
     background-color: ${Colors.blue};
     color: ${Colors.white};
     font-family: "AvenirNext-Medium";
-    font-size: 14px;
+    font-size: 16px;
     border-radius: 4px;
     border: none;
     cursor: pointer;
@@ -97,13 +97,13 @@ const OrderWrapper = styled.div`
 
 const Close = styled.button`
   margin-left: auto;
-  width: 112px;
-  min-width: 112px;
+  width: 114px;
+  min-width: 114px;
   height: 40px;
   background-color: ${Colors.red}!important;
   color: ${Colors.white};
   font-family: "AvenirNext-Medium";
-  font-size: 14px;
+  font-size: 16px;
   border-radius: 4px;
   border: none;
 `;

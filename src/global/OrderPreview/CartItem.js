@@ -4,7 +4,7 @@ import TrashIcon from "@material-ui/icons/Delete";
 import { Colors } from "../../Constants/Colors";
 import { connect } from "react-redux";
 
-const CartItem = ({ item, dispatch, readOnly }) => {
+const CartItem = ({ item, dispatch, readOnly, sidebarExpanded }) => {
   const { qty, description, price } = item;
   const calcTotal = (qty, price) => {
     return (qty * parseFloat(price).toFixed(2)).toFixed(2);
@@ -39,7 +39,7 @@ const CartItem = ({ item, dispatch, readOnly }) => {
 
   return (
     <React.Fragment>
-      <Order readOnly={readOnly}>
+      <Order readOnly={readOnly} expand={sidebarExpanded}>
         <div className="quantity" onClick={ToggleModal}>
           {qty}
         </div>
@@ -62,7 +62,7 @@ const Order = styled.div`
   .quantity {
     width: 26px;
     font-family: "AvenirNext-Bold";
-    font-size: 14px;
+    font-size: 16px;
     text-align: right;
     margin-right: 8px;
     cursor: ${props => {
@@ -86,19 +86,21 @@ const Order = styled.div`
   }
   .itemTitle {
     font-family: "AvenirNext-Medium";
-    font-size: 14px;
-    max-width: 150px;
-    /* letter-spacing: 0.5px; */
+    font-size: 16px;
+    max-width: ${({ expand }) => {
+      return expand ? "150px" : "249px";
+    }}
+  
     text-transform: uppercase;
   }
   .cost {
     font-family: "AvenirNext-Bold";
-    font-size: 14px;
+    font-size: 16px;
     margin-left: auto;
     display: flex;
     align-items: center;
     svg {
-      margin-left: 12px;
+      margin-left: 14px;
       color: ${Colors.black};
       font-size: 20px;
       cursor: pointer;
@@ -117,7 +119,7 @@ const Flavor = styled.div`
   p,
   span {
     font-family: AvenirNext-Bold;
-    font-size: 12px;
+    font-size: 14px;
     margin-right: 8px;
     :last-child {
       text-transform: uppercase;
@@ -125,4 +127,8 @@ const Flavor = styled.div`
   }
 `;
 
-export default connect()(CartItem);
+export default connect(state => {
+  return {
+    sidebarExpanded: state.GlobalState.sidebarExpanded
+  };
+})(CartItem);

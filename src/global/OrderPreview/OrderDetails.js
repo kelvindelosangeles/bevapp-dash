@@ -44,11 +44,11 @@ const OrderDetailsWrapper = styled.section`
   }
   h6 {
     font-family: "AvenirNext-Bold";
-    font-size: 14px;
+    font-size: 16px;
   }
   p {
     font-family: "AvenirNext-Medium";
-    font-size: 12px;
+    font-size: 14px;
   }
 `;
 
