@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
+import { Order as OrderModel } from "../../Models/Order";
 
 class WarehouseCopy extends React.Component {
   cart = () => {
@@ -28,9 +29,7 @@ class WarehouseCopy extends React.Component {
               </Flavor>
             );
           });
-      const calcTotal = (qty, price) => {
-        return (qty * parseFloat(price)).toFixed(2);
-      };
+
       return (
         <React.Fragment>
           <Quantity></Quantity>
@@ -42,12 +41,6 @@ class WarehouseCopy extends React.Component {
           <Quantity></Quantity>
         </React.Fragment>
       );
-    });
-    const totalCostArray = Object.values(this.cart()).map(i => {
-      return parseFloat(i.qty * parseFloat(i.price).toFixed(2));
-    });
-    const total = totalCostArray.reduce((a, b) => {
-      return a + b;
     });
 
     return (
@@ -85,7 +78,7 @@ class WarehouseCopy extends React.Component {
         <Footer>
           <div className="order-data">
             <p>Total Cases : 17</p>
-            <p>invoice Total: $ {total}</p>
+            <p>invoice Total: $ {OrderModel.CalculateCart(this.cart())}</p>
           </div>
           <p className="credit">Credits ______________________</p>
           <div className="balances">

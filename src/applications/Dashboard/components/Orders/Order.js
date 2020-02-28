@@ -2,18 +2,9 @@ import React from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import { Colors } from "../../../../Constants/Colors";
+import { Order as OrderModel } from "../../../../Models/Order";
 
 const Order = ({ order, dispatch, activeOrder }) => {
-  const total = Object.values(order.cart)
-    .map(i => {
-      const total = parseFloat(i.qty * parseFloat(i.price));
-      return total;
-    })
-    .reduce((a, b) => {
-      return a + b;
-    })
-    .toFixed(2);
-
   const viewHandler = () => {
     dispatch({
       type: "SET_ACTIVE_ORDER",
@@ -37,7 +28,7 @@ const Order = ({ order, dispatch, activeOrder }) => {
         <p>{order.details.createdAt}</p>
       </div>
       <h6>{order.customer.name}</h6>
-      <h6>$ {total} </h6>
+      <h6>$ {OrderModel.CalculateCart(order.cart)} </h6>
       {OrderIsActive ? (
         <Close onClick={clearHandler}>Close</Close>
       ) : (
@@ -78,7 +69,8 @@ const OrderWrapper = styled.div`
   p {
     font-family: "AvenirNext-Medium";
     color: ${Colors.grey};
-    font-size: 11px;
+    font-size: 12px;
+    margin-top: 4px;
   }
   button {
     margin-left: auto;

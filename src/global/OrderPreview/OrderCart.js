@@ -1,21 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import CartItem from "./CartItem";
-
-const calcTotal = x => {
-  return x
-    .reduce((a, b) => {
-      return a + b;
-    })
-    .toFixed(2);
-};
+import { Order as OrderModel } from "../../Models/Order";
 
 const OrderCart = ({ cart, readOnly = false }) => {
   const cartArray = Object.values(cart).map(item => {
     return <CartItem item={item} key={item.id} readOnly={readOnly} />;
-  });
-  const totalCostArray = Object.values(cart).map(i => {
-    return parseFloat((i.qty * parseFloat(i.price).toFixed(2)).toFixed(2));
   });
 
   return (
@@ -27,7 +17,7 @@ const OrderCart = ({ cart, readOnly = false }) => {
       <main>{cartArray}</main>
       <footer>
         <h6>Total Cost</h6>
-        <h6>${calcTotal(totalCostArray)}</h6>
+        <h6>${OrderModel.CalculateCart(cart)}</h6>
       </footer>
     </OrderCartWrapper>
   );

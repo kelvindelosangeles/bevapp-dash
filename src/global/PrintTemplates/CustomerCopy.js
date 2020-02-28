@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Order as OrderModel } from "../../Models/Order";
 import { connect } from "react-redux";
 
 class CustomerCopy extends React.Component {
@@ -28,9 +29,7 @@ class CustomerCopy extends React.Component {
               </Flavor>
             );
           });
-      const calcTotal = (qty, price) => {
-        return (qty * parseFloat(price).toFixed(2)).toFixed(2);
-      };
+
       return (
         <React.Fragment>
           <Quantity>{i.qty}</Quantity>
@@ -38,7 +37,7 @@ class CustomerCopy extends React.Component {
             <p>{i.description}</p>
             {flavorsArray}
           </div>
-          <p className="price">$ {calcTotal(i.qty, i.price)}</p>
+          <p className="price">$ {OrderModel.CalculateItem(i)}</p>
         </React.Fragment>
       );
     });

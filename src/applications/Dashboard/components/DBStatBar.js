@@ -9,8 +9,6 @@ const DBStatBar = ({ orders }) => {
     return i.details.new;
   }).length;
 
-  console.log(orders);
-
   return (
     <DBStatBarWrapper>
       <Stat color={Colors.blue}>

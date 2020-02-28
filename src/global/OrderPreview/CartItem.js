@@ -3,12 +3,11 @@ import styled from "styled-components";
 import TrashIcon from "@material-ui/icons/Delete";
 import { Colors } from "../../Constants/Colors";
 import { connect } from "react-redux";
+import { Order as OrderModel } from "../../Models/Order";
 
 const CartItem = ({ item, dispatch, readOnly, sidebarExpanded }) => {
-  const { qty, description, price } = item;
-  const calcTotal = (qty, price) => {
-    return (qty * parseFloat(price).toFixed(2)).toFixed(2);
-  };
+  const { qty, description } = item;
+
   const removeItem = () => {
     console.log(item);
     window.confirm(`Remove ${item.description}?`) &&
@@ -46,7 +45,7 @@ const CartItem = ({ item, dispatch, readOnly, sidebarExpanded }) => {
         <span>x</span>
         <p className="itemTitle">{description}</p>
         <p className="cost">
-          $ {calcTotal(qty, price)}{" "}
+          $ {OrderModel.CalculateItem(item)}
           {readOnly ? null : <TrashIcon onClick={removeItem} />}
         </p>
       </Order>
@@ -89,8 +88,7 @@ const Order = styled.div`
     font-size: 16px;
     max-width: ${({ expand }) => {
       return expand ? "150px" : "249px";
-    }}
-  
+    }};
     text-transform: uppercase;
   }
   .cost {
