@@ -23,39 +23,35 @@ const App = props => {
   return !isLoaded(props.inventory) ||
     !isLoaded(props.orders) ||
     // !isLoaded(props.test) ||
-    !isLoaded(props.store) ? (
-    <Spinner />
-  ) : (
+    !isLoaded(props.store) ? null : ( // <Spinner />
     <AppWrapper>
-      <GlobalFonts />
       <Sidebar />
-      <AppContainer>
-        <AppHeader />
-        <Switch>
-          <Route exact path="/dashboard" component={Dashboard} />
-          <Route path="/rapidorder" component={RapidOrder} />
-          <Route path="/store" component={Store} />
-          <Route path="/specialpricing" component={SpecialPricing} />
-        </Switch>
-      </AppContainer>
+      <AppHeader />
+      <Switch>
+        <Route exact path="/dashboard" component={Dashboard} />
+        <Route path="/rapidorder" component={RapidOrder} />
+        <Route path="/store" component={Store} />
+        <Route path="/specialpricing" component={SpecialPricing} />
+      </Switch>
     </AppWrapper>
   );
 };
 
 const AppWrapper = styled.div`
-  display: flex;
+  /* display: flex;
   height: 100vh;
   width: 100vw;
   min-height: 800px;
-  min-width: 1360px;
-`;
+  min-width: 1360px; */
 
-const AppContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
-  background-color: ${Colors.lightGrey};
+  height: 100vh;
+  width: 100vw;
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  grid-template-rows: 80px 1fr;
+  grid-template-areas:
+    "sidebar appheader"
+    "sidebar app";
 `;
 
 export default compose(

@@ -24,6 +24,7 @@ const AppHeader = () => {
 };
 
 const AppHeaderWrapper = styled.div`
+  grid-area: appheader;
   display: flex;
   justify-content: space-between;
   align-items: center;

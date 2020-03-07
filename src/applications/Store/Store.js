@@ -38,6 +38,7 @@ const Store = ({ sidebarExpanded }) => {
 };
 
 const StoreWrapper = styled.div`
+  grid-area: app;
   display: grid;
   grid-template-columns: ${({ expand }) =>
     expand ? "1fr 390px" : "1fr 500px"};

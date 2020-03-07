@@ -15,7 +15,6 @@ const CustomerDetails = props => {
         <p>{formatTel(telephone)}</p>
         <p>NYC</p>
       </div>
-      <div> Map Image</div>
     </CustomerDetailsWrapper>
   );
 };
@@ -27,7 +26,6 @@ const CustomerDetailsWrapper = styled.section`
     font-family: "AvenirNext-Heavy";
     font-size: 18px;
     margin-bottom: 8px;
-    max-width: 210px;
     text-transform: uppercase;
   }
   p {

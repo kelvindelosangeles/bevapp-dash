@@ -20,8 +20,6 @@ const Sidebar = props => {
     });
   };
 
-  console.log(props.sidebarExpanded);
-
   return (
     <SidebarWrapper expand={props.sidebarExpanded}>
       <StyledExpandIcon onClick={expand} />
@@ -57,6 +55,7 @@ const Sidebar = props => {
 };
 
 const SidebarWrapper = styled.div`
+  grid-area: sidebar;
   position: relative;
   background-color: ${Colors.red};
   height: 100%;

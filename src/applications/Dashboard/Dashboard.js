@@ -26,6 +26,7 @@ const Dashboard = ({ activeOrder, sidebarExpanded }) => {
 };
 
 const DashboardWrapper = styled.div`
+  grid-area: app;
   display: grid;
   height: 100%;
   grid-template-columns: ${({ expand }) =>

@@ -2,6 +2,7 @@ import React from "react";
 
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { TextField } from "@material-ui/core";
+import styled from "styled-components";
 
 import { CustomersArray } from "../../../Assets/Data/Customers";
 // TODO: This will eventually come from firebase
@@ -16,7 +17,7 @@ const CustomerSelect = ({ customerChangeHandler }) => {
   });
 
   return (
-    <section>
+    <CustomerSelectWrapper>
       <Autocomplete
         id="combo-box-demo"
         options={options.sort(
@@ -34,8 +35,12 @@ const CustomerSelect = ({ customerChangeHandler }) => {
         )}
         onChange={customerChangeHandler}
       />
-    </section>
+    </CustomerSelectWrapper>
   );
 };
+
+const CustomerSelectWrapper = styled.div`
+  width: 100%;
+`;
 
 export default CustomerSelect;

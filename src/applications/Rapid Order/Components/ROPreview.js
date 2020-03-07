@@ -36,7 +36,7 @@ const ROPreview = ({ cart, dispatch, editMode, orderToEdit, firestore }) => {
     return moment(new Date()).format("MMM DD, h:mm");
   });
   const customerChangeHandler = (e, value) => {
-    showError(false);
+    // showError(false);
     setCustomer(value);
   };
   const cancelOrder = () => {
