@@ -12,7 +12,6 @@ import OrderDetails from "../../../Global/OrderPreview/OrderDetails";
 import OrderCart from "../../../Global/OrderPreview/OrderCart";
 import CustomerSelect from "./CustomerSelect";
 import { compose } from "redux";
-import { Order } from "../../../Models/Order";
 
 const formatTel = tel => {
   return `(${tel.slice(0, 3)}) ${tel.slice(3, 6)} ${tel.slice(6, 10)} `;
