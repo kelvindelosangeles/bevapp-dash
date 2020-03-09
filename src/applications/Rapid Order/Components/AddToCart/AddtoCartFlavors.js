@@ -6,10 +6,9 @@ import { Colors } from "../../../../Constants/Colors";
 import ItemDetails from "./ItemDetails";
 import FlavorsInput from "./FlavorsInput";
 
-const AddtoCartFlavors = ({ orderItem, dispatch, clearSearch }) => {
+const AddtoCartFlavors = ({ orderItem, dispatch }) => {
   const [flavorsQuantity, setFlavorsQuantity] = useState({});
   const node = useRef();
-  console.log(orderItem);
   useEffect(() => {
     const flavors = orderItem.flavors.reduce((o, key) => {
       return Object.assign(o, { [key]: "" });
@@ -63,7 +62,6 @@ const AddtoCartFlavors = ({ orderItem, dispatch, clearSearch }) => {
             flavorsQuantity
           }
         });
-    clearSearch("");
   };
 
   const cancelHandler = () => {

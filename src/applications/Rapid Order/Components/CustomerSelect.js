@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { CustomersArray } from "../../../Assets/Data/Customers";
 // TODO: This will eventually come from firebase
 
-const CustomerSelect = ({ customerChangeHandler }) => {
+const CustomerSelect = ({ customerChangeHandler, selectedCustomer }) => {
   const options = CustomersArray.map(x => {
     const firstLetter = x.name[0].toUpperCase();
     return {
@@ -33,6 +33,7 @@ const CustomerSelect = ({ customerChangeHandler }) => {
             fullWidth
           />
         )}
+        value={selectedCustomer}
         onChange={customerChangeHandler}
       />
     </CustomerSelectWrapper>

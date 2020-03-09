@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { Colors } from "../../../../Constants/Colors";
 import Xicon from "@material-ui/icons/Close";
 
-const AddToCart = ({ dispatch, orderItem, clearSearch }) => {
+const AddToCart = ({ dispatch, orderItem }) => {
   const [qty, setQty] = useState("");
   const node = useRef();
   const inputNode = useRef();
@@ -17,7 +17,6 @@ const AddToCart = ({ dispatch, orderItem, clearSearch }) => {
   };
   const submitHandler = e => {
     e.preventDefault();
-    clearSearch("");
     dispatch({
       type: "ADD_TO_CART",
       item: { ...orderItem, qty: qty === "" ? 1 : parseInt(qty) }

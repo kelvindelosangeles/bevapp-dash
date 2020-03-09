@@ -22,11 +22,11 @@ const RapidOrder = ({
   cart,
   history,
   store,
-  dispatch
+  dispatch,
+  customer
 }) => {
   const [smartEntryID, setSmartEntryID] = useState("");
   const [smartEntryQty, setSmartEntryQty] = useState("");
-  const [customer, setCustomer] = useState(null);
   const seid = useRef();
   const seqty = useRef();
 
@@ -49,7 +49,13 @@ const RapidOrder = ({
     smartEntryID.length > 4 && seqty.current.focus();
     setSmartEntryID(e.target.value.toUpperCase());
   };
-  const customerChangeHandler = (e, value) => setCustomer(value);
+  const customerChangeHandler = (e, value) => {
+    seid.current.focus();
+    return dispatch({
+      type: "SET_CUSTOMER",
+      customer: value
+    });
+  };
 
   const smartEntrySubmitHandler = e => {
     e.preventDefault();
@@ -96,7 +102,10 @@ const RapidOrder = ({
   return (
     <RapidOrderWrapper>
       <ControlPanel>
-        <CustomerSelect customerChangeHandler={customerChangeHandler} />
+        <CustomerSelect
+          customerChangeHandler={customerChangeHandler}
+          selectedCustomer={customer}
+        />
         <SmartEntry onSubmit={smartEntrySubmitHandler} className="smart-entry">
           <h3>Order Entry</h3>
           <input
@@ -124,6 +133,9 @@ const RapidOrder = ({
         </SmartEntry>
       </ControlPanel>
       {customer ? <NewOrder customer={customer} /> : <ROHome />}
+
+      {atcVisible && <AddToCart />}
+      {atcfVisible && <AddtoCartFlavors />}
     </RapidOrderWrapper>
   );
 };
@@ -197,7 +209,8 @@ export default connect(state => {
     atcVisible: state.RapidOrderState.atcVisible,
     atcfVisible: state.RapidOrderState.atcfVisible,
     cart: state.RapidOrderState.cart,
-    store: state.Firestore.data.inventory.beverages
+    store: state.Firestore.data.inventory.beverages,
+    customer: state.RapidOrderState.customer
   };
 })(withRouter(RapidOrder));
 
@@ -210,8 +223,8 @@ export default connect(state => {
       <ROItems filter={search[0]} />
       {OrderPreview} */
 
-/* {atcVisible && <AddToCart clearSearch={search[1]} />}
-      {atcfVisible && <AddtoCartFlavors clearSearch={search[1]} />} */
+/* {atcVisible && <AddToCart  />}
+      {atcfVisible && <AddtoCartFlavors />} */
 
 // const OrderEmpty = Object.values(cart).length < 1;
 // const OrderPreview = OrderEmpty ? (

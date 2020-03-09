@@ -19,7 +19,11 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import Spinner from "./Global/Spinner/Spinner";
 
+import { beverages as TestStore } from "./Assets/Data/Store";
+
 const App = props => {
+  // TEST MODE
+
   return !isLoaded(props.inventory) ||
     !isLoaded(props.orders) ||
     // !isLoaded(props.test) ||

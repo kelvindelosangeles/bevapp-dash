@@ -1,6 +1,7 @@
 const initialState = {
   atcVisible: false,
   atcfVisible: false,
+  customer: null,
   orderItem: {},
   cart: {},
   editMode: false,
@@ -68,6 +69,11 @@ const RapidOrderReducer = (state = initialState, action) => {
         cart: { ...action.order.cart },
         orderToEdit: { ...action.order },
         editMode: true
+      };
+    case "SET_CUSTOMER":
+      return {
+        ...state,
+        customer: action.customer
       };
     default:
       return state;
