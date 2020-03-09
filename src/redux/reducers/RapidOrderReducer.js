@@ -42,6 +42,7 @@ const RapidOrderReducer = (state = initialState, action) => {
         ...state,
         cart: {},
         editMode: false,
+        customer: null,
         orderToEdit: {}
       };
     case "SUBMIT_ORDER":

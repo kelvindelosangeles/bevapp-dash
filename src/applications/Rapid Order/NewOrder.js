@@ -23,6 +23,13 @@ const NewOrder = ({ customer, cart, firestore, dispatch }) => {
     return moment(new Date()).format("MMM DD, h:mm");
   });
   const CartArray = Object.values(cart).map(i => {
+    const removeItem = () => {
+      return dispatch({
+        type: "REMOVE_ITEM",
+        id: i.id
+      });
+    };
+
     return (
       <React.Fragment>
         <p>{i.id}</p>
@@ -31,7 +38,7 @@ const NewOrder = ({ customer, cart, firestore, dispatch }) => {
         <p>{i.price}</p>
         <p>{i.price}</p>
         <p>0.00</p>
-        <DeleteIcon />
+        <DeleteIcon onClick={removeItem} />
       </React.Fragment>
     );
   });
@@ -72,6 +79,12 @@ const NewOrder = ({ customer, cart, firestore, dispatch }) => {
             console.log(err);
           });
   };
+  const cancelOrder = () => {
+    window.confirm("Are you sure you want to cancel this order") &&
+      dispatch({
+        type: "CANCEL_ORDER"
+      });
+  };
 
   return (
     <NewOrderWrapper>
@@ -105,7 +118,7 @@ const NewOrder = ({ customer, cart, firestore, dispatch }) => {
         <h3>Total $ </h3>
         <span>
           <button onClick={submitOrder}>Submit</button>
-          <button>Cancel</button>
+          <button onClick={cancelOrder}>Cancel</button>
         </span>
       </Actions>
     </NewOrderWrapper>
