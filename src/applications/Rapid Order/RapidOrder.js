@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { Colors } from "../../Constants/Colors";
 
-import Home from "./Home";
-import NewOrder from "./NewOrder";
+import Home from "./Components/Home";
+import NewOrder from "./Components/NewOrder/NewOrder";
 import AddToCart from "./Components/AddToCart/AddToCart";
 import AddtoCartFlavors from "./Components/AddToCart/AddtoCartFlavors";
 

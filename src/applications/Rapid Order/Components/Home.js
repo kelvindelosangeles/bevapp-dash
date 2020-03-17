@@ -3,7 +3,8 @@ import styled from "styled-components";
 import CartIcon from "@material-ui/icons/ShoppingBasketRounded";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import CustomerSelect from "./Components/CustomerSelect";
+
+import CustomerSelect from "./CustomerSelect";
 
 const Home = ({ dispatch, customer }) => {
   const customerChangeHandler = (e, value) => {
