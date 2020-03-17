@@ -6,7 +6,8 @@ export class Order {
       complete: false,
       createdAt: details.createdAt,
       createdBy: details.createdBy || "default admin",
-      orderID: details.orderID
+      orderID: details.orderID,
+      notes: details.notes || ""
     };
     this.cart = cart || {};
     this.editedOrder = null;
