@@ -20,6 +20,7 @@ import { connect } from "react-redux";
 import Spinner from "./Global/Spinner/Spinner";
 
 import { beverages as TestStore } from "./Assets/Data/Store";
+import Test1 from "./test/Test1";
 
 const App = props => {
   // TEST MODE
@@ -36,6 +37,7 @@ const App = props => {
         <Route path="/rapidorder" component={RapidOrder} />
         <Route path="/store" component={Store} />
         <Route path="/specialpricing" component={SpecialPricing} />
+        {/* <Route path="/print" component={Test1} /> */}
       </Switch>
     </AppWrapper>
   );

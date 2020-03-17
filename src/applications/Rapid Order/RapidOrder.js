@@ -46,7 +46,7 @@ const RapidOrder = ({
       : setSmartEntryQty(e.target.value);
   };
   const smartEntryIDChangeHandler = e => {
-    smartEntryID.length > 4 && seqty.current.focus();
+    // smartEntryID.length > 4 && seqty.current.focus();
     setSmartEntryID(e.target.value.toUpperCase());
   };
   const customerChangeHandler = (e, value) => {
@@ -56,7 +56,6 @@ const RapidOrder = ({
       customer: value
     });
   };
-
   const smartEntrySubmitHandler = e => {
     e.preventDefault();
     try {
@@ -65,7 +64,7 @@ const RapidOrder = ({
           // if it doesnt throw an item doesnt exist error because the format is correct
           setSmartEntryID("");
           setSmartEntryQty("");
-          seid.current.focus();
+          seqty.current.focus();
           return window.alert("That item does not exist");
         } else {
           if (store[smartEntryID].hasOwnProperty("flavors")) {
@@ -81,7 +80,8 @@ const RapidOrder = ({
             console.log(store[smartEntryID]);
             setSmartEntryID("");
             setSmartEntryQty("");
-            seid.current.focus();
+            // seid.current.focus();
+            seqty.current.focus();
             return dispatch({
               type: "ADD_TO_CART",
               item: { ...store[smartEntryID], qty: smartEntryQty }
@@ -99,6 +99,18 @@ const RapidOrder = ({
     }
   };
 
+  // useEffect(() => {
+  //   // cancels the order if the customer is removed
+  //   console.log(
+  //     Object.values(cart).length > 1 &&
+  //       customer === null &&
+  //       window.confirm("Would you like to cancel this order?") &&
+  //       dispatch({ type: "CANCEL_ORDER" })
+  //   );
+  // }, [customer]);
+
+  console.log(customer === null);
+
   return (
     <RapidOrderWrapper>
       <ControlPanel>
@@ -106,18 +118,9 @@ const RapidOrder = ({
           customerChangeHandler={customerChangeHandler}
           selectedCustomer={customer}
         />
+
         <SmartEntry onSubmit={smartEntrySubmitHandler} className="smart-entry">
           <h3>Order Entry</h3>
-          <input
-            ref={seid}
-            className="seid"
-            type="text"
-            placeholder="AMS12B"
-            autoComplete="off"
-            name="rapidentry"
-            value={smartEntryID}
-            onChange={smartEntryIDChangeHandler}
-          />
           <input
             ref={seqty}
             className="seqty"
@@ -128,6 +131,16 @@ const RapidOrder = ({
             autoFocus
             value={smartEntryQty}
             onChange={smartEntryQtyChangeHandler}
+          />
+          <input
+            ref={seid}
+            className="seid"
+            type="text"
+            placeholder="AMS12B"
+            autoComplete="off"
+            name="rapidentry"
+            value={smartEntryID}
+            onChange={smartEntryIDChangeHandler}
           />
           <button style={{ display: "none" }} type="submit"></button>
         </SmartEntry>
@@ -146,6 +159,7 @@ const RapidOrderWrapper = styled.div`
   grid-template-rows: auto 1fr;
   height: 100%;
   background-color: ${Colors.white};
+  overflow: scroll;
 `;
 
 const ControlPanel = styled.div`

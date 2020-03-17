@@ -41,4 +41,9 @@ export class Order {
       return "Err";
     }
   };
+
+  static isCartEmpty = cart => {
+    // returns a Boolean
+    return Object.values(cart).length < 1;
+  };
 }
