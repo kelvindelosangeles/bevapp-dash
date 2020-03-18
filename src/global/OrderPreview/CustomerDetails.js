@@ -2,34 +2,36 @@ import React from "react";
 import styled from "styled-components";
 
 const CustomerDetails = props => {
-  const { name, address, telephone } = props;
+  const { name, address, telephone, gridArea } = props;
   const formatTel = tel => {
     return `(${tel.slice(0, 3)}) ${tel.slice(3, 6)} ${tel.slice(6, 10)} `;
   };
 
   return (
-    <CustomerDetailsWrapper>
+    <Container gridArea={gridArea}>
       <div>
         <h3>{name}</h3>
         <p>{address}</p>
         <p>{formatTel(telephone)}</p>
         <p>NYC</p>
       </div>
-    </CustomerDetailsWrapper>
+    </Container>
   );
 };
 
-const CustomerDetailsWrapper = styled.section`
+const Container = styled.section`
+  grid-area: ${props => props.gridArea};
   display: flex;
   justify-content: space-between;
+  padding: 32px;
   h3 {
-    font-family: "AvenirNext-Heavy";
+    font-family: "Poppins-ExtraBold";
     font-size: 18px;
     margin-bottom: 8px;
     text-transform: uppercase;
   }
   p {
-    font-family: "AvenirNext-Medium";
+    font-family: "Poppins-Medium";
     font-size: 16px;
     text-transform: uppercase;
   }

@@ -22,6 +22,7 @@ const RapidOrderWrapper = styled.div`
   grid-area: app;
   display: grid;
   grid-template-rows: auto 1fr;
+  grid-template-rows: 1fr;
   height: 100%;
   background-color: ${Colors.white};
   overflow: scroll;

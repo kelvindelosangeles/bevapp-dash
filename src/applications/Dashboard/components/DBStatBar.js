@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 
 import styled from "styled-components";
 import { Colors } from "../../../Constants/Colors";
+import { Order as OrdersModel } from "../../../Models/Order";
 
 const DBStatBar = ({ orders }) => {
   const newOrdersCount = orders.filter(i => {
@@ -17,7 +18,7 @@ const DBStatBar = ({ orders }) => {
       </Stat>
       <Stat color={Colors.green}>
         <h6>Daily Revenue</h6>
-        <p>$ - - -</p>
+        <p>$ {OrdersModel.CalculateRevenue(orders)}</p>
       </Stat>
     </DBStatBarWrapper>
   );

@@ -43,6 +43,53 @@ export class Order {
     }
   };
 
+  static CalculateCases = cart => {
+    try {
+      let cartArray = Object.values(cart);
+      let quantities = cartArray.map(i => {
+        return Number(i.qty);
+      });
+      return quantities.reduce((a, b) => {
+        return a + b;
+      });
+    } catch (err) {
+      console.log(err);
+      return "Err";
+    }
+  };
+
+  static CalculateRevenue = orders => {
+    try {
+      let CalculateCart = cart => {
+        try {
+          let cartArray = Object.values(cart);
+          let itemTotal = cartArray.map(i => {
+            return (parseFloat(i.price) * i.qty).toFixed(2);
+          });
+          let combinedTotals = itemTotal.reduce((a, b) => {
+            return (parseFloat(a) + parseFloat(b)).toFixed(2);
+          });
+
+          return combinedTotals;
+        } catch (err) {
+          console.log(err);
+          return "Err";
+        }
+      };
+      let orderTotals = orders.map(i => {
+        return CalculateCart(i.cart);
+      });
+      let revenue = orderTotals.reduce((a, b) => {
+        return (parseFloat(a) + parseFloat(b)).toFixed(2);
+      });
+
+      return revenue;
+    } catch (error) {
+      console.log(error);
+      return "err";
+    }
+  };
+
   static isCartEmpty = cart => {
     // returns a Boolean
     return Object.values(cart).length < 1;

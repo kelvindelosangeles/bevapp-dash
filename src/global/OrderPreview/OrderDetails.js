@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 
-const OrderDetails = ({ orderID, createdAt, status }) => {
+const OrderDetails = ({ orderID, createdAt, status, gridArea }) => {
   return (
-    <OrderDetailsWrapper>
+    <OrderDetailsWrapper gridArea={gridArea}>
       <div className="row">
         <div className="detail">
           <h6>Order ID</h6>
@@ -29,6 +29,8 @@ const OrderDetails = ({ orderID, createdAt, status }) => {
 };
 
 const OrderDetailsWrapper = styled.section`
+  grid-area: ${props => props.gridArea};
+  padding: 32px;
   .row {
     display: flex;
     :first-of-type {
@@ -40,14 +42,14 @@ const OrderDetailsWrapper = styled.section`
   }
   #status {
     color: #22aa99;
-    font-family: "AvenirNext-Bold";
+    font-family: "Poppins-Bold";
   }
   h6 {
-    font-family: "AvenirNext-Bold";
+    font-family: "Poppins-Bold";
     font-size: 16px;
   }
   p {
-    font-family: "AvenirNext-Medium";
+    font-family: "Poppins-Medium";
     font-size: 14px;
   }
 `;

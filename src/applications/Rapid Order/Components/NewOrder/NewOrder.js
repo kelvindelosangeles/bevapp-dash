@@ -4,22 +4,20 @@ import { withFirestore } from "react-redux-firebase";
 import styled from "styled-components";
 import moment from "moment";
 import uuid from "uuid";
-
 import CartIcon from "@material-ui/icons/ShoppingCartRounded";
 import DeleteIcon from "@material-ui/icons/Delete";
 
-import CustomerSelect from "../CustomerSelect";
 import { Colors } from "../../../../Constants/Colors";
-
+import { Order as OrdersModel } from "../../../../Models/Order";
+import CustomerSelect from "../CustomerSelect";
+import SmartEntry from "./Components/SmartEntry";
 import CustomerDetails from "../../../../Global/OrderPreview/CustomerDetails";
 import OrderDetails from "../../../../Global/OrderPreview/OrderDetails";
-import SmartEntry from "./Components/SmartEntry";
+import CartHeader from "./Components/CartHeader";
 
-const NewOrder = ({ cart, store, customer, firestore, dispatch }) => {
+const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
   const [smartEntryID, setSmartEntryID] = useState("");
   const [smartEntryQty, setSmartEntryQty] = useState("");
-
-  const [notes, setNotes] = useState("");
 
   const orderID = useMemo(() => {
     return (
@@ -33,25 +31,49 @@ const NewOrder = ({ cart, store, customer, firestore, dispatch }) => {
   });
   const CartArray = Object.values(cart).map(i => {
     const removeItem = () => {
-      return dispatch({
-        type: "REMOVE_ITEM",
-        id: i.id
-      });
+      return (
+        window.confirm(`Delete ${i.id} ?`) &&
+        dispatch({
+          type: "REMOVE_ITEM",
+          id: i.id
+        })
+      );
     };
-
+    const flavors = () => {
+      try {
+        return (
+          i.flavors &&
+          Object.entries(i.flavorsQuantity)
+            .filter(y => {
+              return y[1] > 0;
+            })
+            .map(x => {
+              return (
+                <Flavor>
+                  {x[0]} x {x[1]}
+                </Flavor>
+              );
+            })
+        );
+      } catch (error) {
+        console.log(error);
+        return "Flavors err";
+      }
+    };
     return (
       <React.Fragment>
         <p>{i.id}</p>
         <p>{i.qty} x</p>
-        <p>{i.description}</p>
+        <p>
+          {i.description} {flavors()}
+        </p>
         <p>{i.price}</p>
         <p>{i.price}</p>
-        <p>0.00</p>
+        <p className="item-total">{OrdersModel.CalculateItem(i)}</p>
         <DeleteIcon onClick={removeItem} />
       </React.Fragment>
     );
   });
-
   const submitOrder = () => {
     const NewOrder = {
       customer,
@@ -66,7 +88,6 @@ const NewOrder = ({ cart, store, customer, firestore, dispatch }) => {
       cart,
       editedOrder: null
     };
-
     return Object.values(cart).length < 1
       ? alert("The order cannot be submited if the cart is empty")
       : firestore
@@ -95,10 +116,9 @@ const NewOrder = ({ cart, store, customer, firestore, dispatch }) => {
         type: "CANCEL_ORDER"
       });
   };
-
   const customerChangeHandler = (e, value) => {
     return value === null
-      ? window.confirm("Are you sure you want to cancle this order?") &&
+      ? window.confirm("Are you sure you want to cancel this order?") &&
           dispatch({
             type: "CANCEL_ORDER"
           })
@@ -108,12 +128,16 @@ const NewOrder = ({ cart, store, customer, firestore, dispatch }) => {
         });
   };
   const notesChangeHandler = e => {
-    setNotes(e.target.value);
+    dispatch({
+      type: "SET_NOTE",
+      payload: e.target.value
+    });
   };
 
   return (
-    <NewOrderWrapper>
-      <ControlPanel>
+    <Container>
+      {/* NEW ORDER CONTOLS ============= */}
+      <Controls>
         <CustomerSelect
           customerChangeHandler={customerChangeHandler}
           selectedCustomer={customer}
@@ -124,110 +148,157 @@ const NewOrder = ({ cart, store, customer, firestore, dispatch }) => {
           setSmartEntryQty={setSmartEntryQty}
           setSmartEntryID={setSmartEntryID}
         />
-      </ControlPanel>
+      </Controls>
 
-      <NewOrderDetails>
-        <CustomerDetails
-          name={customer.name}
-          address={customer.address}
-          telephone={customer.telephone}
-        />
-        <OrderDetails
-          orderID={orderID}
-          createdAt={createdAt}
-          status={"New Order"}
-        />
-        <section>
-          <DetailTitle>Notes</DetailTitle>
-          <NotesInput rows={4} onChange={notesChangeHandler} />
-        </section>
-      </NewOrderDetails>
+      {/* Customer Details ============== */}
+      <CustomerDetails
+        name={customer.name}
+        address={customer.address}
+        telephone={customer.telephone}
+        gridArea="B"
+      />
+      <OrderDetails
+        orderID={orderID}
+        createdAt={createdAt}
+        status={"New Order"}
+        gridArea="C"
+      />
+      <Notes>
+        <h3>NOTES</h3>
+        <textarea rows={5} onChange={notesChangeHandler} value={notes} />
+      </Notes>
 
-      <h4>
-        <CartIcon /> Cart
-      </h4>
-      <CartGrid>
-        <h5>ID</h5>
-        <h5>Quantity</h5>
-        <h5>Description</h5>
-        <h5>Cost</h5>
-        <h5>Price</h5>
-        <h5>Total</h5>
-        <span></span>
-        {CartArray}
-      </CartGrid>
+      {/* Cart ============== */}
+      <Cart>
+        <h3>
+          <CartIcon />
+          Cart
+        </h3>
+        <div>
+          <CartHeader />
+          {CartArray}
+        </div>
+      </Cart>
+
+      {/* Actions ============== */}
       <Actions>
-        <h3>Total $ </h3>
+        <div>
+          <h3>Total</h3>
+          <h3>
+            {!OrdersModel.isCartEmpty(cart) && "$ "}
+            {!OrdersModel.isCartEmpty(cart) && OrdersModel.CalculateCart(cart)}
+          </h3>
+          <h3>Cases</h3>
+          <h3>
+            {!OrdersModel.isCartEmpty(cart) && OrdersModel.CalculateCases(cart)}
+          </h3>
+        </div>
         <span>
           <button onClick={submitOrder}>Submit</button>
           <button onClick={cancelOrder}>Cancel</button>
         </span>
       </Actions>
-    </NewOrderWrapper>
+    </Container>
   );
 };
 
-const NewOrderWrapper = styled.div`
+const Container = styled.div`
+  display: grid;
   padding: 32px 0;
-  display: flex;
-  flex-direction: column;
-  h4 {
-    display: flex;
-    align-items: center;
-    margin-left: 24px;
-    margin-bottom: 48px;
-    font-family: Poppins-ExtraBold;
-    font-size: 24px;
-    svg {
-      margin-right: 4px;
-    }
-  }
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-areas:
+    "A A A"
+    "B C D"
+    "E E E"
+    ". F F";
 `;
-const ControlPanel = styled.div`
+const Controls = styled.div`
+  grid-area: A;
   display: grid;
   grid-template-columns: 350px auto;
   justify-content: center;
+  align-items: self-start;
   padding: 32px 0;
   grid-column-gap: 64px;
 `;
-
-const NewOrderDetails = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  margin-bottom: 56px;
-  section {
-    padding: 32px;
-    border-bottom: 1px solid ${Colors.lightGrey};
+const Notes = styled.section`
+  grid-area: D;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  h3 {
+    font-family: Poppins-ExtraBold;
+    font-size: 18px;
+    color: #000000;
+  }
+  textarea {
+    width: 100%;
+    font-size: 12px;
+    border: none;
+    resize: none;
+    font-family: "Poppins-Medium";
+    font-size: 14px;
+    margin-top: 16px;
   }
 `;
-const CartGrid = styled.div`
-  display: grid;
-  grid-template-columns: 2fr 2fr 4fr 2fr 2fr 2fr 1fr;
-  grid-gap: 16px 40px;
-  padding: 0 32px;
-  margin-bottom: 80px;
-  h5 {
-    font-family: Poppins-Bold;
-    font-size: 18px;
-    margin-bottom: 40px;
-  }
-  p {
-    font-family: Poppins-Medium;
-    font-size: 16px;
+const Cart = styled.div`
+  grid-area: E;
+  h3 {
+    display: flex;
+    align-items: center;
+    font-family: Poppins-ExtraBold;
+    font-size: 20px;
     color: #000000;
+    margin-left: 32px;
+    margin-bottom: 32px;
+    svg {
+      font-size: 20px;
+      margin-right: 12px;
+    }
+  }
+  div {
+    display: grid;
+    grid-template-columns: 2fr 2fr 4fr 2fr 2fr 2fr 1fr;
+    grid-gap: 16px 40px;
+    padding: 0 32px;
+    margin-bottom: 80px;
+    h5 {
+      font-family: Poppins-Bold;
+      font-size: 18px;
+    }
+    p {
+      font-family: Poppins-Medium;
+      font-size: 16px;
+      color: #000000;
+    }
+    .item-total {
+      font-family: Poppins-Bold;
+    }
+    svg:hover {
+      color: ${Colors.red};
+      cursor: pointer;
+    }
   }
 `;
 const Actions = styled.div`
-  align-self: flex-end;
+  grid-area: F;
+  justify-self: flex-end;
   margin-right: 32px;
   margin-top: auto;
-  h3 {
-    font-family: Poppins-Bold;
-    font-size: 24px;
+  div {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-row-gap: 8px;
     margin-bottom: 32px;
+  }
+  h3 {
+    font-family: Poppins-SemiBold;
+    font-size: 24px;
   }
   span {
     display: flex;
+    margin-top: 16px;
   }
   button {
     font-family: Poppins-Medium;
@@ -249,24 +320,19 @@ const Actions = styled.div`
     }
   }
 `;
-const DetailTitle = styled.h5`
-  font-family: Poppins-ExtraBold;
-  font-size: 18px;
-  color: #000000;
-`;
-const NotesInput = styled.textarea`
-  width: 100%;
-  margin-top: 16px;
-  font-family: poppins;
-  font-size: 12px;
-  border: none;
-  resize: none;
+const Flavor = styled.p`
+  font-family: Poppins-Regular !important;
+  font-size: 14px !important;
+  margin-left: 16px;
+  margin-top: 8px;
+  padding: 0px 0px;
 `;
 
 export default connect(state => {
   return {
     cart: state.RapidOrderState.cart,
     store: state.Firestore.data.inventory.beverages,
+    notes: state.RapidOrderState.notes,
     customer: state.RapidOrderState.customer
   };
 })(withFirestore(NewOrder));
