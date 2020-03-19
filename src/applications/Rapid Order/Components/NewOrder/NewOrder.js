@@ -206,6 +206,7 @@ const Container = styled.div`
   display: grid;
   padding: 32px 0;
   grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 100px 200px 1fr auto;
   grid-template-areas:
     "A A A"
     "B C D"
@@ -218,19 +219,16 @@ const Controls = styled.div`
   grid-template-columns: 350px auto;
   justify-content: center;
   align-items: self-start;
-  padding: 32px 0;
   grid-column-gap: 64px;
 `;
 const Notes = styled.section`
   grid-area: D;
   padding: 32px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   h3 {
     font-family: Poppins-ExtraBold;
     font-size: 18px;
     color: #000000;
+    margin-bottom: 8px;
   }
   textarea {
     width: 100%;
@@ -239,7 +237,6 @@ const Notes = styled.section`
     resize: none;
     font-family: "Poppins-Medium";
     font-size: 14px;
-    margin-top: 16px;
   }
 `;
 const Cart = styled.div`
