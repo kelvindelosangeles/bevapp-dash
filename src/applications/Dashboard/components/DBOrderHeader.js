@@ -19,7 +19,7 @@ const DBOrderHeader = styled.div`
   grid-template-columns: 100px 2fr 1fr 2fr;
   grid-template-rows: 1fr;
   grid-gap: 48px;
-  padding: 0 48px;
+  padding: 0 24px;
   margin: 24px;
   margin-bottom: 0;
   p {

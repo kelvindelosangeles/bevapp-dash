@@ -165,7 +165,12 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
       />
       <Notes>
         <h3>NOTES</h3>
-        <textarea rows={5} onChange={notesChangeHandler} value={notes} />
+        <textarea
+          rows={5}
+          onChange={notesChangeHandler}
+          value={notes}
+          placeholder={"Enter order notes here."}
+        />
       </Notes>
 
       {/* Cart ============== */}

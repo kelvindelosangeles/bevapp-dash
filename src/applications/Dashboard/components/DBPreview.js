@@ -1,31 +1,20 @@
-import React, { useState, useRef, useEffect } from "react";
-import styled from "styled-components";
-import ReactToPrint from "react-to-print";
+import React, { useRef } from "react";
+import { compose } from "redux";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-
+import { firestoreConnect } from "react-redux-firebase";
+import ReactToPrint from "react-to-print";
+import styled from "styled-components";
 import { Colors } from "../../../Constants/Colors";
-
 import CustomerDetails from "../../../Global/OrderPreview/CustomerDetails";
 import OrderDetails from "../../../Global/OrderPreview/OrderDetails";
 import OrderCart from "../../../Global/OrderPreview/OrderCart";
 import CustomerCopy from "../../../Global/PrintTemplates/CustomerCopy";
 import WarehouseCopy from "../../../Global/PrintTemplates/WarehouseCopy";
-import { compose } from "redux";
-import { firestoreConnect } from "react-redux-firebase";
 
-const DBPreview = ({ activeOrder, dispatch, history, firestore }) => {
+const DBPreview = ({ activeOrder, dispatch, firestore }) => {
   const customerCopy = useRef();
   const warehouseCopy = useRef();
-  const [showEditedOrder, toggleShowEditedOrder] = useState(false);
-
-  const editOrderHandler = () => {
-    dispatch({
-      type: "EDIT_ORDER",
-      order: activeOrder
-    });
-    history.push("/rapidorder");
-  };
 
   const deleteOrderHandler = () => {
     window.confirm(
@@ -56,70 +45,8 @@ const DBPreview = ({ activeOrder, dispatch, history, firestore }) => {
         });
   };
 
-  const OrderCartLogic = () => {
-    try {
-      return (
-        <OrderCart
-          cart={
-            showEditedOrder ? activeOrder.editedOrder.cart : activeOrder.cart
-          }
-          readOnly={true}
-        />
-      );
-    } catch (error) {
-      return <OrderCart cart={activeOrder.cart} readOnly={true} />;
-    }
-  };
-
-  const ShowEditToggle = activeOrder.editedOrder && (
-    <EditedOrderToggle editedOrder={showEditedOrder}>
-      <button
-        onClick={() => {
-          toggleShowEditedOrder(false);
-        }}
-      >
-        Original
-      </button>
-      <button
-        onClick={() => {
-          toggleShowEditedOrder(true);
-        }}
-      >
-        Edited
-      </button>
-    </EditedOrderToggle>
-  );
-
-  const showOrderActions = !showEditedOrder ? (
-    <OrderActions>
-      <Edit onClick={editOrderHandler}>Edit</Edit>
-      <ReactToPrint
-        trigger={() => <PrintC>Print CX</PrintC>}
-        content={() => customerCopy.current}
-      />
-      <ReactToPrint
-        trigger={() => <PrintWH>Print WH</PrintWH>}
-        content={() => warehouseCopy.current}
-      />
-      <Complete>Complete </Complete>
-      <Delete onClick={deleteOrderHandler}>Delete</Delete>
-    </OrderActions>
-  ) : (
-    <OrderActions>
-      <ReactToPrint
-        trigger={() => <EPrintC>Print CX</EPrintC>}
-        content={() => customerCopy.current}
-      />
-      <ReactToPrint
-        trigger={() => <EPrintWH>Print WH</EPrintWH>}
-        content={() => warehouseCopy.current}
-      />
-      <EDelete onClick={deleteOrderHandler}>Delete</EDelete>
-    </OrderActions>
-  );
-
   return (
-    <DBPreviewWrapper>
+    <Container>
       <div className="wrapper">
         <CustomerDetails
           name={activeOrder.customer.name}
@@ -131,28 +58,30 @@ const DBPreview = ({ activeOrder, dispatch, history, firestore }) => {
           createdAt={activeOrder.details.createdAt}
           status="Pending Review"
         />
-        {ShowEditToggle}
-        {OrderCartLogic()}
-        {showOrderActions}
+        <OrderCart cart={activeOrder.cart} readOnly={true} />
+        <OrderActions>
+          <ReactToPrint
+            trigger={() => <PrintC>Print CX</PrintC>}
+            content={() => customerCopy.current}
+          />
+          <ReactToPrint
+            trigger={() => <PrintWH>Print WH</PrintWH>}
+            content={() => warehouseCopy.current}
+          />
+          <Complete>Complete </Complete>
+          <Delete onClick={deleteOrderHandler}>Delete</Delete>
+        </OrderActions>
       </div>
 
       <PrintContainer>
-        <CustomerCopy
-          reference={customerCopy}
-          editedCopy={showEditedOrder}
-          activeOrder={activeOrder}
-        />
-        <WarehouseCopy
-          reference={warehouseCopy}
-          editedCopy={showEditedOrder}
-          activeOrder={activeOrder}
-        />
+        <CustomerCopy reference={customerCopy} activeOrder={activeOrder} />
+        <WarehouseCopy reference={warehouseCopy} activeOrder={activeOrder} />
       </PrintContainer>
-    </DBPreviewWrapper>
+    </Container>
   );
 };
 
-const DBPreviewWrapper = styled.div`
+const Container = styled.div`
   grid-area: preview;
   position: relative;
   background-color: ${Colors.white};
@@ -171,10 +100,10 @@ const OrderActions = styled.section`
   display: grid;
   grid-column-gap: 16px;
   grid-row-gap: 24px;
-  grid-template-columns: repeat(12, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   grid-template-areas:
-    "a a a a b b b b c c c c"
-    "d d d d d d e e e e e e";
+    "b c"
+    "d e";
 `;
 const Action = styled.button`
   height: 40px;
@@ -183,10 +112,6 @@ const Action = styled.button`
   border: none;
   font-family: "AvenirNext-Medium";
   font-size: 16px;
-`;
-const Edit = styled(Action)`
-  background-color: ${Colors.yellow};
-  grid-area: a;
 `;
 const PrintC = styled(Action)`
   background-color: ${Colors.blue};
@@ -203,43 +128,6 @@ const Complete = styled(Action)`
 const Delete = styled(Action)`
   background-color: ${Colors.red};
   grid-area: e;
-`;
-const EPrintC = styled(Action)`
-  background-color: ${Colors.blue};
-  grid-area: a;
-`;
-const EPrintWH = styled(Action)`
-  background-color: lightblue;
-  grid-area: b;
-`;
-const EDelete = styled(Action)`
-  background-color: ${Colors.red};
-  grid-area: c;
-`;
-const EditedOrderToggle = styled.section`
-  display: flex;
-  justify-content: space-evenly;
-  button {
-    width: 40%;
-    padding: 18px 0;
-    border: none;
-    font-family: Gilroy-ExtraBold;
-    font-size: 16px;
-
-    cursor: pointer;
-    :first-of-type {
-      border-bottom: 4px solid
-        ${props => {
-          return props.editedOrder ? "white" : "black";
-        }};
-    }
-    :last-of-type {
-      border-bottom: 4px solid
-        ${props => {
-          return props.editedOrder ? "black" : "white";
-        }};
-    }
-  }
 `;
 const PrintContainer = styled.div`
   display: none;

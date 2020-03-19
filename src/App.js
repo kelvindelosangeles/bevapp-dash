@@ -33,7 +33,7 @@ const App = props => {
       <Sidebar />
       <AppHeader />
       <Switch>
-        <Route exact path="/dashboard" component={Dashboard} />
+        <Route path="/dashboard" component={Dashboard} />
         <Route path="/rapidorder" component={RapidOrder} />
         <Route path="/store" component={Store} />
         <Route path="/specialpricing" component={SpecialPricing} />

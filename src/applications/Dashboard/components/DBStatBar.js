@@ -18,7 +18,10 @@ const DBStatBar = ({ orders }) => {
       </Stat>
       <Stat color={Colors.green}>
         <h6>Daily Revenue</h6>
-        <p>$ {OrdersModel.CalculateRevenue(orders)}</p>
+        <p>
+          {Object.values(orders).length > 0 &&
+            OrdersModel.CalculateRevenue(orders)}
+        </p>
       </Stat>
     </DBStatBarWrapper>
   );

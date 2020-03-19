@@ -1,26 +1,18 @@
 import React from "react";
-
 import { connect } from "react-redux";
+import { Route, Switch } from "react-router-dom";
 import styled from "styled-components";
 
-import DBStatBar from "./components/DBStatBar";
-import DBOrderHeader from "./components/DBOrderHeader";
-import Orders from "./components/Orders/Orders";
-import DBPreview from "./components/DBPreview";
-import EmptyOrder from "../../Global/Empty Order/EmptyOrder";
+import NewOrders from "./Routes/NewOrders";
+import CompletedOrders from "./Routes/CompletedOrders";
 
-const Dashboard = ({ activeOrder, sidebarExpanded }) => {
-  const OrderPreview = activeOrder ? (
-    <DBPreview activeOrder={activeOrder} />
-  ) : (
-    <EmptyOrder message="Select an order to view it's details" />
-  );
+const Dashboard = ({ sidebarExpanded }) => {
   return (
     <DashboardWrapper expand={sidebarExpanded}>
-      <DBStatBar />
-      <DBOrderHeader />
-      <Orders />
-      {OrderPreview}
+      <Switch>
+        <Route to="dashboard/" component={NewOrders} />
+        <Route to="dashboard/completedorders" component={CompletedOrders} />
+      </Switch>
     </DashboardWrapper>
   );
 };
