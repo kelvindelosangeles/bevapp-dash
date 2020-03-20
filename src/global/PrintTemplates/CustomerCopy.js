@@ -101,7 +101,8 @@ const CustomerCopyWrapper = styled.div`
   padding: 0 16px;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100vh
+  height: calc(var(--vh, 1vh) * 100);
   h3 {
     font-family: OpenSans-SemiBold;
     font-size: 9px;

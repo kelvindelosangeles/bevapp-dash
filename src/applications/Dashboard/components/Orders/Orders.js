@@ -5,11 +5,24 @@ import { connect } from "react-redux";
 import { Colors } from "../../../../Constants/Colors";
 import Order from "./Order";
 
-const Orders = ({ orders }) => {
-  const OrdersArray = Object.values(orders).map(i => {
-    // because were using the ordered dataset and it inlcudes an id
-    return i.details && <Order order={i} key={i} />;
-  });
+const Orders = ({ orders, complete, search }) => {
+  const OrdersArray = Object.values(orders)
+    .filter(x => {
+      // filters based on order completion
+      return x.details && x.details.complete === complete;
+    })
+    .filter(y => {
+      // filters based on the search
+      return (
+        y.details.orderID.includes(search) ||
+        y.details.createdAt.toUpperCase().includes(search)
+      );
+      // return y.details.orderID.contains(search);
+    })
+    .map(i => {
+      // because were using the ordered dataset and it inlcudes an id
+      return i.details && <Order order={i} key={i} />;
+    });
 
   return (
     <OrdersWrapper>

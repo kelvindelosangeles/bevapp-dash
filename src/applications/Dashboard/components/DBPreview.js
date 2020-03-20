@@ -50,6 +50,24 @@ const DBPreview = ({ activeOrder, dispatch, firestore, orders }) => {
           alert("Something Went Wrong Please Contact Admin");
         });
   };
+  const completeClickHandler = () => {
+    window.confirm("Would you like to complete this order?") &&
+      dispatch({ type: "CLEAR_ACTIVE_ORDER" }) &&
+      firestore.update(
+        {
+          collection: "orders",
+          doc: "orders"
+        },
+        {
+          [activeOrder.details.orderID]: {
+            ...activeOrder,
+            details: { ...activeOrder.details, complete: true }
+          }
+        }
+      );
+  };
+
+  const complete = activeOrder.details.complete;
 
   return (
     <Container>
@@ -77,8 +95,10 @@ const DBPreview = ({ activeOrder, dispatch, firestore, orders }) => {
             trigger={() => <PrintWH>Print WH</PrintWH>}
             content={() => warehouseCopy.current}
           />
-          <Complete>Complete </Complete>
-          <Delete onClick={deleteOrderHandler}>Delete</Delete>
+          {!complete && (
+            <Complete onClick={completeClickHandler}>Complete </Complete>
+          )}
+          {!complete && <Delete onClick={deleteOrderHandler}>Delete</Delete>}
         </OrderActions>
       </div>
 

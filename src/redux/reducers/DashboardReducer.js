@@ -19,6 +19,11 @@ const DashboardReducer = (state = initialState, action) => {
       };
     case "SET_ACTIVE_ORDER":
       return { ...state, activeOrder: { ...action.order } };
+    case "CLEAR_ACTIVE_ORDER":
+      return {
+        ...state,
+        activeOrder: null
+      };
     case "DELETE_ORDER":
       // const { [action.orderID]: removed, ...remainingOrders } = state.newOrders;
       // return {

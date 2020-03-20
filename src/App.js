@@ -44,13 +44,8 @@ const App = props => {
 };
 
 const AppWrapper = styled.div`
-  /* display: flex;
   height: 100vh;
-  width: 100vw;
-  min-height: 800px;
-  min-width: 1360px; */
-
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   width: 100vw;
   display: grid;
   grid-template-columns: 250px 1fr;

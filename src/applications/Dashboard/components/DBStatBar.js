@@ -9,7 +9,7 @@ import { Colors } from "../../../Constants/Colors";
 const DBStatBar = ({ orders }) => {
   const newOrdersCount = Object.values(orders).filter(i => {
     // because were using the ordered dataset and it inlcudes an id
-    return i.details && i.details.new;
+    return i.details && i.details.complete === false;
   }).length;
 
   return (
@@ -72,7 +72,7 @@ const Completed = styled(Link)`
   justify-content: center;
   align-items: center;
   color: ${Colors.white};
-  font-family: Poppins-Semibold;
+  font-family: Poppins-Medium;
   font-size: 20px;
   margin-left: auto;
   text-decoration: none;
