@@ -25,9 +25,9 @@ const Container = styled.section`
   justify-content: space-between;
   padding: 32px;
   h3 {
-    font-family: "Poppins-ExtraBold";
-    font-size: 18px;
-    margin-bottom: 8px;
+    font-family: "Poppins-Bold";
+    font-size: 16px;
+    margin-bottom: 4px;
     text-transform: uppercase;
   }
   p {

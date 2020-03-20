@@ -76,9 +76,11 @@ export class Order {
           return "Err";
         }
       };
-      let orderTotals = orders.map(i => {
-        return CalculateCart(i.cart);
-      });
+      let orderTotals = Object.values(orders)
+        .filter(i => i.details)
+        .map(i => {
+          return CalculateCart(i.cart);
+        });
       let revenue = orderTotals.reduce((a, b) => {
         return (parseFloat(a) + parseFloat(b)).toFixed(2);
       });

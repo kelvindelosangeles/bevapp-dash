@@ -6,33 +6,17 @@ import styled from "styled-components";
 import NewOrders from "./Routes/NewOrders";
 import CompletedOrders from "./Routes/CompletedOrders";
 
-const Dashboard = ({ sidebarExpanded }) => {
+const Dashboard = () => {
   return (
-    <DashboardWrapper expand={sidebarExpanded}>
-      <Switch>
-        <Route to="dashboard/" component={NewOrders} />
-        <Route to="dashboard/completedorders" component={CompletedOrders} />
-      </Switch>
-    </DashboardWrapper>
+    <Switch>
+      <Route exact path="/dashboard/" component={NewOrders} />
+      <Route path="/dashboard/completedorders" component={CompletedOrders} />
+    </Switch>
   );
 };
 
-const DashboardWrapper = styled.div`
-  grid-area: app;
-  display: grid;
-  height: 100%;
-  grid-template-columns: ${({ expand }) =>
-    expand ? "1fr 390px" : "1fr 500px"};
-  grid-template-rows: auto auto 1fr;
-  grid-template-areas:
-    "statbar preview"
-    "orderheader preview"
-    "orders preview";
-`;
-
 export default connect(state => {
   return {
-    activeOrder: state.DashboardState.activeOrder,
-    sidebarExpanded: state.GlobalState.sidebarExpanded
+    activeOrder: state.DashboardState.activeOrder
   };
 })(Dashboard);

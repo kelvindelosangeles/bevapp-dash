@@ -91,12 +91,12 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
     return Object.values(cart).length < 1
       ? alert("The order cannot be submited if the cart is empty")
       : firestore
-          .set(
+          .update(
             {
               collection: "orders",
-              doc: orderID
+              doc: "orders"
             },
-            NewOrder
+            { [orderID]: { ...NewOrder } }
           )
           .then(() => {
             console.log("success");
@@ -230,8 +230,8 @@ const Notes = styled.section`
   grid-area: D;
   padding: 32px;
   h3 {
-    font-family: Poppins-ExtraBold;
-    font-size: 18px;
+    font-family: Poppins-Bold;
+    font-size: 16px;
     color: #000000;
     margin-bottom: 8px;
   }

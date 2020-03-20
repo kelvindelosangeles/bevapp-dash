@@ -1,13 +1,15 @@
 import React from "react";
 import { connect } from "react-redux";
-
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { Colors } from "../../../Constants/Colors";
+
 import { Order as OrdersModel } from "../../../Models/Order";
+import { Colors } from "../../../Constants/Colors";
 
 const DBStatBar = ({ orders }) => {
-  const newOrdersCount = orders.filter(i => {
-    return i.details.new;
+  const newOrdersCount = Object.values(orders).filter(i => {
+    // because were using the ordered dataset and it inlcudes an id
+    return i.details && i.details.new;
   }).length;
 
   return (
@@ -23,14 +25,16 @@ const DBStatBar = ({ orders }) => {
             OrdersModel.CalculateRevenue(orders)}
         </p>
       </Stat>
+      <Completed to="/dashboard/completedorders">Completed Orders</Completed>
     </DBStatBarWrapper>
   );
 };
 
 const DBStatBarWrapper = styled.div`
   grid-area: statbar;
-  height: 129px;
   display: flex;
+  align-items: center;
+  height: 129px;
   margin: 24px;
 `;
 const Stat = styled.div`
@@ -48,6 +52,7 @@ const Stat = styled.div`
     color: ${Colors.black};
     font-size: 16px;
     margin-bottom: 8px;
+    white-space: nowrap;
   }
   p {
     font-family: "AvenirNext-Bold";
@@ -58,6 +63,21 @@ const Stat = styled.div`
   }
 `;
 
+const Completed = styled(Link)`
+  height: 50%;
+  width: 40%;
+  background-color: darkslategray;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: ${Colors.white};
+  font-family: Poppins-Semibold;
+  font-size: 20px;
+  margin-left: auto;
+  text-decoration: none;
+`;
+
 export default connect(state => {
-  return { orders: state.Firestore.ordered.orders };
+  return { orders: state.Firestore.ordered.orders[0] };
 })(DBStatBar);

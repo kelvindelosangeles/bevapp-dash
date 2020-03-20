@@ -6,8 +6,9 @@ import { Colors } from "../../../../Constants/Colors";
 import Order from "./Order";
 
 const Orders = ({ orders }) => {
-  const OrdersArray = orders.map(i => {
-    return <Order order={i} key={i} />;
+  const OrdersArray = Object.values(orders).map(i => {
+    // because were using the ordered dataset and it inlcudes an id
+    return i.details && <Order order={i} key={i} />;
   });
 
   return (
@@ -33,5 +34,5 @@ const OrdersWrapper = styled.div`
   }
 `;
 export default connect(state => {
-  return { orders: state.Firestore.ordered.orders };
+  return { orders: state.Firestore.data.orders.orders };
 })(Orders);

@@ -8,15 +8,18 @@ import styled from "styled-components";
 import { Colors } from "../../../Constants/Colors";
 import CustomerDetails from "../../../Global/OrderPreview/CustomerDetails";
 import OrderDetails from "../../../Global/OrderPreview/OrderDetails";
+import Notes from "../../../Global/OrderPreview/Notes";
 import OrderCart from "../../../Global/OrderPreview/OrderCart";
 import CustomerCopy from "../../../Global/PrintTemplates/CustomerCopy";
 import WarehouseCopy from "../../../Global/PrintTemplates/WarehouseCopy";
 
-const DBPreview = ({ activeOrder, dispatch, firestore }) => {
+const DBPreview = ({ activeOrder, dispatch, firestore, orders }) => {
   const customerCopy = useRef();
   const warehouseCopy = useRef();
 
   const deleteOrderHandler = () => {
+    const { [activeOrder.details.orderID]: removed, ...NewOrder } = orders;
+
     window.confirm(
       "Are you sure you want to delete this order?  This action is irreversable."
     ) &&
@@ -29,10 +32,13 @@ const DBPreview = ({ activeOrder, dispatch, firestore }) => {
           activeOrder
         )
         .then(() => {
-          firestore.delete({
-            collection: "orders",
-            doc: activeOrder.details.orderID
-          });
+          firestore.set(
+            {
+              collection: "orders",
+              doc: "orders"
+            },
+            NewOrder
+          );
         })
         .then(() => {
           dispatch({
@@ -58,6 +64,9 @@ const DBPreview = ({ activeOrder, dispatch, firestore }) => {
           createdAt={activeOrder.details.createdAt}
           status="Pending Review"
         />
+        {activeOrder.details.notes && (
+          <Notes text={activeOrder.details.notes} />
+        )}
         <OrderCart cart={activeOrder.cart} readOnly={true} />
         <OrderActions>
           <ReactToPrint
@@ -133,4 +142,9 @@ const PrintContainer = styled.div`
   display: none;
 `;
 
-export default compose(connect(), firestoreConnect())(withRouter(DBPreview));
+export default compose(
+  connect(state => {
+    return { orders: state.Firestore.ordered.orders[0] };
+  }),
+  firestoreConnect()
+)(withRouter(DBPreview));
