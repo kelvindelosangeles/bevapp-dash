@@ -22,7 +22,7 @@ const DBStatBar = ({ orders }) => {
         <h6>Daily Revenue</h6>
         <p>
           {Object.values(orders).length > 0 &&
-            OrdersModel.CalculateRevenue(orders)}
+            "$ " + OrdersModel.CalculateRevenue(orders)}
         </p>
       </Stat>
       <Completed to="/dashboard/completedorders">Completed Orders</Completed>

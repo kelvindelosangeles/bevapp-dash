@@ -14,7 +14,7 @@ const STBeverages = props => {
   const beveragesList = Object.values(props.beverages)
     .filter(i => {
       return (
-        (i.brand && i.description.includes(beverageSearch)) ||
+        (i.brand && i.description.toUpperCase().includes(beverageSearch)) ||
         (i.brand && i.id.includes(beverageSearch) && i)
       );
     })

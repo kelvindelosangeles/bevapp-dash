@@ -1,3 +1,7 @@
+import moment from "moment";
+
+console.log();
+
 export class Order {
   constructor(customer, details, cart) {
     this.customer = customer;
@@ -76,8 +80,14 @@ export class Order {
           return "Err";
         }
       };
+      let Today = moment(new Date()).format("YYMMDD");
+
       let orderTotals = Object.values(orders)
-        .filter(i => i.details)
+        .filter(
+          i =>
+            // filter checks that the order has details and was taken today
+            i.details && i.details.orderID.includes(Today)
+        )
         .map(i => {
           return CalculateCart(i.cart);
         });

@@ -20,51 +20,57 @@ const AddBeverage = props => {
   const [price, setPrice] = useState("");
 
   const submitHandler = e => {
-    if (props.inventory[itemID] !== undefined) {
+    if (itemID.includes(".")) {
       alert(
-        "The Item you are trying to add already exists in the store.  If you would like to make changes, please go to edit item by clicking on an item on the left"
+        "If the Item ID contains a decimal point, please contact the administrator to add this item manually for you."
       );
-      setItemID("");
     } else {
-      if (isNaN(Number(price))) {
-        alert("The Price must be a number in this format 34.99");
-        setPrice("");
-      } else {
-        return (
-          itemID !== "" &&
-          brand &&
-          category &&
-          packaging &&
-          description !== "" &&
-          size !== "" &&
-          price !== "" &&
-          props.firestore
-            .update(
-              {
-                collection: "inventory",
-                doc: "beverages"
-              },
-              {
-                [itemID]: {
-                  brand,
-                  id: itemID,
-                  category,
-                  description,
-                  packaging,
-                  size,
-                  price
-                }
-              }
-            )
-            .then(() => {
-              console.log("success");
-              props.history.push("/store/home");
-            })
-            .catch(e => {
-              console.log(e);
-              alert(e);
-            })
+      if (props.inventory[itemID] !== undefined) {
+        alert(
+          "The Item you are trying to add already exists in the store.  If you would like to make changes, please go to edit item by clicking on an item on the left"
         );
+        setItemID("");
+      } else {
+        if (isNaN(Number(price))) {
+          alert("The Price must be a number in this format 34.99");
+          setPrice("");
+        } else {
+          return (
+            itemID !== "" &&
+            brand &&
+            category &&
+            packaging &&
+            description !== "" &&
+            size !== "" &&
+            price !== "" &&
+            props.firestore
+              .update(
+                {
+                  collection: "inventory",
+                  doc: "beverages"
+                },
+                {
+                  [itemID]: {
+                    brand,
+                    id: itemID,
+                    category,
+                    description,
+                    packaging,
+                    size,
+                    price
+                  }
+                }
+              )
+              .then(() => {
+                console.log("success");
+                props.history.push("/store/home");
+              })
+              .catch(e => {
+                console.log(e);
+                alert(e);
+              })
+          );
+        }
       }
     }
   };
