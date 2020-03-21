@@ -10,20 +10,17 @@ import AddtoCartFlavors from "./Components/AddToCart/AddtoCartFlavors";
 
 const RapidOrder = ({ atcVisible, atcfVisible, customer }) => {
   return (
-    <RapidOrderWrapper>
+    <Container>
       {customer ? <NewOrder /> : <Home />}
       {atcVisible && <AddToCart />}
       {atcfVisible && <AddtoCartFlavors />}
-    </RapidOrderWrapper>
+    </Container>
   );
 };
 
-const RapidOrderWrapper = styled.div`
+const Container = styled.div`
   grid-area: app;
-  display: grid;
-  grid-template-rows: auto 1fr;
-  grid-template-rows: 1fr;
-  height: 100%;
+  position: relative;
   background-color: ${Colors.white};
   overflow: scroll;
 `;

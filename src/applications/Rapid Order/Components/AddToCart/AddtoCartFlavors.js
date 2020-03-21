@@ -100,12 +100,14 @@ const AddtoCartFlavors = ({ orderItem, dispatch }) => {
 const Overlay = styled.div`
   grid-area: roitems;
   position: absolute;
+  top: 0;
   height: 100%;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  backdrop-filter: blur(2px);
+  padding-top: 96px;
+  background-color: #00000080;
 `;
 
 const Modal = styled.div`

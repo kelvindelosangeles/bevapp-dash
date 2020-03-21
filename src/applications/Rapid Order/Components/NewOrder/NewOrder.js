@@ -209,6 +209,7 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
 
 const Container = styled.div`
   display: grid;
+  height: fit-content;
   padding: 32px 0;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 100px 200px 1fr auto;

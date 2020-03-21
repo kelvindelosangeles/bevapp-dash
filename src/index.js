@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
+import { StyleSheetManager } from "styled-components";
 
 import { HashRouter as Router } from "react-router-dom";
 import { composeWithDevTools } from "redux-devtools-extension";
@@ -69,13 +70,15 @@ window.addEventListener("resize", () => {
 });
 
 ReactDOM.render(
-  <Router>
-    <Provider store={store}>
-      <ReactReduxFirebaseProvider {...rrfProps}>
-        <App />
-      </ReactReduxFirebaseProvider>
-    </Provider>
-  </Router>,
+  <StyleSheetManager disableVendorPrefixes>
+    <Router>
+      <Provider store={store}>
+        <ReactReduxFirebaseProvider {...rrfProps}>
+          <App />
+        </ReactReduxFirebaseProvider>
+      </Provider>
+    </Router>
+  </StyleSheetManager>,
   document.getElementById("root")
 );
 

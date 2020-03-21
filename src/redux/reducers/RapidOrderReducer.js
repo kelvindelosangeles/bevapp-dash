@@ -76,7 +76,6 @@ const initialState = {
       qty: "34"
     }
   }
-  // cart: {}
 };
 
 const RapidOrderReducer = (state = initialState, action) => {
