@@ -14,10 +14,13 @@ const Container = styled.section`
   padding: 32px;
   h3 {
     font-size: 18px;
-    font-family: Poppins-Medium;
+    font-family: Poppins;
+    font-weight: 500;
     margin-bottom: 16px;
   }
-  font-family: Poppins-Regular;
+  font-family: Poppins;
+  font-weight: 400;
+
   font-size: 16px;
 `;
 export default Notes;

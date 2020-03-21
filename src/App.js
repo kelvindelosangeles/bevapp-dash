@@ -12,7 +12,6 @@ import Store from "./Applications/Store/Store";
 import SpecialPricing from "./Applications/Special Pricing/SpecialPricing";
 
 import { Colors } from "./Constants/Colors";
-import GlobalFonts from "./Assets/Fonts/Fonts";
 
 import { firestoreConnect, isLoaded } from "react-redux-firebase";
 import { compose } from "redux";

@@ -2,38 +2,8 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  /* font-family: "Poppins", sans-serif; */
 }
 
-@font-face {
-  font-family: "AvenirNext-Regular";
-  src: url("./Assets/Fonts/AvenirNext-Regular.ttf") format("ttf");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "AvenirNext-Medium";
-  src: url("./Assets/Fonts/AvenirNext-Medium.ttf") format("ttf");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "AvenirNext-DemiBold";
-  src: url("./Assets/Fonts/AvenirNext-DemiBold.ttf") format("ttf");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "AvenirNext-Bold";
-  src: url("./Assets/Fonts/AvenirNext-Bold.ttf") format("ttf");
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: "AvenirNext-Heavy";
-  src: url("./Assets/Fonts/AvenirNext-Heavy.ttf") format("ttf");
-  font-weight: normal;
-  font-style: normal;
+body {
 }

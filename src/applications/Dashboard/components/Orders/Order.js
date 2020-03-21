@@ -60,14 +60,16 @@ const OrderWrapper = styled.div`
     flex-direction: column;
   }
   h6 {
-    font-family: "AvenirNext-DemiBold";
+    font-family: "Poppins";
+    font-weight: 600;
     color: "#000000";
     font-size: 16px;
 
     text-transform: capitalize;
   }
   p {
-    font-family: "AvenirNext-Medium";
+    font-family: "Poppins";
+    font-weight: 500;
     color: ${Colors.grey};
     font-size: 12px;
     margin-top: 4px;
@@ -79,7 +81,8 @@ const OrderWrapper = styled.div`
     height: 40px;
     background-color: ${Colors.blue};
     color: ${Colors.white};
-    font-family: "AvenirNext-Medium";
+    font-family: "Poppins";
+    font-weight: 500;
     font-size: 16px;
     border-radius: 4px;
     border: none;
@@ -94,7 +97,8 @@ const Close = styled.button`
   height: 40px;
   background-color: ${Colors.red}!important;
   color: ${Colors.white};
-  font-family: "AvenirNext-Medium";
+  font-family: "Poppins";
+  font-weight: 500;
   font-size: 16px;
   border-radius: 4px;
   border: none;

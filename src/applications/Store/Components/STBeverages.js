@@ -80,7 +80,8 @@ const BeverageSearch = styled.form`
     padding-left: 24px;
     margin-bottom: 24px;
     ::placeholder {
-      font-family: "AvenirNext-Medium";
+      font-family: "Poppins";
+      font-weight: 500;
       color: "#777777";
       font-size: 17px;
     }
@@ -107,14 +108,16 @@ const ItemWrapper = styled.div`
     margin-bottom: 16px;
   }
   h5 {
-    font-family: "AvenirNext-Demibold";
+    font-family: Poppins;
+    font-weight: 600;
     font-size: 14px;
     text-align: center;
     margin-bottom: 4px;
     text-transform: capitalize;
   }
   p {
-    font-family: "AvenirNext-Medium";
+    font-family: "Poppins";
+    font-weight: 500;
     font-size: 14px;
   }
 `;

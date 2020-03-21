@@ -99,7 +99,8 @@ const AddToCartWrapper = styled.div`
     margin-bottom: 80px;
     p {
       margin: 8px 0;
-      font-family: AvenirNext-Bold;
+      font-family: Poppins;
+      font-weight: 700;
       font-size: 18px;
       max-width: 200px;
 
@@ -142,7 +143,8 @@ const QuantityForm = styled.form`
     grid-area: QTY;
     height: 100px;
     font-size: 91px;
-    font-family: "AvenirNext-Bold";
+    font-family: Poppins;
+    font-weight: 700;
     text-align: center;
     border: none;
     -webkit-appearance: none;
@@ -154,7 +156,8 @@ const QuantityForm = styled.form`
     }
   }
   p {
-    font-family: "AvenirNext-Bold";
+    font-family: Poppins;
+    font-weight: 700;
     font-size: 16px;
     grid-area: label;
     text-align: center;
@@ -168,7 +171,8 @@ const QuantityForm = styled.form`
     button {
       width: 153px;
       height: 54px;
-      font-family: "AvenirNext-Bold";
+      font-family: Poppins;
+      font-weight: 700;
       color: ${Colors.white};
       background-color: ${Colors.black};
       border-radius: 8px;

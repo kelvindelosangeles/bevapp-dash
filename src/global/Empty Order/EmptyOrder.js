@@ -18,7 +18,8 @@ const EmptyOrderWrapper = styled.div`
   align-items: center;
   width: 100%;
   p {
-    font-family: "AvenirNext-Bold";
+    font-family: Poppins;
+    font-weight: 700;
     font-size: 16px;
   }
 `;

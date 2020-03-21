@@ -207,7 +207,8 @@ const Label = styled.div`
   width: 100%;
   margin-bottom: 40px;
   p {
-    font-family: AvenirNext-Bold;
+    font-family: Poppins;
+    font-weight: 700;
     font-size: 24px;
     text-align: center;
   }
@@ -224,7 +225,8 @@ const Form = styled.form`
     "h h";
   p {
     margin-bottom: 8px;
-    font-family: AvenirNext-Dembold;
+    font-family: Poppins;
+    font-weight: 600;
     font-size: 16px;
     color: #000000;
   }
@@ -242,7 +244,8 @@ const Form = styled.form`
     padding: 18px 0;
     border-radius: 4px;
     background-color: ${Colors.green};
-    font-family: AvenirNext-Bold;
+    font-family: Poppins;
+    font-weight: 700;
     font-size: 16px;
     color: ${Colors.white};
   }

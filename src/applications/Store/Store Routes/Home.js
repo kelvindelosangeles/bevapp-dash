@@ -57,7 +57,8 @@ const Card = styled(Link)`
     padding: 9px 24px;
     border-radius: 4px;
     border: 3px solid ${Colors.black};
-    font-family: AvenirNext-Bold;
+    font-family: Poppins;
+    font-weight: 700;
     font-size: 13px;
     background-color: ${Colors.white};
     cursor: pointer;

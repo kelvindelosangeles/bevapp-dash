@@ -60,7 +60,8 @@ const Order = styled.div`
   margin-bottom: 16px;
   .quantity {
     width: 26px;
-    font-family: "AvenirNext-Bold";
+    font-family: Poppins;
+    font-weight: 700;
     font-size: 16px;
     text-align: right;
     margin-right: 8px;
@@ -77,14 +78,16 @@ const Order = styled.div`
     }
   }
   span {
-    font-family: "AvenirNext-Medium";
+    font-family: "Poppins";
+    font-weight: 500;
     font-size: 11px;
     letter-spacing: 0;
     line-height: 0.4;
     margin-right: 16px;
   }
   .itemTitle {
-    font-family: "AvenirNext-Medium";
+    font-family: "Poppins";
+    font-weight: 500;
     font-size: 16px;
     max-width: ${({ expand }) => {
       return expand ? "150px" : "249px";
@@ -92,7 +95,8 @@ const Order = styled.div`
     text-transform: uppercase;
   }
   .cost {
-    font-family: "AvenirNext-Bold";
+    font-family: Poppins;
+    font-weight: 700;
     font-size: 16px;
     margin-left: auto;
     display: flex;
@@ -116,7 +120,8 @@ const Flavor = styled.div`
   margin-bottom: 8px;
   p,
   span {
-    font-family: AvenirNext-Bold;
+    font-family: Poppins;
+    font-weight: 700;
     font-size: 14px;
     margin-right: 8px;
     :last-child {

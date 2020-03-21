@@ -23,7 +23,8 @@ const DBSearchWrapper = styled.form`
     padding-bottom: 16px;
     padding-left: 24px;
     ::placeholder {
-      font-family: "AvenirNext-Medium";
+      font-family: "Poppins";
+      font-weight: 500;
       color: "#777777";
       font-size: 17px;
     }

@@ -30,7 +30,8 @@ const OrderCartWrapper = styled.section`
     margin-bottom: 40px;
   }
   h6 {
-    font-family: "AvenirNext-Bold";
+    font-family: Poppins;
+    font-weight: 700;
     font-size: 16px;
   }
   main {

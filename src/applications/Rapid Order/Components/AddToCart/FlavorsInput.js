@@ -33,7 +33,8 @@ const FlavorsInputWrapper = styled.div`
   input {
     padding: 4px;
     text-align: center;
-    font-family: AvenirNext-Bold;
+    font-family: Poppins;
+    font-weight: 700;
     font-size: 18px;
     border: 2px solid ${Colors.black};
     border-radius: 4px;
@@ -47,10 +48,12 @@ const FlavorsInputWrapper = styled.div`
   }
   div {
     margin-right: 16px;
-    font-family: AvenirNext-Bold;
+    font-family: Poppins;
+    font-weight: 700;
   }
   p {
-    font-family: AvenirNext-Demibold;
+    font-family: Poppins;
+    font-weight: 600;
     font-size: 18px;
     text-transform: capitalize;
   }

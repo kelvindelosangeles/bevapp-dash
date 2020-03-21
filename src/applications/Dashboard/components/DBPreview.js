@@ -139,7 +139,8 @@ const Action = styled.button`
   width: 100%;
   border-radius: 5px;
   border: none;
-  font-family: "AvenirNext-Medium";
+  font-family: "Poppins";
+  font-weight: 500;
   font-size: 16px;
 `;
 const PrintC = styled(Action)`

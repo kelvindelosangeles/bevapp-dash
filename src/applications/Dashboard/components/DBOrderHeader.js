@@ -23,7 +23,8 @@ const DBOrderHeader = styled.div`
   margin: 24px;
   margin-bottom: 0;
   p {
-    font-family: "AvenirNext-Bold";
+    font-family: Poppins;
+    font-weight: 700;
     color: ${Colors.black};
     font-size: 14;
   }

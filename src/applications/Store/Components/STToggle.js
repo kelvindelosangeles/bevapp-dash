@@ -34,7 +34,8 @@ const StoreToggleWrapper = styled.div`
   }
   p {
     padding: 16px 24px;
-    font-family: AvenirNext-Bold;
+    font-family: Poppins;
+    font-weight: 700;
     font-size: 16px;
     z-index: 2;
     justify-self: center;

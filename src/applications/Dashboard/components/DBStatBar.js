@@ -48,14 +48,16 @@ const Stat = styled.div`
   border-radius: 8px;
   margin-right: 24px;
   h6 {
-    font-family: "AvenirNext-Bold";
+    font-family: Poppins;
+    font-weight: 700;
     color: ${Colors.black};
     font-size: 16px;
     margin-bottom: 8px;
     white-space: nowrap;
   }
   p {
-    font-family: "AvenirNext-Bold";
+    font-family: Poppins;
+    font-weight: 700;
     color: ${props => {
       return props.color;
     }};
@@ -72,7 +74,8 @@ const Completed = styled(Link)`
   justify-content: center;
   align-items: center;
   color: ${Colors.white};
-  font-family: Poppins-Medium;
+  font-family: Poppins;
+  font-weight: 500;
   font-size: 20px;
   margin-left: auto;
   text-decoration: none;

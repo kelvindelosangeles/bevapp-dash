@@ -25,13 +25,15 @@ const Container = styled.section`
   justify-content: space-between;
   padding: 32px;
   h3 {
-    font-family: "Poppins-Bold";
+    font-family: Poppins;
+    font-weight: 700;
     font-size: 16px;
     margin-bottom: 4px;
     text-transform: uppercase;
   }
   p {
-    font-family: "Poppins-Medium";
+    font-family: "Poppins";
+    font-weight: 500;
     font-size: 16px;
     text-transform: uppercase;
   }

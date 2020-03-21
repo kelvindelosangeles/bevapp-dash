@@ -28,7 +28,8 @@ const ItemDetailsWrapper = styled.div`
     margin-right: 64px;
   }
   p {
-    font-family: AvenirNext-Demibold;
+    font-family: Poppins;
+    font-weight: 600;
     margin: 4px 0;
     font-size: 18px;
     text-align: left;

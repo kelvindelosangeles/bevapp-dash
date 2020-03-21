@@ -231,7 +231,8 @@ const Notes = styled.section`
   grid-area: D;
   padding: 32px;
   h3 {
-    font-family: Poppins-Bold;
+    font-family: Poppins;
+    font-weight: 700;
     font-size: 16px;
     color: #000000;
     margin-bottom: 8px;
@@ -241,7 +242,8 @@ const Notes = styled.section`
     font-size: 12px;
     border: none;
     resize: none;
-    font-family: "Poppins-Medium";
+    font-family: "Poppins";
+    font-weight: 500;
     font-size: 14px;
   }
 `;
@@ -250,7 +252,8 @@ const Cart = styled.div`
   h3 {
     display: flex;
     align-items: center;
-    font-family: Poppins-ExtraBold;
+    font-family: Poppins;
+    font-weight: 900;
     font-size: 20px;
     color: #000000;
     margin-left: 32px;
@@ -267,16 +270,19 @@ const Cart = styled.div`
     padding: 0 32px;
     margin-bottom: 80px;
     h5 {
-      font-family: Poppins-Bold;
+      font-family: Poppins;
+      font-weight: 700;
       font-size: 18px;
     }
     p {
-      font-family: Poppins-Medium;
+      font-family: Poppins;
+      font-weight: 500;
       font-size: 16px;
       color: #000000;
     }
     .item-total {
-      font-family: Poppins-Bold;
+      font-family: Poppins;
+      font-weight: 700;
     }
     svg:hover {
       color: ${Colors.red};
@@ -296,7 +302,8 @@ const Actions = styled.div`
     margin-bottom: 32px;
   }
   h3 {
-    font-family: Poppins-SemiBold;
+    font-family: Poppins;
+    font-weight: 600;
     font-size: 24px;
   }
   span {
@@ -304,7 +311,8 @@ const Actions = styled.div`
     margin-top: 16px;
   }
   button {
-    font-family: Poppins-Medium;
+    font-family: Poppins;
+    font-weight: 500;
     font-size: 16px;
     color: #ffffff;
     text-align: center;
@@ -324,7 +332,8 @@ const Actions = styled.div`
   }
 `;
 const Flavor = styled.p`
-  font-family: Poppins-Regular !important;
+  font-family: Poppins !important;
+  font-weight: 400;
   font-size: 14px !important;
   margin-left: 16px;
   margin-top: 8px;

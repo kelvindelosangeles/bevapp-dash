@@ -42,14 +42,17 @@ const OrderDetailsWrapper = styled.section`
   }
   #status {
     color: #22aa99;
-    font-family: "Poppins-Bold";
+    font-family: Poppins;
+    font-weight: 700;
   }
   h6 {
-    font-family: "Poppins-Bold";
+    font-family: Poppins;
+    font-weight: 700;
     font-size: 16px;
   }
   p {
-    font-family: "Poppins-Medium";
+    font-family: "Poppins";
+    font-weight: 500;
     font-size: 14px;
   }
 `;

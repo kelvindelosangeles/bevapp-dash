@@ -61,7 +61,8 @@ const CustomerSearch = styled.form`
     padding-left: 24px;
     margin-bottom: 24px;
     ::placeholder {
-      font-family: "AvenirNext-Medium";
+      font-family: "Poppins";
+      font-weight: 500;
       color: "#777777";
       font-size: 17px;
     }
@@ -86,7 +87,8 @@ const Xstomer = styled.div`
   border-radius: 4px 4px 0 0;
   border-bottom: 1px solid ${Colors.grey};
   p {
-    font-family: AvenirNext-DemiBold;
+    font-family: Poppins;
+    font-weight: 600;
     font-size: 15px;
     text-transform: capitalize;
   }

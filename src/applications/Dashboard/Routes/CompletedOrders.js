@@ -58,8 +58,8 @@ const CompletedOrdersGrid = styled.div`
 `;
 const Heading = styled.h3`
   grid-area: A;
-  font-family: Poppins-Medium;
-  font-weight: unset;
+  font-family: Poppins;
+  font-weight: 500;
   font-size: 24px;
   padding-left: 32px;
   margin-bottom: 24px;
@@ -74,7 +74,8 @@ const Filters = styled.div`
     outline: none;
     border: none;
     font-size: 16px;
-    font-family: Poppins-Medium;
+    font-family: Poppins;
+    font-weight: 500;
     width: -webkit-fill-available;
   }
 `;
