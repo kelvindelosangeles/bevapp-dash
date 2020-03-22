@@ -4,7 +4,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import { TextField } from "@material-ui/core";
 import styled from "styled-components";
 
-import { CustomersArray } from "../../../Assets/Data/Customers";
+import { CustomersArray } from "../../Assets/Data/Customers";
 // TODO: This will eventually come from firebase
 
 const CustomerSelect = ({ customerChangeHandler, selectedCustomer }) => {

@@ -32,6 +32,8 @@ const StyledGridBlock = styled.div`
   width: 100%;
   padding: 8px;
   div {
+    min-height: 8px;
+    min-width: 8px;
     border-radius: 4px;
     height: 100%;
     width: 100%;

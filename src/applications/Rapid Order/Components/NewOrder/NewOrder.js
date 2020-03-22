@@ -9,7 +9,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 
 import { Colors } from "../../../../Constants/Colors";
 import { Order as OrdersModel } from "../../../../Models/Order";
-import CustomerSelect from "../CustomerSelect";
+import CustomerSelect from "../../../../Global/CustomerSelect/CustomerSelect";
 import SmartEntry from "./Components/SmartEntry";
 import CustomerDetails from "../../../../Global/OrderPreview/CustomerDetails";
 import OrderDetails from "../../../../Global/OrderPreview/OrderDetails";

@@ -4,7 +4,7 @@ import CartIcon from "@material-ui/icons/ShoppingBasketRounded";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import CustomerSelect from "./CustomerSelect";
+import CustomerSelect from "../../../Global/CustomerSelect/CustomerSelect";
 
 const Home = ({ dispatch, customer }) => {
   const customerChangeHandler = (e, value) => {
