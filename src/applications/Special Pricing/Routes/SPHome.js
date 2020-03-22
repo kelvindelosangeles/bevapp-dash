@@ -1,43 +1,64 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, withRouter } from "react-router-dom";
 import styled from "styled-components";
 
-import AddIcon from "@material-ui/icons/AddBoxRounded";
 import { PageTitle } from "../../../Global/Layout/StyledElements";
 import { Colors } from "../../../Constants/Colors";
+import CustomerSelect from "../../../Global/CustomerSelect/CustomerSelect";
+import { connect } from "react-redux";
 
-const SPHome = () => {
-  const customersArray = (
-    <StyledCustomer>
-      <h5>Customer Name</h5>
-      <h6>Beverage ID</h6>
-      <h6>Sales Price</h6>
-      <h6>Special Price</h6>
-      <h6>Margin</h6>
-      <h6>Last Edited</h6>
-      <p>AMS12B</p>
-      <p>$ 34.99</p>
-      <p>$ 32.99</p>
-      <p>$ 2.00</p>
-      <p>03/20/2020</p>
-    </StyledCustomer>
-  );
+const SPHome = ({ history, customers }) => {
+  const customersWithSpecialPrices = Object.values(customers)
+    .filter(i => {
+      return i.specialPrices;
+    })
+    .map(x => {
+      // First map is for the customer name
+      const items = Object.values(x.specialPrices).map(i => {
+        // second map is for the special item details
+        return (
+          <React.Fragment>
+            <p>{i.id}</p>
+            <p>$ 34.99</p>
+            <p>$ {i.price}</p>
+            <p>$ 2.00</p>
+            <p>{i.date}</p>
+          </React.Fragment>
+        );
+      });
+      const goToCustomer = () => {
+        history.push(`/specialpricing/add/${x.id}`);
+      };
+
+      console.log(x);
+
+      return (
+        <StyledCustomer>
+          <h5 onClick={goToCustomer}>{x.name}</h5>
+          <h6>Beverage ID</h6>
+          <h6>Sales Price</h6>
+          <h6>Special Price</h6>
+          <h6>Margin</h6>
+          <h6>Last Edited</h6>
+          {items}
+        </StyledCustomer>
+      );
+    });
+
+  const customerChangeHandler = (e, value) => {
+    return value !== null && history.push(`/specialpricing/add/${value.id}`);
+  };
 
   return (
     <Grid>
       <PageTitle gridArea="A">Special Pricing Home</PageTitle>
-      <AddSPButton to={"/specialpricing/add"}>
+      <AddSPButton>
         <p>Add a Special Price</p>
-        <AddIcon />
+        <CustomerSelect customerChangeHandler={customerChangeHandler} />
       </AddSPButton>
       <SearchBar placeholder="Kelvin" />
       <CustomersGrid>
-        <div className="wrapper">
-          {customersArray}
-          {customersArray}
-          {customersArray}
-          {customersArray}
-        </div>
+        <div className="wrapper">{customersWithSpecialPrices}</div>
       </CustomersGrid>
     </Grid>
   );
@@ -67,23 +88,21 @@ const SearchBar = styled.input`
   border: none;
   margin-bottom: 56px;
 `;
-const AddSPButton = styled(Link)`
+const AddSPButton = styled.div`
   grid-area: B;
   align-self: center;
-  justify-self: center;
-  display: flex;
+  justify-self: end;
+  width: 90%;
   align-items: center;
   padding: 18px;
   border-radius: 4px;
-  color: ${Colors.white};
-  background-color: ${Colors.purple};
-  text-decoration: none;
-  cursor: pointer;
   p {
-    font-weight: 600;
-    font-size: 16px;
-    color: #ffffff;
-    margin-right: 16px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    font-size: 20px;
+    margin-bottom: 16px;
   }
 `;
 const CustomersGrid = styled.div`
@@ -112,6 +131,8 @@ const StyledCustomer = styled.div`
     font-weight: 600;
     font-size: 20px;
     margin-bottom: 24px;
+    text-transform: uppercase;
+    cursor: pointer;
   }
   h6 {
     font-family: Poppins;
@@ -129,4 +150,8 @@ const StyledCustomer = styled.div`
   }
 `;
 
-export default SPHome;
+export default connect(state => {
+  return {
+    customers: state.Firestore.data.store.customers
+  };
+})(withRouter(SPHome));

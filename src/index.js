@@ -21,6 +21,7 @@ import { createFirestoreInstance, firestoreReducer } from "redux-firestore"; // 
 import GlobalState from "./redux/reducers/GlobalState";
 import RapidOrderReducer from "./redux/reducers/RapidOrderReducer";
 import DashboardReducer from "./redux/reducers/DashboardReducer";
+import SpecialPricingReducer from "./redux/reducers/SpecialPricingReducer";
 
 const fbConfig = {
   apiKey: "AIzaSyBWABm8_-gJAphiDlPJdrbwvZ01Sf2HXc4",
@@ -44,6 +45,7 @@ const rootReducer = combineReducers({
   GlobalState: GlobalState,
   DashboardState: DashboardReducer,
   RapidOrderState: RapidOrderReducer,
+  SpecialPricingState: SpecialPricingReducer,
   Firebase: firebaseReducer,
   Firestore: firestoreReducer
 });

@@ -17,6 +17,10 @@ export class Order {
     this.editedOrder = null;
   }
 
+  static formatTel = tel => {
+    return `(${tel.slice(0, 3)}) ${tel.slice(3, 6)} ${tel.slice(6, 10)} `;
+  };
+
   static CalculateCart = cart => {
     //Pass in a cart object to calculate the total
     try {

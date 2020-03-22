@@ -9,7 +9,7 @@ const SpecialPricing = () => {
     <Container>
       <Switch>
         <Route exact path="/specialpricing/" component={SPHome} />
-        <Route path="/specialpricing/Add" component={SPAdd} />
+        <Route path="/specialpricing/add/:customerid" component={SPAdd} />
       </Switch>
     </Container>
   );

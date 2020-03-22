@@ -3,12 +3,14 @@ import React from "react";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { TextField } from "@material-ui/core";
 import styled from "styled-components";
+import { connect } from "react-redux";
 
-import { CustomersArray } from "../../Assets/Data/Customers";
-// TODO: This will eventually come from firebase
-
-const CustomerSelect = ({ customerChangeHandler, selectedCustomer }) => {
-  const options = CustomersArray.map(x => {
+const CustomerSelect = ({
+  customerChangeHandler,
+  selectedCustomer,
+  customers
+}) => {
+  const options = Object.values(customers).map(x => {
     const firstLetter = x.name[0].toUpperCase();
     return {
       firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
@@ -44,4 +46,8 @@ const CustomerSelectWrapper = styled.div`
   width: 100%;
 `;
 
-export default CustomerSelect;
+export default connect(state => {
+  return {
+    customers: state.Firestore.data.store.customers
+  };
+})(CustomerSelect);

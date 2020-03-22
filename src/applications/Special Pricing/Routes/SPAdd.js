@@ -1,70 +1,170 @@
-import React from "react";
+import React, { useState } from "react";
+import { withRouter } from "react-router-dom";
 import styled from "styled-components";
-import { PageTitle, GridBlock } from "../../../Global/Layout/StyledElements";
+import { PageTitle } from "../../../Global/Layout/StyledElements";
+
 import AddressIcon from "@material-ui/icons/BusinessRounded";
-import DeleteIcon from "@material-ui/icons/DeleteRounded";
+import ActiveIcon from "@material-ui/icons/CheckCircleRounded";
+import InactiveIcon from "@material-ui/icons/RadioButtonUncheckedRounded";
+import PhoneIcon from "@material-ui/icons/StayCurrentPortraitRounded";
+import CityIcon from "@material-ui/icons/LocationCityRounded";
+import { customers as backup } from "../../../Assets/Data/Customers";
 
-import CustomerSelect from "../../../Global/CustomerSelect/CustomerSelect";
+import { Order as OrdersModel } from "../../../Models/Order";
 import { Colors } from "../../../Constants/Colors";
+import { connect } from "react-redux";
+import moment from "moment";
+import { withFirestore } from "react-redux-firebase";
+import { useEffect } from "react";
 
-const SPAdd = () => {
+const SPAdd = ({ match, beverages, firestore, customers }) => {
+  const [customer] = useState(customers[match.params.customerid]);
+  const [itemCode, setItemCode] = useState("");
+  const [specialPrices, setSpecialPrices] = useState(null);
+
+  useEffect(() => {
+    customer.specialPrices && setSpecialPrices({ ...customer.specialPrices });
+  }, []);
+
+  const itemCodeChangeHandler = e => {
+    setItemCode(e.target.value.toUpperCase());
+  };
+
+  const itemCodeSubmitHandler = e => {
+    e.preventDefault();
+
+    const success = () => {
+      setSpecialPrices({
+        ...specialPrices,
+        [itemCode]: {
+          id: itemCode,
+          price: "12.99",
+          date: moment(new Date()).format("YY/MM/DD"),
+          active: true
+        }
+      });
+      setItemCode("");
+    };
+    const failed = () => {
+      alert("That Item does not exist");
+      setItemCode("");
+    };
+    beverages[itemCode] ? success() : failed();
+  };
+
+  const calcMargin = (price, spPrice) => {
+    return (parseFloat(price) - parseFloat(spPrice)).toFixed(2);
+  };
+
+  const toggleActiveState = id => {
+    const text = specialPrices[id].active ? "disable" : "enable";
+    const bool = specialPrices[id].active ? false : true;
+    window.confirm(`Are you sure you would like to ${text} Item ${id}`) &&
+      setSpecialPrices({
+        ...specialPrices,
+        [id]: { ...specialPrices[id], active: bool }
+      });
+  };
+
+  const submitHandler = e => {
+    e.preventDefault();
+
+    specialPrices === null
+      ? alert("Please add a Special price before submitting")
+      : firestore
+          .update(
+            {
+              collection: "store",
+              doc: "customers"
+            },
+            {
+              [match.params.customerid]: {
+                ...customer,
+                specialPrices: { ...specialPrices }
+              }
+            }
+          )
+          .then(res => {
+            console.log("success");
+            console.log(res);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+  };
+
+  const Savior = () => {
+    firestore
+      .set(
+        {
+          collection: "store",
+          doc: "customers"
+        },
+        { ...backup }
+      )
+      .then(() => {
+        console.log("success");
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  const specialPricesArray =
+    specialPrices &&
+    Object.values(specialPrices).map(i => {
+      return (
+        <React.Fragment>
+          <p>{i.id}</p>
+          <p>$ {beverages[i.id].price}</p>
+          <p>$ {i.price}</p>
+          <p>$ {calcMargin(beverages[i.id].price, i.price)}</p>
+          <p>{i.date}</p>
+          {i.active ? (
+            <ActiveIcon onClick={() => toggleActiveState(i.id)} />
+          ) : (
+            <InactiveIcon onClick={() => toggleActiveState(i.id)} />
+          )}
+        </React.Fragment>
+      );
+    });
+
   return (
     <Grid>
       <PageTitle gridArea={"A"}>Add a Special Price</PageTitle>
       <CustomerDetails>
-        <h6>Customer Name</h6>
+        <h6>{customer.name}</h6>
         <p>
-          {" "}
-          <AddressIcon /> Address
+          <AddressIcon /> {customer.address}
         </p>
         <p>
-          <AddressIcon /> Number
+          <PhoneIcon /> {OrdersModel.formatTel(customer.telephone)}
         </p>
         <p>
-          <AddressIcon /> State
+          <CityIcon /> {customer.city}
         </p>
       </CustomerDetails>
-      <StyledCustomer>
+      <SpecialPrices>
         <h6>Beverage ID</h6>
         <h6>Sales Price</h6>
         <h6>Special Price</h6>
         <h6>Margin</h6>
         <h6>Last Edited</h6>
-        <span />
-        <p>AMS12B</p>
-        <p>$ 34.99</p>
-        <p>$ 32.99</p>
-        <p>$ 2.00</p>
-        <p>03/20/2020</p>
-        <DeleteIcon />
-        <p>AMS12B</p>
-        <p>$ 34.99</p>
-        <p>$ 32.99</p>
-        <p>$ 2.00</p>
-        <p>03/20/2020</p>
-        <DeleteIcon />
-        <p>AMS12B</p>
-        <p>$ 34.99</p>
-        <p>$ 32.99</p>
-        <p>$ 2.00</p>
-        <p>03/20/2020</p>
-        <DeleteIcon />
-        <p>AMS12B</p>
-        <p>$ 34.99</p>
-        <p>$ 32.99</p>
-        <p>$ 2.00</p>
-        <p>03/20/2020</p>
-        <DeleteIcon />
-      </StyledCustomer>
+        <h6>Active</h6>
+        {specialPricesArray}
+      </SpecialPrices>
       <SPControls>
-        <CustomerSelect />
         <AddItem>
           <p>Add An Item</p>
-          <form>
-            <input placeholder="AMS12B" />
+          <form onSubmit={itemCodeSubmitHandler}>
+            <input
+              placeholder="AMS12B"
+              onChange={itemCodeChangeHandler}
+              value={itemCode}
+            />
           </form>
         </AddItem>
-        <SubmitButton> Submit</SubmitButton>
+        <SubmitButton onClick={submitHandler}> Submit</SubmitButton>
       </SPControls>
     </Grid>
   );
@@ -90,6 +190,7 @@ const CustomerDetails = styled.div`
     font-weight: 700;
     font-size: 18px;
     margin-bottom: 8px;
+    text-transform: uppercase;
   }
   p {
     font-family: Poppins;
@@ -98,17 +199,19 @@ const CustomerDetails = styled.div`
     display: flex;
     align-content: center;
     margin-bottom: 8px;
+    text-transform: uppercase;
     svg {
       margin-right: 8px;
     }
   }
 `;
 
-const StyledCustomer = styled.div`
+const SpecialPrices = styled.div`
   grid-area: D;
   display: grid;
   grid-template-areas: "A A A A A A";
   align-content: flex-start;
+  grid-row-gap: 8px;
   h6 {
     font-family: Poppins;
     font-weight: 600;
@@ -169,4 +272,9 @@ const SubmitButton = styled.button`
   margin-top: auto;
 `;
 
-export default SPAdd;
+export default connect(state => {
+  return {
+    beverages: state.Firestore.data.inventory.beverages,
+    customers: state.Firestore.data.store.customers
+  };
+})(withFirestore(withRouter(SPAdd)));
