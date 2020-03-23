@@ -18,13 +18,12 @@ const SPHome = ({ history, customers, beverages }) => {
         // First map is for the customer name
         const items = Object.values(x.specialPrices).map(i => {
           // second map is for the special item details
-          console.log(i);
           return (
             <React.Fragment>
               <p>{i.id}</p>
               <p>$ {beverages[i.id].price}</p>
-              <p>$ {i.price}</p>
-              <p>$ {OrdersModel.calcMargin(beverages[i.id].price, i.price)}</p>
+              <p>$ {parseFloat(i.price).toFixed(2)}</p>
+              <p>$ {OrdersModel.CalcMargin(beverages[i.id].price, i.price)}</p>
               <p>{i.date}</p>
             </React.Fragment>
           );
@@ -32,8 +31,6 @@ const SPHome = ({ history, customers, beverages }) => {
         const goToCustomer = () => {
           history.push(`/specialpricing/add/${x.id}`);
         };
-
-        console.log(x);
 
         return (
           <StyledCustomer>

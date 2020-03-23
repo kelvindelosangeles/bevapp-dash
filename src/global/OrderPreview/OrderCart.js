@@ -1,11 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import CartItem from "./CartItem";
 import { Order as OrderModel } from "../../Models/Order";
 
-const OrderCart = ({ cart, readOnly = false }) => {
+const OrderCart = ({ cart, readOnly = false, customer }) => {
   const cartArray = Object.values(cart).map(item => {
-    return <CartItem item={item} key={item.id} readOnly={readOnly} />;
+    return (
+      <CartItem
+        item={item}
+        key={item.id}
+        readOnly={readOnly}
+        customer={customer}
+      />
+    );
   });
 
   return (

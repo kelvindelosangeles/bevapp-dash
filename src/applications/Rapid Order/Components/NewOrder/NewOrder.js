@@ -60,6 +60,16 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
         return "Flavors err";
       }
     };
+
+    let hasSpecialPrice = () => {
+      try {
+        // console.log(customer.specialPrices[i.id].price);
+        return "$ " + parseFloat(customer.specialPrices[i.id].price).toFixed(2);
+      } catch (err) {
+        return null;
+      }
+    };
+
     return (
       <React.Fragment>
         <p>{i.id}</p>
@@ -67,13 +77,16 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
         <p>
           {i.description} {flavors()}
         </p>
-        <p>{i.price}</p>
-        <p>{i.price}</p>
-        <p className="item-total">{OrdersModel.CalculateItem(i)}</p>
+        <p>$ {i.price}</p>
+        <p className="specialPrice">{hasSpecialPrice()}</p>
+        <p className="item-total">
+          {OrdersModel.CalculateItem(i, customer.specialPrices)}
+        </p>
         <DeleteIcon onClick={removeItem} />
       </React.Fragment>
     );
   });
+
   const submitOrder = () => {
     const NewOrder = {
       customer,
@@ -191,7 +204,8 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
           <h3>Total</h3>
           <h3>
             {!OrdersModel.isCartEmpty(cart) && "$ "}
-            {!OrdersModel.isCartEmpty(cart) && OrdersModel.CalculateCart(cart)}
+            {!OrdersModel.isCartEmpty(cart) &&
+              OrdersModel.CalculateCart(cart, customer.specialPrices)}
           </h3>
           <h3>Cases</h3>
           <h3>
@@ -283,6 +297,9 @@ const Cart = styled.div`
     .item-total {
       font-family: Poppins;
       font-weight: 700;
+    }
+    .specialPrice {
+      color: ${Colors.purple};
     }
     svg:hover {
       color: ${Colors.red};

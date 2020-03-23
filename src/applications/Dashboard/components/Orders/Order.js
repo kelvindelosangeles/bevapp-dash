@@ -28,7 +28,9 @@ const Order = ({ order, dispatch, activeOrder }) => {
         <p>{order.details.createdAt}</p>
       </div>
       <h6>{order.customer.name}</h6>
-      <h6>$ {OrderModel.CalculateCart(order.cart)} </h6>
+      <h6>
+        $ {OrderModel.CalculateCart(order.cart, order.customer.specialPrices)}{" "}
+      </h6>
       {OrderIsActive ? (
         <Close onClick={clearHandler}>Close</Close>
       ) : (

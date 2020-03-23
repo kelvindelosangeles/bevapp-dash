@@ -19,30 +19,48 @@ export class Order {
     return `(${tel.slice(0, 3)}) ${tel.slice(3, 6)} ${tel.slice(6, 10)} `;
   };
 
-  static CalculateCart = cart => {
+  static CalculateItem = (beverage, specialPrices) => {
+    // Tries to extract a price from specialPrices and if theres an error it returns the original price
+    const generatePrice = () => {
+      try {
+        return specialPrices[beverage.id].price;
+      } catch (error) {
+        return beverage.price;
+      }
+    };
+    const quantity = beverage.qty;
+
+    try {
+      return (
+        "$ " + (parseFloat(generatePrice()) * parseFloat(quantity)).toFixed(2)
+      );
+    } catch (error) {
+      console.log(error);
+      console.log("There was a problem in CalcItem");
+      return "Err";
+    }
+  };
+
+  // ^^^ REFACTORED ^^^
+
+  static CalculateCart = (cart, specialPrices) => {
     //Pass in a cart object to calculate the total
     try {
       let cartArray = Object.values(cart);
       let itemTotal = cartArray.map(i => {
-        return (parseFloat(i.price) * i.qty).toFixed(2);
+        // checks if theres a special price
+        const price =
+          specialPrices && specialPrices[i.id]
+            ? specialPrices[i.id].price
+            : i.price;
+
+        return (parseFloat(price) * i.qty).toFixed(2);
       });
       let combinedTotals = itemTotal.reduce((a, b) => {
         return (parseFloat(a) + parseFloat(b)).toFixed(2);
       });
 
       return combinedTotals;
-    } catch (err) {
-      console.log(err);
-      return "Err";
-    }
-  };
-
-  static CalculateItem = cartItem => {
-    try {
-      const itemTotal = (
-        parseFloat(cartItem.price) * parseFloat(cartItem.qty)
-      ).toFixed(2);
-      return itemTotal;
     } catch (err) {
       console.log(err);
       return "Err";
@@ -62,6 +80,10 @@ export class Order {
       console.log(err);
       return "Err";
     }
+  };
+
+  static CalcMargin = (price, spPrice) => {
+    return (parseFloat(price) - parseFloat(spPrice)).toFixed(2);
   };
 
   static CalculateRevenue = orders => {
@@ -110,10 +132,6 @@ export class Order {
       console.log(error);
       return !isDailyOrdersEmpty() ? "0" : "err";
     }
-  };
-
-  static calcMargin = (price, spPrice) => {
-    return (parseFloat(price) - parseFloat(spPrice)).toFixed(2);
   };
 
   static isCartEmpty = cart => {

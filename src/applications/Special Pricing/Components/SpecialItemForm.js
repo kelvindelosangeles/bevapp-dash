@@ -26,7 +26,7 @@ const SpecialItemForm = ({
       />
       <p>
         ${" "}
-        {OrdersModel.calcMargin(
+        {OrdersModel.CalcMargin(
           beverages[specialPrice.id].price,
           specialPrice.price
         )}

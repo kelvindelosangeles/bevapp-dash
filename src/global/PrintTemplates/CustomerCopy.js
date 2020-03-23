@@ -39,7 +39,12 @@ class CustomerCopy extends React.Component {
             <p>{i.description}</p>
             {flavorsArray}
           </div>
-          <p className="price">$ {OrderModel.CalculateItem(i)}</p>
+          <p className="price">
+            {OrderModel.CalculateItem(
+              i,
+              this.props.activeOrder.customer.specialPricing
+            )}
+          </p>
         </React.Fragment>
       );
     });

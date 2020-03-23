@@ -85,7 +85,11 @@ const DBPreview = ({ activeOrder, dispatch, firestore, orders }) => {
         {activeOrder.details.notes && (
           <Notes text={activeOrder.details.notes} />
         )}
-        <OrderCart cart={activeOrder.cart} readOnly={true} />
+        <OrderCart
+          cart={activeOrder.cart}
+          customer={activeOrder.customer}
+          readOnly={true}
+        />
         <OrderActions>
           <ReactToPrint
             trigger={() => <PrintC>Print CX</PrintC>}

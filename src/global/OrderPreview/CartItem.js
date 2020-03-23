@@ -5,7 +5,7 @@ import { Colors } from "../../Constants/Colors";
 import { connect } from "react-redux";
 import { Order as OrderModel } from "../../Models/Order";
 
-const CartItem = ({ item, dispatch, readOnly, sidebarExpanded }) => {
+const CartItem = ({ item, dispatch, readOnly, sidebarExpanded, customer }) => {
   const { qty, description } = item;
 
   const removeItem = () => {
@@ -45,7 +45,7 @@ const CartItem = ({ item, dispatch, readOnly, sidebarExpanded }) => {
         <span>x</span>
         <p className="itemTitle">{description}</p>
         <p className="cost">
-          $ {OrderModel.CalculateItem(item)}
+          {OrderModel.CalculateItem(item, customer.specialPrices)}
           {readOnly ? null : <TrashIcon onClick={removeItem} />}
         </p>
       </Order>
