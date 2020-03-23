@@ -1,23 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { withFirestore } from "react-redux-firebase";
+import moment from "moment";
 import styled from "styled-components";
 import { PageTitle } from "../../../Global/Layout/StyledElements";
 
 import AddressIcon from "@material-ui/icons/BusinessRounded";
-import ActiveIcon from "@material-ui/icons/CheckCircleRounded";
-import InactiveIcon from "@material-ui/icons/RadioButtonUncheckedRounded";
 import PhoneIcon from "@material-ui/icons/StayCurrentPortraitRounded";
 import CityIcon from "@material-ui/icons/LocationCityRounded";
-import { customers as backup } from "../../../Assets/Data/Customers";
 
 import { Order as OrdersModel } from "../../../Models/Order";
 import { Colors } from "../../../Constants/Colors";
-import { connect } from "react-redux";
-import moment from "moment";
-import { withFirestore } from "react-redux-firebase";
-import { useEffect } from "react";
+import { customers as backup } from "../../../Assets/Data/Customers";
+import SpecialItemForm from "../Components/SpecialItemForm";
 
-const SPAdd = ({ match, beverages, firestore, customers }) => {
+const SPAdd = ({ match, history, beverages, firestore, customers }) => {
   const [customer] = useState(customers[match.params.customerid]);
   const [itemCode, setItemCode] = useState("");
   const [specialPrices, setSpecialPrices] = useState(null);
@@ -26,11 +24,11 @@ const SPAdd = ({ match, beverages, firestore, customers }) => {
     customer.specialPrices && setSpecialPrices({ ...customer.specialPrices });
   }, []);
 
-  const itemCodeChangeHandler = e => {
+  const addItemChangeHandler = e => {
     setItemCode(e.target.value.toUpperCase());
   };
 
-  const itemCodeSubmitHandler = e => {
+  const addItemHandler = e => {
     e.preventDefault();
 
     const success = () => {
@@ -38,8 +36,8 @@ const SPAdd = ({ match, beverages, firestore, customers }) => {
         ...specialPrices,
         [itemCode]: {
           id: itemCode,
-          price: "12.99",
-          date: moment(new Date()).format("YY/MM/DD"),
+          price: beverages[itemCode].price,
+          date: moment(new Date()).format("DD/MM/YY"),
           active: true
         }
       });
@@ -50,10 +48,6 @@ const SPAdd = ({ match, beverages, firestore, customers }) => {
       setItemCode("");
     };
     beverages[itemCode] ? success() : failed();
-  };
-
-  const calcMargin = (price, spPrice) => {
-    return (parseFloat(price) - parseFloat(spPrice)).toFixed(2);
   };
 
   const toggleActiveState = id => {
@@ -84,9 +78,9 @@ const SPAdd = ({ match, beverages, firestore, customers }) => {
               }
             }
           )
-          .then(res => {
+          .then(() => {
             console.log("success");
-            console.log(res);
+            history.push("/specialpricing");
           })
           .catch(err => {
             console.log(err);
@@ -110,22 +104,35 @@ const SPAdd = ({ match, beverages, firestore, customers }) => {
       });
   };
 
+  const SPFormChangeHandler = e => {
+    specialPrices[e.target.name].price.length > 4
+      ? setSpecialPrices({
+          ...specialPrices,
+          [e.target.name]: {
+            ...specialPrices[e.target.name],
+            price: specialPrices[e.target.name].price.slice(0, 4)
+          }
+        })
+      : setSpecialPrices({
+          ...specialPrices,
+          [e.target.name]: {
+            ...specialPrices[e.target.name],
+            price: e.target.value
+          }
+        });
+  };
+
   const specialPricesArray =
     specialPrices &&
     Object.values(specialPrices).map(i => {
       return (
-        <React.Fragment>
-          <p>{i.id}</p>
-          <p>$ {beverages[i.id].price}</p>
-          <p>$ {i.price}</p>
-          <p>$ {calcMargin(beverages[i.id].price, i.price)}</p>
-          <p>{i.date}</p>
-          {i.active ? (
-            <ActiveIcon onClick={() => toggleActiveState(i.id)} />
-          ) : (
-            <InactiveIcon onClick={() => toggleActiveState(i.id)} />
-          )}
-        </React.Fragment>
+        <SpecialItemForm
+          state={specialPrices}
+          specialPrice={i}
+          beverages={beverages}
+          toggleActiveState={toggleActiveState}
+          onChange={SPFormChangeHandler}
+        />
       );
     });
 
@@ -156,10 +163,10 @@ const SPAdd = ({ match, beverages, firestore, customers }) => {
       <SPControls>
         <AddItem>
           <p>Add An Item</p>
-          <form onSubmit={itemCodeSubmitHandler}>
+          <form onSubmit={addItemHandler}>
             <input
               placeholder="AMS12B"
-              onChange={itemCodeChangeHandler}
+              onChange={addItemChangeHandler}
               value={itemCode}
             />
           </form>

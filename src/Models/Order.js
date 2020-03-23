@@ -1,7 +1,5 @@
 import moment from "moment";
 
-console.log();
-
 export class Order {
   constructor(customer, details, cart) {
     this.customer = customer;
@@ -67,6 +65,16 @@ export class Order {
   };
 
   static CalculateRevenue = orders => {
+    // FIXME: Clean up function
+    let DateID = moment(new Date()).format("YYMMDD");
+    let isDailyOrdersEmpty = () => {
+      return (
+        Object.values(orders).filter(i => {
+          return i.details && i.details.orderID.includes(DateID);
+        }).length < 0
+      );
+    };
+
     try {
       let CalculateCart = cart => {
         try {
@@ -84,13 +92,12 @@ export class Order {
           return "Err";
         }
       };
-      let Today = moment(new Date()).format("YYMMDD");
 
       let orderTotals = Object.values(orders)
         .filter(
           i =>
             // filter checks that the order has details and was taken today
-            i.details && i.details.orderID.includes(Today)
+            i.details && i.details.orderID.includes(DateID)
         )
         .map(i => {
           return CalculateCart(i.cart);
@@ -98,12 +105,15 @@ export class Order {
       let revenue = orderTotals.reduce((a, b) => {
         return (parseFloat(a) + parseFloat(b)).toFixed(2);
       });
-
       return revenue;
     } catch (error) {
       console.log(error);
-      return "err";
+      return !isDailyOrdersEmpty() ? "0" : "err";
     }
+  };
+
+  static calcMargin = (price, spPrice) => {
+    return (parseFloat(price) - parseFloat(spPrice)).toFixed(2);
   };
 
   static isCartEmpty = cart => {

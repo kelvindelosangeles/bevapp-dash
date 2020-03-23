@@ -1,49 +1,53 @@
 import React, { useState, useEffect } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 import styled from "styled-components";
+import CustomerSelect from "../../../Global/CustomerSelect/CustomerSelect";
+import { Order as OrdersModel } from "../../../Models/Order";
 
 import { PageTitle } from "../../../Global/Layout/StyledElements";
 import { Colors } from "../../../Constants/Colors";
-import CustomerSelect from "../../../Global/CustomerSelect/CustomerSelect";
-import { connect } from "react-redux";
 
-const SPHome = ({ history, customers }) => {
-  const customersWithSpecialPrices = Object.values(customers)
-    .filter(i => {
-      return i.specialPrices;
-    })
-    .map(x => {
-      // First map is for the customer name
-      const items = Object.values(x.specialPrices).map(i => {
-        // second map is for the special item details
+const SPHome = ({ history, customers, beverages }) => {
+  const customersWithSpecialPrices = () => {
+    return Object.values(customers)
+      .filter(i => {
+        return i.specialPrices;
+      })
+      .map(x => {
+        // First map is for the customer name
+        const items = Object.values(x.specialPrices).map(i => {
+          // second map is for the special item details
+          console.log(i);
+          return (
+            <React.Fragment>
+              <p>{i.id}</p>
+              <p>$ {beverages[i.id].price}</p>
+              <p>$ {i.price}</p>
+              <p>$ {OrdersModel.calcMargin(beverages[i.id].price, i.price)}</p>
+              <p>{i.date}</p>
+            </React.Fragment>
+          );
+        });
+        const goToCustomer = () => {
+          history.push(`/specialpricing/add/${x.id}`);
+        };
+
+        console.log(x);
+
         return (
-          <React.Fragment>
-            <p>{i.id}</p>
-            <p>$ 34.99</p>
-            <p>$ {i.price}</p>
-            <p>$ 2.00</p>
-            <p>{i.date}</p>
-          </React.Fragment>
+          <StyledCustomer>
+            <h5 onClick={goToCustomer}>{x.name}</h5>
+            <h6>Beverage ID</h6>
+            <h6>Sales Price</h6>
+            <h6>Special Price</h6>
+            <h6>Margin</h6>
+            <h6>Last Edited</h6>
+            {items}
+          </StyledCustomer>
         );
       });
-      const goToCustomer = () => {
-        history.push(`/specialpricing/add/${x.id}`);
-      };
-
-      console.log(x);
-
-      return (
-        <StyledCustomer>
-          <h5 onClick={goToCustomer}>{x.name}</h5>
-          <h6>Beverage ID</h6>
-          <h6>Sales Price</h6>
-          <h6>Special Price</h6>
-          <h6>Margin</h6>
-          <h6>Last Edited</h6>
-          {items}
-        </StyledCustomer>
-      );
-    });
+  };
 
   const customerChangeHandler = (e, value) => {
     return value !== null && history.push(`/specialpricing/add/${value.id}`);
@@ -56,9 +60,9 @@ const SPHome = ({ history, customers }) => {
         <p>Add a Special Price</p>
         <CustomerSelect customerChangeHandler={customerChangeHandler} />
       </AddSPButton>
-      <SearchBar placeholder="Kelvin" />
+      <SearchBar placeholder="Search" />
       <CustomersGrid>
-        <div className="wrapper">{customersWithSpecialPrices}</div>
+        <div className="wrapper">{customersWithSpecialPrices()}</div>
       </CustomersGrid>
     </Grid>
   );
@@ -100,6 +104,7 @@ const AddSPButton = styled.div`
     justify-content: center;
     display: flex;
     align-items: center;
+    font-family: Poppins;
     font-weight: 700;
     font-size: 20px;
     margin-bottom: 16px;
@@ -152,6 +157,7 @@ const StyledCustomer = styled.div`
 
 export default connect(state => {
   return {
-    customers: state.Firestore.data.store.customers
+    customers: state.Firestore.data.store.customers,
+    beverages: state.Firestore.data.inventory.beverages
   };
 })(withRouter(SPHome));

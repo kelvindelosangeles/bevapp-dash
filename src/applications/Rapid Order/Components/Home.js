@@ -39,7 +39,7 @@ const StyledCartIcon = styled(CartIcon)`
 `;
 const Title = styled.p`
   font-family: Poppins;
-  font-weight: 900;
+  font-weight: 600;
   font-size: 32px;
   text-align: center;
   max-width: 494px;
