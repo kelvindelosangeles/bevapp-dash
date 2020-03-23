@@ -24,7 +24,7 @@ const OrderCart = ({ cart, readOnly = false, customer }) => {
       <main>{cartArray}</main>
       <footer>
         <h6>Total Cost</h6>
-        <h6>${OrderModel.CalculateCart(cart)}</h6>
+        <h6>${OrderModel.CalculateCart(cart, customer.specialPrices)}</h6>
       </footer>
     </OrderCartWrapper>
   );

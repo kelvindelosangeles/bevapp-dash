@@ -7,6 +7,9 @@ import Order from "./Order";
 
 const Orders = ({ orders, complete, search }) => {
   const OrdersArray = Object.values(orders)
+    .sort((a, b) => {
+      return a.details && a.details.orderID > b.details.orderID && -1;
+    })
     .filter(x => {
       // filters based on order completion
       return x.details && x.details.complete === complete;
