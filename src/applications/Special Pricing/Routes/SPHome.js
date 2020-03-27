@@ -108,15 +108,15 @@ const AddSPButton = styled.div`
   }
 `;
 const CustomersGrid = styled.div`
-  /* TODO: Explore doing this without a wrapper */
   grid-area: D;
   position: relative;
+  overflow-y: scroll;
   .wrapper {
     padding: 32px 0;
     position: absolute;
-    height: 100%;
+    /* height: 100%; */
     width: 100%;
-    overflow: scroll;
+    /* overflow: scroll; */
     display: grid;
     grid-row-gap: 64px;
     align-content: flex-start;
