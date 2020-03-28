@@ -93,22 +93,6 @@ export class Order {
         };
 
         try {
-            // let CalculateCart = cart => {
-            //   try {
-            //     let cartArray = Object.values(cart);
-            //     let itemTotal = cartArray.map(i => {
-            //       return (parseFloat(i.price) * i.qty).toFixed(2);
-            //     });
-            //     let combinedTotals = itemTotal.reduce((a, b) => {
-            //       return (parseFloat(a) + parseFloat(b)).toFixed(2);
-            //     });
-
-            //     return combinedTotals;
-            //   } catch (err) {
-            //     console.log(err);
-            //     return "Err";
-            //   }
-            // };
             let CalculateCart = (cart, specialPrices) => {
                 //Pass in a cart object to calculate the total
                 try {
