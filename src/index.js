@@ -12,10 +12,7 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore"; // <- needed if using firestore
 import { createStore, combineReducers } from "redux";
-import {
-  ReactReduxFirebaseProvider,
-  firebaseReducer
-} from "react-redux-firebase";
+import { ReactReduxFirebaseProvider, firebaseReducer } from "react-redux-firebase";
 import { createFirestoreInstance, firestoreReducer } from "redux-firestore"; // <- needed if using firestore
 
 import GlobalState from "./redux/reducers/GlobalState";
@@ -23,31 +20,45 @@ import RapidOrderReducer from "./redux/reducers/RapidOrderReducer";
 import DashboardReducer from "./redux/reducers/DashboardReducer";
 import SpecialPricingReducer from "./redux/reducers/SpecialPricingReducer";
 
+const bevappTest = {
+    apiKey: "AIzaSyCQhOoWbnPMT4YSUAQX5w956l7UPm73tMY",
+    authDomain: "bevapp-test.firebaseapp.com",
+    databaseURL: "https://bevapp-test.firebaseio.com",
+    projectId: "bevapp-test",
+    storageBucket: "bevapp-test.appspot.com",
+    messagingSenderId: "595597165652",
+    appId: "1:595597165652:web:9d09e924376af780cd19c1"
+};
+
+const bevappProduction = {
+    apiKey: "AIzaSyBWABm8_-gJAphiDlPJdrbwvZ01Sf2HXc4",
+    authDomain: "bevapp-1f1b1.firebaseapp.com",
+    databaseURL: "https://bevapp-1f1b1.firebaseio.com",
+    projectId: "bevapp-1f1b1",
+    storageBucket: "bevapp-1f1b1.appspot.com",
+    messagingSenderId: "872130550852",
+    appId: "1:872130550852:web:985b31878cea94a2"
+};
+
 const fbConfig = {
-  apiKey: "AIzaSyBWABm8_-gJAphiDlPJdrbwvZ01Sf2HXc4",
-  authDomain: "bevapp-1f1b1.firebaseapp.com",
-  databaseURL: "https://bevapp-1f1b1.firebaseio.com",
-  projectId: "bevapp-1f1b1",
-  storageBucket: "bevapp-1f1b1.appspot.com",
-  messagingSenderId: "872130550852",
-  appId: "1:872130550852:web:985b31878cea94a2"
+    ...bevappProduction
 };
 
 const rrfConfig = {
-  userProfile: "users",
-  useFirestoreForProfile: true // Firestore for Profile instead of Realtime DB
+    userProfile: "users",
+    useFirestoreForProfile: true // Firestore for Profile instead of Realtime DB
 };
 
 firebase.initializeApp(fbConfig);
 firebase.firestore(); // <- needed if using firestore
 
 const rootReducer = combineReducers({
-  GlobalState: GlobalState,
-  DashboardState: DashboardReducer,
-  RapidOrderState: RapidOrderReducer,
-  SpecialPricingState: SpecialPricingReducer,
-  Firebase: firebaseReducer,
-  Firestore: firestoreReducer
+    GlobalState: GlobalState,
+    DashboardState: DashboardReducer,
+    RapidOrderState: RapidOrderReducer,
+    SpecialPricingState: SpecialPricingReducer,
+    Firebase: firebaseReducer,
+    Firestore: firestoreReducer
 });
 
 const initialState = {};
@@ -55,10 +66,10 @@ const initialState = {};
 const store = createStore(rootReducer, initialState, composeWithDevTools());
 
 const rrfProps = {
-  firebase,
-  config: rrfConfig,
-  dispatch: store.dispatch,
-  createFirestoreInstance // <- needed if using firestore
+    firebase,
+    config: rrfConfig,
+    dispatch: store.dispatch,
+    createFirestoreInstance // <- needed if using firestore
 };
 
 let vh = window.innerHeight * 0.01;
@@ -66,22 +77,22 @@ let vh = window.innerHeight * 0.01;
 document.documentElement.style.setProperty("--vh", `${vh}px`);
 
 window.addEventListener("resize", () => {
-  // We execute the same script as before
-  let vh = window.innerHeight * 0.01;
-  document.documentElement.style.setProperty("--vh", `${vh}px`);
+    // We execute the same script as before
+    let vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
 });
 
 ReactDOM.render(
-  <StyleSheetManager disableVendorPrefixes>
-    <Router>
-      <Provider store={store}>
-        <ReactReduxFirebaseProvider {...rrfProps}>
-          <App />
-        </ReactReduxFirebaseProvider>
-      </Provider>
-    </Router>
-  </StyleSheetManager>,
-  document.getElementById("root")
+    <StyleSheetManager disableVendorPrefixes>
+        <Router>
+            <Provider store={store}>
+                <ReactReduxFirebaseProvider {...rrfProps}>
+                    <App />
+                </ReactReduxFirebaseProvider>
+            </Provider>
+        </Router>
+    </StyleSheetManager>,
+    document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change
