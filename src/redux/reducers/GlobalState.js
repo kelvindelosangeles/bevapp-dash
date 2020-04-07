@@ -1,6 +1,7 @@
 const initialState = {
     sidebarExpanded: true,
-    drawerOpen: true
+    drawerOpen: true,
+    changeLogOpen: false
 };
 
 const GlobalState = (state = initialState, action) => {
@@ -11,7 +12,9 @@ const GlobalState = (state = initialState, action) => {
                 sidebarExpanded: !state.sidebarExpanded
             };
         case "TOGGLE_DRAWER":
-            return { drawerOpen: !state.drawerOpen };
+            return { ...state, drawerOpen: !state.drawerOpen };
+        case "TOGGLE_CHANGE_LOG":
+            return { ...state, changeLogOpen: !state.changeLogOpen };
         default:
             return state;
     }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { withFirestore } from "react-redux-firebase";
 import moment from "moment";
 import styled from "styled-components";
@@ -15,10 +15,20 @@ import { Colors } from "../../../Constants/Colors";
 import { customers as backup } from "../../../Assets/Data/Customers";
 import SpecialItemForm from "../Components/SpecialItemForm";
 
-const SPAdd = ({ match, history, beverages, firestore, customers }) => {
+const SPAdd = ({ match, history, beverages, firestore, customers, dispatch }) => {
     const [customer] = useState(customers[match.params.customerid]);
     const [itemCode, setItemCode] = useState("");
     const [specialPrices, setSpecialPrices] = useState(null);
+    const ROCustomer = useSelector(state => state.RapidOrderState.customer);
+
+    const IsCustomerOnActiveOrder = () => {
+        try {
+            return customer.id === ROCustomer.id;
+        } catch (error) {
+            // console.log(error);
+            return;
+        }
+    };
 
     useEffect(() => {
         customer.specialPrices && setSpecialPrices({ ...customer.specialPrices });
@@ -79,6 +89,9 @@ const SPAdd = ({ match, history, beverages, firestore, customers }) => {
                       }
                   )
                   .then(() => {
+                      IsCustomerOnActiveOrder() && dispatch({ type: "SET_CUSTOMER", customer: { ...customer, specialPrices: { ...specialPrices } } });
+                  })
+                  .then(() => {
                       console.log("success");
                       history.push("/specialpricing");
                   })
@@ -120,6 +133,10 @@ const SPAdd = ({ match, history, beverages, firestore, customers }) => {
                       price: e.target.value
                   }
               });
+    };
+
+    const cancelHandler = () => {
+        window.confirm("Are you sure you want to exit? All changes will be lost.") && history.push("/specialpricing");
     };
 
     const specialPricesArray =
@@ -167,7 +184,10 @@ const SPAdd = ({ match, history, beverages, firestore, customers }) => {
                         <input placeholder='AMS12B' onChange={addItemChangeHandler} value={itemCode} />
                     </form>
                 </AddItem>
-                <SubmitButton onClick={submitHandler}> Submit</SubmitButton>
+                <div className='btn-wrapper'>
+                    <SubmitButton onClick={submitHandler}> Submit</SubmitButton>
+                    <SubmitButton onClick={cancelHandler}> Cancel</SubmitButton>
+                </div>
             </SPControls>
         </Grid>
     );
@@ -236,6 +256,12 @@ const SPControls = styled.div`
     display: flex;
     flex-direction: column;
     padding: 24px;
+    .btn-wrapper {
+        margin-top: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
 `;
 
 const AddItem = styled.div`
@@ -263,8 +289,8 @@ const AddItem = styled.div`
 `;
 
 const SubmitButton = styled.button`
-    width: 100%;
-    padding: 16px 0;
+    width: 60%;
+    padding: 12px 0;
     background-color: ${Colors.purple};
     border-radius: 4px;
     border: none;
@@ -274,6 +300,10 @@ const SubmitButton = styled.button`
     font-size: 18px;
     margin-top: auto;
     cursor: pointer;
+    :last-of-type {
+        margin-top: 24px;
+        background-color: ${Colors.red};
+    }
 `;
 
 export default connect(state => {

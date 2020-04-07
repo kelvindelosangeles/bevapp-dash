@@ -11,16 +11,18 @@ import StoreIcon from "@material-ui/icons/Store";
 import SpePricingIcon from "@material-ui/icons/MoneyOff";
 import SignoutIcon from "@material-ui/icons/ExitToApp";
 import Drawer from "@material-ui/core/Drawer";
-import { useSelector } from "react-redux";
+import { useSelector, connect } from "react-redux";
 
-const Sidebar = () => {
+const Sidebar = ({ dispatch }) => {
     const open = useSelector(state => state.GlobalState.drawerOpen);
     const sidebarWidth = open ? "208px" : "0px";
-    console.log(open);
+    const toggleChangeLog = () => {
+        dispatch({ type: "TOGGLE_CHANGE_LOG" });
+    };
     return (
         <Drawer anchor='left' open={open} variant='persistent' style={{ gridArea: "sidebar", width: sidebarWidth }}>
             <Container>
-                <AppTitle>
+                <AppTitle onClick={toggleChangeLog}>
                     <h3>Bevapp Dash</h3>
                     <p>v 1.0.0</p>
                 </AppTitle>
@@ -62,6 +64,7 @@ const AppTitle = styled.div`
     display: flex;
     align-items: flex-end;
     margin-bottom: 160px;
+    cursor: pointer;
     h3,
     p {
         font-family: Poppins;
@@ -114,4 +117,4 @@ const Signout = styled.div`
     }
 `;
 
-export default Sidebar;
+export default connect()(Sidebar);
