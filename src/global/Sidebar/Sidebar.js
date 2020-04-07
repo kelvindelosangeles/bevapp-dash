@@ -14,7 +14,7 @@ import Drawer from "@material-ui/core/Drawer";
 import { useSelector, connect } from "react-redux";
 
 const Sidebar = ({ dispatch }) => {
-    const open = useSelector(state => state.GlobalState.drawerOpen);
+    const open = useSelector((state) => state.GlobalState.drawerOpen);
     const sidebarWidth = open ? "208px" : "0px";
     const toggleChangeLog = () => {
         dispatch({ type: "TOGGLE_CHANGE_LOG" });
@@ -24,7 +24,7 @@ const Sidebar = ({ dispatch }) => {
             <Container>
                 <AppTitle onClick={toggleChangeLog}>
                     <h3>Bevapp Dash</h3>
-                    <p>v 1.0.0</p>
+                    <p>v 1.0.1</p>
                 </AppTitle>
 
                 <NavWrapper>
