@@ -10,7 +10,7 @@ import { withRouter } from "react-router-dom";
 import { compose } from "redux";
 import { connect } from "react-redux";
 
-const AddBeverage = props => {
+const AddBeverage = (props) => {
     const [itemID, setItemID] = useState("");
     const [brand, setBrand] = useState("");
     const [category, setCategory] = useState("");
@@ -19,7 +19,7 @@ const AddBeverage = props => {
     const [size, setSize] = useState("");
     const [price, setPrice] = useState("");
 
-    const submitHandler = e => {
+    const submitHandler = (e) => {
         e.preventDefault();
         if (itemID.includes(".")) {
             alert("If the Item ID contains a decimal point, please contact the administrator to add this item manually for you.");
@@ -46,7 +46,7 @@ const AddBeverage = props => {
                             .update(
                                 {
                                     collection: "inventory",
-                                    doc: "beverages"
+                                    doc: "beverages",
                                 },
                                 {
                                     [itemID]: {
@@ -56,15 +56,15 @@ const AddBeverage = props => {
                                         description,
                                         packaging,
                                         size,
-                                        price
-                                    }
+                                        price,
+                                    },
                                 }
                             )
                             .then(() => {
                                 console.log("success");
                                 props.history.push("/store/home");
                             })
-                            .catch(e => {
+                            .catch((e) => {
                                 console.log(e);
                                 alert(e);
                             })
@@ -75,21 +75,21 @@ const AddBeverage = props => {
     };
 
     const brandOptions = () => {
-        let brands = brandsList.map(i => i[0]);
-        brands = [...new Set(brands)].map(i => {
+        let brands = brandsList.map((i) => i[0]);
+        brands = [...new Set(brands)].map((i) => {
             return <option value={i}> {i.toUpperCase()} </option>;
         });
         return brands;
     };
     const CategoryOptions = () => {
-        let brands = brandsList.map(i => i[1]);
-        brands = [...new Set(brands)].map(i => {
+        let brands = brandsList.map((i) => i[1]);
+        brands = [...new Set(brands)].map((i) => {
             return <option value={i}> {i.toUpperCase()} </option>;
         });
         return brands;
     };
     const PackagingOptions = () => {
-        return PackagingList.map(i => {
+        return PackagingList.map((i) => {
             return <option value={i}> {i.toUpperCase()} </option>;
         });
     };
@@ -107,7 +107,7 @@ const AddBeverage = props => {
                         type='text'
                         required
                         value={itemID}
-                        onChange={e => {
+                        onChange={(e) => {
                             setItemID(e.target.value.toUpperCase());
                         }}
                     />
@@ -118,7 +118,7 @@ const AddBeverage = props => {
                         required
                         type='text'
                         defaultValue={null}
-                        onChange={e => {
+                        onChange={(e) => {
                             setBrand(e.target.value);
                         }}>
                         <option value={null}></option>
@@ -131,7 +131,7 @@ const AddBeverage = props => {
                         required
                         type='text'
                         defaultValue={null}
-                        onChange={e => {
+                        onChange={(e) => {
                             setCategory(e.target.value);
                         }}>
                         <option defaultValue={null}></option>
@@ -144,7 +144,7 @@ const AddBeverage = props => {
                         required
                         type='text'
                         value={description}
-                        onChange={e => {
+                        onChange={(e) => {
                             setDescription(e.target.value);
                         }}
                     />
@@ -155,7 +155,7 @@ const AddBeverage = props => {
                         required
                         type='text'
                         defaultValue={null}
-                        onChange={e => {
+                        onChange={(e) => {
                             setPackaging(e.target.value);
                         }}>
                         <option defaultValue={null}></option>
@@ -168,7 +168,7 @@ const AddBeverage = props => {
                         required
                         type='text'
                         value={size}
-                        onChange={e => {
+                        onChange={(e) => {
                             setSize(e.target.value);
                         }}
                     />
@@ -179,7 +179,7 @@ const AddBeverage = props => {
                         required
                         type='text'
                         value={price}
-                        onChange={e => {
+                        onChange={(e) => {
                             setPrice(e.target.value);
                         }}
                     />
@@ -249,9 +249,9 @@ const Form = styled.form`
 
 export default compose(
     firestoreConnect(),
-    connect(state => {
+    connect((state) => {
         return {
-            inventory: state.Firestore.ordered.inventory[0]
+            inventory: state.Firestore.ordered.inventory[0],
         };
     })
 )(withRouter(AddBeverage));
