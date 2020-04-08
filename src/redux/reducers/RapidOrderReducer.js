@@ -4,7 +4,7 @@ const initialState = {
     customer: null,
     orderItem: {},
     notes: "",
-    cart: {}
+    cart: {},
 };
 
 const RapidOrderReducer = (state = initialState, action) => {
@@ -13,13 +13,13 @@ const RapidOrderReducer = (state = initialState, action) => {
             return {
                 ...state,
                 atcVisible: !state.atcVisible,
-                orderItem: { ...action.item }
+                orderItem: { ...action.item },
             };
         case "TOGGLE_ATCF":
             return {
                 ...state,
                 atcfVisible: !state.atcVisible,
-                orderItem: { ...action.item }
+                orderItem: { ...action.item },
             };
 
         case "CLOSE_ATC":
@@ -27,14 +27,14 @@ const RapidOrderReducer = (state = initialState, action) => {
                 ...state,
                 atcVisible: false,
                 atcfVisible: false,
-                orderItem: {}
+                orderItem: {},
             };
         case "ADD_TO_CART":
             return {
                 ...state,
                 atcVisible: false,
                 atcfVisible: false,
-                cart: { ...state.cart, [action.item.id]: action.item }
+                cart: { ...state.cart, [action.item.id]: action.item },
             };
         case "CANCEL_ORDER":
             return {
@@ -43,13 +43,13 @@ const RapidOrderReducer = (state = initialState, action) => {
                 editMode: false,
                 customer: null,
                 orderToEdit: {},
-                notes: ""
+                notes: "",
             };
         case "SUBMIT_ORDER":
             return {
                 ...state,
                 cart: {},
-                notes: ""
+                notes: "",
             };
 
         case "REMOVE_ITEM":
@@ -57,18 +57,18 @@ const RapidOrderReducer = (state = initialState, action) => {
             const { [action.id]: removed, ...items } = state.cart;
             return {
                 ...state,
-                cart: { ...items }
+                cart: { ...items },
             };
 
         case "SET_CUSTOMER":
             return {
                 ...state,
-                customer: action.customer
+                customer: action.customer,
             };
         case "SET_NOTE":
             return {
                 ...state,
-                notes: action.payload
+                notes: action.payload,
             };
         default:
             return state;

@@ -9,14 +9,14 @@ class CustomerCopy extends React.Component {
     };
 
     render() {
-        const ordersArray = Object.values(this.cart()).map(i => {
+        const ordersArray = Object.values(this.cart()).map((i) => {
             const flavorsArray =
                 i.hasOwnProperty("flavorsQuantity") &&
                 Object.entries(i.flavorsQuantity)
-                    .filter(i => {
+                    .filter((i) => {
                         return i[1] > 0;
                     })
-                    .map(i => {
+                    .map((i) => {
                         return (
                             <Flavor>
                                 <p>{i[1]}</p>
@@ -97,6 +97,11 @@ const CustomerCopyWrapper = styled.div`
     flex-direction: column;
     height: 100vh;
     height: calc(var(--vh, 1vh) * 100);
+    @media print {
+        * {
+            page-break-inside: avoid;
+        }
+    }
     h3 {
         font-family: OpenSans-SemiBold;
         font-size: 14px;

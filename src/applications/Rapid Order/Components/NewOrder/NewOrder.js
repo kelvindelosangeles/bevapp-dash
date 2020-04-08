@@ -18,20 +18,19 @@ import CartHeader from "./Components/CartHeader";
 const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
     const [smartEntryID, setSmartEntryID] = useState("");
     const [smartEntryQty, setSmartEntryQty] = useState("");
-
     const orderID = useMemo(() => {
         return (moment(new Date()).format("YYMMDD") + uuid().slice(0, 8) + "ga").toUpperCase();
     }, []);
     const createdAt = useMemo(() => {
         return moment(new Date()).format("MMM DD, h:mm");
     });
-    const CartArray = Object.values(cart).map(i => {
+    const CartArray = Object.values(cart).map((i) => {
         const removeItem = () => {
             return (
                 window.confirm(`Delete ${i.id} ?`) &&
                 dispatch({
                     type: "REMOVE_ITEM",
-                    id: i.id
+                    id: i.id,
                 })
             );
         };
@@ -40,10 +39,10 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
                 return (
                     i.flavors &&
                     Object.entries(i.flavorsQuantity)
-                        .filter(y => {
+                        .filter((y) => {
                             return y[1] > 0;
                         })
-                        .map(x => {
+                        .map((x) => {
                             return (
                                 <Flavor>
                                     {x[0]} x {x[1]}
@@ -56,7 +55,12 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
                 return "Flavors err";
             }
         };
-
+        const Toggleatc = (a) => {
+            dispatch({
+                type: "TOGGLE_ATC",
+                orderItem: a,
+            });
+        };
         let hasSpecialPrice = () => {
             try {
                 // console.log(customer.specialPrices[i.id].price);
@@ -80,7 +84,6 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
             </React.Fragment>
         );
     });
-
     const submitOrder = () => {
         const NewOrder = {
             customer,
@@ -90,10 +93,10 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
                 createdAt,
                 createdBy: "General Admin",
                 orderID,
-                notes
+                notes,
             },
             cart,
-            editedOrder: null
+            editedOrder: null,
         };
         return Object.values(cart).length < 1
             ? alert("The order cannot be submited if the cart is empty")
@@ -101,7 +104,7 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
                   .update(
                       {
                           collection: "orders",
-                          doc: "orders"
+                          doc: "orders",
                       },
                       { [orderID]: { ...NewOrder } }
                   )
@@ -109,39 +112,38 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
                       console.log("success");
                       dispatch({
                           type: "SET_CUSTOMER",
-                          customer: null
+                          customer: null,
                       });
                       dispatch({ type: "SUBMIT_ORDER" });
                   })
-                  .catch(err => {
+                  .catch((err) => {
                       console.log(err);
                   });
     };
     const cancelOrder = () => {
         window.confirm("Are you sure you want to cancel this order") &&
             dispatch({
-                type: "CANCEL_ORDER"
+                type: "CANCEL_ORDER",
             });
     };
     const customerChangeHandler = (e, value) => {
         return value === null
             ? window.confirm("Are you sure you want to cancel this order?") &&
                   dispatch({
-                      type: "CANCEL_ORDER"
+                      type: "CANCEL_ORDER",
                   })
             : dispatch({
                   type: "SET_CUSTOMER",
-                  customer: value
+                  customer: value,
               });
     };
-    const notesChangeHandler = e => {
+    const notesChangeHandler = (e) => {
         dispatch({
             type: "SET_NOTE",
-            payload: e.target.value
+            payload: e.target.value,
         });
     };
-
-    const open = useSelector(state => state.GlobalState.drawerOpen);
+    const open = useSelector((state) => state.GlobalState.drawerOpen);
 
     return (
         <Container>
@@ -336,11 +338,11 @@ const Flavor = styled.p`
     padding: 0px 0px;
 `;
 
-export default connect(state => {
+export default connect((state) => {
     return {
         cart: state.RapidOrderState.cart,
         store: state.Firestore.data.inventory.beverages,
         notes: state.RapidOrderState.notes,
-        customer: state.RapidOrderState.customer
+        customer: state.RapidOrderState.customer,
     };
 })(withFirestore(NewOrder));

@@ -14,14 +14,14 @@ class WarehouseCopy extends React.Component {
     };
 
     render() {
-        const ordersArray = Object.values(this.cart()).map(i => {
+        const ordersArray = Object.values(this.cart()).map((i) => {
             const flavorsArray =
                 i.hasOwnProperty("flavorsQuantity") &&
                 Object.entries(i.flavorsQuantity)
-                    .filter(i => {
+                    .filter((i) => {
                         return i[1] > 0;
                     })
-                    .map(i => {
+                    .map((i) => {
                         return (
                             <Flavor>
                                 <p>{i[1]}</p> <p>x</p> <p> {i[0]}</p>
@@ -96,6 +96,17 @@ class WarehouseCopy extends React.Component {
 }
 
 const WarehouseCopyWrapper = styled.div`
+    @media print {
+        body,
+        * {
+            margin: 0;
+            box-shadow: 0;
+            display: table;
+        }
+        div {
+            page-break-inside: avoid;
+        }
+    }
     width: 100%;
     margin: auto;
     padding: 0 16px;
@@ -237,8 +248,8 @@ const Flavor = styled.div`
     }
 `;
 
-export default connect(state => {
+export default connect((state) => {
     return {
-        activeOrder: state.DashboardState.activeOrder
+        activeOrder: state.DashboardState.activeOrder,
     };
 })(WarehouseCopy);
