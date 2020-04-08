@@ -19,11 +19,11 @@ import Dialog from "@material-ui/core/Dialog";
 import Spinner from "./Global/Spinner/Spinner";
 import ChangeLog from "./Global/ChangeLog";
 
-const App = props => {
+const App = (props) => {
     const toggleChangeLog = () => {
         props.dispatch({ type: "TOGGLE_CHANGE_LOG" });
     };
-    const open = useSelector(state => state.GlobalState.changeLogOpen);
+    const open = useSelector((state) => state.GlobalState.changeLogOpen);
 
     return !isLoaded(props.inventory) || !isLoaded(props.orders) || !isLoaded(props.store) ? null : ( // <Spinner />
         <AppWrapper>
@@ -61,11 +61,11 @@ const AppWrapper = styled.div`
 `;
 
 export default compose(
-    connect(state => {
+    connect((state) => {
         return {
             inventory: state.Firestore.data.inventory,
             orders: state.Firestore.data.orders,
-            store: state.Firestore.data.store
+            store: state.Firestore.data.store,
         };
     }),
     firestoreConnect(() => {

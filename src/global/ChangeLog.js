@@ -9,6 +9,25 @@ const ChangeLog = () => {
 
             <Log>
                 <header>
+                    <p className='date'>April 8th, 2020</p>
+                    <p className='version'>v 1.0.2</p>
+                </header>
+                <ul>
+                    <label>Add Flavors Modal</label>
+                    <li>The screen that pops up when adding flavors in rapid order now appears in the center and can scroll</li>
+                    <li>Flavors are now sorted alphabetically</li>
+                </ul>
+                <ul>
+                    <label>Store</label>
+                    <li>Fixed the scrolling issue when editing a store item.</li>
+                    <li className='highlight'>
+                        <mark>Edit Order now supports flavors. Click on the "has flavors" toggle and add or remove as many flavors to the item.</mark>
+                    </li>
+                    <li>You can now edit the Id and prices of exisitng beverages.</li>
+                </ul>
+            </Log>
+            <Log>
+                <header>
                     <p className='date'>April 3rd, 2020</p>
                     <p className='version'>v 1.0.1</p>
                 </header>
@@ -62,6 +81,7 @@ const Container = styled.div`
 `;
 
 const Log = styled.div`
+    margin-bottom: 80px;
     header {
         display: flex;
         align-items: baseline;

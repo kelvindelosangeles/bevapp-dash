@@ -54,8 +54,9 @@ const AddtoCartFlavors = ({ orderItem, dispatch }) => {
         dispatch({ type: "CLOSE_ATC" });
     };
     const Flavors = orderItem.flavors
+        .slice()
         .sort((a, b) => {
-            return a > b ? 1 : -1;
+            return String(a) > String(b) ? 1 : -1;
         })
         .map((i) => {
             return <FlavorsInput key={i} name={i} FlavorChangeHandler={FlavorChangeHandler} flavorsQuantity={flavorsQuantity} />;

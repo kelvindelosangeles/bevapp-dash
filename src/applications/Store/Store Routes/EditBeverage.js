@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Colors } from "../../../Constants/Colors";
-import GoBack from "../Components/GoBack";
-
 import { Brands as brandsList } from "../../../Assets/Data/Brands";
 import { Packaging as PackagingList } from "../../../Assets/Data/Packaging";
 import { firestoreConnect } from "react-redux-firebase";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
 import { connect } from "react-redux";
+import Switch from "@material-ui/core/Switch";
+import Chip from "@material-ui/core/Chip";
 
 const EditBeverage = (props) => {
     const [itemID, setItemID] = useState("");
@@ -18,7 +18,10 @@ const EditBeverage = (props) => {
     const [packaging, setPackaging] = useState("");
     const [size, setSize] = useState("");
     const [price, setPrice] = useState("");
+    const [flavors, setFlavors] = useState(null);
+    const [newFlavor, setNewFlavor] = useState(null);
     let item = props.inventory[props.match.params.id];
+    const [hasFlavors, setHasFlavors] = useState(false);
 
     useEffect(() => {
         setItemID(item.id);
@@ -28,37 +31,57 @@ const EditBeverage = (props) => {
         setPackaging(item.packaging);
         setSize(item.size);
         setPrice(item.price);
+        setHasFlavors(item.hasOwnProperty("flavors"));
+        item.hasOwnProperty("flavors") ? setFlavors([...item.flavors]) : setFlavors(null);
     }, [props.match.params.id]);
+
+    useEffect(() => {
+        flavors && flavors.length < 1 && setHasFlavors(false);
+    }, [flavors]);
+
+    useEffect(() => {
+        !hasFlavors && setFlavors(null);
+    }, [hasFlavors]);
 
     const submitHandler = (e) => {
         e.preventDefault();
+        // The Logic is currently working but i can clean this up
+        // perhaps solve this with a big try catch
+        const itemWithFlavors = {
+            [itemID]: {
+                ...item,
+                brand,
+                id: itemID,
+                category,
+                description,
+                packaging,
+                size,
+                price,
+                flavors,
+            },
+        };
+        const itemWithoutFlavors = {
+            [itemID]: {
+                brand,
+                category,
+                description,
+                id: itemID,
+                packaging,
+                price,
+                size,
+            },
+        };
+        let updatedItem = hasFlavors && flavors && flavors.length > 0 ? itemWithFlavors : itemWithoutFlavors;
 
         return (
-            itemID !== "" &&
-            brand &&
-            category &&
-            packaging &&
-            description !== "" &&
-            size !== "" &&
-            price !== "" &&
+            window.confirm("Are you sure you want to make these changes?") &&
             props.firestore
                 .update(
                     {
                         collection: "inventory",
                         doc: "beverages",
                     },
-                    {
-                        [itemID]: {
-                            ...item,
-                            brand,
-                            id: itemID,
-                            category,
-                            description,
-                            packaging,
-                            size,
-                            price,
-                        },
-                    }
+                    updatedItem
                 )
                 .then(() => {
                     console.log("success");
@@ -69,18 +92,11 @@ const EditBeverage = (props) => {
                 })
         );
     };
-
     const deleteHandler = (e) => {
         e.preventDefault();
         const { [itemID]: removed, ["id"]: omit, ...updatedInventory } = props.inventory;
+
         window.confirm(`Are you sure you would like to delete ${itemID}`) &&
-            itemID !== "" &&
-            brand &&
-            category &&
-            packaging &&
-            description !== "" &&
-            size !== "" &&
-            price !== "" &&
             props.firestore
                 .set(
                     {
@@ -98,7 +114,6 @@ const EditBeverage = (props) => {
                     alert(err);
                 });
     };
-
     const brandOptions = () => {
         let brands = brandsList.map((i) => i[0]);
         brands = [...new Set(brands)].map((i) => {
@@ -118,171 +133,246 @@ const EditBeverage = (props) => {
             return <option value={i}> {i.toUpperCase()} </option>;
         });
     };
+    const removeFlavor = (x) => {
+        let filteredFlavors = flavors.filter((f, index) => {
+            return index !== x;
+        });
+        window.confirm(`Are you sure you want to delete the ${flavors[x]} flavor `) && setFlavors(filteredFlavors);
+    };
+    const flavorsMapped = () => {
+        try {
+            return flavors.map((f, index) => {
+                return <Chip onDelete={() => removeFlavor(index)} label={f} color='primary' />;
+            });
+        } catch (error) {
+            return;
+        }
+    };
+    const addFlavorHandler = () => {
+        const oldFlavors = flavors ? flavors : [];
+
+        !newFlavor ? alert("Please enter a new flavor then click add") : setFlavors([...oldFlavors, newFlavor]);
+        setNewFlavor("");
+    };
 
     return (
-        <EditBeverageWrapper>
-            <GoBack to={"/store"} />
-            <Label>
-                <p>Edit Beverage</p>
-            </Label>
-            <Form onSubmit={submitHandler}>
-                <div style={{ gridArea: "a" }}>
-                    <p>Item ID</p>
-                    <input
-                        type='text'
-                        disabled
-                        value={itemID}
-                        onChange={(e) => {
-                            setItemID(e.target.value.toUpperCase());
-                        }}
-                    />
-                </div>
-                <div style={{ gridArea: "b" }}>
-                    <p>Brand</p>
-                    <select
-                        required
-                        type='text'
-                        defaultValue={null}
-                        value={brand}
-                        onChange={(e) => {
-                            setBrand(e.target.value);
-                        }}>
-                        <option value={null}></option>
-                        {brandOptions()}
-                    </select>
-                </div>
-                <div style={{ gridArea: "c" }}>
-                    <p>Category</p>
-                    <select
-                        required
-                        type='text'
-                        value={category}
-                        defaultValue={null}
-                        onChange={(e) => {
-                            setCategory(e.target.value);
-                        }}>
-                        <option defaultValue={null}></option>
-                        {CategoryOptions()}
-                    </select>
-                </div>
-                <div style={{ gridArea: "e" }}>
-                    <p>Description</p>
-                    <input
-                        required
-                        type='text'
-                        value={description}
-                        onChange={(e) => {
-                            setDescription(e.target.value);
-                        }}
-                    />
-                </div>
-                <div style={{ gridArea: "d" }}>
-                    <p>Packaging</p>
-                    <select
-                        required
-                        type='text'
-                        value={packaging}
-                        defaultValue={null}
-                        onChange={(e) => {
-                            setPackaging(e.target.value);
-                        }}>
-                        <option defaultValue={null}></option>
-                        {PackagingOptions()}
-                    </select>
-                </div>
-                <div style={{ gridArea: "f" }}>
-                    <p>Size</p>
-                    <input
-                        required
-                        type='text'
-                        value={size}
-                        onChange={(e) => {
-                            setSize(e.target.value);
-                        }}
-                    />
-                </div>
-                <div style={{ gridArea: "g" }}>
-                    <p>Price</p>
-                    <input
-                        disabled
-                        type='text'
-                        value={price}
-                        onChange={(e) => {
-                            setPrice(e.target.value);
-                        }}
-                    />
-                </div>
-                <button style={{ gridArea: "h" }} type='submit'>
-                    Submit
-                </button>
-                <button style={{ gridArea: "i" }} type='button' onClick={deleteHandler}>
-                    Delete
-                </button>
-            </Form>
-        </EditBeverageWrapper>
+        <Container>
+            <div className='wrapper'>
+                <header>
+                    <p>go back</p>
+                    <p className='page-title'>Edit Beverage</p>
+                </header>
+
+                {flavors && (
+                    <FlavorsContainer>
+                        <p className='title'>Flavors</p>
+                        <div className='grid'>{flavorsMapped()}</div>
+                    </FlavorsContainer>
+                )}
+
+                <form onSubmit={submitHandler}>
+                    <div className='input-group' id='has-flavors'>
+                        <label htmlFor=''>Has Flavors</label>
+                        <Switch
+                            checked={hasFlavors}
+                            color='Primary'
+                            onClick={() => {
+                                setHasFlavors(!hasFlavors);
+                            }}
+                            name='hasFlavors'
+                        />
+                    </div>
+                    {hasFlavors && (
+                        <div className='flavor-adder'>
+                            <label htmlFor=''>Add Flavors</label>
+                            <div className='add-flavor-input'>
+                                <input value={newFlavor} onChange={(e) => setNewFlavor(e.target.value)} />
+                                <button type='button' onClick={addFlavorHandler}>
+                                    +
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                    <div className='input-group' id='item-id'>
+                        <label htmlFor=''>Item ID</label>
+                        <input value={itemID} required onChange={(e) => setItemID(e.target.value.toUpperCase())} />
+                    </div>
+                    <div className='input-group ' id='brand'>
+                        <label htmlFor=''>Brand</label>
+                        <select
+                            required
+                            value={brand}
+                            onChange={(e) => {
+                                setBrand(e.target.value);
+                            }}>
+                            {brandOptions()}
+                        </select>
+                    </div>
+                    <div className='input-group' id='category'>
+                        <label htmlFor=''>Category</label>
+                        <select
+                            required
+                            value={category}
+                            onChange={(e) => {
+                                setCategory(e.target.value);
+                            }}>
+                            {CategoryOptions()}
+                        </select>
+                    </div>
+                    <div className='input-group' id='packaging'>
+                        <label htmlFor=''>Packaging</label>
+                        <select
+                            required
+                            value={packaging}
+                            onChange={(e) => {
+                                setPackaging(e.target.value);
+                            }}>
+                            {PackagingOptions()}
+                        </select>
+                    </div>
+                    <div className='input-group' id='size'>
+                        <label htmlFor=''>Size</label>
+                        <input value={size} required onChange={(e) => setSize(e.target.value)} />
+                    </div>
+                    <div className='input-group' id='price'>
+                        <label htmlFor=''>Price</label>
+                        <input value={price} type='number' min='1' max='100' step='0.01' required onChange={(e) => setPrice(e.target.value)} />
+                    </div>
+                    <div className='input-group' id='description'>
+                        <label htmlFor=''>Description</label>
+                        <input value={description} required onChange={(e) => setDescription(e.target.value)} />
+                    </div>
+                    <button type='submit' id='submit-btn'>
+                        Submit
+                    </button>
+                    <button type='button' onClick={deleteHandler} id='cancel-btn'>
+                        Delete
+                    </button>
+                </form>
+            </div>
+        </Container>
     );
 };
 
-const EditBeverageWrapper = styled.div`
+const Container = styled.div`
     grid-area: preview;
-    height: 100%;
-    width: 100%;
-    background-color: ${Colors.white};
-    padding: 0 16px;
+    position: relative;
+    .wrapper {
+        padding: 16px;
+        padding-bottom: 80px;
+        overflow: scroll;
+        height: 100%;
+        position: absolute;
+        left: 0;
+    }
+    header {
+        margin-bottom: 40px;
+    }
+    form {
+        display: grid;
+        grid-gap: 32px 16px;
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+            "A B"
+            "C D"
+            "E F"
+            "G H"
+            "I  I"
+            "J  K";
+        #has-flavors {
+            grid-area: A;
+        }
+        .flavor-adder {
+            grid-area: B;
+            .add-flavor-input {
+                display: grid;
+                grid-template-columns: 8fr 2fr;
+            }
+            button {
+                background-color: ${Colors.black};
+                color: ${Colors.white};
+                border: none;
+                border-radius: 0 4px 4px 0;
+                font-size: 16px;
+                font-weight: 700;
+                cursor: pointer;
+            }
+        }
+        #item-id {
+            grid-area: C;
+        }
+        #brand {
+            grid-area: D;
+        }
+        #category {
+            grid-area: E;
+        }
+        #packaging {
+            grid-area: F;
+        }
+        #size {
+            grid-area: G;
+        }
+        #price {
+            grid-area: H;
+        }
+        #description {
+            grid-area: I;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 16px;
+            font-family: Poppins;
+            font-weight: 600;
+            font-size: 16px;
+            color: ${Colors.black};
+        }
+        select,
+        input {
+            height: 56px;
+            width: 100%;
+            padding: 16px 8px;
+            border: none;
+            border-radius: 4px;
+            background-color: #f5f5f5;
+            -webkit-appearance: none;
+            font-size: 16px;
+        }
+        select {
+            cursor: pointer;
+        }
+        button {
+            padding: 16px 0px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 4px;
+            border: none;
+            color: white;
+        }
+        #submit-btn {
+            background-color: ${Colors.green};
+            grid-area: J;
+        }
+        #cancel-btn {
+            background-color: ${Colors.red};
+            grid-area: K;
+        }
+    }
 `;
 
-const Label = styled.div`
-    padding: 40px 0;
-    width: 100%;
-    margin-bottom: 40px;
-    p {
-        font-family: Poppins;
-        font-weight: 700;
+const FlavorsContainer = styled.div`
+    .title {
         font-size: 24px;
+        font-weight: 600;
         text-align: center;
+        margin-bottom: 40px;
     }
-`;
-const Form = styled.form`
-    display: grid;
-    grid-gap: 24px 16px;
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-        "a b"
-        "c d"
-        "e e"
-        "f g"
-        "h i";
-    p {
-        margin-bottom: 8px;
-        font-family: Poppins;
-        font-weight: 600;
-        font-size: 16px;
-        color: #000000;
-    }
-    input,
-    select {
-        height: 56px;
-        width: 100%;
-        padding: 16px 8px;
-        border: none;
-        border-radius: 4px;
-        background-color: ${Colors.lightGrey};
-        font-family: Poppins;
-        font-weight: 600;
-        font-size: 16px;
-    }
-    button {
-        padding: 16px 0;
-        border-radius: 4px;
-        background-color: ${Colors.green};
-        font-family: Poppins;
-        font-weight: 700;
-        font-size: 16px;
-        color: ${Colors.white};
-        cursor: pointer;
-        :last-of-type {
-            background-color: ${Colors.red};
-        }
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 16px;
+        margin-bottom: 40px;
     }
 `;
 

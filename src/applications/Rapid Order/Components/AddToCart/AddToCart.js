@@ -67,6 +67,9 @@ const Container = styled.div`
             background-color: salmon;
             margin-right: 64px;
         }
+        .details {
+            font-weight: 600;
+        }
     }
     .controls {
         display: flex;
