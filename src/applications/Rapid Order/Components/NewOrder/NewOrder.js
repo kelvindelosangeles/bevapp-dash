@@ -16,6 +16,7 @@ import OrderDetails from "../../../../Global/OrderPreview/OrderDetails";
 import CartHeader from "./Components/CartHeader";
 
 const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
+    const open = useSelector((state) => state.GlobalState.drawerOpen);
     const [smartEntryID, setSmartEntryID] = useState("");
     const [smartEntryQty, setSmartEntryQty] = useState("");
     const orderID = useMemo(() => {
@@ -56,9 +57,10 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
             }
         };
         const Toggleatc = (a) => {
+            // FIXME: Move the logic to the reducer
             dispatch({
-                type: "TOGGLE_ATC",
-                orderItem: a,
+                type: a.flavors ? "TOGGLE_ATCF" : "TOGGLE_ATC",
+                item: a,
             });
         };
         let hasSpecialPrice = () => {
@@ -73,7 +75,9 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
         return (
             <React.Fragment>
                 <p>{i.id}</p>
-                <p>{i.qty} x</p>
+                <p id='qty' onClick={() => Toggleatc(i)}>
+                    {i.qty} x
+                </p>
                 <p>
                     {i.description} {flavors()}
                 </p>
@@ -143,7 +147,6 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
             payload: e.target.value,
         });
     };
-    const open = useSelector((state) => state.GlobalState.drawerOpen);
 
     return (
         <Container>
@@ -244,6 +247,12 @@ const Notes = styled.section`
 `;
 const Cart = styled.div`
     grid-area: E;
+    #qty {
+        cursor: pointer;
+        :hover {
+            color: ${Colors.green};
+        }
+    }
     h3 {
         display: flex;
         align-items: center;
@@ -321,6 +330,7 @@ const Actions = styled.div`
         background-color: transparent;
         margin-left: 24px;
         border-radius: 4px;
+        cursor: pointer;
         :first-of-type {
             background-color: ${Colors.green};
             color: ${Colors.white};

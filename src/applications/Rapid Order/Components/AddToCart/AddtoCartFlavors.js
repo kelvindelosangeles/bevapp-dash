@@ -53,9 +53,13 @@ const AddtoCartFlavors = ({ orderItem, dispatch }) => {
         setFlavorsQuantity({});
         dispatch({ type: "CLOSE_ATC" });
     };
-    const Flavors = orderItem.flavors.map((i) => {
-        return <FlavorsInput key={i} name={i} FlavorChangeHandler={FlavorChangeHandler} flavorsQuantity={flavorsQuantity} />;
-    });
+    const Flavors = orderItem.flavors
+        .sort((a, b) => {
+            return a > b ? 1 : -1;
+        })
+        .map((i) => {
+            return <FlavorsInput key={i} name={i} FlavorChangeHandler={FlavorChangeHandler} flavorsQuantity={flavorsQuantity} />;
+        });
     // FIXME: Sorting not allowed
 
     const open = useSelector((state) => state.RapidOrderState.atcfVisible);
@@ -79,9 +83,7 @@ const AddtoCartFlavors = ({ orderItem, dispatch }) => {
 const Container = styled.div`
     padding: 24px;
 `;
-
 const FlavorsForm = styled.form``;
-
 const FlavorsFormActions = styled.div`
     margin-top: 64px;
     display: flex;
