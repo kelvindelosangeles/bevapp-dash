@@ -9,6 +9,7 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import Switch from "@material-ui/core/Switch";
 import Chip from "@material-ui/core/Chip";
+import BackIcon from "@material-ui/icons/ArrowBackRounded";
 
 const EditBeverage = (props) => {
     const [itemID, setItemID] = useState("");
@@ -155,12 +156,17 @@ const EditBeverage = (props) => {
         !newFlavor ? alert("Please enter a new flavor then click add") : setFlavors([...oldFlavors, newFlavor]);
         setNewFlavor("");
     };
+    const cancleHandler = () => {
+        window.confirm("Are you sure you want to cancel these changes?") && props.history.push("/store/home");
+    };
 
     return (
         <Container>
             <div className='wrapper'>
                 <header>
-                    <p>go back</p>
+                    <p className='back-button' onClick={cancleHandler}>
+                        <BackIcon /> Go Back
+                    </p>
                     <p className='page-title'>Edit Beverage</p>
                 </header>
 
@@ -268,6 +274,23 @@ const Container = styled.div`
     }
     header {
         margin-bottom: 40px;
+        .back-button {
+            font-size: 16px;
+            margin-bottom: 40px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            svg {
+                margin-right: 16px;
+            }
+        }
+        .page-title {
+            font-family: Poppins;
+            font-weight: 700;
+            font-size: 24px;
+            text-align: center;
+        }
     }
     form {
         display: grid;

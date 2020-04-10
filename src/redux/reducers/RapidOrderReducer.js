@@ -5,6 +5,8 @@ const initialState = {
     orderItem: {},
     notes: "",
     cart: {},
+    // beta
+    editOrderID: null,
 };
 
 const RapidOrderReducer = (state = initialState, action) => {
@@ -40,16 +42,17 @@ const RapidOrderReducer = (state = initialState, action) => {
             return {
                 ...state,
                 cart: {},
-                editMode: false,
                 customer: null,
-                orderToEdit: {},
                 notes: "",
+                editOrderID: null,
             };
         case "SUBMIT_ORDER":
             return {
                 ...state,
                 cart: {},
                 notes: "",
+                editOrderID: null,
+                customer: null,
             };
 
         case "REMOVE_ITEM":
@@ -64,11 +67,20 @@ const RapidOrderReducer = (state = initialState, action) => {
             return {
                 ...state,
                 customer: action.customer,
+                editOrderID: null,
             };
         case "SET_NOTE":
             return {
                 ...state,
                 notes: action.payload,
+            };
+        // BETA
+        case "SET_EDIT_ORDER_CART":
+            return {
+                ...state,
+                customer: action.payload.customer,
+                cart: action.payload.cart,
+                editOrderID: action.payload.orderID,
             };
         default:
             return state;

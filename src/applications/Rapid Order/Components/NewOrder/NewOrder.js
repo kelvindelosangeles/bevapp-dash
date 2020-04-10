@@ -14,14 +14,18 @@ import SmartEntry from "./Components/SmartEntry";
 import CustomerDetails from "../../../../Global/OrderPreview/CustomerDetails";
 import OrderDetails from "../../../../Global/OrderPreview/OrderDetails";
 import CartHeader from "./Components/CartHeader";
+import { useEffect } from "react";
 
 const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
     const open = useSelector((state) => state.GlobalState.drawerOpen);
     const [smartEntryID, setSmartEntryID] = useState("");
     const [smartEntryQty, setSmartEntryQty] = useState("");
-    const orderID = useMemo(() => {
-        return (moment(new Date()).format("YYMMDD") + uuid().slice(0, 8) + "ga").toUpperCase();
-    }, []);
+
+    const [orderID, setOrderID] = useState("");
+    // let orderID = useMemo(() => {
+    //     return (moment(new Date()).format("YYMMDD") + uuid().slice(0, 8) + "ga").toUpperCase();
+    // }, []);
+
     const createdAt = useMemo(() => {
         return moment(new Date()).format("MMM DD, h:mm");
     });
@@ -114,10 +118,6 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
                   )
                   .then(() => {
                       console.log("success");
-                      dispatch({
-                          type: "SET_CUSTOMER",
-                          customer: null,
-                      });
                       dispatch({ type: "SUBMIT_ORDER" });
                   })
                   .catch((err) => {
@@ -147,62 +147,84 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
             payload: e.target.value,
         });
     };
+    // BETA
+    const editOrderID = useSelector((state) => state.RapidOrderState.editOrderID);
+
+    useEffect(() => {
+        editOrderID ? setOrderID(editOrderID) : setOrderID((moment(new Date()).format("YYMMDD") + uuid().slice(0, 8) + "ga").toUpperCase());
+    }, [customer]);
 
     return (
-        <Container>
-            {/* NEW ORDER CONTOLS ============= */}
-            {/* FIXME: Make this cleaner*/}
-            <Controls style={{ width: open ? "calc(100% - 208px)" : "100%" }}>
-                <CustomerSelect customerChangeHandler={customerChangeHandler} selectedCustomer={customer} />
-                <SmartEntry
-                    smartEntryID={smartEntryID}
-                    smartEntryQty={smartEntryQty}
-                    setSmartEntryQty={setSmartEntryQty}
-                    setSmartEntryID={setSmartEntryID}
-                />
-            </Controls>
+        <React.Fragment>
+            {editOrderID && (
+                <EditWarning>
+                    <p className='warning'>Edit Mode</p>
+                </EditWarning>
+            )}
+            <Container>
+                {/* NEW ORDER CONTOLS ============= */}
+                {/* FIXME: Make this cleaner*/}
+                <Controls style={{ width: open ? "calc(100% - 208px)" : "100%" }}>
+                    {!editOrderID && <CustomerSelect customerChangeHandler={customerChangeHandler} selectedCustomer={customer} />}
+                    <SmartEntry
+                        smartEntryID={smartEntryID}
+                        smartEntryQty={smartEntryQty}
+                        setSmartEntryQty={setSmartEntryQty}
+                        setSmartEntryID={setSmartEntryID}
+                    />
+                </Controls>
 
-            {/* Customer Details ============== */}
-            <CustomerDetails name={customer.name} address={customer.address} telephone={customer.telephone} gridArea='B' />
-            <OrderDetails orderID={orderID} createdAt={createdAt} status={"New Order"} gridArea='C' />
-            <Notes>
-                <h3>NOTES</h3>
-                <textarea rows={5} onChange={notesChangeHandler} value={notes} placeholder={"Enter order notes here."} />
-            </Notes>
+                {/* Customer Details ============== */}
+                <CustomerDetails name={customer.name} address={customer.address} telephone={customer.telephone} gridArea='B' />
+                <OrderDetails orderID={orderID} createdAt={createdAt} status={"New Order"} gridArea='C' />
+                <Notes>
+                    <h3>NOTES</h3>
+                    <textarea rows={5} onChange={notesChangeHandler} value={notes} placeholder={"Enter order notes here."} />
+                </Notes>
 
-            {/* Cart ============== */}
-            <Cart>
-                <h3>
-                    <CartIcon />
-                    Cart
-                </h3>
-                <div>
-                    <CartHeader />
-                    {CartArray}
-                </div>
-            </Cart>
-
-            {/* Actions ============== */}
-            <Actions>
-                <div>
-                    <h3>Total</h3>
+                {/* Cart ============== */}
+                <Cart>
                     <h3>
-                        {!OrdersModel.isCartEmpty(cart) && "$ "}
-                        {!OrdersModel.isCartEmpty(cart) && OrdersModel.CalculateCart(cart, customer.specialPrices)}
+                        <CartIcon />
+                        Cart
                     </h3>
-                    <h3>Cases</h3>
-                    <h3>{!OrdersModel.isCartEmpty(cart) && OrdersModel.CalculateCases(cart)}</h3>
-                </div>
-                <span>
-                    <button onClick={submitOrder}>Submit</button>
-                    <button onClick={cancelOrder}>Cancel</button>
-                </span>
-            </Actions>
-        </Container>
+                    <div>
+                        <CartHeader />
+                        {CartArray}
+                    </div>
+                </Cart>
+
+                {/* Actions ============== */}
+                <Actions>
+                    <div>
+                        <h3>Total</h3>
+                        <h3>
+                            {!OrdersModel.isCartEmpty(cart) && "$ "}
+                            {!OrdersModel.isCartEmpty(cart) && OrdersModel.CalculateCart(cart, customer.specialPrices)}
+                        </h3>
+                        <h3>Cases</h3>
+                        <h3>{!OrdersModel.isCartEmpty(cart) && OrdersModel.CalculateCases(cart)}</h3>
+                    </div>
+                    <span>
+                        <button onClick={submitOrder}>Submit</button>
+                        <button onClick={cancelOrder}>Cancel</button>
+                    </span>
+                </Actions>
+            </Container>
+        </React.Fragment>
     );
 };
-
+const EditWarning = styled.div`
+    padding: 16px;
+    background-color: #ffcc00;
+    .warning {
+        font-size: 20px;
+        font-weight: 800;
+        text-align: center;
+    }
+`;
 const Container = styled.div`
+    min-height: 100%;
     display: grid;
     height: fit-content;
     padding: 0 0 32px 0;
