@@ -19,7 +19,7 @@ const SPAdd = ({ match, history, beverages, firestore, customers, dispatch }) =>
     const [customer] = useState(customers[match.params.customerid]);
     const [itemCode, setItemCode] = useState("");
     const [specialPrices, setSpecialPrices] = useState(null);
-    const ROCustomer = useSelector(state => state.RapidOrderState.customer);
+    const ROCustomer = useSelector((state) => state.RapidOrderState.customer);
 
     const IsCustomerOnActiveOrder = () => {
         try {
@@ -34,11 +34,11 @@ const SPAdd = ({ match, history, beverages, firestore, customers, dispatch }) =>
         customer.specialPrices && setSpecialPrices({ ...customer.specialPrices });
     }, []);
 
-    const addItemChangeHandler = e => {
+    const addItemChangeHandler = (e) => {
         setItemCode(e.target.value.toUpperCase());
     };
 
-    const addItemHandler = e => {
+    const addItemHandler = (e) => {
         e.preventDefault();
 
         const success = () => {
@@ -48,8 +48,8 @@ const SPAdd = ({ match, history, beverages, firestore, customers, dispatch }) =>
                     id: itemCode,
                     price: beverages[itemCode].price,
                     date: moment(new Date()).format("DD/MM/YY"),
-                    active: true
-                }
+                    active: true,
+                },
             });
             setItemCode("");
         };
@@ -60,17 +60,17 @@ const SPAdd = ({ match, history, beverages, firestore, customers, dispatch }) =>
         beverages[itemCode] ? success() : failed();
     };
 
-    const toggleActiveState = id => {
+    const toggleActiveState = (id) => {
         const text = specialPrices[id].active ? "disable" : "enable";
         const bool = specialPrices[id].active ? false : true;
         window.confirm(`Are you sure you would like to ${text} Item ${id}`) &&
             setSpecialPrices({
                 ...specialPrices,
-                [id]: { ...specialPrices[id], active: bool }
+                [id]: { ...specialPrices[id], active: bool },
             });
     };
 
-    const submitHandler = e => {
+    const submitHandler = (e) => {
         e.preventDefault();
 
         specialPrices === null
@@ -79,13 +79,13 @@ const SPAdd = ({ match, history, beverages, firestore, customers, dispatch }) =>
                   .update(
                       {
                           collection: "store",
-                          doc: "customers"
+                          doc: "customers",
                       },
                       {
                           [match.params.customerid]: {
                               ...customer,
-                              specialPrices: { ...specialPrices }
-                          }
+                              specialPrices: { ...specialPrices },
+                          },
                       }
                   )
                   .then(() => {
@@ -95,7 +95,7 @@ const SPAdd = ({ match, history, beverages, firestore, customers, dispatch }) =>
                       console.log("success");
                       history.push("/specialpricing");
                   })
-                  .catch(err => {
+                  .catch((err) => {
                       console.log(err);
                   });
     };
@@ -105,33 +105,33 @@ const SPAdd = ({ match, history, beverages, firestore, customers, dispatch }) =>
             .set(
                 {
                     collection: "store",
-                    doc: "customers"
+                    doc: "customers",
                 },
                 { ...backup }
             )
             .then(() => {
                 console.log("success");
             })
-            .catch(err => {
+            .catch((err) => {
                 console.log(err);
             });
     };
 
-    const SPFormChangeHandler = e => {
+    const SPFormChangeHandler = (e) => {
         specialPrices[e.target.name].price.length > 4
             ? setSpecialPrices({
                   ...specialPrices,
                   [e.target.name]: {
                       ...specialPrices[e.target.name],
-                      price: specialPrices[e.target.name].price.slice(0, 4)
-                  }
+                      price: specialPrices[e.target.name].price.slice(0, 4),
+                  },
               })
             : setSpecialPrices({
                   ...specialPrices,
                   [e.target.name]: {
                       ...specialPrices[e.target.name],
-                      price: e.target.value
-                  }
+                      price: e.target.value,
+                  },
               });
     };
 
@@ -141,7 +141,7 @@ const SPAdd = ({ match, history, beverages, firestore, customers, dispatch }) =>
 
     const specialPricesArray =
         specialPrices &&
-        Object.values(specialPrices).map(i => {
+        Object.values(specialPrices).map((i) => {
             return (
                 <SpecialItemForm
                     state={specialPrices}
@@ -306,9 +306,9 @@ const SubmitButton = styled.button`
     }
 `;
 
-export default connect(state => {
+export default connect((state) => {
     return {
         beverages: state.Firestore.data.inventory.beverages,
-        customers: state.Firestore.data.store.customers
+        customers: state.Firestore.data.store.customers,
     };
 })(withFirestore(withRouter(SPAdd)));

@@ -11,21 +11,24 @@ import { Colors } from "../../../Constants/Colors";
 const SPHome = ({ history, customers, beverages }) => {
     const customersWithSpecialPrices = () => {
         return Object.values(customers)
-            .filter(i => {
+            .filter((i) => {
                 return i.specialPrices;
             })
-            .map(x => {
+            .map((x) => {
                 // First map is for the customer name
-                const items = Object.values(x.specialPrices).map(i => {
+                const items = Object.values(x.specialPrices).map((i) => {
                     // second map is for the special item details
                     return (
-                        <React.Fragment>
-                            <p>{i.id}</p>
-                            <p>$ {beverages[i.id].price}</p>
-                            <p>$ {parseFloat(i.price).toFixed(2)}</p>
-                            <p>$ {OrdersModel.CalcMargin(beverages[i.id].price, i.price)}</p>
-                            <p>{i.date}</p>
-                        </React.Fragment>
+                        // FIXME: Runs a check if the item exists
+                        beverages[i.id] && (
+                            <React.Fragment>
+                                <p>{i.id}</p>
+                                <p>$ {beverages[i.id].price}</p>
+                                <p>$ {parseFloat(i.price).toFixed(2)}</p>
+                                <p>$ {OrdersModel.CalcMargin(beverages[i.id].price, i.price)}</p>
+                                <p>{i.date}</p>
+                            </React.Fragment>
+                        )
                     );
                 });
                 const goToCustomer = () => {
@@ -152,9 +155,9 @@ const StyledCustomer = styled.div`
     }
 `;
 
-export default connect(state => {
+export default connect((state) => {
     return {
         customers: state.Firestore.data.store.customers,
-        beverages: state.Firestore.data.inventory.beverages
+        beverages: state.Firestore.data.inventory.beverages,
     };
 })(withRouter(SPHome));

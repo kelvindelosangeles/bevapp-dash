@@ -94,25 +94,26 @@ const EditBeverage = (props) => {
     };
     const deleteHandler = (e) => {
         e.preventDefault();
-        const { [itemID]: removed, ["id"]: omit, ...updatedInventory } = props.inventory;
-
-        window.confirm(`Are you sure you would like to delete ${itemID}`) &&
-            props.firestore
-                .set(
-                    {
-                        collection: "inventory",
-                        doc: "beverages",
-                    },
-                    updatedInventory
-                )
-                .then(() => {
-                    console.log("success");
-                    props.history.push("/store/home");
-                })
-                .catch((err) => {
-                    console.log(err);
-                    alert(err);
-                });
+        alert("Delete has been temporarily disabled.  If you need to make a change to this item please submit an edit or contact administrator.");
+        // const { [itemID]: removed, ["id"]: omit, ...updatedInventory } = props.inventory;
+        // FIXME: Delete Disabled
+        // window.confirm(`Are you sure you would like to delete ${itemID}`) &&
+        //     props.firestore
+        //         .set(
+        //             {
+        //                 collection: "inventory",
+        //                 doc: "beverages",
+        //             },
+        //             updatedInventory
+        //         )
+        //         .then(() => {
+        //             console.log("success");
+        //             props.history.push("/store/home");
+        //         })
+        //         .catch((err) => {
+        //             console.log(err);
+        //             alert(err);
+        //         });
     };
     const brandOptions = () => {
         let brands = brandsList.map((i) => i[0]);
