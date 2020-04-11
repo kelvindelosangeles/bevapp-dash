@@ -39,7 +39,7 @@ const Order = ({ order, dispatch, activeOrder }) => {
 
 const OrderWrapper = styled.div`
     display: grid;
-    grid-template-columns: 1fr minmax(200px, 2fr) 1fr 1fr;
+    grid-template-columns: 115px 2fr 1fr 1fr;
     grid-template-rows: 1fr;
     grid-gap: 48px;
     padding: 24px;

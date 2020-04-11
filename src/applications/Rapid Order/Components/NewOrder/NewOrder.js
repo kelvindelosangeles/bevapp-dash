@@ -15,29 +15,37 @@ import CustomerDetails from "../../../../Global/OrderPreview/CustomerDetails";
 import OrderDetails from "../../../../Global/OrderPreview/OrderDetails";
 import CartHeader from "./Components/CartHeader";
 import { useEffect } from "react";
+import { useSnackbar } from "notistack";
 
 const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
     const open = useSelector((state) => state.GlobalState.drawerOpen);
     const [smartEntryID, setSmartEntryID] = useState("");
     const [smartEntryQty, setSmartEntryQty] = useState("");
-
     const [orderID, setOrderID] = useState("");
-    // let orderID = useMemo(() => {
-    //     return (moment(new Date()).format("YYMMDD") + uuid().slice(0, 8) + "ga").toUpperCase();
-    // }, []);
+    const { enqueueSnackbar } = useSnackbar();
+
+    const triggerSnack = (variant, message) => {
+        return enqueueSnackbar(message, {
+            variant,
+            anchorOrigin: {
+                vertical: "top",
+                horizontal: "left",
+            },
+        });
+    };
 
     const createdAt = useMemo(() => {
         return moment(new Date()).format("MMM DD, h:mm");
     });
     const CartArray = Object.values(cart).map((i) => {
         const removeItem = () => {
-            return (
-                window.confirm(`Delete ${i.id} ?`) &&
+            if (window.confirm(`Delete ${i.id} ?`)) {
+                triggerSnack("error", `Deleted Item ${i.id}`);
                 dispatch({
                     type: "REMOVE_ITEM",
                     id: i.id,
-                })
-            );
+                });
+            }
         };
         const flavors = () => {
             try {
@@ -92,6 +100,7 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
             </div>
         );
     });
+
     const submitOrder = () => {
         const NewOrder = {
             customer,
@@ -319,6 +328,7 @@ const Cart = styled.div`
         }
     }
 `;
+
 const Actions = styled.div`
     grid-area: F;
     justify-self: flex-end;

@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Colors } from "../Constants/Colors";
 import BugIcon from "@material-ui/icons/BugReportRounded";
-import NewIcon from "@material-ui/icons/FiberNewRounded";
+import NewIcon from "@material-ui/icons/GradeRounded";
 
 const ChangeLog = () => {
     return (
@@ -11,8 +11,15 @@ const ChangeLog = () => {
             <Log>
                 <header>
                     <p className='date'>April 11th, 2020</p>
-                    <p className='version'>v 1.0.3</p>
+                    <p className='version'>v 1.1.0</p>
                 </header>
+                <ul>
+                    <label>Notifications</label>
+                    <li>
+                        <NewIcon className='new' />
+                        Now notifications appear on the top left corner of the screen when adding new items and deleting items in rapid order.
+                    </li>
+                </ul>
                 <ul>
                     <label>Rapid Order</label>
                     <li>Entered an incorrect value on the flavors of an item? Click on the flavor and modify it directly.</li>
@@ -26,7 +33,7 @@ const ChangeLog = () => {
                 <ul>
                     <label>Store</label>
                     <li>
-                        <BugIcon /> Scrolling enabled on the add a beverage section
+                        <BugIcon className='bug' /> Scrolling enabled on the add a beverage section
                     </li>
                 </ul>
             </Log>
@@ -44,7 +51,8 @@ const ChangeLog = () => {
                     <label>Store</label>
                     <li>Fixed the scrolling issue when editing a store item.</li>
                     <li className='highlight'>
-                        <mark>Edit Order now supports flavors. Click on the "has flavors" toggle and add or remove as many flavors to the item.</mark>
+                        <NewIcon className='new' />
+                        Edit Order now supports flavors. Click on the "has flavors" toggle and add or remove as many flavors to the item.
                     </li>
                     <li>You can now edit the Id and prices of exisitng beverages.</li>
                 </ul>
@@ -131,9 +139,17 @@ const Log = styled.div`
         padding: 12px 40px;
         li {
             display: flex;
+            padding: 4px 0;
             svg {
                 margin-right: 8px;
+                margin-left: -32px;
+                align-self: flex-start;
+            }
+            .bug {
                 color: ${Colors.red};
+            }
+            .new {
+                color: ${Colors.yellow};
             }
         }
     }

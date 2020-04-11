@@ -2,11 +2,23 @@ import React, { useRef } from "react";
 import styled from "styled-components";
 import { Colors } from "../../../../../Constants/Colors";
 import { connect } from "react-redux";
+// TEST AREA
+import { useSnackbar } from "notistack";
 
 const SmartEntry = ({ smartEntryID, setSmartEntryID, smartEntryQty, setSmartEntryQty, store, dispatch }) => {
     const seid = useRef();
     const seqty = useRef();
+    const { enqueueSnackbar } = useSnackbar();
 
+    const triggerSnack = (variant, item) => {
+        return enqueueSnackbar(item, {
+            variant,
+            anchorOrigin: {
+                vertical: "top",
+                horizontal: "left",
+            },
+        });
+    };
     const smartEntryQtyChangeHandler = (e) => {
         smartEntryQty.length > 2 ? setSmartEntryQty(smartEntryQty.slice(0, 2)) : setSmartEntryQty(e.target.value);
     };
@@ -38,6 +50,7 @@ const SmartEntry = ({ smartEntryID, setSmartEntryID, smartEntryQty, setSmartEntr
                         setSmartEntryID("");
                         setSmartEntryQty("");
                         seqty.current.focus();
+                        triggerSnack(null, `Added item ${store[smartEntryID].id}`);
                         return dispatch({
                             type: "ADD_TO_CART",
                             item: { ...store[smartEntryID], qty: smartEntryQty },
