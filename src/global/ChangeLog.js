@@ -1,12 +1,35 @@
 import React from "react";
 import styled from "styled-components";
 import { Colors } from "../Constants/Colors";
+import BugIcon from "@material-ui/icons/BugReportRounded";
+import NewIcon from "@material-ui/icons/FiberNewRounded";
 
 const ChangeLog = () => {
     return (
         <Container>
             <p className='title'>Change Log</p>
-
+            <Log>
+                <header>
+                    <p className='date'>April 11th, 2020</p>
+                    <p className='version'>v 1.0.3</p>
+                </header>
+                <ul>
+                    <label>Rapid Order</label>
+                    <li>Entered an incorrect value on the flavors of an item? Click on the flavor and modify it directly.</li>
+                    <li>Improved Visibility on Rapid Order items.</li>
+                </ul>
+                <ul>
+                    <label>Dashboard</label>
+                    <li>Case count is now visible on the orders page</li>
+                    <li>Case count available on the order details</li>
+                </ul>
+                <ul>
+                    <label>Store</label>
+                    <li>
+                        <BugIcon /> Scrolling enabled on the add a beverage section
+                    </li>
+                </ul>
+            </Log>
             <Log>
                 <header>
                     <p className='date'>April 8th, 2020</p>
@@ -69,7 +92,6 @@ const ChangeLog = () => {
 
 const Container = styled.div`
     padding: 24px;
-    font-family: Poppins;
 
     .title {
         font-size: 24px;
@@ -103,9 +125,17 @@ const Log = styled.div`
         font-size: 18px;
         font-weight: 700;
         margin-bottom: 16px;
+        display: block;
     }
     ul {
         padding: 12px 40px;
+        li {
+            display: flex;
+            svg {
+                margin-right: 8px;
+                color: ${Colors.red};
+            }
+        }
     }
 `;
 export default ChangeLog;

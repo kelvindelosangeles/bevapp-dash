@@ -90,7 +90,7 @@ const SmartEntryWrapper = styled.form`
     align-items: center;
     h3 {
         margin-right: 16px;
-        font-family: Poppins;
+
         font-weight: 600;
         font-size: 18px;
     }

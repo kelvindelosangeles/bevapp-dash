@@ -92,7 +92,7 @@ const FlavorsFormActions = styled.div`
     button {
         width: 160px;
         height: 50px;
-        font-family: Poppins;
+
         font-weight: 700;
         color: ${Colors.white};
         background-color: ${Colors.black};

@@ -7,7 +7,7 @@ import { Order as OrdersModel } from "../../../Models/Order";
 import { Colors } from "../../../Constants/Colors";
 
 const DBStatBar = ({ orders }) => {
-    const newOrdersCount = Object.values(orders).filter(i => {
+    const newOrdersCount = Object.values(orders).filter((i) => {
         // because were using the ordered dataset and it inlcudes an id
         return i.details && i.details.complete === false;
     }).length;
@@ -45,7 +45,6 @@ const Stat = styled.div`
     border-radius: 8px;
     margin-right: 24px;
     h6 {
-        font-family: Poppins;
         font-weight: 700;
         color: ${Colors.black};
         font-size: 16px;
@@ -53,9 +52,8 @@ const Stat = styled.div`
         white-space: nowrap;
     }
     p {
-        font-family: Poppins;
         font-weight: 700;
-        color: ${props => {
+        color: ${(props) => {
             return props.color;
         }};
         font-size: 30px;
@@ -71,13 +69,13 @@ const Completed = styled(Link)`
     justify-content: center;
     align-items: center;
     color: ${Colors.white};
-    font-family: Poppins;
+
     font-weight: 500;
     font-size: 20px;
     margin-left: auto;
     text-decoration: none;
 `;
 
-export default connect(state => {
+export default connect((state) => {
     return { orders: state.Firestore.data.orders.orders };
 })(DBStatBar);

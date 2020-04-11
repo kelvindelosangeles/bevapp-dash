@@ -3,25 +3,24 @@ import styled from "styled-components";
 import { Colors } from "../../Constants/Colors";
 
 const EmptyOrder = ({ message }) => {
-  return (
-    <EmptyOrderWrapper>
-      <p>{message}</p>
-    </EmptyOrderWrapper>
-  );
+    return (
+        <EmptyOrderWrapper>
+            <p>{message}</p>
+        </EmptyOrderWrapper>
+    );
 };
 
 const EmptyOrderWrapper = styled.div`
-  grid-area: preview;
-  background-color: ${Colors.white};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  p {
-    font-family: Poppins;
-    font-weight: 700;
-    font-size: 16px;
-  }
+    grid-area: preview;
+    background-color: ${Colors.white};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    p {
+        font-weight: 700;
+        font-size: 16px;
+    }
 `;
 
 export default EmptyOrder;

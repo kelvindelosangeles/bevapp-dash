@@ -209,14 +209,12 @@ const CustomerDetails = styled.div`
     grid-area: C;
     margin-bottom: 64px;
     h6 {
-        font-family: Poppins;
         font-weight: 700;
         font-size: 18px;
         margin-bottom: 8px;
         text-transform: uppercase;
     }
     p {
-        font-family: Poppins;
         font-weight: 500;
         font-size: 16px;
         display: flex;
@@ -236,13 +234,11 @@ const SpecialPrices = styled.div`
     align-content: flex-start;
     grid-row-gap: 8px;
     h6 {
-        font-family: Poppins;
         font-weight: 600;
         font-size: 16px;
         margin-bottom: 24px;
     }
     p {
-        font-family: Poppins;
         font-size: 16px;
         margin-bottom: 8px;
         :last-of-type {
@@ -270,7 +266,6 @@ const AddItem = styled.div`
     justify-content: center;
     margin-top: 64px;
     p {
-        font-family: Poppins;
         font-weight: 500;
         font-size: 16px;
         margin-right: 16px;
@@ -278,7 +273,7 @@ const AddItem = styled.div`
     input {
         padding: 10px 24px;
         font-size: 16px;
-        font-family: Poppins;
+
         font-weight: 600;
         background-color: ${Colors.lightGrey};
         border: none;
@@ -295,7 +290,7 @@ const SubmitButton = styled.button`
     border-radius: 4px;
     border: none;
     color: ${Colors.white};
-    font-family: Poppins;
+
     font-weight: 700;
     font-size: 18px;
     margin-top: auto;

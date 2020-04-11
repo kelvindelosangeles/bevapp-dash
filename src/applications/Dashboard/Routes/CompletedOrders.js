@@ -14,11 +14,11 @@ const CompletedOrders = ({ activeOrder, dispatch }) => {
         activeOrder &&
             !activeOrder.details.complete &&
             dispatch({
-                type: "CLEAR_ACTIVE_ORDER"
+                type: "CLEAR_ACTIVE_ORDER",
             });
     }, []);
 
-    const onChangeHandler = e => {
+    const onChangeHandler = (e) => {
         setSerach(e.target.value.toUpperCase());
     };
 
@@ -50,7 +50,7 @@ const CompletedOrdersGrid = styled.div`
 `;
 const Heading = styled.h3`
     grid-area: A;
-    font-family: Poppins;
+
     font-weight: 500;
     font-size: 24px;
     padding-left: 32px;
@@ -66,14 +66,14 @@ const Filters = styled.div`
         outline: none;
         border: none;
         font-size: 16px;
-        font-family: Poppins;
+
         font-weight: 500;
         width: -webkit-fill-available;
     }
 `;
 
-export default connect(state => {
+export default connect((state) => {
     return {
-        activeOrder: state.DashboardState.activeOrder
+        activeOrder: state.DashboardState.activeOrder,
     };
 })(CompletedOrders);

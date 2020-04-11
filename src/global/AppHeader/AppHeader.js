@@ -10,7 +10,7 @@ const AppHeader = ({ dispatch }) => {
     const theDate = moment().format("dddd,  MMM Do YYYY");
     const expandHandler = () => {
         dispatch({
-            type: "TOGGLE_DRAWER"
+            type: "TOGGLE_DRAWER",
         });
     };
 
@@ -44,7 +44,6 @@ const AppHeaderWrapper = styled.div`
 `;
 
 const TodaysDate = styled.p`
-    font-family: "Poppins";
     font-weight: 400;
     color: ${Colors.black};
     font-size: 14px;
@@ -55,12 +54,10 @@ const User = styled.div`
     display: flex;
     margin-left: auto;
     h6 {
-        font-family: Poppins;
         font-weight: 600;
         font-size: 16px;
     }
     p {
-        font-family: "Poppins";
         font-weight: 400;
 
         color: ${Colors.greyText};

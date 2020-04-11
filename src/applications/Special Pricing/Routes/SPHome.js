@@ -85,7 +85,7 @@ const SearchBar = styled.input`
     background-color: red;
     width: 100%;
     padding: 8px 16px;
-    font-family: Poppins;
+
     font-size: 16px;
     background-color: ${Colors.lightGrey};
     border-radius: 4px;
@@ -104,7 +104,7 @@ const AddSPButton = styled.div`
         justify-content: center;
         display: flex;
         align-items: center;
-        font-family: Poppins;
+
         font-weight: 700;
         font-size: 20px;
         margin-bottom: 16px;
@@ -132,7 +132,7 @@ const StyledCustomer = styled.div`
         "B B B B B";
     h5 {
         grid-area: A;
-        font-family: Poppins;
+
         font-weight: 600;
         font-size: 20px;
         margin-bottom: 24px;
@@ -140,13 +140,11 @@ const StyledCustomer = styled.div`
         cursor: pointer;
     }
     h6 {
-        font-family: Poppins;
         font-weight: 600;
         font-size: 16px;
         margin-bottom: 24px;
     }
     p {
-        font-family: Poppins;
         font-size: 16px;
         margin-bottom: 8px;
         :last-of-type {

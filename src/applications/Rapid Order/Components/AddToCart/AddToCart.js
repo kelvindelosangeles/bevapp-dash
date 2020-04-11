@@ -69,6 +69,7 @@ const Container = styled.div`
         }
         .details {
             font-weight: 600;
+            max-width: 120px;
         }
     }
     .controls {
@@ -77,7 +78,7 @@ const Container = styled.div`
         button {
             width: 160px;
             height: 50px;
-            font-family: Poppins;
+
             font-weight: 700;
             color: ${Colors.white};
             background-color: ${Colors.black};
@@ -116,7 +117,7 @@ const Container = styled.div`
             grid-area: QTY;
             height: 100px;
             font-size: 91px;
-            font-family: Poppins;
+
             font-weight: 700;
             text-align: center;
             border: none;
@@ -129,7 +130,6 @@ const Container = styled.div`
             }
         }
         p {
-            font-family: Poppins;
             font-weight: 700;
             font-size: 16px;
             grid-area: label;
@@ -144,7 +144,7 @@ const Container = styled.div`
             button {
                 width: 153px;
                 height: 54px;
-                font-family: Poppins;
+
                 font-weight: 700;
                 color: ${Colors.white};
                 background-color: ${Colors.black};

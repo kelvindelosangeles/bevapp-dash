@@ -67,7 +67,6 @@ const AppTitle = styled.div`
     cursor: pointer;
     h3,
     p {
-        font-family: Poppins;
         font-weight: 700;
         color: ${Colors.white};
         font-size: 18px;
@@ -86,7 +85,6 @@ const NavWrapper = styled.div`
     flex-direction: column;
     flex-grow: 1;
     a {
-        font-family: Poppins;
         font-weight: 600;
         display: flex;
         align-items: center;
@@ -103,7 +101,6 @@ const NavWrapper = styled.div`
     }
 `;
 const Signout = styled.div`
-    font-family: Poppins;
     font-weight: 600;
     color: ${Colors.white};
     font-size: 14;

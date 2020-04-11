@@ -286,7 +286,6 @@ const Container = styled.div`
             }
         }
         .page-title {
-            font-family: Poppins;
             font-weight: 700;
             font-size: 24px;
             text-align: center;
@@ -347,7 +346,7 @@ const Container = styled.div`
         label {
             display: block;
             margin-bottom: 16px;
-            font-family: Poppins;
+
             font-weight: 600;
             font-size: 16px;
             color: ${Colors.black};

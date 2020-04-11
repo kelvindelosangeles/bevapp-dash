@@ -49,7 +49,7 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
                         })
                         .map((x) => {
                             return (
-                                <Flavor>
+                                <Flavor onClick={() => Toggleatc(i)}>
                                     {x[0]} x {x[1]}
                                 </Flavor>
                             );
@@ -77,7 +77,7 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
         };
 
         return (
-            <React.Fragment>
+            <div className='order-item'>
                 <p>{i.id}</p>
                 <p id='qty' onClick={() => Toggleatc(i)}>
                     {i.qty} x
@@ -89,7 +89,7 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
                 <p className='specialPrice'>{hasSpecialPrice()}</p>
                 <p className='item-total'>{OrdersModel.CalculateItem(i, customer.specialPrices)}</p>
                 <DeleteIcon onClick={removeItem} />
-            </React.Fragment>
+            </div>
         );
     });
     const submitOrder = () => {
@@ -184,11 +184,11 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
 
                 {/* Cart ============== */}
                 <Cart>
-                    <h3>
+                    <header>
                         <CartIcon />
-                        Cart
-                    </h3>
-                    <div>
+                        <h3>Cart</h3>
+                    </header>
+                    <div className='cart-grid'>
                         <CartHeader />
                         {CartArray}
                     </div>
@@ -251,7 +251,6 @@ const Notes = styled.section`
     grid-area: D;
     padding: 32px;
     h3 {
-        font-family: Poppins;
         font-weight: 700;
         font-size: 16px;
         color: #000000;
@@ -262,60 +261,61 @@ const Notes = styled.section`
         font-size: 12px;
         border: none;
         resize: none;
-        font-family: "Poppins";
+
         font-weight: 500;
         font-size: 14px;
     }
 `;
 const Cart = styled.div`
     grid-area: E;
-    #qty {
-        cursor: pointer;
-        :hover {
-            color: ${Colors.green};
-        }
-    }
-    h3 {
+    padding: 32px 16px;
+    header {
         display: flex;
         align-items: center;
-        font-family: Poppins;
-        font-weight: 900;
-        font-size: 20px;
-        color: #000000;
-        margin-left: 32px;
         margin-bottom: 32px;
+        margin-left: 16px;
         svg {
             font-size: 20px;
             margin-right: 12px;
         }
+        h3 {
+            font-weight: 900;
+            font-size: 20px;
+        }
     }
-    div {
+    .cart-grid {
         display: grid;
-        grid-template-columns: 2fr 2fr 4fr 2fr 2fr 2fr 1fr;
-        grid-gap: 16px 40px;
-        padding: 0 32px;
-        margin-bottom: 80px;
+        grid-row-gap: 8px;
         h5 {
-            font-family: Poppins;
-            font-weight: 700;
-            font-size: 18px;
-        }
-        p {
-            font-family: Poppins;
-            font-weight: 500;
             font-size: 16px;
-            color: #000000;
+            margin-bottom: 16px;
         }
-        .item-total {
-            font-family: Poppins;
-            font-weight: 700;
-        }
-        .specialPrice {
-            color: ${Colors.purple};
-        }
-        svg:hover {
-            color: ${Colors.red};
-            cursor: pointer;
+        .order-item {
+            display: grid;
+            padding: 8px 16px;
+            border-radius: 4px;
+            grid-column-gap: 16px;
+            grid-template-columns: 1fr 1fr 3fr 1fr 1fr 1fr 20px;
+            font-size: 16px;
+            :nth-of-type(even) {
+                background-color: ${Colors.lightGrey};
+            }
+            .item-total {
+                font-weight: 700;
+            }
+            .specialPrice {
+                color: ${Colors.purple};
+            }
+            svg:hover {
+                color: ${Colors.red};
+                cursor: pointer;
+            }
+            #qty {
+                cursor: pointer;
+                :hover {
+                    color: ${Colors.green};
+                }
+            }
         }
     }
 `;
@@ -331,7 +331,6 @@ const Actions = styled.div`
         margin-bottom: 32px;
     }
     h3 {
-        font-family: Poppins;
         font-weight: 600;
         font-size: 24px;
     }
@@ -340,7 +339,6 @@ const Actions = styled.div`
         margin-top: 16px;
     }
     button {
-        font-family: Poppins;
         font-weight: 500;
         font-size: 16px;
         color: #ffffff;
@@ -362,12 +360,15 @@ const Actions = styled.div`
     }
 `;
 const Flavor = styled.p`
-    font-family: Poppins !important;
-    font-weight: 400;
+    font-weight: 600;
     font-size: 14px !important;
     margin-left: 16px;
     margin-top: 8px;
     padding: 0px 0px;
+    cursor: pointer;
+    :hover {
+        color: ${Colors.green};
+    }
 `;
 
 export default connect((state) => {

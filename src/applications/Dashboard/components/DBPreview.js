@@ -135,7 +135,7 @@ const Beta = styled.div`
         width: 100%;
         border-radius: 4px;
         border: none;
-        font-family: "Poppins";
+
         font-weight: 500;
         font-size: 16px;
         background-color: #ffcc00;
@@ -172,7 +172,7 @@ const Action = styled.button`
     width: 100%;
     border-radius: 4px;
     border: none;
-    font-family: "Poppins";
+
     font-weight: 500;
     font-size: 16px;
 `;
