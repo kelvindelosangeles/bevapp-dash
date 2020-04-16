@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Colors } from "../../../Constants/Colors";
 import { connect } from "react-redux";
+import { Order as OrdersModel } from "../../../Models/Order";
 
 const formatTel = (tel) => {
     return `(${tel.slice(0, 3)}) ${tel.slice(3, 6)} ${tel.slice(6, 10)} `;
@@ -23,7 +24,7 @@ const STCustomers = ({ customers }) => {
                     <Xstomer>
                         <p>{i.name}</p>
                         <p>{i.address}</p>
-                        <p> {formatTel(i.telephone)}</p>
+                        <p> {OrdersModel.formatTel(i.telephone)}</p>
                     </Xstomer>
                 )
             );

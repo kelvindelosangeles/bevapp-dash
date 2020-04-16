@@ -11,6 +11,7 @@ import STBeverages from "./Components/STBeverages";
 import Home from "./Store Routes/Home";
 import AddBeverage from "./Store Routes/AddBeverage";
 import EditBeverage from "./Store Routes/EditBeverage";
+import AddCustomer from "./Store Routes/AddCustomer";
 
 const Store = ({ sidebarExpanded }) => {
     const [storeToggle, setStoreToggle] = useState(true);
@@ -30,6 +31,7 @@ const Store = ({ sidebarExpanded }) => {
                 <Route path='/store/home' component={Home} />
                 <Route path='/store/addbeverage' component={AddBeverage} />
                 <Route path='/store/editbeverage/:id' component={EditBeverage} />
+                <Route path='/store/addcustomer' component={AddCustomer} />
             </Switch>
 
             {/* <STPreview /> */}

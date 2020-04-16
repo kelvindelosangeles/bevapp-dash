@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Order as OrdersModel } from "../../Models/Order";
 
 const CustomerDetails = (props) => {
     const { name, address, telephone, gridArea } = props;
@@ -12,7 +13,7 @@ const CustomerDetails = (props) => {
             <div>
                 <h3>{name}</h3>
                 <p>{address}</p>
-                <p>{formatTel(telephone)}</p>
+                <p>{OrdersModel.formatTel(telephone)}</p>
                 <p>NYC</p>
             </div>
         </Container>

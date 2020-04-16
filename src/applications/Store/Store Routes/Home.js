@@ -9,12 +9,7 @@ import AddCustomerIcon from "../../../Assets/Images/Icons/AddCustomersIcon.svg";
 const Home = () => {
     return (
         <HomeWrapper>
-            <Card
-                // to="/store/home"
-                onClick={() => {
-                    alert("This feature is currently being worked on");
-                }}>
-                {/* <Card to="/store/addcustomer"> */}
+            <Card to='/store/addcustomer'>
                 <img src={AddCustomerIcon} alt='' />
                 <button>Add A New Customer</button>
             </Card>

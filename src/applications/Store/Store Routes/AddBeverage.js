@@ -239,7 +239,6 @@ const Form = styled.form`
         padding: 18px 0;
         border-radius: 4px;
         background-color: ${Colors.green};
-
         font-weight: 700;
         font-size: 16px;
         color: ${Colors.white};
