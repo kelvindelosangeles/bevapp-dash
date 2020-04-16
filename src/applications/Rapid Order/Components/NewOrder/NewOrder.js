@@ -199,7 +199,7 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
                     </header>
                     <div className='cart-grid'>
                         <CartHeader />
-                        {CartArray}
+                        {CartArray.reverse()}
                     </div>
                 </Cart>
 
