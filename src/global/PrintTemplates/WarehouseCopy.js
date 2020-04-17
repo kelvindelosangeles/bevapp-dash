@@ -31,13 +31,13 @@ class WarehouseCopy extends React.Component {
 
             return (
                 <React.Fragment>
-                    <Quantity></Quantity>
+                    <Quantity>_</Quantity>
                     <p>{i.qty}</p>
                     <div className='description'>
                         <p className='price'>{i.description}</p>
                         {flavorsArray}
                     </div>
-                    <Quantity></Quantity>
+                    <Quantity>_</Quantity>
                 </React.Fragment>
             );
         });
@@ -74,11 +74,11 @@ class WarehouseCopy extends React.Component {
                     <h3>CHK</h3>
                     {ordersArray}
                 </OrderContainer>
-                {/* <Footer>
-          <div className="order-data">
-            <p>Total Cases : 17</p>
-            <p>invoice Total: $ {OrderModel.CalculateCart(this.cart())}</p>
-          </div>
+                <Footer>
+                    <div className='order-data'>
+                        {<p>Total Cases : {OrderModel.CalculateCases(this.props.activeOrder.cart)}</p>}
+                        {/* <p>invoice Total: $ {OrderModel.CalculateCart(this.cart())}</p> */}
+                        {/* </div>
           <p className="credit">Credits ______________________</p>
           <div className="balances">
             <p>Balance _____________________</p>
@@ -87,16 +87,16 @@ class WarehouseCopy extends React.Component {
           <p className="paid">Amount Paid _____________________</p>
           <div className="signature">
             <p>Signature _____________________</p>
-            <p>Date _____________________</p>
-          </div>
-        </Footer> */}
+            <p>Date _____________________</p> */}
+                    </div>
+                </Footer>
             </WarehouseCopyWrapper>
         );
     }
 }
 
 const WarehouseCopyWrapper = styled.div`
-    @media print {
+    /* @media print {
         body,
         * {
             margin: 0;
@@ -106,7 +106,7 @@ const WarehouseCopyWrapper = styled.div`
         div {
             page-break-inside: avoid;
         }
-    }
+    } */
     width: 100%;
     margin: auto;
     padding: 0 16px;
@@ -127,6 +127,7 @@ const WarehouseCopyWrapper = styled.div`
 const Header = styled.header`
     margin-bottom: 40px;
     padding: 8px;
+    text-align: center;
     h5 {
         font-family: OpenSans-ExtraBold;
         font-size: 14px;
@@ -199,6 +200,7 @@ const Quantity = styled.p`
     min-height: 28px;
     text-align: center;
     height: fit-content;
+    color: transparent;
 `;
 
 const Footer = styled.footer`

@@ -184,6 +184,8 @@ const Quantity = styled.p`
 `;
 
 const Footer = styled.footer`
+    page-break-after: always;
+    page-break-inside: avoid;
     margin-top: auto;
     padding: 0 8px;
     p {

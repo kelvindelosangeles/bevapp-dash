@@ -11,6 +11,7 @@ import StoreIcon from "@material-ui/icons/Store";
 import SpePricingIcon from "@material-ui/icons/MoneyOff";
 import SignoutIcon from "@material-ui/icons/ExitToApp";
 import Drawer from "@material-ui/core/Drawer";
+import TestIcon from "@material-ui/icons/TerrainRounded";
 import { useSelector, connect } from "react-redux";
 
 const Sidebar = ({ dispatch }) => {
@@ -39,6 +40,9 @@ const Sidebar = ({ dispatch }) => {
                     </NavLink>
                     <NavLink to='/specialpricing'>
                         <SpePricingIcon /> <p>Special Pricing</p>
+                    </NavLink>
+                    <NavLink to='/test'>
+                        <TestIcon /> <p>Test</p>
                     </NavLink>
                 </NavWrapper>
 

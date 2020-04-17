@@ -19,45 +19,13 @@ import { SnackbarProvider } from "notistack";
 
 import Spinner from "./Global/Spinner/Spinner";
 import ChangeLog from "./Global/ChangeLog";
-import { useEffect } from "react";
-import { firestore } from "firebase";
+import Test from "./test/Test";
 
 const App = (props) => {
     const toggleChangeLog = () => {
         props.dispatch({ type: "TOGGLE_CHANGE_LOG" });
     };
     const open = useSelector((state) => state.GlobalState.changeLogOpen);
-
-    // useEffect(() => {
-    //     const customer = {
-    //         a123temp: {
-    //             active: false,
-    //             address: "4011 East Tremont",
-    //             city: "bx",
-    //             cr: "cod",
-    //             name: "Bella Deli Market Corp",
-    //             sla: "1302378",
-    //             telephone: "3472083685",
-    //             id: "a123temp",
-    //         },
-    //     };
-    //     console.log(customer);
-
-    //     props.firestore
-    //         .update(
-    //             {
-    //                 collection: "store",
-    //                 doc: "customers",
-    //             },
-    //             customer
-    //         )
-    //         .then(() => {
-    //             console.log("success");
-    //         })
-    //         .catch((err) => {
-    //             console.log(err);
-    //         });
-    // }, []);
 
     return !isLoaded(props.inventory) || !isLoaded(props.orders) || !isLoaded(props.store) ? null : ( // <Spinner />
         <SnackbarProvider maxSnack={3}>
@@ -69,6 +37,7 @@ const App = (props) => {
                     <Route path='/rapidorder' component={RapidOrder} />
                     <Route path='/store' component={Store} />
                     <Route path='/specialpricing' component={SpecialPricing} />
+                    <Route path='/test' component={Test} />
                 </Switch>
                 <Dialog
                     open={open}
