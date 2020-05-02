@@ -41,9 +41,9 @@ const Sidebar = ({ dispatch }) => {
                     <NavLink to='/specialpricing'>
                         <SpePricingIcon /> <p>Special Pricing</p>
                     </NavLink>
-                    <NavLink to='/test'>
+                    {/* <NavLink to='/test'>
                         <TestIcon /> <p>Test</p>
-                    </NavLink>
+                    </NavLink> */}
                 </NavWrapper>
 
                 <Signout onClick={() => console.log("logged out")}>

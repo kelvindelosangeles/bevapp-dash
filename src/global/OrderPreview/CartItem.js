@@ -23,7 +23,7 @@ const CartItem = ({ item, dispatch, readOnly, sidebarExpanded, customer }) => {
             })
             .map((i) => {
                 return (
-                    <Flavor>
+                    <Flavor key={i[0]}>
                         <p>{i[1]}</p>
                         <span>x</span>
                         <p>{i[0]}</p>

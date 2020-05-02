@@ -10,6 +10,19 @@ const ChangeLog = () => {
             <p className='title'>Change Log</p>
             <Log>
                 <header>
+                    <p className='date'>April 20th, 2020</p>
+                    <p className='version'>v 1.1.1 beta</p>
+                </header>
+
+                <ul>
+                    <label>Dashboard</label>
+                    <li>Redesigned Customer and Warehouse Print Copies</li>
+                    <li>Warehouse Copy now includes double rows to save space and paper</li>
+                    <li>On the Dashboard click on Warehouse PDF or Customer PDF and a docuement will generate that staff can print and email</li>
+                </ul>
+            </Log>
+            <Log>
+                <header>
                     <p className='date'>April 11th, 2020</p>
                     <p className='version'>v 1.1.0</p>
                 </header>

@@ -3,19 +3,18 @@ import { compose } from "redux";
 import { connect, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { firestoreConnect } from "react-redux-firebase";
-import ReactToPrint from "react-to-print";
 import styled from "styled-components";
 import { Colors } from "../../../Constants/Colors";
 import CustomerDetails from "../../../Global/OrderPreview/CustomerDetails";
 import OrderDetails from "../../../Global/OrderPreview/OrderDetails";
 import Notes from "../../../Global/OrderPreview/Notes";
 import OrderCart from "../../../Global/OrderPreview/OrderCart";
-import CustomerCopy from "../../../Global/PrintTemplates/CustomerCopy";
-import WarehouseCopy from "../../../Global/PrintTemplates/WarehouseCopy";
+// TEST
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import CustomerPDF from "../../../Global/PrintTemplates/CustomerPDF";
+import WarehousePDF from "../../../Global/PrintTemplates/WarehousePDF";
 
 const DBPreview = ({ activeOrder, dispatch, firestore, orders, history }) => {
-    const customerCopy = useRef();
-    const warehouseCopy = useRef();
     const complete = activeOrder.details.complete;
     // BETA
     const editOrderID = useSelector((state) => state.RapidOrderState.editOrderID);
@@ -101,10 +100,22 @@ const DBPreview = ({ activeOrder, dispatch, firestore, orders, history }) => {
                 {activeOrder.details.notes && <Notes text={activeOrder.details.notes} />}
                 <OrderCart cart={activeOrder.cart} customer={activeOrder.customer} readOnly={true} />
                 <OrderActions>
-                    <ReactToPrint trigger={() => <PrintC>Print CX</PrintC>} content={() => customerCopy.current} />
-                    <ReactToPrint trigger={() => <PrintWH>Print WH</PrintWH>} content={() => warehouseCopy.current} />
-                    {!complete && <Complete onClick={completeClickHandler}>Complete </Complete>}
-                    {!complete && <Delete onClick={deleteOrderHandler}>Delete</Delete>}
+                    <PDFDownloadLink document={<WarehousePDF order={activeOrder} />} fileName={`${activeOrder.customer.address}-WH.pdf`}>
+                        {({ loading, error }) => (error ? console.log(error) : loading ? "Loading..." : "Warehouse PDF")}
+                    </PDFDownloadLink>
+                    <PDFDownloadLink document={<CustomerPDF order={activeOrder} />} fileName={`${activeOrder.customer.address}-CX.pdf`}>
+                        {({ loading }) => (loading ? "Loading..." : "Customer PDF")}
+                    </PDFDownloadLink>
+                    {!complete && (
+                        <a onClick={completeClickHandler} id='complete'>
+                            Complete{" "}
+                        </a>
+                    )}
+                    {!complete && (
+                        <a onClick={deleteOrderHandler} id='delete'>
+                            Delete
+                        </a>
+                    )}
                 </OrderActions>
                 {!complete && (
                     <Beta>
@@ -113,11 +124,6 @@ const DBPreview = ({ activeOrder, dispatch, firestore, orders, history }) => {
                     </Beta>
                 )}
             </div>
-
-            <PrintContainer>
-                <CustomerCopy reference={customerCopy} activeOrder={activeOrder} />
-                <WarehouseCopy reference={warehouseCopy} activeOrder={activeOrder} />
-            </PrintContainer>
         </Container>
     );
 };
@@ -142,7 +148,6 @@ const Beta = styled.div`
         color: black;
     }
 `;
-
 const Container = styled.div`
     grid-area: preview;
     position: relative;
@@ -163,37 +168,24 @@ const OrderActions = styled.section`
     grid-column-gap: 16px;
     grid-row-gap: 24px;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-areas:
-        "b c"
-        "d e";
-`;
-const Action = styled.button`
-    height: 40px;
-    width: 100%;
-    border-radius: 4px;
-    border: none;
-
-    font-weight: 500;
-    font-size: 16px;
-`;
-const PrintC = styled(Action)`
-    background-color: ${Colors.blue};
-    grid-area: b;
-`;
-const PrintWH = styled(Action)`
-    background-color: lightblue;
-    grid-area: c;
-`;
-const Complete = styled(Action)`
-    background-color: ${Colors.green};
-    grid-area: d;
-`;
-const Delete = styled(Action)`
-    background-color: ${Colors.red};
-    grid-area: e;
-`;
-const PrintContainer = styled.div`
-    display: none;
+    #complete {
+        background-color: ${Colors.green};
+    }
+    #delete {
+        background-color: ${Colors.red};
+    }
+    a {
+        background-color: black;
+        color: white;
+        padding: 14px 0;
+        border-radius: 4px;
+        border: none;
+        font-size: 14px;
+        font-weight: 600;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+    }
 `;
 
 export default compose(
