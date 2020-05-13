@@ -12,6 +12,7 @@ import SpePricingIcon from "@material-ui/icons/MoneyOff";
 import SignoutIcon from "@material-ui/icons/ExitToApp";
 import Drawer from "@material-ui/core/Drawer";
 import TestIcon from "@material-ui/icons/TerrainRounded";
+import TaskIcon from "@material-ui/icons/DoneAllRounded";
 import { useSelector, connect } from "react-redux";
 
 const Sidebar = ({ dispatch }) => {
@@ -25,7 +26,7 @@ const Sidebar = ({ dispatch }) => {
             <Container>
                 <AppTitle onClick={toggleChangeLog}>
                     <h3>Bevapp Dash</h3>
-                    <p>v 1.1.0</p>
+                    <p>v 1.1.2</p>
                 </AppTitle>
 
                 <NavWrapper>
@@ -40,6 +41,9 @@ const Sidebar = ({ dispatch }) => {
                     </NavLink>
                     <NavLink to='/specialpricing'>
                         <SpePricingIcon /> <p>Special Pricing</p>
+                    </NavLink>
+                    <NavLink to='/task'>
+                        <TaskIcon /> <p>Task</p>
                     </NavLink>
                     {/* <NavLink to='/test'>
                         <TestIcon /> <p>Test</p>

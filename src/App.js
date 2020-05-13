@@ -20,6 +20,7 @@ import { SnackbarProvider } from "notistack";
 import Spinner from "./Global/Spinner/Spinner";
 import ChangeLog from "./Global/ChangeLog";
 import Test from "./test/Test";
+import Task from "./Task/Task";
 
 const App = (props) => {
     const toggleChangeLog = () => {
@@ -38,6 +39,7 @@ const App = (props) => {
                     <Route path='/store' component={Store} />
                     <Route path='/specialpricing' component={SpecialPricing} />
                     <Route path='/test' component={Test} />
+                    <Route path='/task' component={Task} />
                 </Switch>
                 <Dialog
                     open={open}

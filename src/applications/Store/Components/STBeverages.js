@@ -28,7 +28,7 @@ const STBeverages = (props) => {
 
     return (
         <STBeveragesWrspper>
-            <BeverageSearch action=''>
+            <BeverageSearch onSubmit={(e) => e.preventDefault()}>
                 <input type='text' placeholder='Search' onChange={beverageSearchHandler} value={beverageSearch} />
             </BeverageSearch>
             <div className='test'>{beveragesList}</div>

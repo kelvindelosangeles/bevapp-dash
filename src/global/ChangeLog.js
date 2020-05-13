@@ -10,6 +10,24 @@ const ChangeLog = () => {
             <p className='title'>Change Log</p>
             <Log>
                 <header>
+                    <p className='date'>May 2nd, 2020</p>
+                    <p className='version'>v 1.1.2</p>
+                </header>
+
+                <ul>
+                    <label>Store</label>
+                    <li>
+                        <BugIcon className='bug' />
+                        Fixed an issue that deleted previous flavors when a new one was added.
+                    </li>
+                    <li>
+                        <BugIcon className='bug' />
+                        Fixed an issue where pressing enter on the search bar refeshed the screen.
+                    </li>
+                </ul>
+            </Log>
+            <Log>
+                <header>
                     <p className='date'>April 20th, 2020</p>
                     <p className='version'>v 1.1.1 beta</p>
                 </header>

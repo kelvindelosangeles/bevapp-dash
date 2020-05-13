@@ -21,10 +21,13 @@ const EditBeverage = (props) => {
     const [price, setPrice] = useState("");
     const [flavors, setFlavors] = useState(null);
     const [newFlavor, setNewFlavor] = useState(null);
+    const [section, setSection] = useState("unset");
+    const [subSection, setSubSection] = useState("unset");
     let item = props.inventory[props.match.params.id];
     const [hasFlavors, setHasFlavors] = useState(false);
 
     useEffect(() => {
+        console.log(item);
         setItemID(item.id);
         setBrand(item.brand);
         setCategory(item.category);
@@ -32,17 +35,14 @@ const EditBeverage = (props) => {
         setPackaging(item.packaging);
         setSize(item.size);
         setPrice(item.price);
-        setHasFlavors(item.hasOwnProperty("flavors"));
+        item.hasOwnProperty("section") ? setSection(item.section) : setSection(0);
+        item.hasOwnProperty("subSection") ? setSubSection(item.subSection) : setSubSection(0);
         item.hasOwnProperty("flavors") ? setFlavors([...item.flavors]) : setFlavors(null);
+    }, [props.match.params.id, hasFlavors]);
+
+    useEffect(() => {
+        setHasFlavors(item.hasOwnProperty("flavors"));
     }, [props.match.params.id]);
-
-    useEffect(() => {
-        flavors && flavors.length < 1 && setHasFlavors(false);
-    }, [flavors]);
-
-    useEffect(() => {
-        !hasFlavors && setFlavors(null);
-    }, [hasFlavors]);
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -57,6 +57,8 @@ const EditBeverage = (props) => {
                 description,
                 packaging,
                 size,
+                section,
+                subSection,
                 price,
                 flavors,
             },
@@ -70,10 +72,13 @@ const EditBeverage = (props) => {
                 packaging,
                 price,
                 size,
+                section,
+                subSection,
             },
         };
         let updatedItem = hasFlavors && flavors && flavors.length > 0 ? itemWithFlavors : itemWithoutFlavors;
 
+        console.log(updatedItem);
         return (
             window.confirm("Are you sure you want to make these changes?") &&
             props.firestore
@@ -147,6 +152,7 @@ const EditBeverage = (props) => {
                 return <Chip onDelete={() => removeFlavor(index)} label={f} color='primary' />;
             });
         } catch (error) {
+            console.log(error);
             return;
         }
     };
@@ -249,6 +255,46 @@ const EditBeverage = (props) => {
                         <label htmlFor=''>Description</label>
                         <input value={description} required onChange={(e) => setDescription(e.target.value)} />
                     </div>
+                    <div className='input-group' id='section'>
+                        <label htmlFor=''>Section</label>
+                        <select
+                            required
+                            value={section}
+                            defaultValue={section}
+                            onChange={(e) => {
+                                setSection(e.target.value);
+                            }}>
+                            <option value={null}>unset</option>
+                            <option value={1}>Section 1 North Wall</option>
+                            <option value={2}>Section 2 Back Wall</option>
+                            <option value={3}>Section 3</option>
+                            <option value={4}>Section 4</option>
+                            <option value={5}>Section 5</option>
+                            <option value={6}>Section 6</option>
+                            <option value={7}>Section 7</option>
+                        </select>
+                    </div>
+                    <div className='input-group' id='sub-section'>
+                        <label htmlFor=''>Sub Section</label>
+                        <select
+                            value={subSection}
+                            defaultValue={subSection}
+                            onChange={(e) => {
+                                setSubSection(e.target.value);
+                            }}>
+                            <option value={null}>unset</option>
+                            <option value='a'>Sub Section A</option>
+                            <option value='b'>Sub Section B</option>
+                            <option value='c'>Sub Section C</option>
+                            <option value='d'>Sub Section D</option>
+                            <option value='e'>Sub Section E</option>
+                            <option value='f'>Sub Section F</option>
+                            <option value='g'>Sub Section G</option>
+                            <option value='h'>Sub Section H</option>
+                            <option value='i'>Sub Section I</option>
+                            <option value='j'>Sub Section J</option>
+                        </select>
+                    </div>
                     <button type='submit' id='submit-btn'>
                         Submit
                     </button>
@@ -301,7 +347,8 @@ const Container = styled.div`
             "E F"
             "G H"
             "I  I"
-            "J  K";
+            "J  K"
+            "L M";
         #has-flavors {
             grid-area: A;
         }
@@ -342,6 +389,12 @@ const Container = styled.div`
         #description {
             grid-area: I;
         }
+        #section {
+            grid-area: J;
+        }
+        #sub-section {
+            grid-area: K;
+        }
 
         label {
             display: block;
@@ -375,15 +428,14 @@ const Container = styled.div`
         }
         #submit-btn {
             background-color: ${Colors.green};
-            grid-area: J;
+            grid-area: L;
         }
         #cancel-btn {
             background-color: ${Colors.red};
-            grid-area: K;
+            grid-area: M;
         }
     }
 `;
-
 const FlavorsContainer = styled.div`
     .title {
         font-size: 24px;
