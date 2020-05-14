@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
-import { NativeSelect, FormControl } from "@material-ui/core";
 import { useEffect } from "react";
 import { withRouter } from "react-router-dom";
-import DiagramPng from "../Assets/Images/Icons/Diagram.png";
+import DiagramPng from "../../Assets/Images/Icons/Diagram.png";
 
-const Task = ({ history }) => {
+const Task1 = ({ history }) => {
     const [selectedBeverage, setSelectedBeverage] = useState(null);
     const handleChange = (e) => {
         setSelectedBeverage(e.target.value);
@@ -73,7 +72,6 @@ const Component = styled.div`
         grid-row-gap: 64px;
     }
 `;
-
 const Header = styled.div`
     grid-area: header;
     .heading {
@@ -82,7 +80,6 @@ const Header = styled.div`
         margin-bottom: 24px;
     }
 `;
-
 const Info = styled.div`
     grid-area: info;
     .remaining {
@@ -126,11 +123,11 @@ const Info = styled.div`
         border-radius: 4px;
     }
 `;
-
 const Diagram = styled.img`
     grid-area: diagram;
     width: 90%;
     height: auto;
+    max-width: 500px;
     justify-self: center;
 `;
-export default withRouter(Task);
+export default withRouter(Task1);

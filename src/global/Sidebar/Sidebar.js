@@ -42,11 +42,11 @@ const Sidebar = ({ dispatch }) => {
                     <NavLink to='/specialpricing'>
                         <SpePricingIcon /> <p>Special Pricing</p>
                     </NavLink>
-                    <NavLink to='/task'>
+                    <NavLink to='/task1'>
                         <TaskIcon /> <p>Task</p>
                     </NavLink>
-                    {/* <NavLink to='/test'>
-                        <TestIcon /> <p>Test</p>
+                    {/* <NavLink to='/task2'>
+                        <TaskIcon /> <p>Task 2</p>
                     </NavLink> */}
                 </NavWrapper>
 

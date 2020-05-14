@@ -5,8 +5,13 @@ import { Order as orderModel } from "../../Models/Order";
 
 const WarehousePDF = ({ order }) => {
     const orderArray = Object.values(order.cart)
-        .sort((a) => {
-            return a.hasOwnProperty("flavors") ? 1 : -1;
+        .sort((a, b) => {
+            if (a.section == undefined) return 1;
+            if (b.section == undefined) return -1;
+            if (a.subSection > b.subSection) return 1;
+            if (a.subSection < b.subSection) return -1;
+            if (a.section > b.section) return 1;
+            if (a.section < b.section) return -1;
         })
         .map((i) => {
             const flavors =
@@ -56,6 +61,29 @@ const WarehousePDF = ({ order }) => {
             </View>
         );
     });
+
+    // console.log(
+    //     Object.values(order.cart).sort((a, b) => {
+    //         if (a.section == undefined) return 1;
+    //         if (b.section == undefined) return -1;
+    //         if (a.subSection > b.subSection) return 1;
+    //         if (a.subSection < b.subSection) return -1;
+    //         if (a.section > b.section) return 1;
+    //         if (a.section < b.section) return -1;
+    //     })
+    // );
+
+    // console.log(
+    //     Object.values(order.cart).sort((a, b) => {
+    //         console.log(a.section);
+    //         if (a.section == undefined) return 1;
+    //         if (b.section == undefined) return -1;
+    //         if (a.subSection > b.subSection) return 1;
+    //         if (a.subSection < b.subSection) return -1;
+    //         if (a.section > b.section) return 1;
+    //         if (a.section < b.section) return -1;
+    //     })
+    // );
 
     return (
         <Document>
