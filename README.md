@@ -1,4 +1,4 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a prototype of an new system for handeling wholesale orders, managing clients, and fulfillment. In its early stages it has 4 applications built in and will eventually have a mobile app on the customer end. I'm the sole developer working on this project and managing a team of 3 using and testing the app. 
 
 ## Available Scripts
 
