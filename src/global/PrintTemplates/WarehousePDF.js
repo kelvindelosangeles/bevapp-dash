@@ -4,44 +4,91 @@ import { Page, Text, View, Document } from "@react-pdf/renderer";
 import { Order as orderModel } from "../../Models/Order";
 
 const WarehousePDF = ({ order }) => {
-    const orderArray = Object.values(order.cart)
-        .sort((a, b) => {
-            if (a.section == undefined) return 1;
-            if (b.section == undefined) return -1;
-            if (a.subSection > b.subSection) return 1;
-            if (a.subSection < b.subSection) return -1;
-            if (a.section > b.section) return 1;
-            if (a.section < b.section) return -1;
+    const section1 = Object.values(order.cart)
+        .filter((i) => {
+            return i.section && i.section === "1";
         })
-        .map((i) => {
-            const flavors =
-                i.hasOwnProperty("flavors") &&
-                Object.entries(i.flavorsQuantity)
-                    .filter((x) => {
-                        return x[1] !== "";
-                    })
-                    .map((x) => {
-                        return (
-                            <Text style={$.orders.flavor} key={x[0]}>
-                                {x[1]}x {x[0]}
-                            </Text>
-                        );
-                    });
-            return (
-                <View style={$.orders}>
-                    <View style={$.orders.w}>
-                        <View style={$.orders.checkBox}></View>
-                    </View>
-                    <Text style={$.orders.c}> {i.qty}</Text>
-                    <Text style={$.orders.d}>{i.description}</Text>
-                    <View style={$.orders.w}>
-                        <View style={$.orders.checkBox}></View>
-                    </View>
-                    <View style={$.orders.flavorsWrapper}>{flavors}</View>
-                </View>
-            );
+        .sort((a, b) => {
+            return a.subSection < b.subSection ? -1 : 1;
         });
+    const section2 = Object.values(order.cart)
+        .filter((i) => {
+            return i.section && i.section === "2";
+        })
+        .sort((a, b) => {
+            return a.subSection < b.subSection ? -1 : 1;
+        });
+    const section3 = Object.values(order.cart)
+        .filter((i) => {
+            return i.section && i.section === "3";
+        })
+        .sort((a, b) => {
+            return a.subSection < b.subSection ? -1 : 1;
+        });
+    const section4 = Object.values(order.cart)
+        .filter((i) => {
+            return i.section && i.section === "4";
+        })
+        .sort((a, b) => {
+            return a.subSection < b.subSection ? -1 : 1;
+        });
+    const section5 = Object.values(order.cart)
+        .filter((i) => {
+            return i.section && i.section === "5";
+        })
+        .sort((a, b) => {
+            return a.subSection < b.subSection ? -1 : 1;
+        });
+    const section6 = Object.values(order.cart)
+        .filter((i) => {
+            return i.section && i.section === "6";
+        })
+        .sort((a, b) => {
+            return a.subSection < b.subSection ? -1 : 1;
+        });
+    const section7 = Object.values(order.cart)
+        .filter((i) => {
+            return i.section && i.section === "7";
+        })
+        .sort((a, b) => {
+            return a.subSection < b.subSection ? -1 : 1;
+        });
+    const sectionNone = Object.values(order.cart).filter((i) => {
+        return !i.section;
+    });
 
+    // TODO: Refactor into one function
+
+    const OrganizedCart = [section1, section2, section3, section4, section5, section6, section7, sectionNone].flat();
+    // console.table([section1, section2, section3, section4, section5, section6, section7, sectionNone].flat());
+    const orderArray = Object.values(OrganizedCart).map((i) => {
+        const flavors =
+            i.hasOwnProperty("flavors") &&
+            Object.entries(i.flavorsQuantity)
+                .filter((x) => {
+                    return x[1] !== "";
+                })
+                .map((x) => {
+                    return (
+                        <Text style={$.orders.flavor} key={x[0]}>
+                            {x[1]}x {x[0]}
+                        </Text>
+                    );
+                });
+        return (
+            <View style={$.orders}>
+                <View style={$.orders.w}>
+                    <View style={$.orders.checkBox}></View>
+                </View>
+                <Text style={$.orders.c}> {i.qty}</Text>
+                <Text style={$.orders.d}>{i.description}</Text>
+                <View style={$.orders.w}>
+                    <View style={$.orders.checkBox}></View>
+                </View>
+                <View style={$.orders.flavorsWrapper}>{flavors}</View>
+            </View>
+        );
+    });
     const chunk = (array, size) => {
         const chunked_arr = [];
         let index = 0;
@@ -51,9 +98,7 @@ const WarehousePDF = ({ order }) => {
         }
         return chunked_arr;
     };
-    // //  FIXME: Add to to models
-    // const ordersChunked = chunk(orderArray, 10);
-    const ordersChunkedMapped = chunk(orderArray, 2).map((i) => {
+    const ordersMapped = chunk(orderArray, 2).map((i) => {
         return (
             <View style={$.orderWrapper} wrap={false}>
                 <View style={$.seperator}></View>
@@ -61,29 +106,6 @@ const WarehousePDF = ({ order }) => {
             </View>
         );
     });
-
-    // console.log(
-    //     Object.values(order.cart).sort((a, b) => {
-    //         if (a.section == undefined) return 1;
-    //         if (b.section == undefined) return -1;
-    //         if (a.subSection > b.subSection) return 1;
-    //         if (a.subSection < b.subSection) return -1;
-    //         if (a.section > b.section) return 1;
-    //         if (a.section < b.section) return -1;
-    //     })
-    // );
-
-    // console.log(
-    //     Object.values(order.cart).sort((a, b) => {
-    //         console.log(a.section);
-    //         if (a.section == undefined) return 1;
-    //         if (b.section == undefined) return -1;
-    //         if (a.subSection > b.subSection) return 1;
-    //         if (a.subSection < b.subSection) return -1;
-    //         if (a.section > b.section) return 1;
-    //         if (a.section < b.section) return -1;
-    //     })
-    // );
 
     return (
         <Document>
@@ -120,7 +142,7 @@ const WarehousePDF = ({ order }) => {
                         <Text style={$.ordersHeader.ch}>CHK</Text>
                     </View>
                 </View>
-                {ordersChunkedMapped}
+                {ordersMapped}
                 <Text style={$.footer}>Total Cases: {orderModel.CalculateCases(order.cart)} </Text>
             </Page>
         </Document>
@@ -165,7 +187,6 @@ const $ = {
             flexBasis: "30%",
         },
     },
-
     wrapper: {
         flexDirection: "row",
         flexWrap: "wrap",
@@ -184,7 +205,6 @@ const $ = {
         backgroundColor: "#565656",
         left: "49.2%",
     },
-
     ordersHeader: {
         justifyContent: "space-between",
         width: "48%",
@@ -226,7 +246,6 @@ const $ = {
             alignSelf: "flex-start",
         },
     },
-
     footer: {
         // marginTop: "auto",
         marginTop: "24",
