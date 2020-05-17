@@ -3,8 +3,10 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { withFirestore } from "react-redux-firebase";
 import { useEffect } from "react";
+import moment from "moment";
 const Test = ({ firestore }) => {
     const beverages = useSelector((state) => state.Firestore.data.inventory.beverages);
+    const orders = useSelector((state) => state.Firestore.data.orders.orders);
     const withoutSection = Object.values(beverages).filter((a) => {
         return !a.hasOwnProperty("section") && !a.hasOwnProperty("subSection");
     });
@@ -12,7 +14,7 @@ const Test = ({ firestore }) => {
         return a.hasOwnProperty("section") && a.hasOwnProperty("subSection");
     });
     const itemsToUpdate = withoutSection.filter((i) => {
-        return i.id && i.id.includes("16") && i.category === "beer";
+        return i.id;
     });
     const checkForItemsWithoutSection = () => {
         console.table(
@@ -125,15 +127,9 @@ const Test = ({ firestore }) => {
     //         action();
     //     });
     // }, []);
-    const Table = section7.map((i) => {
-        return {
-            id: i.id,
-            section: i.section,
-            subSection: i.subSection,
-        };
-    });
 
-    console.table(Table);
+    console.log(moment(Object.values(orders)[1].details.createdAt));
+
     return <Component>This is the test page</Component>;
 };
 const Component = styled.div`
