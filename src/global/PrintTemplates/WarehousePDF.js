@@ -3,64 +3,69 @@ import moment from "moment";
 import { Page, Text, View, Document } from "@react-pdf/renderer";
 import { Order as orderModel } from "../../Models/Order";
 
-const WarehousePDF = ({ order }) => {
+const WarehousePDF = ({ order, beverages }) => {
+    // USing the first instance of a section for documentation
     const section1 = Object.values(order.cart)
         .filter((i) => {
-            return i.section && i.section === "1";
+            // filter by references of this beverages section,Its being done this way so that when we update a location the old orders have an updated locaton as well.
+            return beverages[i.id].section && beverages[i.id].section === "1";
         })
         .sort((a, b) => {
-            return a.subSection < b.subSection ? -1 : 1;
+            // console.log(beverages[a.id]);
+            // Again referencing by the reference to the beverage and its most recent section
+            return beverages[a.id].subSection < beverages[b.id].subSection ? -1 : 1;
         });
     const section2 = Object.values(order.cart)
         .filter((i) => {
-            return i.section && i.section === "2";
+            return beverages[i.id].section && beverages[i.id].section === "2";
         })
         .sort((a, b) => {
-            return a.subSection < b.subSection ? -1 : 1;
+            return beverages[a.id].subSection < beverages[b.id].subSection ? -1 : 1;
         });
     const section3 = Object.values(order.cart)
         .filter((i) => {
-            return i.section && i.section === "3";
+            return beverages[i.id].section && beverages[i.id].section === "3";
         })
         .sort((a, b) => {
-            return a.subSection < b.subSection ? -1 : 1;
+            return beverages[a.id].subSection < beverages[b.id].subSection ? -1 : 1;
         });
     const section4 = Object.values(order.cart)
         .filter((i) => {
-            return i.section && i.section === "4";
+            return beverages[i.id].section && beverages[i.id].section === "4";
         })
         .sort((a, b) => {
-            return a.subSection < b.subSection ? -1 : 1;
+            return beverages[a.id].subSection < beverages[b.id].subSection ? -1 : 1;
         });
     const section5 = Object.values(order.cart)
         .filter((i) => {
-            return i.section && i.section === "5";
+            return beverages[i.id].section && beverages[i.id].section === "5";
         })
         .sort((a, b) => {
-            return a.subSection < b.subSection ? -1 : 1;
+            return beverages[a.id].subSection < beverages[b.id].subSection ? -1 : 1;
         });
     const section6 = Object.values(order.cart)
         .filter((i) => {
-            return i.section && i.section === "6";
+            return beverages[i.id].section && beverages[i.id].section === "6";
         })
         .sort((a, b) => {
-            return a.subSection < b.subSection ? -1 : 1;
+            return beverages[a.id].subSection < beverages[b.id].subSection ? -1 : 1;
         });
     const section7 = Object.values(order.cart)
         .filter((i) => {
-            return i.section && i.section === "7";
+            return beverages[i.id].section && beverages[i.id].section === "7";
         })
         .sort((a, b) => {
-            return a.subSection < b.subSection ? -1 : 1;
+            return beverages[a.id].subSection < beverages[b.id].subSection ? -1 : 1;
         });
+
     const sectionNone = Object.values(order.cart).filter((i) => {
-        return !i.section;
+        return !beverages[i.id].section;
     });
 
     // TODO: Refactor into one function
 
     const OrganizedCart = [section1, section2, section3, section4, section5, section6, section7, sectionNone].flat();
-    // console.table([section1, section2, section3, section4, section5, section6, section7, sectionNone].flat());
+
     const orderArray = Object.values(OrganizedCart).map((i) => {
         const flavors =
             i.hasOwnProperty("flavors") &&
@@ -77,6 +82,10 @@ const WarehousePDF = ({ order }) => {
                 });
         return (
             <View style={$.orders}>
+                <Text style={$.orders.l}>
+                    {beverages[i.id].section || ""}
+                    {beverages[i.id].subSection || ""}
+                </Text>
                 <View style={$.orders.w}>
                     <View style={$.orders.checkBox}></View>
                 </View>
@@ -130,12 +139,14 @@ const WarehousePDF = ({ order }) => {
 
                 <View style={$.wrapper} fixed>
                     <View style={$.ordersHeader}>
+                        <Text style={$.ordersHeader.w}>LO</Text>
                         <Text style={$.ordersHeader.w}>WH</Text>
                         <Text style={$.ordersHeader.c}> Cases</Text>
                         <Text style={$.ordersHeader.d}>Description</Text>
                         <Text style={$.ordersHeader.ch}>CHK</Text>
                     </View>
                     <View style={$.ordersHeader}>
+                        <Text style={$.ordersHeader.w}>LO</Text>
                         <Text style={$.ordersHeader.w}>WH</Text>
                         <Text style={$.ordersHeader.c}> Cases</Text>
                         <Text style={$.ordersHeader.d}>Description</Text>
@@ -197,10 +208,13 @@ const $ = {
         flexDirection: "row",
         // flexWrap: "wrap",
         justifyContent: "space-between",
+        borderBottom: "2 solid #565656",
+        marginBottom: "4",
     },
     seperator: {
         position: "absolute",
-        height: "100%",
+        top: "-4",
+        height: "113%",
         width: "5",
         backgroundColor: "#565656",
         left: "49.2%",
@@ -214,9 +228,10 @@ const $ = {
         borderLeft: "none",
         marginBottom: "8",
         paddingVertical: 4,
+        l: { flexBasis: "10%" },
         w: { flexBasis: "10%" },
         c: { flexBasis: "15%" },
-        d: { flexBasis: "65%" },
+        d: { flexBasis: "55%" },
         ch: { flexBasis: "10%" },
     },
     orders: {
@@ -224,13 +239,15 @@ const $ = {
         flexDirection: "row",
         flexWrap: "wrap",
         alignItems: "center",
+        // marginBottom: "8",
+        l: { flexBasis: "10%", textTransform: "uppercase" },
         w: { flexBasis: "10%" },
         c: { flexBasis: "15%", textAlign: "center", paddingRight: "5%" },
-        d: { flexBasis: "65%", textTransform: "uppercase", fontSize: "11", paddingRight: "10%" },
+        d: { flexBasis: "55%", textTransform: "uppercase", fontSize: "11", paddingRight: "10%" },
         ch: { flexBasis: "10%" },
         flavorsWrapper: {
             paddingVertical: "4",
-            marginLeft: "25%",
+            marginLeft: "35%",
             flexBasis: "65%",
             flexDirection: "row",
             flexWrap: "wrap",

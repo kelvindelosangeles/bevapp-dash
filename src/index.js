@@ -4,7 +4,7 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { StyleSheetManager } from "styled-components";
 
-import { HashRouter as Router } from "react-router-dom";
+import { HashRouter as Router, Route } from "react-router-dom";
 import { composeWithDevTools } from "redux-devtools-extension";
 
 import { Provider } from "react-redux";
@@ -19,6 +19,7 @@ import GlobalState from "./redux/reducers/GlobalState";
 import RapidOrderReducer from "./redux/reducers/RapidOrderReducer";
 import DashboardReducer from "./redux/reducers/DashboardReducer";
 import SpecialPricingReducer from "./redux/reducers/SpecialPricingReducer";
+import Test from "./test/Test";
 
 const bevappTest = {
     apiKey: "AIzaSyCQhOoWbnPMT4YSUAQX5w956l7UPm73tMY",
@@ -27,7 +28,7 @@ const bevappTest = {
     projectId: "bevapp-test",
     storageBucket: "bevapp-test.appspot.com",
     messagingSenderId: "595597165652",
-    appId: "1:595597165652:web:9d09e924376af780cd19c1"
+    appId: "1:595597165652:web:9d09e924376af780cd19c1",
 };
 
 const bevappProduction = {
@@ -37,16 +38,16 @@ const bevappProduction = {
     projectId: "bevapp-1f1b1",
     storageBucket: "bevapp-1f1b1.appspot.com",
     messagingSenderId: "872130550852",
-    appId: "1:872130550852:web:985b31878cea94a2"
+    appId: "1:872130550852:web:985b31878cea94a2",
 };
 
 const fbConfig = {
-    ...bevappProduction
+    ...bevappProduction,
 };
 
 const rrfConfig = {
     userProfile: "users",
-    useFirestoreForProfile: true // Firestore for Profile instead of Realtime DB
+    useFirestoreForProfile: true, // Firestore for Profile instead of Realtime DB
 };
 
 firebase.initializeApp(fbConfig);
@@ -58,7 +59,7 @@ const rootReducer = combineReducers({
     RapidOrderState: RapidOrderReducer,
     SpecialPricingState: SpecialPricingReducer,
     Firebase: firebaseReducer,
-    Firestore: firestoreReducer
+    Firestore: firestoreReducer,
 });
 
 const initialState = {};
@@ -69,7 +70,7 @@ const rrfProps = {
     firebase,
     config: rrfConfig,
     dispatch: store.dispatch,
-    createFirestoreInstance // <- needed if using firestore
+    createFirestoreInstance, // <- needed if using firestore
 };
 
 let vh = window.innerHeight * 0.01;

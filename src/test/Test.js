@@ -125,8 +125,18 @@ const Test = ({ firestore }) => {
     //         action();
     //     });
     // }, []);
+    const Table = section7.map((i) => {
+        return {
+            id: i.id,
+            section: i.section,
+            subSection: i.subSection,
+        };
+    });
 
+    console.table(Table);
     return <Component>This is the test page</Component>;
 };
-const Component = styled.div``;
+const Component = styled.div`
+    padding: 32px;
+`;
 export default withFirestore(Test);

@@ -15,6 +15,8 @@ import CustomerPDF from "../../../Global/PrintTemplates/CustomerPDF";
 import WarehousePDF from "../../../Global/PrintTemplates/WarehousePDF";
 
 const DBPreview = ({ activeOrder, dispatch, firestore, orders, history }) => {
+    const beverages = useSelector((state) => state.Firestore.data.inventory.beverages);
+
     const complete = activeOrder.details.complete;
     // BETA
     const editOrderID = useSelector((state) => state.RapidOrderState.editOrderID);
@@ -100,7 +102,9 @@ const DBPreview = ({ activeOrder, dispatch, firestore, orders, history }) => {
                 {activeOrder.details.notes && <Notes text={activeOrder.details.notes} />}
                 <OrderCart cart={activeOrder.cart} customer={activeOrder.customer} readOnly={true} />
                 <OrderActions>
-                    <PDFDownloadLink document={<WarehousePDF order={activeOrder} />} fileName={`${activeOrder.customer.address}-WH.pdf`}>
+                    <PDFDownloadLink
+                        document={<WarehousePDF order={activeOrder} beverages={beverages} />}
+                        fileName={`${activeOrder.customer.address}-WH.pdf`}>
                         {({ loading, error }) => (error ? console.log(error) : loading ? "Loading..." : "Warehouse PDF")}
                     </PDFDownloadLink>
                     <PDFDownloadLink document={<CustomerPDF order={activeOrder} />} fileName={`${activeOrder.customer.address}-CX.pdf`}>
