@@ -10,6 +10,21 @@ const ChangeLog = () => {
             <p className='title'>Change Log</p>
             <Log>
                 <header>
+                    <p className='date'>May 18th, 2020</p>
+                    <p className='version'>v 1.1.3 beta</p>
+                </header>
+
+                <ul>
+                    <label>Warehouse Copy</label>
+                    <li>Sections added to each beverage to designate a location in the warehouse </li>
+                    <li>Warehouse copies now include a location field to help the staff locate items within the warehouse </li>
+                    <li>Items on the warehouse copy are now listen in order from 1 - 7 and A - Z</li>
+                    <li>Warehouse item locations are now reflected on all new and older orders</li>
+                    <li>Adding an item location will automatically update on the warehouse copy</li>
+                </ul>
+            </Log>
+            <Log>
+                <header>
                     <p className='date'>May 2nd, 2020</p>
                     <p className='version'>v 1.1.2</p>
                 </header>

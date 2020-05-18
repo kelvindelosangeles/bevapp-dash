@@ -3,9 +3,7 @@ import moment from "moment";
 import { useSelector } from "react-redux";
 
 export const completeOrder = (activeOrder, orders) => {
-    return (dispatch, getState, getFirebase) => {
-        console.log(getFirebase().firestore());
-    };
+    return (dispatch, getState) => {};
 };
 // dispatch({ type: "CLEAR_ACTIVE_ORDER" });
 // console.log(orderID);

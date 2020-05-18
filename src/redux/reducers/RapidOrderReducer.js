@@ -1,3 +1,5 @@
+import store from "store";
+
 const initialState = {
     atcVisible: false,
     atcfVisible: false,
@@ -31,7 +33,15 @@ const RapidOrderReducer = (state = initialState, action) => {
                 atcfVisible: false,
                 orderItem: {},
             };
+        case "POPULATE_CACHE":
+            return {
+                ...state,
+                customer: action.payload.customer,
+                cart: action.payload.cart,
+                editOrderID: action.payload.editOrderID,
+            };
         case "ADD_TO_CART":
+            store.set("cart", { ...state.cart, [action.item.id]: action.item });
             return {
                 ...state,
                 atcVisible: false,
@@ -39,6 +49,9 @@ const RapidOrderReducer = (state = initialState, action) => {
                 cart: { ...state.cart, [action.item.id]: action.item },
             };
         case "CANCEL_ORDER":
+            store.set("cart", {});
+            store.set("customer", null);
+            store.set("editOrderID", null);
             return {
                 ...state,
                 cart: {},
@@ -47,6 +60,9 @@ const RapidOrderReducer = (state = initialState, action) => {
                 editOrderID: null,
             };
         case "SUBMIT_ORDER":
+            store.set("cart", {});
+            store.set("customer", null);
+            store.set("editOrderID", null);
             return {
                 ...state,
                 cart: {},
@@ -56,14 +72,16 @@ const RapidOrderReducer = (state = initialState, action) => {
             };
 
         case "REMOVE_ITEM":
-            // destructure to remove a key from an object
             const { [action.id]: removed, ...items } = state.cart;
+            store.set("cart", { ...items });
             return {
                 ...state,
                 cart: { ...items },
             };
 
         case "SET_CUSTOMER":
+            store.set("customer", action.customer);
+            store.set("editOrderID", null);
             return {
                 ...state,
                 customer: action.customer,
@@ -76,6 +94,10 @@ const RapidOrderReducer = (state = initialState, action) => {
             };
         // BETA
         case "SET_EDIT_ORDER_CART":
+            store.set("cart", action.payload.cart);
+            store.set("customer", action.payload.customer);
+            store.set("editOrderID", action.payload.orderID);
+
             return {
                 ...state,
                 customer: action.payload.customer,

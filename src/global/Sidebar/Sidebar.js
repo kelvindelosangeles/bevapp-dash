@@ -26,7 +26,7 @@ const Sidebar = ({ dispatch }) => {
             <Container>
                 <AppTitle onClick={toggleChangeLog}>
                     <h3>Bevapp Dash</h3>
-                    <p>v 1.1.2</p>
+                    <p>v 1.1.3 beta</p>
                 </AppTitle>
 
                 <NavWrapper>

@@ -7,7 +7,6 @@ import { StyleSheetManager } from "styled-components";
 import { HashRouter as Router, Route } from "react-router-dom";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
-import { getFirebase } from "react-redux-firebase";
 
 import { Provider } from "react-redux";
 import firebase from "firebase/app";
@@ -22,15 +21,15 @@ import RapidOrderReducer from "./redux/reducers/RapidOrderReducer";
 import DashboardReducer from "./redux/reducers/DashboardReducer";
 import SpecialPricingReducer from "./redux/reducers/SpecialPricingReducer";
 
-const bevappTest = {
-    apiKey: "AIzaSyCQhOoWbnPMT4YSUAQX5w956l7UPm73tMY",
-    authDomain: "bevapp-test.firebaseapp.com",
-    databaseURL: "https://bevapp-test.firebaseio.com",
-    projectId: "bevapp-test",
-    storageBucket: "bevapp-test.appspot.com",
-    messagingSenderId: "595597165652",
-    appId: "1:595597165652:web:9d09e924376af780cd19c1",
-};
+// const bevappTest = {
+//     apiKey: "AIzaSyCQhOoWbnPMT4YSUAQX5w956l7UPm73tMY",
+//     authDomain: "bevapp-test.firebaseapp.com",
+//     databaseURL: "https://bevapp-test.firebaseio.com",
+//     projectId: "bevapp-test",
+//     storageBucket: "bevapp-test.appspot.com",
+//     messagingSenderId: "595597165652",
+//     appId: "1:595597165652:web:9d09e924376af780cd19c1",
+// };
 
 const bevappProduction = {
     apiKey: "AIzaSyBWABm8_-gJAphiDlPJdrbwvZ01Sf2HXc4",
@@ -65,9 +64,7 @@ const rootReducer = combineReducers({
 
 const initialState = {};
 
-const middlewares = [thunk.withExtraArgument(getFirebase)];
-
-const store = createStore(rootReducer, initialState, compose(applyMiddleware(...middlewares), composeWithDevTools()));
+const store = createStore(rootReducer, initialState, composeWithDevTools());
 
 const rrfProps = {
     firebase,
