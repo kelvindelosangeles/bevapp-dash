@@ -5,6 +5,7 @@ import { Colors } from "../../../../Constants/Colors";
 import { Order as OrderModel } from "../../../../Models/Order";
 import CaseIcon from "../../../../Assets/Icons/CaseIcon";
 import MoneyIcon from "@material-ui/icons/AttachMoneyRounded";
+import moment from "moment";
 
 const Order = ({ order, dispatch, activeOrder }) => {
     const viewHandler = () => {
@@ -26,7 +27,7 @@ const Order = ({ order, dispatch, activeOrder }) => {
         <OrderWrapper active={OrderIsActive} onClick={OrderIsActive ? clearHandler : viewHandler}>
             <div>
                 <h6>{order.details.orderID.slice(6)}</h6>
-                <p>{order.details.createdAt}</p>
+                <p>{moment(order.details.createdAt).format("MMM DD, h:mm")}</p>
             </div>
             <h6>{order.customer.address}</h6>
             <h6>

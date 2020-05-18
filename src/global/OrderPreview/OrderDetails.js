@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import moment from "moment";
 
 const OrderDetails = ({ orderID, createdAt, status, gridArea }) => {
     return (
@@ -17,7 +18,7 @@ const OrderDetails = ({ orderID, createdAt, status, gridArea }) => {
             <div className='row'>
                 <div className='detail'>
                     <h6>Ordered On</h6>
-                    <p>{createdAt}</p>
+                    <p>{moment(createdAt).format("MMM DD, h:mm")}</p>
                 </div>
                 <div className='detail'>
                     <h6>Status</h6>

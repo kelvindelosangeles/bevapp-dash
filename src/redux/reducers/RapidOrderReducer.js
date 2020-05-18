@@ -82,6 +82,8 @@ const RapidOrderReducer = (state = initialState, action) => {
                 cart: action.payload.cart,
                 editOrderID: action.payload.orderID,
             };
+        // case "TEST_ACTION":
+        //     return state;
         default:
             return state;
     }

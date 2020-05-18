@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 
 import { Colors } from "../../../../Constants/Colors";
 import Order from "./Order";
+import moment from "moment";
 
 const Orders = ({ orders, complete, search }) => {
     const OrdersArray = Object.values(orders)
@@ -16,12 +17,12 @@ const Orders = ({ orders, complete, search }) => {
         })
         .filter((y) => {
             // filters based on the search
-            return y.details.orderID.includes(search) || y.details.createdAt.toUpperCase().includes(search);
+            return y.details.orderID.includes(search) || moment(y.details.createdAt).format("MMM DD, h:mm").toUpperCase().includes(search);
             // return y.details.orderID.contains(search);
         })
         .map((i) => {
             // because were using the ordered dataset and it inlcudes an id
-            return i.details && <Order order={i} key={i} />;
+            return i.details && <Order order={i} key={i.details.orderID} />;
         });
 
     return (

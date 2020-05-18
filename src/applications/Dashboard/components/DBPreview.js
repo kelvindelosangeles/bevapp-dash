@@ -1,19 +1,20 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { compose } from "redux";
 import { connect, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { firestoreConnect } from "react-redux-firebase";
+import { firestoreConnect, useFirestore } from "react-redux-firebase";
 import styled from "styled-components";
 import { Colors } from "../../../Constants/Colors";
 import CustomerDetails from "../../../Global/OrderPreview/CustomerDetails";
 import OrderDetails from "../../../Global/OrderPreview/OrderDetails";
 import Notes from "../../../Global/OrderPreview/Notes";
 import OrderCart from "../../../Global/OrderPreview/OrderCart";
+import { completeOrder } from "../../../redux/actions/CartActions";
 // TEST
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import CustomerPDF from "../../../Global/PrintTemplates/CustomerPDF";
 import WarehousePDF from "../../../Global/PrintTemplates/WarehousePDF";
-
+import moment from "moment";
 const DBPreview = ({ activeOrder, dispatch, firestore, orders, history }) => {
     const beverages = useSelector((state) => state.Firestore.data.inventory.beverages);
 
@@ -55,20 +56,69 @@ const DBPreview = ({ activeOrder, dispatch, firestore, orders, history }) => {
                 });
     };
     const completeClickHandler = () => {
-        window.confirm("Would you like to complete this order?") &&
-            dispatch({ type: "CLEAR_ACTIVE_ORDER" }) &&
-            firestore.update(
+        firestore
+            .update(
                 {
                     collection: "orders",
-                    doc: "orders",
+                    doc: moment(`${activeOrder.details.createdAt} 2020`).format("YYYYMMw"),
                 },
-                {
-                    [activeOrder.details.orderID]: {
-                        ...activeOrder,
-                        details: { ...activeOrder.details, complete: true },
-                    },
-                }
-            );
+                { [activeOrder.details.orderID]: { ...activeOrder, details: { ...activeOrder.details, complete: true } } }
+            )
+            .then(() => {
+                const { [activeOrder.details.orderID]: deleted, ...rest } = orders;
+                firestore
+                    .set(
+                        {
+                            collection: "orders",
+                            doc: "orders",
+                        },
+                        rest
+                    )
+                    .then(() => {
+                        console.log("successfully deleted");
+                        dispatch({ type: "CLEAR_ACTIVE_ORDER" });
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        console.log("Error Caught on trying to delete");
+                    });
+            })
+            .catch((err) => {
+                console.log(err);
+                console.log("error caught on trying to update");
+
+                firestore
+                    .set(
+                        {
+                            collection: "orders",
+                            doc: moment(`${activeOrder.details.createdAt} 2020`).format("YYYYMMw"),
+                        },
+                        { [activeOrder.details.orderID]: { ...activeOrder, details: { ...activeOrder.details, complete: true } } }
+                    )
+                    .then(() => {
+                        const { [activeOrder.details.orderID]: deleted, ...rest } = orders;
+                        firestore
+                            .set(
+                                {
+                                    collection: "orders",
+                                    doc: "orders",
+                                },
+                                rest
+                            )
+                            .then(() => {
+                                console.log("successfully deleted");
+                                dispatch({ type: "CLEAR_ACTIVE_ORDER" });
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                                console.log("Error Caught on trying to delete");
+                            });
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        console.log("error on trying to create after trying to update ");
+                    });
+            });
     };
 
     // BETA
@@ -94,6 +144,20 @@ const DBPreview = ({ activeOrder, dispatch, firestore, orders, history }) => {
             : startEditingOrder();
     };
 
+    // useEffect(() => {
+    //     firestore
+    //         .delete({
+    //             collection: "orders",
+    //             doc: "order",
+    //         })
+    //         .then(() => {
+    //             console.log("delete");
+    //         })
+    //         .catch((err) => {
+    //             console.log(err);
+    //         });
+    // }, []);
+
     return (
         <Container>
             <div className='wrapper'>
@@ -112,7 +176,7 @@ const DBPreview = ({ activeOrder, dispatch, firestore, orders, history }) => {
                     </PDFDownloadLink>
                     {!complete && (
                         <a onClick={completeClickHandler} id='complete'>
-                            Complete{" "}
+                            Complete
                         </a>
                     )}
                     {!complete && (
@@ -198,3 +262,42 @@ export default compose(
     }),
     firestoreConnect()
 )(withRouter(DBPreview));
+
+// let weekDocument = moment(`${activeOrder.details.createdAt} 2020`).format("YYYYMMw");
+
+// window.confirm("Would you like to complete this order?") &&
+//     firestore
+//         .update(
+//             {
+//                 collection: "orders",
+//                 doc: weekDocument,
+//             },
+//             { [activeOrder.details.orderID]: { ...activeOrder, details: { ...activeOrder.details, complete: true } } }
+//         )
+//         .then(() => {
+//             console.log("successfully added the order to the week document");
+//         })
+//         .then(() => {
+//             const { [activeOrder.details.orderID]: deleted, ...rest } = orders;
+//             firestore
+//                 .set(
+//                     {
+//                         collection: "orders",
+//                         doc: "order",
+//                     },
+//                     rest
+//                 )
+//                 .then(() => {
+//                     console.log("successfuly deleted from the orders doc");
+//                 })
+//                 .catch((err) => {
+//                     console.log("There was an error");
+//                 });
+//         })
+//         .then(() => {
+//             dispatch({ type: "CLEAR_ACTIVE_ORDER" });
+//         })
+//         .catch((err) => {
+//             console.log(err);
+//             alert("There was an error please try again later");
+//         });

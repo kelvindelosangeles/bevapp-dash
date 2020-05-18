@@ -35,8 +35,10 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
     };
 
     const createdAt = useMemo(() => {
-        return moment(new Date()).format("MMM DD, h:mm");
+        return `${new Date()}`;
     });
+
+    // .format("MMM DD, h:mm")
     const CartArray = Object.values(cart).map((i) => {
         const removeItem = () => {
             if (window.confirm(`Delete ${i.id} ?`)) {

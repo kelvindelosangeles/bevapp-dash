@@ -128,7 +128,8 @@ const Test = ({ firestore }) => {
     //     });
     // }, []);
 
-    console.log(moment(Object.values(orders)[1].details.createdAt));
+    // console.log(moment(Object.values(orders)[1].details.createdAt));
+    // console.log(mome);
 
     return <Component>This is the test page</Component>;
 };

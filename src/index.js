@@ -6,12 +6,14 @@ import { StyleSheetManager } from "styled-components";
 
 import { HashRouter as Router, Route } from "react-router-dom";
 import { composeWithDevTools } from "redux-devtools-extension";
+import thunk from "redux-thunk";
+import { getFirebase } from "react-redux-firebase";
 
 import { Provider } from "react-redux";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore"; // <- needed if using firestore
-import { createStore, combineReducers } from "redux";
+import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import { ReactReduxFirebaseProvider, firebaseReducer } from "react-redux-firebase";
 import { createFirestoreInstance, firestoreReducer } from "redux-firestore"; // <- needed if using firestore
 
@@ -19,7 +21,6 @@ import GlobalState from "./redux/reducers/GlobalState";
 import RapidOrderReducer from "./redux/reducers/RapidOrderReducer";
 import DashboardReducer from "./redux/reducers/DashboardReducer";
 import SpecialPricingReducer from "./redux/reducers/SpecialPricingReducer";
-import Test from "./test/Test";
 
 const bevappTest = {
     apiKey: "AIzaSyCQhOoWbnPMT4YSUAQX5w956l7UPm73tMY",
@@ -64,7 +65,9 @@ const rootReducer = combineReducers({
 
 const initialState = {};
 
-const store = createStore(rootReducer, initialState, composeWithDevTools());
+const middlewares = [thunk.withExtraArgument(getFirebase)];
+
+const store = createStore(rootReducer, initialState, compose(applyMiddleware(...middlewares), composeWithDevTools()));
 
 const rrfProps = {
     firebase,
