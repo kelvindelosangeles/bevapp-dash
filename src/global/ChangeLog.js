@@ -10,6 +10,20 @@ const ChangeLog = () => {
             <p className='title'>Change Log</p>
             <Log>
                 <header>
+                    <p className='date'>May 19th, 2020</p>
+                    <p className='version'>v 1.1.4 beta</p>
+                </header>
+
+                <ul>
+                    <label>Rapid Order</label>
+                    <li>
+                        <NewIcon className='new' />
+                        Rapid orders are now saved to your computer. If you close your computer or refresh the page, the order will still be there :D
+                    </li>
+                </ul>
+            </Log>
+            <Log>
+                <header>
                     <p className='date'>May 18th, 2020</p>
                     <p className='version'>v 1.1.3 beta</p>
                 </header>

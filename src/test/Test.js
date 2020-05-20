@@ -131,6 +131,10 @@ const Test = ({ firestore }) => {
     // console.log(moment(Object.values(orders)[1].details.createdAt));
     // console.log(mome);
 
+    const bring = useSelector((state) => state.Firestore.data.orders["20200521"]);
+
+    console.log(bring);
+
     return <Component>This is the test page</Component>;
 };
 const Component = styled.div`

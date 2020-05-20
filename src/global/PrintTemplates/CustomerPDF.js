@@ -172,6 +172,7 @@ const $ = {
         flexDirection: "row",
         flexWrap: "wrap",
         justifyContent: "space-between",
+        paddingBottom: "100",
         cases: {
             flexBasis: "40%",
             marginBottom: 10,
