@@ -8,10 +8,20 @@ import FlavorsInput from "./FlavorsInput";
 
 const AddtoCartFlavors = ({ orderItem, dispatch }) => {
     const [flavorsQuantity, setFlavorsQuantity] = useState({});
+    const open = useSelector((state) => state.RapidOrderState.atcfVisible);
+    const cart = useSelector((state) => state.RapidOrderState.cart);
+
     useEffect(() => {
-        const flavors = orderItem.flavors.reduce((o, key) => {
-            return Object.assign(o, { [key]: "" });
-        }, {});
+        const flavors = {};
+
+        cart.hasOwnProperty(orderItem.id)
+            ? Object.entries(cart[orderItem.id].flavorsQuantity).forEach((i) => {
+                  Object.assign(flavors, { [i[0]]: i[1] });
+              })
+            : orderItem.flavors.forEach((i) => {
+                  Object.assign(flavors, { [i]: "" });
+              });
+
         setFlavorsQuantity({ ...flavors });
     }, []);
 
@@ -63,8 +73,6 @@ const AddtoCartFlavors = ({ orderItem, dispatch }) => {
         });
     // FIXME: Sorting not allowed
 
-    const open = useSelector((state) => state.RapidOrderState.atcfVisible);
-
     return (
         <Dialog open={open} onClose={cancelHandler} scroll='paper' aria-labelledby='scroll-dialog-title' aria-describedby='scroll-dialog-description'>
             <Container>
@@ -85,6 +93,7 @@ const Container = styled.div`
     padding: 24px;
 `;
 const FlavorsForm = styled.form``;
+
 const FlavorsFormActions = styled.div`
     margin-top: 64px;
     display: flex;
