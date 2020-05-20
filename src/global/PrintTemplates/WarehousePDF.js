@@ -155,12 +155,19 @@ const WarehousePDF = ({ order, beverages }) => {
                 </View>
                 {ordersMapped}
                 <Text style={$.footer}>Total Cases: {orderModel.CalculateCases(order.cart)} </Text>
+                <Text style={$.pageNumber} render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`} fixed />
             </Page>
         </Document>
     );
 };
 
 const $ = {
+    pageNumber: {
+        position: "absolute",
+        fontSize: 10,
+        top: 16,
+        right: 16,
+    },
     page: {
         fontSize: "10",
         padding: 16,

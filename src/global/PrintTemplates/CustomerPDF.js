@@ -56,28 +56,35 @@ const CustomerPDF = ({ order }) => {
                     <Text style={$.footer.cases}>Cases: {orderModel.CalculateCases(order.cart)}</Text>
                     <Text style={$.footer.total}>Total:$ {orderModel.CalculateCart(order.cart, order.customer.specialPrices)}</Text>
                     <View style={$.footer.input}>
-                        <Text>Credits</Text>
+                        <Text style={$.footer.input.text}>Credits</Text>
                         <View style={$.footer.line} />
                     </View>
                     <View style={$.footer.input}>
-                        <Text>Balance</Text>
+                        <Text style={$.footer.input.text}>Balance</Text>
                         <View style={$.footer.line} />
                     </View>
                     <View style={$.footer.input}>
-                        <Text>AmountPaid</Text>
+                        <Text style={$.footer.input.text}>Amount Paid</Text>
                         <View style={$.footer.line} />
                     </View>
                     <View style={$.footer.input}>
-                        <Text>Signature Date</Text>
+                        <Text style={$.footer.input.text}>Signature Date</Text>
                         <View style={$.footer.line} />
                     </View>
                 </View>
+                <Text style={$.pageNumber} render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`} fixed />
             </Page>
         </Document>
     );
 };
 
 const $ = {
+    pageNumber: {
+        position: "absolute",
+        fontSize: 10,
+        top: 16,
+        right: 16,
+    },
     page: {
         fontSize: "10",
         padding: 16,
@@ -172,20 +179,23 @@ const $ = {
         flexDirection: "row",
         flexWrap: "wrap",
         justifyContent: "space-between",
-        paddingBottom: "100",
+        paddingBottom: "10",
         cases: {
             flexBasis: "40%",
-            marginBottom: 10,
+            marginBottom: 15,
         },
         total: {
             flexBasis: "40%",
-            marginBottom: 8,
+            marginBottom: 15,
             textAlign: "right",
         },
         input: {
             flexBasis: "40%",
-            marginBottom: 10,
-            // backgroundColor: 'yellow',
+            marginBottom: 20,
+            // backgroundColor: "yellow",
+            text: {
+                marginBottom: 40,
+            },
         },
         line: {
             borderBottom: "1",
