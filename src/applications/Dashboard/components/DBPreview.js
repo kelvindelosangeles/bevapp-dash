@@ -60,7 +60,7 @@ const DBPreview = ({ activeOrder, dispatch, firestore, orders, history }) => {
             .update(
                 {
                     collection: "orders",
-                    doc: moment(`${activeOrder.details.createdAt} 2020`).format("YYYYMMw"),
+                    doc: moment(`${activeOrder.details.createdAt} 2020`).format("YYYYMMwE"),
                 },
                 { [activeOrder.details.orderID]: { ...activeOrder, details: { ...activeOrder.details, complete: true } } }
             )
@@ -91,7 +91,7 @@ const DBPreview = ({ activeOrder, dispatch, firestore, orders, history }) => {
                     .set(
                         {
                             collection: "orders",
-                            doc: moment(`${activeOrder.details.createdAt} 2020`).format("YYYYMMw"),
+                            doc: moment(`${activeOrder.details.createdAt} 2020`).format("YYYYMMwE"),
                         },
                         { [activeOrder.details.orderID]: { ...activeOrder, details: { ...activeOrder.details, complete: true } } }
                     )
