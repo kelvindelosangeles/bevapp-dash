@@ -1,4 +1,5 @@
 export let Brands = [
+    ["Other", "other"],
     ["7UP", "soda"],
     ["A&W", "soda"],
     ["Aloe", "juice"],
