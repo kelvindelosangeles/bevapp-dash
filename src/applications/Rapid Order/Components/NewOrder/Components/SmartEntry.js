@@ -40,6 +40,8 @@ const SmartEntry = ({ smartEntryID, setSmartEntryID, smartEntryQty, setSmartEntr
                         console.log("this item has flavors");
                         setSmartEntryID("");
                         setSmartEntryQty("");
+                        seqty.current.focus();
+
                         dispatch({
                             type: "TOGGLE_ATCF",
                             item: store[smartEntryID],
