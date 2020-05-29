@@ -40,7 +40,7 @@ const CustomerPDF = ({ order }) => {
                         <Text>Thank you for your order</Text>
                         <Text style={$.heading.date}>{moment(order.details.createdAt).format("MM/DD/2020")}</Text>
                     </View>
-                    <Text style={$.heading.license}>LIC.NO.CO.</Text>
+                    <Text style={$.heading.license}>LIC.NO.CO. 1301787</Text>
                 </View>
 
                 <View style={$.wrapper} fixed>
