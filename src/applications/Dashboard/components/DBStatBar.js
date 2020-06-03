@@ -5,12 +5,29 @@ import styled from "styled-components";
 
 import { Order as OrdersModel } from "../../../Models/Order";
 import { Colors } from "../../../Constants/Colors";
+import CaseIcon from "../../../Assets/Icons/CaseIcon";
 
 const DBStatBar = ({ orders }) => {
     const newOrdersCount = Object.values(orders).filter((i) => {
         // because were using the ordered dataset and it inlcudes an id
         return i.details && i.details.complete === false;
     }).length;
+
+    const TotalCases = () => {
+        try {
+            return Object.values(orders)
+                .map((i) => {
+                    return OrdersModel.CalculateCases(i.cart);
+                })
+                .reduce((a, b) => {
+                    return a + b;
+                });
+        } catch (err) {
+            console.log("No Orders to calculate cart for");
+            console.log(err);
+            return "0";
+        }
+    };
 
     return (
         <DBStatBarWrapper>
@@ -22,7 +39,15 @@ const DBStatBar = ({ orders }) => {
                 <h6>Daily Revenue</h6>
                 <p>{Object.values(orders).length > 0 && "$ " + OrdersModel.CalculateRevenue(orders)}</p>
             </Stat>
-            <Completed to='/dashboard/completedorders'>Completed Orders</Completed>
+            <Stat color={Colors.purple}>
+                <h6>Total Cases</h6>
+                {Object.values(orders).length > 0 && (
+                    <p>
+                        <CaseIcon /> {TotalCases()}
+                    </p>
+                )}
+            </Stat>
+            {/* <Completed to='/dashboard/completedorders'>Completed Orders</Completed> */}
         </DBStatBarWrapper>
     );
 };

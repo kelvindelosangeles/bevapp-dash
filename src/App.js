@@ -22,6 +22,8 @@ import ChangeLog from "./Global/ChangeLog";
 import Task2 from "./Global/Tasks/Task2";
 import Task1 from "./Global/Tasks/Task1";
 import Test from "./test/Test";
+import CustomersToReachOutTo from "./test/Reports/CustomersToReachOutTo";
+import BeverageReport from "./test/Reports/BeverageReport";
 
 const App = (props) => {
     const toggleChangeLog = () => {
@@ -42,6 +44,8 @@ const App = (props) => {
                     <Route path='/task1' component={Task1} />
                     <Route path='/task2' component={Task2} />
                     <Route path='/test' component={Test} />
+                    {/* <Route path='/report1' component={CustomersToReachOutTo} /> */}
+                    {/* <Route path='/report2' component={BeverageReport} /> */}
                 </Switch>
                 <Dialog
                     open={open}
@@ -78,6 +82,7 @@ export default compose(
         };
     }),
     firestoreConnect(() => {
-        return [{ collection: "inventory" }, { collection: "orders", doc: "orders" }, { collection: "store" }];
+        // return [{ collection: "inventory" }, { collection: "orders", doc: "orders" }, { collection: "store" }];
+        return [{ collection: "inventory" }, { collection: "orders" }, { collection: "store" }];
     })
 )(App);

@@ -18,13 +18,13 @@ const AppHeader = ({ dispatch }) => {
         <AppHeaderWrapper>
             <MenuIcon onClick={expandHandler} />
             <TodaysDate>{theDate}</TodaysDate>
-            <User>
+            {/* <User>
                 <UserIcon />
                 <div>
                     <h6>Kelvin De Los Angeles</h6>
                     <p>Admin</p>
                 </div>
-            </User>
+            </User> */}
         </AppHeaderWrapper>
     );
 };
