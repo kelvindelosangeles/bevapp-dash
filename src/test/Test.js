@@ -4,24 +4,26 @@ import { useSelector } from "react-redux";
 import { Order as OrderModel } from "../Models/Order";
 import moment from "moment";
 import CaseIcon from "../Assets/Icons/CaseIcon";
+import NewOrders from "../Applications/Dashboard/Routes/NewOrders";
+import { useState } from "react";
 
-const orderDateID = "202006231";
-const Driver = "House";
+const orderDateID = "202006232";
+const Driver = "All Orders";
 
 const Test = () => {
     const orders = useSelector((state) => state.Firestore.data.orders);
     const ordersFiltered = Object.values(orders[orderDateID]).filter((x) => {
         return (
-            x.customer.address.includes("1517") ||
-            x.customer.address.includes("1230") ||
-            x.customer.address.includes("57") ||
-            x.customer.address.includes("840") ||
-            x.customer.address.includes("3611") ||
-            x.customer.address.includes("1465") ||
-            x.customer.address.includes("934") ||
-            x.customer.address.includes("574") ||
-            x.customer.address.includes("614") ||
-            x.customer.address.includes("3661")
+            // x.customer.address.includes("1517") ||
+            // x.customer.address.includes("1230") ||
+            // x.customer.address.includes("57") ||
+            // x.customer.address.includes("840") ||
+            // x.customer.address.includes("3611") ||
+            // x.customer.address.includes("1465") ||
+            // x.customer.address.includes("934") ||
+            // x.customer.address.includes("574") ||
+            // x.customer.address.includes("614") ||
+            x.customer.address.includes("")
         );
     });
 
@@ -61,7 +63,7 @@ const Test = () => {
                     Driver: <span>{Driver}</span>
                 </p>
                 <p>Payment Summary</p>
-                <p className='date'>{moment("06/01/2020").format("ddd, MMM Do YYYY")}</p>
+                <p className='date'>{moment("06/02/2020").format("ddd, MMM Do YYYY")}</p>
             </div>
             <div className='grid'>
                 <div className='item head'>
