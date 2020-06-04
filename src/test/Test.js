@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import { Order as OrderModel } from "../Models/Order";
 import moment from "moment";
 import CaseIcon from "../Assets/Icons/CaseIcon";
-import NewOrders from "../Applications/Dashboard/Routes/NewOrders";
 import { useState } from "react";
 
 const orderDateID = "202006232";

@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import "./App.css";
 import { Route, Switch } from "react-router-dom";
 import styled from "styled-components";
-import "./App.css";
 
-import AppHeader from "./Global/AppHeader/AppHeader";
 import Sidebar from "./Global/Sidebar/Sidebar";
 import Dashboard from "./Applications/Dashboard/Dashboard";
 import RapidOrder from "./Applications/Rapid Order/RapidOrder";
@@ -24,6 +22,7 @@ import Task1 from "./Global/Tasks/Task1";
 import Test from "./test/Test";
 import CustomersToReachOutTo from "./test/Reports/CustomersToReachOutTo";
 import BeverageReport from "./test/Reports/BeverageReport";
+import { Colors } from "./Constants/Colors";
 
 const App = (props) => {
     const toggleChangeLog = () => {
@@ -35,7 +34,6 @@ const App = (props) => {
         <SnackbarProvider maxSnack={3}>
             <AppWrapper>
                 <Sidebar />
-                <AppHeader />
                 <Switch>
                     <Route path='/dashboard' component={Dashboard} />
                     <Route path='/rapidorder' component={RapidOrder} />
@@ -66,11 +64,9 @@ const AppWrapper = styled.div`
     height: calc(var(--vh, 1vh) * 100);
     width: 100vw;
     display: grid;
-    grid-template-columns: auto 1fr;
-    grid-template-rows: auto 1fr;
-    grid-template-areas:
-        "sidebar appheader"
-        "sidebar app";
+    grid-template-columns: min-content 1fr;
+    grid-template-areas: "sidebar app";
+    background-color: ${Colors.navy};
 `;
 
 export default compose(

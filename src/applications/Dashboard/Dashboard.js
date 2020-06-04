@@ -1,22 +1,20 @@
 import React from "react";
-import { connect } from "react-redux";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import styled from "styled-components";
 
-import NewOrders from "./Routes/NewOrders";
-import CompletedOrders from "./Routes/CompletedOrders";
+import DBOrders from "./Routes/DBOrders";
+import DBRoutes from "./Routes/DBRoutes";
+import DBCompletedOrders from "./Routes/DBCompletedOrders.js";
 
 const Dashboard = () => {
-  return (
-    <Switch>
-      <Route exact path="/dashboard/" component={NewOrders} />
-      <Route path="/dashboard/completedorders" component={CompletedOrders} />
-    </Switch>
-  );
+    return (
+        <Switch>
+            {/* <Redirect from='/dashboard/' to='/dashboard' /> */}
+            <Route exact path='/dashboard/' component={DBOrders} />
+            <Route path='/dashboard/Orders' component={DBRoutes} />
+            <Route path='/dashboard/CompletedOrders' component={DBCompletedOrders} />
+        </Switch>
+    );
 };
 
-export default connect(state => {
-  return {
-    activeOrder: state.DashboardState.activeOrder
-  };
-})(Dashboard);
+export default Dashboard;

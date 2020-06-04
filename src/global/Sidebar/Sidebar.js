@@ -1,6 +1,6 @@
 import React from "react";
-
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 
 import { Colors } from "../../Constants/Colors";
@@ -10,116 +10,131 @@ import BoltIcon from "@material-ui/icons/OfflineBolt";
 import StoreIcon from "@material-ui/icons/Store";
 import SpePricingIcon from "@material-ui/icons/MoneyOff";
 import SignoutIcon from "@material-ui/icons/ExitToApp";
-import Drawer from "@material-ui/core/Drawer";
-import TestIcon from "@material-ui/icons/TerrainRounded";
 import TaskIcon from "@material-ui/icons/DoneAllRounded";
-import { useSelector, connect } from "react-redux";
+import moment from "moment";
 
-const Sidebar = ({ dispatch }) => {
+const Sidebar = () => {
     const open = useSelector((state) => state.GlobalState.drawerOpen);
-    const sidebarWidth = open ? "208px" : "0px";
-    const toggleChangeLog = () => {
-        dispatch({ type: "TOGGLE_CHANGE_LOG" });
-    };
+    const dispatch = useDispatch();
+    const toggleChangeLog = () => {};
     return (
-        <Drawer anchor='left' open={open} variant='persistent' style={{ gridArea: "sidebar", width: sidebarWidth }}>
-            <Container>
-                <AppTitle onClick={toggleChangeLog}>
-                    <h3>Bevapp Dash</h3>
-                    <p>v 1.1.4 beta</p>
-                </AppTitle>
+        <Container>
+            <div className='heading' onClick={() => dispatch({ type: "TOGGLE_CHANGE_LOG" })}>
+                <h3>Bevapp Dash</h3>
+                <h6>{moment().format("dddd, MMM Do, YYYY")}</h6>
+            </div>
 
-                <NavWrapper>
-                    <NavLink to='/dashboard'>
+            <div className='nav-links'>
+                <NavLink className='nav-group' to='/dashboard'>
+                    <div className='header'>
                         <DashboardIcon /> <p>Dashboard</p>
-                    </NavLink>
-                    <NavLink to='/rapidorder'>
+                    </div>
+                    <div className='sublinks'>
+                        <Link to='/dashboard'>Orders</Link>
+                        <Link to='#'>Routes</Link>
+                        <Link to='#'>Completed Orders</Link>
+                    </div>
+                </NavLink>
+                <NavLink className='nav-group' to='/rapidorder'>
+                    <div className='header'>
                         <BoltIcon /> <p>Rapid Order</p>
-                    </NavLink>
-                    <NavLink to='/store'>
+                    </div>
+                </NavLink>
+                <NavLink className='nav-group' to='/store'>
+                    <div className='header'>
                         <StoreIcon /> <p>Store</p>
-                    </NavLink>
-                    <NavLink to='/specialpricing'>
+                    </div>
+                </NavLink>
+                <NavLink className='nav-group' to='/specialpricing'>
+                    <div className='header'>
                         <SpePricingIcon /> <p>Special Pricing</p>
-                    </NavLink>
-                    <NavLink to='/task1'>
+                    </div>
+                </NavLink>
+                <NavLink className='nav-group' to='/task1'>
+                    <div className='header'>
                         <TaskIcon /> <p>Task</p>
-                    </NavLink>
-                    {/* <NavLink to='/task2'>
-                        <TaskIcon /> <p>Task 2</p>
-                    </NavLink> */}
-                </NavWrapper>
+                    </div>
+                </NavLink>
+            </div>
 
-                <Signout onClick={() => console.log("logged out")}>
-                    <p>Signout</p>
-                    <SignoutIcon />
-                </Signout>
-            </Container>
-        </Drawer>
+            <div className='logout-wrapper'>
+                <SignoutIcon />
+                <p>Logout</p>
+            </div>
+        </Container>
     );
 };
 
 const Container = styled.div`
-    /* grid-area: sidebar; */
-    background-color: ${Colors.red};
-    height: 100%;
-    padding: 80px 24px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-`;
-const AppTitle = styled.div`
-    display: flex;
-    align-items: flex-end;
-    margin-bottom: 160px;
-    cursor: pointer;
-    h3,
-    p {
-        font-weight: 700;
+    grid-area: sidebar;
+    display: grid;
+    grid-template-rows: min-content min-content 1fr;
+    align-content: flex-start;
+    background-color: transparent;
+    padding: 110px 40px 32px 24px;
+    .heading {
         color: ${Colors.white};
-        font-size: 18px;
+        margin-bottom: 94px;
+        cursor: pointer;
+        h3 {
+            white-space: nowrap;
+            font-weight: 800;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+        h6 {
+            font-weight: 700;
+            font-size: 12px;
+        }
     }
-
-    p {
-        font-size: 8px;
-        margin-left: 8px;
-        margin-bottom: 4px;
-        white-space: nowrap;
-        font-size: 8px;
+    .nav-links {
+        display: grid;
+        grid-row-gap: 32px;
+        p,
+        a {
+            color: ${Colors.white}!important;
+            :hover {
+                color: ${Colors.yellow}!important;
+            }
+        }
+        a.nav-group {
+            .header {
+                display: flex;
+            }
+            svg {
+                grid-area: icon;
+                margin-right: 16px;
+            }
+            p {
+                grid-area: main;
+                white-space: nowrap;
+                font-weight: 700;
+            }
+            .sublinks {
+                margin-top: 16px;
+                margin-left: 56px;
+                grid-area: sub;
+                display: grid;
+                grid-row-gap: 16px;
+                white-space: nowrap;
+                a {
+                    color: ${Colors.white};
+                }
+            }
+        }
     }
-`;
-const NavWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    a {
-        font-weight: 600;
+    .logout-wrapper {
+        align-self: flex-end;
         display: flex;
         align-items: center;
-        margin-bottom: 32px;
-        cursor: pointer;
-        text-decoration: none;
-        color: ${Colors.white};
-    }
-    svg {
-        margin-right: 16px;
-    }
-    p {
-        font-size: 14;
-    }
-`;
-const Signout = styled.div`
-    font-weight: 600;
-    color: ${Colors.white};
-    font-size: 14;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    justify-content: left;
-    p {
-        margin-right: 16px;
+        p {
+            color: ${Colors.white};
+        }
+        svg {
+            margin-right: 16px;
+            color: ${Colors.white};
+        }
     }
 `;
 
-export default connect()(Sidebar);
+export default Sidebar;

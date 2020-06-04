@@ -144,20 +144,6 @@ const DBPreview = ({ activeOrder, dispatch, firestore, orders, history }) => {
             : startEditingOrder();
     };
 
-    // useEffect(() => {
-    //     firestore
-    //         .delete({
-    //             collection: "orders",
-    //             doc: "order",
-    //         })
-    //         .then(() => {
-    //             console.log("delete");
-    //         })
-    //         .catch((err) => {
-    //             console.log(err);
-    //         });
-    // }, []);
-
     return (
         <Container>
             <div className='wrapper'>

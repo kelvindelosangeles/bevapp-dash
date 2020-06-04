@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { StyleSheetManager } from "styled-components";
+import { StyleSheetManager, createGlobalStyle } from "styled-components";
 
 import { HashRouter as Router, Route } from "react-router-dom";
 import { composeWithDevTools } from "redux-devtools-extension";
@@ -83,11 +83,23 @@ window.addEventListener("resize", () => {
     document.documentElement.style.setProperty("--vh", `${vh}px`);
 });
 
+const GlobalStyle = createGlobalStyle`
+
+p, h1,h2,h3,h4,h5,h6{
+    margin: 0;
+    padding: 0;
+}
+a{
+    text-decoration: none;
+}
+`;
+
 ReactDOM.render(
     <StyleSheetManager disableVendorPrefixes>
         <Router>
             <Provider store={store}>
                 <ReactReduxFirebaseProvider {...rrfProps}>
+                    <GlobalStyle />
                     <App />
                 </ReactReduxFirebaseProvider>
             </Provider>
