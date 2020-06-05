@@ -9,8 +9,7 @@ import DBCompletedOrders from "./Routes/DBCompletedOrders.js";
 const Dashboard = () => {
     return (
         <Switch>
-            {/* <Redirect from='/dashboard/' to='/dashboard' /> */}
-            <Route exact path='/dashboard/' component={DBOrders} />
+            <Route exact path='/dashboard' component={DBOrders} />
             <Route path='/dashboard/Orders' component={DBRoutes} />
             <Route path='/dashboard/CompletedOrders' component={DBCompletedOrders} />
         </Switch>
