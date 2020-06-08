@@ -9,11 +9,11 @@ import OrderPreview from "./OrderPreview";
 
 const Order = ({ order }) => {
     const [open, setOpen] = useState(false);
-
+    const { customer, details, cart } = order;
     const toggle = () => {
         setOpen(!open);
     };
-    const { customer, details, cart } = order;
+
     return (
         <Fragment>
             <Component onClick={() => setOpen(true)}>

@@ -1,6 +1,10 @@
-import React from "react";
 import "./App.css";
+import React from "react";
+import { compose } from "redux";
 import { Route, Switch } from "react-router-dom";
+import { connect, useSelector } from "react-redux";
+import { SnackbarProvider } from "notistack";
+import { firestoreConnect, isLoaded } from "react-redux-firebase";
 import styled from "styled-components";
 
 import Sidebar from "./Global/Sidebar/Sidebar";
@@ -9,11 +13,7 @@ import RapidOrder from "./Applications/Rapid Order/RapidOrder";
 import Store from "./Applications/Store/Store";
 import SpecialPricing from "./Applications/Special Pricing/SpecialPricing";
 
-import { firestoreConnect, isLoaded } from "react-redux-firebase";
-import { compose } from "redux";
-import { connect, useSelector } from "react-redux";
 import Dialog from "@material-ui/core/Dialog";
-import { SnackbarProvider } from "notistack";
 
 import Spinner from "./Global/Spinner/Spinner";
 import ChangeLog from "./Global/ChangeLog";
@@ -39,8 +39,8 @@ const App = (props) => {
                     <Route path='/store' component={Store} />
                     <Route path='/specialpricing' component={SpecialPricing} />
                     <Route path='/task1' component={Task1} />
+                    <Route path='/test' component={Test} />
                     {/* <Route path='/task2' component={Task2} />
-                    <Route path='/test' component={Test} /> */}
                     {/* <Route path='/report1' component={CustomersToReachOutTo} /> */}
                     {/* <Route path='/report2' component={BeverageReport} /> */}
                 </Switch>
@@ -77,7 +77,7 @@ export default compose(
         };
     }),
     firestoreConnect(() => {
-        return [{ collection: "inventory" }, { collection: "orders", doc: "orders" }, { collection: "store" }];
-        // return [{ collection: "inventory" }, { collection: "orders" }, { collection: "store" }];
+        // return [{ collection: "inventory" }, { collection: "orders", doc: "orders" }, { collection: "store" }];
+        return [{ collection: "inventory" }, { collection: "orders" }, { collection: "store" }];
     })
 )(App);

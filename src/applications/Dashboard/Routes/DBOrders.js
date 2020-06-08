@@ -78,7 +78,6 @@ const OrderHeader = styled.div`
         color: #999999;
     }
 `;
-
 const OrdersContainer = styled.div`
     position: relative;
     .scroll-wrapper {

@@ -6,6 +6,8 @@ const initialState = {
 
 const DashboardReducer = (state = initialState, action) => {
     switch (action.type) {
+        case "TEST_ACTION":
+            console.log(action.payload);
         case "SUBMIT_ORDER":
             return {
                 ...state,
@@ -25,15 +27,6 @@ const DashboardReducer = (state = initialState, action) => {
                 activeOrder: null,
             };
         case "DELETE_ORDER":
-            // const { [action.orderID]: removed, ...remainingOrders } = state.newOrders;
-            // return {
-            //   ...state,
-            //   activeOrder: null,
-            //   newOrders: {
-            //     ...remainingOrders
-            //   }
-            // };
-
             return {
                 ...state,
                 activeOrder: null,

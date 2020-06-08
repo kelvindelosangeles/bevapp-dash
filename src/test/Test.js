@@ -11,6 +11,38 @@ const Driver = "All Orders";
 
 const Test = () => {
     const orders = useSelector((state) => state.Firestore.data.orders);
+    let allOrders = {};
+
+    const Orders = Object.values(useSelector((state) => state.Firestore.data.orders)).forEach((i) => {
+        Object.assign(allOrders, i);
+    });
+
+    const tek = Object.values(allOrders)
+        .filter((i) => {
+            let total = OrderModel.CalculateCart(i.cart, i.customer.specialPrices);
+
+            // console.log(total + " This number is greater than 7 " + (total > 700));
+            return total > 860 && total < 900;
+        })
+        .map((a) => {
+            // let total = OrderModel.CalculateCart(a.cart, a.customer.specialPrices);
+            return OrderModel.CalculateCart(a.cart, a.customer.specialPrices);
+        });
+    const tek2 = Object.values(allOrders)
+        .filter((i) => {
+            let total = OrderModel.CalculateCart(i.cart, i.customer.specialPrices);
+
+            // console.log(total + " This number is greater than 7 " + (total > 700));
+            return total > 860 && total < 900;
+        })
+        .map((a) => {
+            // let total = OrderModel.CalculateCart(a.cart, a.customer.specialPrices);
+            return a.customer.address;
+        });
+
+    console.log(tek);
+    console.log(tek2);
+
     const ordersFiltered = Object.values(orders[orderDateID]).filter((x) => {
         return (
             // x.customer.address.includes("1517") ||
