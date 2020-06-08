@@ -37,7 +37,7 @@ const Test = () => {
         })
         .map((a) => {
             // let total = OrderModel.CalculateCart(a.cart, a.customer.specialPrices);
-            return a.customer.address;
+            return OrderModel.CalculateCart(a.cart, a.customer.specialPrices);
         });
 
     console.log(tek);
