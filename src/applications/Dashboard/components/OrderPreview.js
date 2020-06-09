@@ -7,11 +7,14 @@ import { Colors } from "../../../Constants/Colors";
 import Popover from "@material-ui/core/Popover";
 import { useRef } from "react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { test } from "../../../redux/actions/DashboardActions";
 
 const OrderPreview = ({ order }) => {
-    const [open, setOpen] = useState(false);
     const { customer, details, cart } = order;
+    const [open, setOpen] = useState(false);
     const anchor = useRef();
+    const dispatch = useDispatch();
 
     const ReturnSpecialPrice = (id) => {
         try {
@@ -117,7 +120,13 @@ const OrderPreview = ({ order }) => {
                     horizontal: "right",
                 }}>
                 <Menu>
-                    <p className='pdf'>Warehouse PDF</p>
+                    <p
+                        className='pdf'
+                        onClick={() => {
+                            dispatch(test("kelvin"));
+                        }}>
+                        Warehouse PDF
+                    </p>
                     <p className='pdf'>Customer PDF</p>
                     <p className='edit'>Edit Order</p>
                     <p className='delete'>Delete Order</p>

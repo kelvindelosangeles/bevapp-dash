@@ -77,7 +77,7 @@ export default compose(
         };
     }),
     firestoreConnect(() => {
-        // return [{ collection: "inventory" }, { collection: "orders", doc: "orders" }, { collection: "store" }];
-        return [{ collection: "inventory" }, { collection: "orders" }, { collection: "store" }];
+        return [{ collection: "inventory" }, { collection: "orders", doc: "orders" }, { collection: "store" }];
+        // return [{ collection: "inventory" }, { collection: "orders" }, { collection: "store" }];
     })
 )(App);
