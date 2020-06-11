@@ -8,15 +8,15 @@ import CaseIcon from "../../../Assets/Icons/CaseIcon";
 import OrderPreview from "./OrderPreview";
 
 const Order = ({ order }) => {
-    const [open, setOpen] = useState(false);
+    const [orderPreviewOpen, setOrderPreviewOpen] = useState(false);
     const { customer, details, cart } = order;
     const toggle = () => {
-        setOpen(!open);
+        setOrderPreviewOpen(!orderPreviewOpen);
     };
 
     return (
         <Fragment>
-            <Component onClick={() => setOpen(true)}>
+            <Component onClick={() => setOrderPreviewOpen(true)}>
                 <div className='id'>
                     <p>{details.orderID.slice(7, 16)}</p>
                     <p className='time'>{moment(details.createdAt).format("MMM, Do LT")}</p>
@@ -28,8 +28,8 @@ const Order = ({ order }) => {
                 <p>$ {orderModel.CalculateCart(cart, customer.specialPrices)}</p>
                 <p>{details.status} New Order</p>
             </Component>
-            <Dialog open={open} onClose={toggle} scroll='paper' maxWidth={"90vw"}>
-                <OrderPreview order={order} />
+            <Dialog open={orderPreviewOpen} onClose={toggle} scroll='paper' maxWidth={"90vw"}>
+                <OrderPreview order={order} closeOrderPreview={() => setOrderPreviewOpen(false)} />
             </Dialog>
         </Fragment>
     );

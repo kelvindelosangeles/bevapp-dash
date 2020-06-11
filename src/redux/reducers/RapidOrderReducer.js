@@ -3,12 +3,12 @@ import store from "store";
 const initialState = {
     atcVisible: false,
     atcfVisible: false,
+    orderID: null,
     customer: null,
-    orderItem: {},
-    notes: "",
     cart: {},
-    // beta
-    editOrderID: null,
+    notes: "",
+    orderItem: {},
+    editMode: false,
 };
 
 const RapidOrderReducer = (state = initialState, action) => {
@@ -33,13 +33,14 @@ const RapidOrderReducer = (state = initialState, action) => {
                 atcfVisible: false,
                 orderItem: {},
             };
-        case "POPULATE_CACHE":
-            return {
-                ...state,
-                customer: action.payload.customer,
-                cart: action.payload.cart,
-                editOrderID: action.payload.editOrderID,
-            };
+        // case "POPULATE_CACHE":
+        //     return {
+        //         ...state,
+        //         customer: action.payload.customer,
+        //         cart: action.payload.cart,
+        //         editOrderID: action.payload.editOrderID,
+        //     };
+        // TODO: Remove this action from rapid order
         case "ADD_TO_CART":
             store.set("cart", { ...state.cart, [action.item.id]: action.item });
             return {
@@ -104,8 +105,20 @@ const RapidOrderReducer = (state = initialState, action) => {
                 cart: action.payload.cart,
                 editOrderID: action.payload.orderID,
             };
-        // case "TEST_ACTION":
-        //     return state;
+        // ===============
+        // V2 Actions
+        // remove all actions above
+        // ===============
+        case "EDIT_ORDER":
+            // recieves the order to edit as a payload
+            const { customer, details, cart } = action.payload;
+            return {
+                customer,
+                notes: details.notes,
+                cart,
+                orderID: details.orderID,
+                editMode: true,
+            };
         default:
             return state;
     }

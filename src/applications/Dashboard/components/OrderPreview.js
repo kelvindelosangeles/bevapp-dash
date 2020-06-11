@@ -7,14 +7,22 @@ import { Colors } from "../../../Constants/Colors";
 import Popover from "@material-ui/core/Popover";
 import { useRef } from "react";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { test } from "../../../redux/actions/DashboardActions";
+import { useDispatch, useSelector } from "react-redux";
+import { editOrder, deleteOrder } from "../../../redux/actions/DashboardActions";
+import { useFirestore } from "react-redux-firebase";
+import { withRouter } from "react-router-dom";
+import CustomerPDF from "../../../Global/PrintTemplates/CustomerPDF";
+import WarehousePDF from "../../../Global/PrintTemplates/WarehousePDF";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 
-const OrderPreview = ({ order }) => {
+const OrderPreview = ({ order, history, closeOrderPreview }) => {
+    // close order preview comes from the parent so that we can close the entire menu from within the action creators
     const { customer, details, cart } = order;
     const [open, setOpen] = useState(false);
     const anchor = useRef();
     const dispatch = useDispatch();
+    const firestore = useFirestore();
+    const beverages = useSelector((state) => state.Firestore.data.inventory.beverages);
 
     const ReturnSpecialPrice = (id) => {
         try {
@@ -120,16 +128,24 @@ const OrderPreview = ({ order }) => {
                     horizontal: "right",
                 }}>
                 <Menu>
-                    <p
-                        className='pdf'
-                        onClick={() => {
-                            dispatch(test("kelvin"));
-                        }}>
-                        Warehouse PDF
+                    <p className='pdf'>
+                        <PDFDownloadLink
+                            document={<WarehousePDF order={order} beverages={beverages} />}
+                            fileName={`${order.customer.address}-WH.pdf`}>
+                            {({ loading }) => (loading ? "Loading document..." : "Warehouse PDF")}
+                        </PDFDownloadLink>
                     </p>
-                    <p className='pdf'>Customer PDF</p>
-                    <p className='edit'>Edit Order</p>
-                    <p className='delete'>Delete Order</p>
+                    <p className='pdf'>
+                        <PDFDownloadLink document={<CustomerPDF order={order} />} fileName={`${order.customer.address}-CX.pdf`}>
+                            {({ loading }) => (loading ? "Loading document..." : "Customer PDF")}
+                        </PDFDownloadLink>
+                    </p>
+                    <p className='edit' onClick={() => dispatch(editOrder(order, history))}>
+                        Edit Order
+                    </p>
+                    <p className='delete' onClick={() => dispatch(deleteOrder(order, firestore, closeOrderPreview))}>
+                        Delete Order
+                    </p>
                 </Menu>
             </Popover>
         </Component>
@@ -248,9 +264,14 @@ const Menu = styled.div`
         cursor: pointer;
     }
     .pdf {
+        a {
+            color: ${Colors.black};
+        }
         :hover {
             background-color: ${Colors.black};
-            color: ${Colors.white};
+            a {
+                color: ${Colors.white};
+            }
         }
     }
     .edit {
@@ -265,4 +286,6 @@ const Menu = styled.div`
         }
     }
 `;
-export default OrderPreview;
+export default withRouter(OrderPreview);
+
+// TODO: refactor this code and split areas into individual components
