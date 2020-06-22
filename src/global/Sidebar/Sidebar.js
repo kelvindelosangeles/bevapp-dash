@@ -31,7 +31,7 @@ const Sidebar = () => {
                     </div>
                     <div className='sublinks'>
                         <Link to='/dashboard'>Orders</Link>
-                        <Link to='#'>Routes</Link>
+                        <Link to='/dashboard/routes'>Routes</Link>
                         <Link to='#'>Completed Orders</Link>
                     </div>
                 </NavLink>
