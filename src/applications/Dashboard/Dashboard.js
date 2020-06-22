@@ -4,13 +4,13 @@ import styled from "styled-components";
 import DBCompletedOrders from "./Sub Applications/DBCompletedOrders";
 
 import DBOrders from "./Sub Applications/DBOrders";
-import Routes from "./Sub Applications/Routes/Routes";
+import ActiveRoutes from "./Sub Applications/Routes/ActiveRoutes";
 
 const Dashboard = () => {
     return (
         <Switch>
             <Route exact path='/dashboard' component={DBOrders} />
-            <Route path='/dashboard/routes' component={Routes} />
+            <Route path='/dashboard/routes' component={ActiveRoutes} />
             <Route path='/dashboard/CompletedOrders' component={DBCompletedOrders} />
         </Switch>
     );

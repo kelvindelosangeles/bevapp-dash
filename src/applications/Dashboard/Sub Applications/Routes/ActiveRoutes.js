@@ -1,17 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Colors } from "../../../../Constants/Colors";
 import SingleRoute from "./components/SingleRoute";
 import Dialog from "@material-ui/core/Dialog";
-import { useState } from "react";
 import CreateRoute from "./components/CreateRoute";
-const Routes = () => {
+import { useSelector } from "react-redux";
+const ActiveRoutes = () => {
     const [open, toggle] = useState(false);
+    const routes = useSelector((state) => state.Firestore.data.routes.routes);
+
     return (
         <Component>
-            <ControlCenter>
+            <Actions>
                 <button onClick={() => toggle(true)}>Create a Route</button>
-            </ControlCenter>
+            </Actions>
             <RoutesContainer>
                 <div className='heading'>Active Routes</div>
                 <div className='item header'>
@@ -23,9 +25,9 @@ const Routes = () => {
                 </div>
                 <div className='grid'>
                     <div className='wrapper'>
-                        <SingleRoute />
-                        <SingleRoute />
-                        <SingleRoute />
+                        {Object.values(routes).map((x) => {
+                            return <SingleRoute data={x} />;
+                        })}
                     </div>
                 </div>
             </RoutesContainer>
@@ -41,7 +43,7 @@ const Component = styled.div`
     grid-template-rows: min-content 1fr;
 `;
 
-const ControlCenter = styled.div`
+const Actions = styled.div`
     padding: 32px;
     display: flex;
     justify-content: flex-end;
@@ -94,4 +96,4 @@ const RoutesContainer = styled.div`
     }
 `;
 
-export default Routes;
+export default ActiveRoutes;

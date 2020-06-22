@@ -29,7 +29,7 @@ export const deleteOrder = (order, firestore, closeOrderPreview) => {
                     firestore
                         .set(
                             {
-                                collection: "orders",
+                                collection: "ordersv2",
                                 doc: "orders",
                             },
                             rest
@@ -52,7 +52,6 @@ export const deleteOrder = (order, firestore, closeOrderPreview) => {
             deleteFromFirestore();
     };
 };
-
 export const newRoute = () => {
     return (dispatch, getState) => {};
 };

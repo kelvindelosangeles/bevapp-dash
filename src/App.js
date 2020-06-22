@@ -29,7 +29,7 @@ const App = (props) => {
     };
     const open = useSelector((state) => state.GlobalState.changeLogOpen);
 
-    return !isLoaded(props.inventory) || !isLoaded(props.orders) || !isLoaded(props.store) ? null : ( // <Spinner />
+    return !isLoaded(props.inventory) || !isLoaded(props.orders) || !isLoaded(props.store) || !isLoaded(props.routes) ? null : ( // <Spinner />
         <SnackbarProvider maxSnack={3}>
             <AppWrapper>
                 <Sidebar />
@@ -74,10 +74,11 @@ export default compose(
             inventory: state.Firestore.data.inventory,
             orders: state.Firestore.data.ordersv2,
             store: state.Firestore.data.store,
+            routes: state.Firestore.data.routes,
         };
     }),
     firestoreConnect(() => {
-        return [{ collection: "inventory" }, { collection: "ordersv2", doc: "orders" }, { collection: "store" }];
+        return [{ collection: "inventory" }, { collection: "ordersv2", doc: "orders" }, { collection: "store" }, { collection: "routes" }];
         // return [{ collection: "inventory" }, { collection: "orders" }, { collection: "store" }];
     })
 )(App);

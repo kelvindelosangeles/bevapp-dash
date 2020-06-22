@@ -7,6 +7,8 @@ import MiniOrder2 from "../../../components/MiniOrder2";
 import { Colors } from "../../../../../Constants/Colors";
 import { useSelector, useDispatch } from "react-redux";
 import { useFirestore } from "react-redux-firebase";
+import moment from "moment";
+import shortid from "shortid";
 
 const CreateRoute = () => {
     const [driver, setDriver] = useState(null);
@@ -43,10 +45,32 @@ const CreateRoute = () => {
     };
 
     const submitHandler = () => {
-        // Object.values(routeOrders).length < 1
-        //     ? window.alert("A route must contain at least 1 order")
-        //     : console.log({ routeid: { driver, orders: routeOrders } });
-        console.log({ routeid: { driver, orders: routeOrders } });
+        let routeID = driver.firstName.slice(0, 3) + driver.lastName.slice(0, 1) + shortid.generate();
+        let newRoute = {
+            [routeID]: { driver, orders: routeOrders, details: { createdAt: new Date().toLocaleString("en-US", { timeZone: "America/New_York" }) } },
+        };
+
+        const createARouteFunction = () => {
+            firestore
+                .update(
+                    {
+                        collection: "routes",
+                        doc: "routes",
+                    },
+                    newRoute
+                )
+                .then(() => {
+                    console.log("successfully created a route");
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        };
+
+        Object.values(routeOrders).length < 1 ? window.alert("A route must contain at least 1 order") : createARouteFunction();
+
+        //  TODO: Very Important data setup
+        // moment(`${activeOrder.details.createdAt} 2020`).format("YYYYMMwE")
     };
 
     return (
