@@ -9,45 +9,54 @@ import { useSelector, useDispatch } from "react-redux";
 import { useFirestore } from "react-redux-firebase";
 import moment from "moment";
 import shortid from "shortid";
+import { withRouter } from "react-router-dom";
 
-const CreateRoute = () => {
+const CreateRoute = ({ close }) => {
     const [driver, setDriver] = useState(null);
-    const [routeOrders, setRouteOrders] = useState({});
+    const [routeOrders, setRouteOrders] = useState([]);
     const orders = useSelector((state) => state.Firestore.data.ordersv2.orders);
-    const dispatch = useDispatch();
     const firestore = useFirestore();
+    // BETA
+    const ar = useSelector((state) => state.Firestore.data.routes.routes);
+    const allRouteOrders = Object.values(ar)
+        .map((a) => {
+            return a.orders;
+        })
+        .flat();
 
-    const changeHandler = (e, value) => {
+    const driverChangeHandler = (e, value) => {
         setDriver(value);
     };
-
-    const OrderClickHandler = (order) => {
-        const orderID = order.details.orderID;
-        const { [orderID]: deleted, ...rest } = routeOrders;
-        // creates a Conditional Toggle
-        return routeOrders.hasOwnProperty(order.details.orderID)
-            ? // Check if the route orders contains the order clicked on
-              setRouteOrders(rest)
-            : // if it contains remove it using destructuring and update it with the new orders list
-              setRouteOrders({ ...routeOrders, [order.details.orderID]: order });
-        // if not, set add the clicked on route to the list
+    const toggleOrder = (order) => {
+        let orderID = order.details.orderID;
+        let doesOrderExist = routeOrders.indexOf(orderID);
+        const removeFromArray = () => {
+            return routeOrders.filter((a) => {
+                return a !== orderID;
+            });
+        };
+        const addToArray = () => {
+            return routeOrders.concat(orderID);
+        };
+        return doesOrderExist === -1 ? setRouteOrders(addToArray()) : setRouteOrders(removeFromArray());
     };
-
     const availableOrders = () => {
         return Object.values(orders)
             .filter((f) => {
-                return f;
-                // TODO: Add a filter to allow only unassgined orders
+                return allRouteOrders.indexOf(f.details.orderID) < 0;
             })
             .map((i) => {
-                return <MiniOrder2 data={i} onClick={() => OrderClickHandler(i)} active={routeOrders.hasOwnProperty(i.details.orderID)} />;
+                return <MiniOrder2 data={i} onClick={() => toggleOrder(i)} active={routeOrders.indexOf(i.details.orderID) > -1} />;
             });
     };
-
     const submitHandler = () => {
         let routeID = driver.firstName.slice(0, 3) + driver.lastName.slice(0, 1) + shortid.generate();
         let newRoute = {
-            [routeID]: { driver, orders: routeOrders, details: { createdAt: new Date().toLocaleString("en-US", { timeZone: "America/New_York" }) } },
+            [routeID]: {
+                driver,
+                orders: routeOrders,
+                details: { createdAt: new Date().toLocaleString("en-US", { timeZone: "America/New_York" }), routeID },
+            },
         };
 
         const createARouteFunction = () => {
@@ -61,6 +70,7 @@ const CreateRoute = () => {
                 )
                 .then(() => {
                     console.log("successfully created a route");
+                    close();
                 })
                 .catch((err) => {
                     console.log(err);
@@ -80,7 +90,7 @@ const CreateRoute = () => {
                 options={Drivers}
                 getOptionLabel={(option) => option.firstName}
                 renderInput={(params) => <TextField {...params} label='Select a Driver' variant='standard' />}
-                onChange={changeHandler}
+                onChange={driverChangeHandler}
                 value={driver}
                 autoComplete={false}
             />
@@ -143,4 +153,4 @@ const Body = styled.div`
     }
 `;
 
-export default CreateRoute;
+export default withRouter(CreateRoute);

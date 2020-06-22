@@ -32,7 +32,7 @@ const ActiveRoutes = () => {
                 </div>
             </RoutesContainer>
             <Dialog open={open} scroll='paper' onClose={() => toggle(false)} fullWidth>
-                <CreateRoute />
+                <CreateRoute close={() => toggle(false)} />
             </Dialog>
         </Component>
     );

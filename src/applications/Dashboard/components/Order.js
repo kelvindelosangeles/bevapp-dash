@@ -11,23 +11,15 @@ import { useSelector } from "react-redux";
 const Order = ({ order }) => {
     const [orderPreviewOpen, setOrderPreviewOpen] = useState(false);
     const { customer, details, cart } = order;
-    const routes = useSelector((state) => state.Firestore.data.routes.routes);
-    const allRoutes = () => {
-        let obj = {};
-        Object.values(routes)
-            .map((x) => {
-                return x.orders;
-            })
-            .forEach((y) => {
-                Object.assign(obj, y);
-            });
-        return obj;
-    };
+    // BETA
+    const ar = useSelector((state) => state.Firestore.data.routes.routes);
+    const allRouteOrders = Object.values(ar)
+        .map((a) => {
+            return a.orders;
+        })
+        .flat();
 
-    const RouteCheck = () => {
-        // check if the route id of this order exists in a list of all orders inside of routes.
-        return allRoutes().hasOwnProperty(details.orderID);
-    };
+    const status = allRouteOrders.indexOf(details.orderID) < 0 ? "New Order" : "Assigned";
 
     const toggle = () => {
         setOrderPreviewOpen(!orderPreviewOpen);
@@ -45,7 +37,7 @@ const Order = ({ order }) => {
                     <CaseIcon /> {orderModel.CalculateCases(cart)}
                 </p>
                 <p>$ {orderModel.CalculateCart(cart, customer.specialPrices)}</p>
-                {/* <p>{RouteCheck() ? allRoutes()[details.orderID].driver.firstName : "New Order"}</p> */}
+                <p>{status}</p>
             </Component>
             <Dialog open={orderPreviewOpen} onClose={toggle} scroll='paper' maxWidth={"90vw"}>
                 <OrderPreview order={order} closeOrderPreview={() => setOrderPreviewOpen(false)} />

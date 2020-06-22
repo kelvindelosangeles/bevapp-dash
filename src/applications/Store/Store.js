@@ -12,6 +12,7 @@ import Home from "./Store Routes/Home";
 import AddBeverage from "./Store Routes/AddBeverage";
 import EditBeverage from "./Store Routes/EditBeverage";
 import AddCustomer from "./Store Routes/AddCustomer";
+import { Colors } from "../../Constants/Colors";
 
 const Store = ({ sidebarExpanded }) => {
     const [storeToggle, setStoreToggle] = useState(true);
@@ -40,6 +41,7 @@ const Store = ({ sidebarExpanded }) => {
 };
 
 const StoreWrapper = styled.div`
+    background-color: ${Colors.white};
     grid-area: app;
     display: grid;
     grid-template-columns: ${({ expand }) => (expand ? "1fr 390px" : "1fr 500px")};

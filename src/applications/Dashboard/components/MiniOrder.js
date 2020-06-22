@@ -2,18 +2,22 @@ import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../../Constants/Colors";
 import CaseIcon from "../../../Assets/Icons/CaseIcon";
-const Order = ({ style }) => {
+import { Order as orderModel } from "../../../Models/Order";
+import DragHandleIcon from "@material-ui/icons/DragHandleRounded";
+import moment from "moment";
+const Order = ({ order }) => {
+    console.log(order);
     return (
-        <Component style={{ ...style }}>
-            <p>icon</p>
+        <Component>
+            <DragHandleIcon />
             <div>
-                <p>352 West 116th St</p>
-                <p className='date'>Jun 22nd 8:00am</p>
+                <p className='address'>{order.customer.address}</p>
+                <p className='date'>{moment(order.details.createdAt).format("L")}</p>
             </div>
             <p className='cases'>
-                <CaseIcon /> 32
+                <CaseIcon /> {orderModel.CalculateCases(order.cart)}
             </p>
-            <p>$3430.23</p>
+            <p>${orderModel.CalculateCart(order.cart, order.customer.specialPrices)}</p>
         </Component>
     );
 };
@@ -23,6 +27,10 @@ const Component = styled.div`
     grid-column-gap: 16px;
     grid-template-columns: 10% 40% 25% 1fr;
     align-items: flex-start;
+    svg {
+        align-self: center;
+        cursor: pointer;
+    }
     p {
         font-size: 16px;
         font-weight: 500;
@@ -31,11 +39,15 @@ const Component = styled.div`
         font-size: 14px;
         color: ${Colors.greyText};
     }
+    .address {
+        text-transform: uppercase;
+    }
     .cases {
         display: flex;
         align-items: center;
         svg {
             margin-right: 8px;
+            cursor: unset;
         }
     }
 `;
