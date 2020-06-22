@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Drivers } from "../../../../../Assets/Data/Drivers";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
-import MiniOrder2 from "../../../Components/MiniOrder2";
+import MiniOrder2 from "../../../components/MiniOrder2";
 import { Colors } from "../../../../../Constants/Colors";
 import { useSelector, useDispatch } from "react-redux";
 import { useFirestore } from "react-redux-firebase";
@@ -43,9 +43,10 @@ const CreateRoute = () => {
     };
 
     const submitHandler = () => {
-        Object.values(routeOrders).length < 1
-            ? window.alert("A route must contain at least 1 order")
-            : console.log({ routeid: { driver, orders: routeOrders } });
+        // Object.values(routeOrders).length < 1
+        //     ? window.alert("A route must contain at least 1 order")
+        //     : console.log({ routeid: { driver, orders: routeOrders } });
+        console.log({ routeid: { driver, orders: routeOrders } });
     };
 
     return (

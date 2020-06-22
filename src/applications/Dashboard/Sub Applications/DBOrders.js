@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import Statbar from "../Components/Statbar";
+import Statbar from "../components/Statbar";
 import { connect, useSelector } from "react-redux";
 import { Colors } from "../../../Constants/Colors";
-import Order from "../Components/Order";
+import Order from "../components/Order";
 import moment from "moment";
 
 const DBOrders = ({ activeOrder, dispatch }) => {

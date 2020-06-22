@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { Colors } from "../../../../../Constants/Colors";
-import MiniOrder from "../../../Components/MiniOrder";
+import MiniOrder from "../../../components/MiniOrder";
 import { Popover } from "@material-ui/core";
 import OptionsIcon from "@material-ui/icons/BlurCircularRounded";
 
