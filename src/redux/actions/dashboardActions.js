@@ -13,7 +13,6 @@ export const editOrder = (order, history) => {
               }) && history.push("/rapidorder");
     };
 };
-
 export const deleteOrder = (order, firestore, closeOrderPreview) => {
     return (dispatch, getState) => {
         const { orderID } = order.details;
@@ -52,4 +51,8 @@ export const deleteOrder = (order, firestore, closeOrderPreview) => {
             window.confirm("This action is irreversible, Delete anyway?") &&
             deleteFromFirestore();
     };
+};
+
+export const newRoute = () => {
+    return (dispatch, getState) => {};
 };

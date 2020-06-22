@@ -31,6 +31,11 @@ const DashboardReducer = (state = initialState, action) => {
                 ...state,
                 activeOrder: null,
             };
+        case "CREATE_ROUTE":
+            console.log("Route created - Via Reducer");
+            return {
+                ...state,
+            };
         default:
             return state;
     }

@@ -73,7 +73,7 @@ const OrderPreview = ({ order, history, closeOrderPreview }) => {
                 <OrderDetails margin={parseFloat(CalcOrderMargin())}>
                     <section>
                         <p className='heading'>Cases</p>
-                        <p>47</p>
+                        <p>{orderModel.CalculateCases(cart)}</p>
                     </section>
                     <section>
                         <p className='heading'>Total Margin</p>

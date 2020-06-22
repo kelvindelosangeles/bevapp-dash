@@ -1,20 +1,51 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Drivers } from "../../../../../Assets/Data/Drivers";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
-import MiniOrder from "../../../Components/MiniOrder";
+import MiniOrder2 from "../../../Components/MiniOrder2";
 import { Colors } from "../../../../../Constants/Colors";
-import { Popover } from "@material-ui/core";
-import OptionsIcon from "@material-ui/icons/BlurCircularRounded";
+import { useSelector, useDispatch } from "react-redux";
+import { useFirestore } from "react-redux-firebase";
 
 const CreateRoute = () => {
     const [driver, setDriver] = useState(null);
-    const [open, setOpen] = useState(false);
+    const [routeOrders, setRouteOrders] = useState({});
+    const orders = useSelector((state) => state.Firestore.data.ordersv2.orders);
+    const dispatch = useDispatch();
+    const firestore = useFirestore();
 
-    const anchor = useRef();
     const changeHandler = (e, value) => {
         setDriver(value);
+    };
+
+    const OrderClickHandler = (order) => {
+        const orderID = order.details.orderID;
+        const { [orderID]: deleted, ...rest } = routeOrders;
+        // creates a Conditional Toggle
+        return routeOrders.hasOwnProperty(order.details.orderID)
+            ? // Check if the route orders contains the order clicked on
+              setRouteOrders(rest)
+            : // if it contains remove it using destructuring and update it with the new orders list
+              setRouteOrders({ ...routeOrders, [order.details.orderID]: order });
+        // if not, set add the clicked on route to the list
+    };
+
+    const availableOrders = () => {
+        return Object.values(orders)
+            .filter((f) => {
+                return f;
+                // TODO: Add a filter to allow only unassgined orders
+            })
+            .map((i) => {
+                return <MiniOrder2 data={i} onClick={() => OrderClickHandler(i)} active={routeOrders.hasOwnProperty(i.details.orderID)} />;
+            });
+    };
+
+    const submitHandler = () => {
+        Object.values(routeOrders).length < 1
+            ? window.alert("A route must contain at least 1 order")
+            : console.log({ routeid: { driver, orders: routeOrders } });
     };
 
     return (
@@ -32,32 +63,13 @@ const CreateRoute = () => {
                 <React.Fragment>
                     <Body>
                         <div className='subheading'>Add Orders to your Route</div>
-                        <MiniOrder style={{ cursor: "pointer" }} />
-                        <MiniOrder />
-                        <MiniOrder />
-                        <MiniOrder />
+                        {availableOrders()}
+                        <div className='actions'>
+                            <button onClick={submitHandler}>Create Route</button>
+                        </div>
                     </Body>
-                    <OptionsIcon id='options-icon' onClick={() => setOpen(true)} ref={anchor} />
                 </React.Fragment>
             )}
-            <Popover
-                open={open}
-                anchorEl={anchor.current}
-                onClose={() => setOpen(false)}
-                anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                }}
-                transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                }}>
-                <Menu>
-                    <p className='pdf'>pdf Link</p>
-                    <p className='edit'>Edit Order</p>
-                    <p className='delete'>Delete Order</p>
-                </Menu>
-            </Popover>
         </Component>
     );
 };
@@ -89,27 +101,21 @@ const Body = styled.div`
         font-weight: 600;
         margin-bottom: 32px;
     }
+    .actions {
+        padding-top: 40px;
+        display: flex;
+        justify-content: flex-end;
+        button {
+            padding: 14px 32px;
+            background-color: ${Colors.blue};
+            color: ${Colors.white};
+            font-size: 16px;
+            font-weight: 600;
+            outline: none;
+            border: none;
+            border-radius: 4px;
+        }
+    }
 `;
 
-const Menu = styled.div`
-    display: grid;
-    p {
-        padding: 16px 32px;
-        font-size: 16px;
-        font-weight: 600;
-        border: 1px solid ${Colors.lightGrey};
-        cursor: pointer;
-    }
-    .edit {
-        :hover {
-            background-color: ${Colors.yellow};
-        }
-    }
-    .delete {
-        :hover {
-            background-color: ${Colors.red};
-            color: ${Colors.white};
-        }
-    }
-`;
 export default CreateRoute;
