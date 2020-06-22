@@ -17,7 +17,7 @@ export const editOrder = (order, history) => {
 export const deleteOrder = (order, firestore, closeOrderPreview) => {
     return (dispatch, getState) => {
         const { orderID } = order.details;
-        const dashboardOrders = getState().Firestore.data.orders.orders;
+        const dashboardOrders = getState().Firestore.data.ordersv2.orders;
         // destructure the order id out of the orders object to set
         const { [orderID]: deleted, ...rest } = dashboardOrders;
 

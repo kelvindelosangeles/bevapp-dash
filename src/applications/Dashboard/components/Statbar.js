@@ -5,9 +5,8 @@ import styled from "styled-components";
 import { Order as OrderModel } from "../../../Models/Order";
 import { Colors } from "../../../Constants/Colors";
 
-const DBStatBar = () => {
-    const orders = useSelector((state) => state.Firestore.data.orders.orders);
-
+const Statbar = () => {
+    const orders = useSelector((state) => state.Firestore.data.ordersv2.orders);
     // TODO: Consider consolidating calls for 2 sets of orders folders, the orders and completed orders
     // FIXME: For now it will only use the data from the orders data set
 
@@ -26,7 +25,7 @@ const DBStatBar = () => {
     };
 
     return (
-        <DBStatBarWrapper>
+        <Component>
             <Stat color={Colors.blue}>
                 <p>New Orders</p>
                 <span>{Object.values(orders).length}</span>
@@ -39,11 +38,11 @@ const DBStatBar = () => {
                 <p>Daily Cases</p>
                 <span>{totalCases()}</span>
             </Stat>
-        </DBStatBarWrapper>
+        </Component>
     );
 };
 
-const DBStatBarWrapper = styled.div`
+const Component = styled.div`
     padding: 24px 60px;
     display: grid;
     grid-column-gap: 60px;
@@ -66,4 +65,4 @@ const Stat = styled.div`
     }
 `;
 
-export default DBStatBar;
+export default Statbar;

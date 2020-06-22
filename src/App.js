@@ -72,12 +72,12 @@ export default compose(
     connect((state) => {
         return {
             inventory: state.Firestore.data.inventory,
-            orders: state.Firestore.data.orders,
+            orders: state.Firestore.data.ordersv2,
             store: state.Firestore.data.store,
         };
     }),
     firestoreConnect(() => {
-        return [{ collection: "inventory" }, { collection: "orders", doc: "orders" }, { collection: "store" }];
+        return [{ collection: "inventory" }, { collection: "ordersv2", doc: "orders" }, { collection: "store" }];
         // return [{ collection: "inventory" }, { collection: "orders" }, { collection: "store" }];
     })
 )(App);

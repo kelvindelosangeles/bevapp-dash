@@ -14,7 +14,7 @@ const BeverageReport = () => {
 
     let allOrders = {};
 
-    const Orders = Object.values(useSelector((state) => state.Firestore.data.orders)).forEach((i) => {
+    const Orders = Object.values(useSelector((state) => state.Firestore.data.ordersv2)).forEach((i) => {
         Object.assign(allOrders, i);
     });
 

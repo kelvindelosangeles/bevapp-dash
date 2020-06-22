@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { withFirestore } from "react-redux-firebase";
 const DeleteBeverage = ({ firestore }) => {
     const beverages = useSelector((state) => state.Firestore.data.inventory.beverages);
-    const orders = useSelector((state) => state.Firestore.data.orders);
+    const orders = useSelector((state) => state.Firestore.data.ordersv2);
 
     const ItemToDeleteID = "";
 

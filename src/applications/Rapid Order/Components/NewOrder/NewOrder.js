@@ -122,7 +122,7 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
             : firestore
                   .update(
                       {
-                          collection: "orders",
+                          collection: "ordersv2",
                           doc: "orders",
                       },
                       { [orderID]: { ...NewOrder } }

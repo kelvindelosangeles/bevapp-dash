@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import DBStatBar from "../Components/DBStatBar";
+import Statbar from "../Components/Statbar";
 import { connect, useSelector } from "react-redux";
 import { Colors } from "../../../Constants/Colors";
 import Order from "../Components/Order";
 import moment from "moment";
 
 const DBOrders = ({ activeOrder, dispatch }) => {
-    const orders = useSelector((state) => state.Firestore.data.orders.orders);
+    const orders = useSelector((state) => state.Firestore.data.ordersv2.orders);
 
     const ordersToday = Object.values(orders)
         .sort((a, b) => {
@@ -33,7 +33,7 @@ const DBOrders = ({ activeOrder, dispatch }) => {
 
     return (
         <Component>
-            <DBStatBar />
+            <Statbar />
             <OrderHeader>
                 <h6>Order</h6>
                 <h6>Store</h6>
