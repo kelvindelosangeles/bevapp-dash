@@ -40,7 +40,7 @@ const Sidebar = () => {
                         <BoltIcon /> <p>Rapid Order</p>
                     </div>
                 </NavLink>
-                <NavLink className='nav-group' to='/store'>
+                {/* <NavLink className='nav-group' to='/store'>
                     <div className='header'>
                         <StoreIcon /> <p>Store</p>
                     </div>
@@ -54,7 +54,7 @@ const Sidebar = () => {
                     <div className='header'>
                         <TaskIcon /> <p>Task</p>
                     </div>
-                </NavLink>
+                </NavLink> */}
             </div>
 
             <div className='logout-wrapper'>
