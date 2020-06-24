@@ -70,7 +70,6 @@ const SPHome = ({ history, customers, beverages }) => {
 
 const Grid = styled.div`
     background-color: ${Colors.white};
-
     height: 100%;
     display: grid;
     grid-template-columns: 1fr 390px;
