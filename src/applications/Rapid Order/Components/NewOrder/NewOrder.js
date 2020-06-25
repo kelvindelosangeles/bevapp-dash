@@ -2,11 +2,8 @@ import React, { useMemo, useState, useRef } from "react";
 import { connect, useSelector } from "react-redux";
 import { withFirestore } from "react-redux-firebase";
 import styled from "styled-components";
-import moment from "moment";
-import uuid from "uuid";
 import CartIcon from "@material-ui/icons/ShoppingCartRounded";
 import DeleteIcon from "@material-ui/icons/Delete";
-
 import { Colors } from "../../../../Constants/Colors";
 import { Order as OrdersModel } from "../../../../Models/Order";
 import CustomerSelect from "../../../../Global/CustomerSelect/CustomerSelect";
@@ -14,14 +11,14 @@ import SmartEntry from "./Components/SmartEntry";
 import CustomerDetails from "../../../../Global/OrderPreview/CustomerDetails";
 import OrderDetails from "../../../../Global/OrderPreview/OrderDetails";
 import CartHeader from "./Components/CartHeader";
-import { useEffect } from "react";
 import { useSnackbar } from "notistack";
+import { cancelOrder } from "../../../../redux/actions/RapidOrderActions";
 
 const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
     const open = useSelector((state) => state.GlobalState.drawerOpen);
     const [smartEntryID, setSmartEntryID] = useState("");
     const [smartEntryQty, setSmartEntryQty] = useState("");
-    const [orderID, setOrderID] = useState("");
+    const orderID = useSelector((state) => state.RapidOrderState.orderID);
     const { enqueueSnackbar } = useSnackbar();
 
     const triggerSnack = (variant, message) => {
@@ -135,12 +132,7 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
                       console.log(err);
                   });
     };
-    const cancelOrder = () => {
-        window.confirm("Are you sure you want to cancel this order") &&
-            dispatch({
-                type: "CANCEL_ORDER",
-            });
-    };
+
     const customerChangeHandler = (e, value) => {
         return value === null
             ? window.confirm("Are you sure you want to cancel this order?") &&
@@ -159,24 +151,18 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
         });
     };
     // BETA
-    const editOrderID = useSelector((state) => state.RapidOrderState.editOrderID);
-
-    useEffect(() => {
-        editOrderID ? setOrderID(editOrderID) : setOrderID((moment(new Date()).format("YYMMDD") + uuid().slice(0, 8) + "ga").toUpperCase());
-    }, [customer]);
+    const editMode = useSelector((state) => state.RapidOrderState.editMode);
 
     return (
         <React.Fragment>
-            {editOrderID && (
+            {editMode && (
                 <EditWarning>
                     <p className='warning'>Edit Mode</p>
                 </EditWarning>
             )}
             <Container>
-                {/* NEW ORDER CONTOLS ============= */}
-                {/* FIXME: Make this cleaner*/}
-                <Controls style={{ width: open ? "calc(100% - 208px)" : "100%" }}>
-                    {!editOrderID && <CustomerSelect customerChangeHandler={customerChangeHandler} selectedCustomer={customer} />}
+                <Controls>
+                    <CustomerSelect customerChangeHandler={customerChangeHandler} selectedCustomer={customer} />
                     <SmartEntry
                         smartEntryID={smartEntryID}
                         smartEntryQty={smartEntryQty}
@@ -218,7 +204,7 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
                     </div>
                     <span>
                         <button onClick={submitOrder}>Submit</button>
-                        <button onClick={cancelOrder}>Cancel</button>
+                        <button onClick={() => dispatch(cancelOrder())}>Cancel</button>
                     </span>
                 </Actions>
             </Container>
@@ -236,6 +222,8 @@ const EditWarning = styled.div`
 `;
 const Container = styled.div`
     min-height: 100%;
+    width: 100%;
+    position: relative;
     display: grid;
     height: fit-content;
     padding: 0 0 32px 0;
@@ -248,13 +236,14 @@ const Container = styled.div`
         ". F F";
 `;
 const Controls = styled.div`
+    width: 100%;
+    position: absolute;
     grid-area: A;
     display: grid;
     grid-template-columns: 350px auto;
     justify-content: center;
     align-items: self-start;
     grid-column-gap: 64px;
-    position: fixed;
     padding: 16px 0;
     background-color: white;
 `;

@@ -8,7 +8,7 @@ import Popover from "@material-ui/core/Popover";
 import { useRef } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { editOrder, deleteOrder } from "../../../redux/actions/dashboardActions";
+import { editOrder, deleteOrder } from "../../../redux/actions/RapidOrderActions";
 import { useFirestore } from "react-redux-firebase";
 import { withRouter } from "react-router-dom";
 import CustomerPDF from "../../../Global/PrintTemplates/CustomerPDF";

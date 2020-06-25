@@ -33,42 +33,18 @@ const RapidOrderReducer = (state = initialState, action) => {
                 atcfVisible: false,
                 orderItem: {},
             };
-        // case "POPULATE_CACHE":
-        //     return {
-        //         ...state,
-        //         customer: action.payload.customer,
-        //         cart: action.payload.cart,
-        //         editOrderID: action.payload.editOrderID,
-        //     };
-        // TODO: Remove this action from rapid order
         case "ADD_TO_CART":
-            store.set("cart", { ...state.cart, [action.item.id]: action.item });
             return {
                 ...state,
                 atcVisible: false,
                 atcfVisible: false,
                 cart: { ...state.cart, [action.item.id]: action.item },
             };
-        case "CANCEL_ORDER":
-            store.set("cart", {});
-            store.set("customer", null);
-            store.set("editOrderID", null);
-            return {
-                ...state,
-                cart: {},
-                customer: null,
-                notes: "",
-                editOrderID: null,
-            };
         case "SUBMIT_ORDER":
-            store.set("cart", {});
-            store.set("customer", null);
-            store.set("editOrderID", null);
             return {
                 ...state,
                 cart: {},
                 notes: "",
-                editOrderID: null,
                 customer: null,
             };
 
@@ -81,44 +57,38 @@ const RapidOrderReducer = (state = initialState, action) => {
             };
 
         case "SET_CUSTOMER":
-            store.set("customer", action.customer);
-            store.set("editOrderID", null);
             return {
                 ...state,
                 customer: action.customer,
-                editOrderID: null,
             };
         case "SET_NOTE":
             return {
                 ...state,
                 notes: action.payload,
             };
-        // BETA
-        case "SET_EDIT_ORDER_CART":
-            store.set("cart", action.payload.cart);
-            store.set("customer", action.payload.customer);
-            store.set("editOrderID", action.payload.orderID);
-
-            return {
-                ...state,
-                customer: action.payload.customer,
-                cart: action.payload.cart,
-                editOrderID: action.payload.orderID,
-            };
         // ===============
         // V2 Actions
         // remove all actions above
+        // Coming from Action Creators
         // ===============
+        case "NEW_ORDER":
+            return {
+                ...state,
+                customer: action.payload.customer,
+                orderID: action.payload.orderID,
+            };
         case "EDIT_ORDER":
             // recieves the order to edit as a payload
-            const { customer, details, cart } = action.payload;
             return {
-                customer,
-                notes: details.notes,
-                cart,
-                orderID: details.orderID,
+                ...state,
+                customer: action.payload.customer,
+                notes: action.payload.details.notes,
+                cart: action.payload.cart,
+                orderID: action.payload.details.orderID,
                 editMode: true,
             };
+        case "CANCEL_ORDER":
+            return initialState;
         default:
             return state;
     }

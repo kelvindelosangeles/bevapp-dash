@@ -1,17 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 import CartIcon from "@material-ui/icons/ShoppingBasketRounded";
+import { newOrder } from "../../../redux/actions/RapidOrderActions";
 import { connect } from "react-redux";
+
 import { withRouter } from "react-router-dom";
 
 import CustomerSelect from "../../../Global/CustomerSelect/CustomerSelect";
 
 const Home = ({ dispatch, customer }) => {
     const customerChangeHandler = (e, value) => {
-        return dispatch({
-            type: "SET_CUSTOMER",
-            customer: value,
-        });
+        return dispatch(newOrder(value));
     };
 
     return (

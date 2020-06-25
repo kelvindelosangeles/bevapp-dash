@@ -10,24 +10,6 @@ import AddToCart from "./Components/AddToCart/AddToCart";
 import AddtoCartFlavors from "./Components/AddToCart/AddtoCartFlavors";
 
 const RapidOrder = ({ atcVisible, atcfVisible, customer, dispatch }) => {
-    useEffect(() => {
-        const getCache = async () => {
-            let customer = (await store.get("customer")) || null;
-            let cart = (await store.get("cart")) || {};
-            let editOrderID = (await store.get("editOrderID")) || null;
-
-            dispatch({
-                type: "POPULATE_CACHE",
-                payload: {
-                    customer,
-                    cart,
-                    editOrderID,
-                },
-            });
-        };
-
-        getCache();
-    }, []);
     return (
         <Container>
             {customer ? <NewOrder /> : <Home />}
