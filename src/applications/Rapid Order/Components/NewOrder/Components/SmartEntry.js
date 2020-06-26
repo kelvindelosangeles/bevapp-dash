@@ -4,6 +4,7 @@ import { Colors } from "../../../../../Constants/Colors";
 import { connect } from "react-redux";
 // TEST AREA
 import { useSnackbar } from "notistack";
+import { addToCart } from "../../../../../redux/actions/RapidOrderActions";
 
 const SmartEntry = ({ smartEntryID, setSmartEntryID, smartEntryQty, setSmartEntryQty, store, dispatch }) => {
     const seid = useRef();
@@ -53,10 +54,7 @@ const SmartEntry = ({ smartEntryID, setSmartEntryID, smartEntryQty, setSmartEntr
                         setSmartEntryQty("");
                         seqty.current.focus();
                         triggerSnack(null, `Added item ${store[smartEntryID].id}`);
-                        return dispatch({
-                            type: "ADD_TO_CART",
-                            item: { ...store[smartEntryID], qty: smartEntryQty },
-                        });
+                        return dispatch(addToCart({ ...store[smartEntryID], qty: smartEntryQty }));
                     }
                 }
             } else {

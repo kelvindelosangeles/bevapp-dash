@@ -33,7 +33,7 @@ const Sidebar = () => {
                         <Link to='/dashboard'>Orders</Link>
                         <Link to='/dashboard/drafts'>Drafts</Link>
                         <Link to='/dashboard/routes'>Routes</Link>
-                        {/* <Link to='#'>Completed Orders</Link> */}
+                        <Link to='/dashboard/completedorders'>Completed Orders</Link>
                     </div>
                 </NavLink>
                 <NavLink className='nav-group' to='/rapidorder'>

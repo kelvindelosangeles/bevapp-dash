@@ -1,7 +1,21 @@
 import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../Constants/Colors";
+import { useState } from "react";
+import { useEffect } from "react";
+import Order from "../Dashboard/components/Order";
+import store from "store";
 const Drafts = () => {
+    const [drafts, setDrafts] = useState([]);
+
+    useEffect(() => {
+        store.each((value, key) => {
+            setDrafts((prevState) => {
+                return { ...prevState, [key]: value };
+            });
+        });
+    }, []);
+
     return (
         <Component>
             <Actions>Actions go here</Actions>
@@ -13,7 +27,9 @@ const Drafts = () => {
                     <h6>Total</h6>
                     <h6></h6>
                 </OrderHeader>
-                Drafts go here
+                {Object.values(drafts).map((x) => {
+                    return <Order order={x} />;
+                })}
             </DraftsContainer>
         </Component>
     );

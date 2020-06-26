@@ -154,6 +154,7 @@ const Component = styled.div`
                     margin-bottom: 8px;
                 }
                 span {
+                    white-space: nowrap;
                     font-size: 16px;
                     text-transform: capitalize;
                     display: flex;

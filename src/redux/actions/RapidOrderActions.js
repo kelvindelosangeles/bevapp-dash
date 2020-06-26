@@ -83,7 +83,6 @@ export const deleteOrder = (order, firestore, closeOrderPreview) => {
                 });
     };
 };
-
 export const saveToDrafts = (firestore) => {
     return (dispatch, getState) => {
         const { cart, orderID, customer, notes } = getState().RapidOrderState;
@@ -104,10 +103,35 @@ export const saveToDrafts = (firestore) => {
         if (Object.values(cart).length < 1) {
             return alert("An empty order cannot be saved as a draft");
         }
-
         store.set(orderID, NewOrder);
         dispatch({
             type: "SAVE_TO_DRAFTS",
+        });
+    };
+};
+export const addToCart = (item) => {
+    return (dispatch, getState) => {
+        const { cart, orderID, customer, notes } = getState().RapidOrderState;
+        // check that the cart isnt empty when saving a draft
+        // FIXME:CLEAN UP, this is a combination of old actions and new actions in one
+        const NewOrder = {
+            customer,
+            details: {
+                new: true,
+                complete: false,
+                createdAt: new Date(),
+                createdBy: "General Admin",
+                orderID,
+                notes,
+            },
+            // add the item before the dispatch or else it would be behind
+            cart: { ...cart, [item.id]: item },
+            editedOrder: null,
+        };
+        store.set(orderID, NewOrder);
+        dispatch({
+            type: "ADD_TO_CART",
+            item: item,
         });
     };
 };
