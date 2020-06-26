@@ -1,5 +1,6 @@
 import moment from "moment";
 import uuid from "uuid";
+import store from "store";
 
 export const newOrder = (customer) => {
     // console.log(customer);
@@ -37,44 +38,6 @@ export const cancelOrder = () => {
             });
     };
 };
-// export const deleteOrder = (order, firestore, closeOrderPreview) => {
-//     return (dispatch, getState) => {
-//         const { orderID } = order.details;
-//         const dashboardOrders = getState().Firestore.data.ordersv2.orders;
-//         // destructure the order id out of the orders object to set
-//         const { [orderID]: deleted, ...rest } = dashboardOrders;
-//         // add the order to the deleted orders collection, upon success then remove the order from the orders collection
-//         const deleteFromFirestore = () => {
-//             firestore
-//                 .set({ collection: "deletedOrders", doc: orderID }, order)
-//                 .then(() => {
-//                     console.log("successfully added to the deleted orders collection");
-//                     firestore
-//                         .set(
-//                             {
-//                                 collection: "ordersv2",
-//                                 doc: "orders",
-//                             },
-//                             rest
-//                         )
-//                         .then(() => {
-//                             console.log("successfully deleted");
-//                             // close the order menu once deleted
-//                             closeOrderPreview();
-//                         })
-//                         .catch((err) => {
-//                             console.log(err);
-//                         });
-//                 })
-//                 .catch((err) => {
-//                     console.log(err);
-//                 });
-//         };
-//         window.confirm(`Are you sure you want to delete for ${order.customer.address}`) &&
-//             window.confirm("This action is irreversible, Delete anyway?") &&
-//             deleteFromFirestore();
-//     };
-// };
 export const deleteOrder = (order, firestore, closeOrderPreview) => {
     return (dispatch, getState) => {
         const dashboardOrders = getState().Firestore.data.ordersv2.orders;
@@ -118,6 +81,34 @@ export const deleteOrder = (order, firestore, closeOrderPreview) => {
                     console.log(err);
                     console.log("Transaction not successful");
                 });
+    };
+};
+
+export const saveToDrafts = (firestore) => {
+    return (dispatch, getState) => {
+        const { cart, orderID, customer, notes } = getState().RapidOrderState;
+        const NewOrder = {
+            customer,
+            details: {
+                new: true,
+                complete: false,
+                createdAt: new Date(),
+                createdBy: "General Admin",
+                orderID,
+                notes,
+            },
+            cart,
+            editedOrder: null,
+        };
+        // check that the cart isnt empty when saving a draft
+        if (Object.values(cart).length < 1) {
+            return alert("An empty order cannot be saved as a draft");
+        }
+
+        store.set(orderID, NewOrder);
+        dispatch({
+            type: "SAVE_TO_DRAFTS",
+        });
     };
 };
 

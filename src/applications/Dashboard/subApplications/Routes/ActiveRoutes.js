@@ -63,6 +63,7 @@ const RoutesContainer = styled.div`
     background-color: ${Colors.white};
     position: relative;
     display: grid;
+    border-radius: 8px 0 0 0;
     grid-template-rows: min-content min-content 1fr;
     .heading {
         margin: 32px;

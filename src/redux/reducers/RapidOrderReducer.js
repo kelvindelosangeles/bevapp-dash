@@ -78,7 +78,6 @@ const RapidOrderReducer = (state = initialState, action) => {
                 orderID: action.payload.orderID,
             };
         case "EDIT_ORDER":
-            // recieves the order to edit as a payload
             return {
                 ...state,
                 customer: action.payload.customer,
@@ -88,6 +87,8 @@ const RapidOrderReducer = (state = initialState, action) => {
                 editMode: true,
             };
         case "CANCEL_ORDER":
+            return initialState;
+        case "SAVE_TO_DRAFTS":
             return initialState;
         default:
             return state;

@@ -31,6 +31,7 @@ const Sidebar = () => {
                     </div>
                     <div className='sublinks'>
                         <Link to='/dashboard'>Orders</Link>
+                        <Link to='/dashboard/drafts'>Drafts</Link>
                         <Link to='/dashboard/routes'>Routes</Link>
                         {/* <Link to='#'>Completed Orders</Link> */}
                     </div>
@@ -40,7 +41,7 @@ const Sidebar = () => {
                         <BoltIcon /> <p>Rapid Order</p>
                     </div>
                 </NavLink>
-                {/* <NavLink className='nav-group' to='/store'>
+                <NavLink className='nav-group' to='/store'>
                     <div className='header'>
                         <StoreIcon /> <p>Store</p>
                     </div>
@@ -54,7 +55,7 @@ const Sidebar = () => {
                     <div className='header'>
                         <TaskIcon /> <p>Task</p>
                     </div>
-                </NavLink> */}
+                </NavLink>
             </div>
 
             <div className='logout-wrapper'>

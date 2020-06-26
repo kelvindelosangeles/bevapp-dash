@@ -12,7 +12,7 @@ import CustomerDetails from "../../../../Global/OrderPreview/CustomerDetails";
 import OrderDetails from "../../../../Global/OrderPreview/OrderDetails";
 import CartHeader from "./Components/CartHeader";
 import { useSnackbar } from "notistack";
-import { cancelOrder } from "../../../../redux/actions/RapidOrderActions";
+import { cancelOrder, saveToDrafts } from "../../../../redux/actions/RapidOrderActions";
 
 const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
     const open = useSelector((state) => state.GlobalState.drawerOpen);
@@ -131,7 +131,6 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
                       console.log(err);
                   });
     };
-
     const customerChangeHandler = (e, value) => {
         return value === null
             ? window.confirm("Are you sure you want to cancel this order?") &&
@@ -203,6 +202,7 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
                     </div>
                     <span>
                         <button onClick={submitOrder}>Submit</button>
+                        <button onClick={() => dispatch(saveToDrafts())}>Draft</button>
                         <button onClick={() => dispatch(cancelOrder())}>Cancel</button>
                     </span>
                 </Actions>
