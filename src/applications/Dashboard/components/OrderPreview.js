@@ -1,16 +1,14 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
+import { withRouter } from "react-router-dom";
 import { Order as orderModel } from "../../../Models/Order";
 import moment from "moment";
 import OptionsIcon from "@material-ui/icons/BlurCircularRounded";
 import { Colors } from "../../../Constants/Colors";
 import Popover from "@material-ui/core/Popover";
-import { useRef } from "react";
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { editOrder, deleteOrder } from "../../../redux/actions/RapidOrderActions";
 import { useFirestore } from "react-redux-firebase";
-import { withRouter } from "react-router-dom";
 import CustomerPDF from "../../../Global/PrintTemplates/CustomerPDF";
 import WarehousePDF from "../../../Global/PrintTemplates/WarehousePDF";
 import { PDFDownloadLink } from "@react-pdf/renderer";
@@ -31,7 +29,6 @@ const OrderPreview = ({ order, history, closeOrderPreview }) => {
             return null;
         }
     };
-
     const CalcOrderMargin = () => {
         return (orderModel.CalculateCart(cart, null) - orderModel.CalculateCart(cart, customer.specialPrices)).toFixed(2);
     };
@@ -107,7 +104,16 @@ const OrderPreview = ({ order, history, closeOrderPreview }) => {
                         <div className='item'>
                             <p>{i.qty} x</p>
                             <p>{i.id}</p>
-                            <p>{i.description}</p>
+                            <div>
+                                <p>{i.description}</p>
+                                {i.hasOwnProperty("flavors") &&
+                                    Object.entries(i.flavorsQuantity)
+                                        .filter((a) => {
+                                            console.log(a);
+                                            return !a[1] == "" && a[1] !== "0";
+                                        })
+                                        .map((x) => <p className='flavor'>{`${x[0].toLowerCase()} x ${x[1]}`}</p>)}
+                            </div>
                             <p>${i.price}</p>
                             <p className='special-price'>{ReturnSpecialPrice(i.id)}</p>
                             <p>{orderModel.CalculateItem(i, customer.specialPrices)}</p>
@@ -251,9 +257,13 @@ const Cart = styled.div`
         margin-left: -24px;
         margin-right: -24px;
         padding: 16px 32px;
+        .flavor {
+            font-weight: 500;
+            margin-left: 16px;
+            text-transform: capitalize;
+        }
     }
 `;
-
 const Menu = styled.div`
     display: grid;
     p {

@@ -5,10 +5,11 @@ import MiniOrder from "../../../components/MiniOrder";
 import { Popover } from "@material-ui/core";
 import OptionsIcon from "@material-ui/icons/BlurCircularRounded";
 import { useSelector } from "react-redux";
-import { firestore } from "firebase";
 import { useFirestore } from "react-redux-firebase";
+import { Order as ordersModel } from "../../../../../Models/Order";
 import RoutePDF from "./RoutePDF";
 import { PDFDownloadLink } from "@react-pdf/renderer";
+import CaseIcon from "../../../../../Assets/Icons/CaseIcon";
 
 const RoutePreview = ({ data }) => {
     const [open, setOpen] = useState(false);
@@ -42,6 +43,36 @@ const RoutePreview = ({ data }) => {
             );
     };
 
+    const BetaTotalCases = () => {
+        try {
+            return BetaRouteOrders()
+                .map((x) => {
+                    return ordersModel.CalculateCases(x.cart);
+                })
+                .reduce((a, b) => {
+                    return parseInt(a) + parseInt(b);
+                });
+        } catch (err) {
+            console.log(err);
+            return "0";
+        }
+    };
+
+    const orderTotal = () => {
+        try {
+            return BetaRouteOrders()
+                .map((x) => {
+                    return ordersModel.CalculateCart(x.cart, x.customer.specialPrices);
+                })
+                .reduce((a, b) => {
+                    return (parseFloat(a) + parseFloat(b)).toFixed(2);
+                });
+        } catch (err) {
+            console.log(err);
+            return "0";
+        }
+    };
+
     return (
         <Component>
             <OptionsIcon ref={anchor} id='options-icon' onClick={() => setOpen(true)} />
@@ -50,15 +81,15 @@ const RoutePreview = ({ data }) => {
                 <div className='grid'>
                     <div className='data'>
                         <p>Driver</p>
-                        <span>Danny p</span>
+                        <span>{`${data.driver.firstName} ${data.driver.lastName.slice(0, 1)}.`}</span>
                     </div>
                     <div className='data'>
-                        <p>Driver</p>
-                        <span>Danny p</span>
+                        <p>Cases</p>
+                        <span>{BetaTotalCases()}</span>
                     </div>
                     <div className='data'>
-                        <p>Driver</p>
-                        <span>Danny p</span>
+                        <p>Route Total</p>
+                        <span>${orderTotal()}</span>
                     </div>
                 </div>
             </div>
@@ -117,12 +148,19 @@ const Component = styled.div`
                 display: grid;
                 justify-items: center;
                 p {
+                    white-space: nowrap;
                     font-size: 18px;
                     font-weight: 600;
                     margin-bottom: 8px;
                 }
                 span {
                     font-size: 16px;
+                    text-transform: capitalize;
+                    display: flex;
+                    align-items: center;
+                    svg {
+                        margin-right: 8px;
+                    }
                 }
             }
         }

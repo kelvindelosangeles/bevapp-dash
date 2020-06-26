@@ -68,7 +68,7 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
             }
         };
         const Toggleatc = (a) => {
-            // FIXME: Move the logic to the reducer
+            // FIXME: Move the logic to the actons
             dispatch({
                 type: a.flavors ? "TOGGLE_ATCF" : "TOGGLE_ATC",
                 item: a,
@@ -76,7 +76,6 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
         };
         let hasSpecialPrice = () => {
             try {
-                // console.log(customer.specialPrices[i.id].price);
                 return "$ " + parseFloat(customer.specialPrices[i.id].price).toFixed(2);
             } catch (err) {
                 return null;

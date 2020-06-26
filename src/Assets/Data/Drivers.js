@@ -1,22 +1,22 @@
 export const Drivers = [
     {
         ID: 1,
-        firstName: "one",
-        lastName: "two",
+        firstName: "driver one",
+        lastName: "one",
     },
     {
         ID: 2,
-        firstName: "two",
-        lastName: "three",
+        firstName: "driver two",
+        lastName: "two",
     },
     {
         ID: 3,
-        firstName: "three",
+        firstName: "driver three",
         lastName: "four",
     },
     {
         ID: 4,
-        firstName: "four",
-        lastName: "five",
+        firstName: "house",
+        lastName: "three",
     },
 ];
