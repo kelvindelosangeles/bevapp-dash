@@ -1,8 +1,8 @@
 export const Drivers = [
     {
         ID: 1,
-        firstName: "driver one",
-        lastName: "one",
+        firstName: "Gary",
+        lastName: "Test",
     },
     {
         ID: 2,

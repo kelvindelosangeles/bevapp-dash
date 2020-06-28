@@ -4,6 +4,7 @@ import { connect, useSelector } from "react-redux";
 import { Colors } from "../../../../Constants/Colors";
 import Xicon from "@material-ui/icons/Close";
 import Dialog from "@material-ui/core/Dialog";
+import { addToCart } from "../../../../redux/actions/RapidOrderActions";
 
 const AddToCart = ({ dispatch }) => {
     const open = useSelector((state) => state.RapidOrderState.atcVisible);
@@ -15,10 +16,7 @@ const AddToCart = ({ dispatch }) => {
     };
     const submitHandler = (e) => {
         e.preventDefault();
-        dispatch({
-            type: "ADD_TO_CART",
-            item: { ...item, qty: qty === "" ? 1 : parseInt(qty) },
-        });
+        dispatch(addToCart({ ...item, qty: qty === "" ? 1 : parseInt(qty) }));
     };
     const cancelHandler = () => {
         setQty("");

@@ -33,29 +33,6 @@ const RapidOrderReducer = (state = initialState, action) => {
                 atcfVisible: false,
                 orderItem: {},
             };
-        case "ADD_TO_CART":
-            return {
-                ...state,
-                atcVisible: false,
-                atcfVisible: false,
-                cart: { ...state.cart, [action.item.id]: action.item },
-            };
-        case "SUBMIT_ORDER":
-            return {
-                ...state,
-                cart: {},
-                notes: "",
-                customer: null,
-            };
-
-        case "REMOVE_ITEM":
-            const { [action.id]: removed, ...items } = state.cart;
-            store.set("cart", { ...items });
-            return {
-                ...state,
-                cart: { ...items },
-            };
-
         case "SET_CUSTOMER":
             return {
                 ...state,
@@ -77,6 +54,31 @@ const RapidOrderReducer = (state = initialState, action) => {
                 customer: action.payload.customer,
                 orderID: action.payload.orderID,
             };
+        case "ADD_TO_CART":
+            return {
+                ...state,
+                atcVisible: false,
+                atcfVisible: false,
+                cart: { ...state.cart, [action.item.id]: action.item },
+            };
+        case "REMOVE_FROM_CART":
+            const { [action.id]: removed, ...items } = state.cart;
+            return {
+                ...state,
+                cart: { ...items },
+            };
+        case "UPDATE_CUSTOMER":
+            return {
+                ...state,
+                customer: action.customer,
+            };
+        case "CANCEL_ORDER":
+            return initialState;
+        case "SUBMIT_ORDER":
+            return initialState;
+
+        case "SAVE_TO_DRAFTS":
+            return initialState;
         case "EDIT_ORDER":
             return {
                 ...state,
@@ -86,10 +88,6 @@ const RapidOrderReducer = (state = initialState, action) => {
                 orderID: action.payload.details.orderID,
                 editMode: true,
             };
-        case "CANCEL_ORDER":
-            return initialState;
-        case "SAVE_TO_DRAFTS":
-            return initialState;
         default:
             return state;
     }

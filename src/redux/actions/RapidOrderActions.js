@@ -3,7 +3,6 @@ import uuid from "uuid";
 import store from "store";
 
 export const newOrder = (customer) => {
-    // console.log(customer);
     return (dispatch, getState) => {
         dispatch({
             type: "NEW_ORDER",
@@ -31,11 +30,11 @@ export const editOrder = (order, history) => {
 };
 export const cancelOrder = () => {
     return (dispatch, getState) => {
-        console.log("cancle is initiated");
-        window.confirm("Are you sure you want to cancel this order") &&
-            dispatch({
-                type: "CANCEL_ORDER",
-            });
+        const { orderID } = getState().RapidOrderState;
+        store.remove(orderID);
+        dispatch({
+            type: "CANCEL_ORDER",
+        });
     };
 };
 export const deleteOrder = (order, firestore, closeOrderPreview) => {
@@ -110,10 +109,10 @@ export const saveToDrafts = (firestore) => {
     };
 };
 export const addToCart = (item) => {
+    // FIXME:CLEAN UP, this is a combination of old actions and new actions in one
     return (dispatch, getState) => {
-        const { cart, orderID, customer, notes } = getState().RapidOrderState;
+        const { cart, orderID, customer, notes, editMode } = getState().RapidOrderState;
         // check that the cart isnt empty when saving a draft
-        // FIXME:CLEAN UP, this is a combination of old actions and new actions in one
         const NewOrder = {
             customer,
             details: {
@@ -128,13 +127,82 @@ export const addToCart = (item) => {
             cart: { ...cart, [item.id]: item },
             editedOrder: null,
         };
-        store.set(orderID, NewOrder);
+
+        !editMode && store.set(orderID, NewOrder);
         dispatch({
             type: "ADD_TO_CART",
             item: item,
         });
     };
 };
+export const removeFromCart = (id) => {
+    // FIXME:CLEAN UP, this is a combination of old actions and new actions in one
+    return (dispatch, getState) => {
+        const { cart, orderID, customer, notes, editMode } = getState().RapidOrderState;
+        const { [id]: removed, ...items } = cart;
 
-// OrderID Formula
-// (moment(new Date()).format("YYMMDD") + uuid().slice(0, 8) + "ga").toUpperCase()
+        // Recreate the order to send to LS
+        const Order = {
+            customer,
+            details: {
+                new: true,
+                complete: false,
+                createdAt: new Date(),
+                createdBy: "General Admin",
+                orderID,
+                notes,
+            },
+            // add the item before the dispatch or else it would be behind
+            cart: { ...items },
+            editedOrder: null,
+        };
+        // if edit mode is on, do not persist to local storage
+        !editMode && store.set(orderID, Order);
+        // if the cart becomes empty delete the draft
+        Object.values(items).length < 1 && store.remove(orderID);
+
+        dispatch({
+            type: "REMOVE_FROM_CART",
+            id,
+        });
+    };
+};
+export const updateCustomer = (newCustomer) => {
+    // FIXME:CLEAN UP, this is a combination of old actions and new actions in one
+    return (dispatch, getState) => {
+        const { cart, orderID, notes, editMode } = getState().RapidOrderState;
+
+        // Recreate the order to send to LS
+        const Order = {
+            customer: newCustomer,
+            details: {
+                new: true,
+                complete: false,
+                createdAt: new Date(),
+                createdBy: "General Admin",
+                orderID,
+                notes,
+            },
+            // add the item before the dispatch or else it would be behind
+            cart,
+            editedOrder: null,
+        };
+        //  Dont interacti with LS if Editmode is on
+        !editMode && Object.values(cart).length > 0 && store.set(orderID, Order);
+
+        dispatch({
+            type: "UPDATE_CUSTOMER",
+            customer: newCustomer,
+        });
+    };
+};
+export const submitOrder = () => {
+    return (dispatch, getState) => {
+        const { cart, orderID, editMode } = getState().RapidOrderState;
+        // conditons must be met, not in edit mode and cart length is greater than 0
+        !editMode && Object.values(cart).length > 0 && store.remove(orderID);
+        dispatch({
+            type: "SUBMIT_ORDER",
+        });
+    };
+};

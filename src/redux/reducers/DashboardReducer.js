@@ -41,4 +41,6 @@ const DashboardReducer = (state = initialState, action) => {
     }
 };
 
+// Eventually we are going to add query parameters here to interact with data on the dashboard
+
 export default DashboardReducer;

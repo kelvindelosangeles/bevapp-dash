@@ -5,6 +5,7 @@ import Dialog from "@material-ui/core/Dialog";
 import { Colors } from "../../../../Constants/Colors";
 import ItemDetails from "./ItemDetails";
 import FlavorsInput from "./FlavorsInput";
+import { addToCart } from "../../../../redux/actions/RapidOrderActions";
 
 const AddtoCartFlavors = ({ orderItem, dispatch }) => {
     const [flavorsQuantity, setFlavorsQuantity] = useState({});
@@ -50,14 +51,13 @@ const AddtoCartFlavors = ({ orderItem, dispatch }) => {
 
         total < 1
             ? cancelHandler()
-            : dispatch({
-                  type: "ADD_TO_CART",
-                  item: {
+            : dispatch(
+                  addToCart({
                       ...orderItem,
                       qty: total,
                       flavorsQuantity,
-                  },
-              });
+                  })
+              );
     };
     const cancelHandler = () => {
         setFlavorsQuantity({});

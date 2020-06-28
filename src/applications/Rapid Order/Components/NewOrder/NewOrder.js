@@ -12,7 +12,7 @@ import CustomerDetails from "../../../../Global/OrderPreview/CustomerDetails";
 import OrderDetails from "../../../../Global/OrderPreview/OrderDetails";
 import CartHeader from "./Components/CartHeader";
 import { useSnackbar } from "notistack";
-import { cancelOrder, saveToDrafts } from "../../../../redux/actions/RapidOrderActions";
+import { cancelOrder, saveToDrafts, removeFromCart, updateCustomer, submitOrder } from "../../../../redux/actions/RapidOrderActions";
 
 const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
     const open = useSelector((state) => state.GlobalState.drawerOpen);
@@ -40,10 +40,11 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
         const removeItem = () => {
             if (window.confirm(`Delete ${i.id} ?`)) {
                 triggerSnack("error", `Deleted Item ${i.id}`);
-                dispatch({
-                    type: "REMOVE_ITEM",
-                    id: i.id,
-                });
+                dispatch(removeFromCart(i.id));
+                // dispatch({
+                //     type: "REMOVE_ITEM",
+                //     id: i.id,
+                // });
             }
         };
         const flavors = () => {
@@ -99,7 +100,7 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
         );
     });
 
-    const submitOrder = () => {
+    const submitHandler = () => {
         const NewOrder = {
             customer,
             details: {
@@ -125,7 +126,7 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
                   )
                   .then(() => {
                       console.log("success");
-                      dispatch({ type: "SUBMIT_ORDER" });
+                      dispatch(submitOrder());
                   })
                   .catch((err) => {
                       console.log(err);
@@ -133,14 +134,8 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
     };
     const customerChangeHandler = (e, value) => {
         return value === null
-            ? window.confirm("Are you sure you want to cancel this order?") &&
-                  dispatch({
-                      type: "CANCEL_ORDER",
-                  })
-            : dispatch({
-                  type: "SET_CUSTOMER",
-                  customer: value,
-              });
+            ? window.confirm("Are you sure you want to cancel this order?") && dispatch(cancelOrder())
+            : dispatch(updateCustomer(value));
     };
     const notesChangeHandler = (e) => {
         dispatch({
@@ -201,9 +196,11 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
                         <h3>{!OrdersModel.isCartEmpty(cart) && OrdersModel.CalculateCases(cart)}</h3>
                     </div>
                     <span>
-                        <button onClick={submitOrder}>Submit</button>
-                        <button onClick={() => dispatch(saveToDrafts())}>Draft</button>
-                        <button onClick={() => dispatch(cancelOrder())}>Cancel</button>
+                        <button onClick={submitHandler}>Submit</button>
+                        {!editMode && <button onClick={() => dispatch(saveToDrafts())}>Draft</button>}
+                        <button onClick={() => window.confirm("Are you sure you want to cancel this order") && dispatch(cancelOrder())}>
+                            Cancel
+                        </button>
                     </span>
                 </Actions>
             </Container>
