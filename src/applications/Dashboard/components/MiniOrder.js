@@ -6,7 +6,6 @@ import { Order as orderModel } from "../../../Models/Order";
 import DragHandleIcon from "@material-ui/icons/DragHandleRounded";
 import moment from "moment";
 const Order = ({ order }) => {
-    console.log(order);
     return (
         <Component>
             <DragHandleIcon />

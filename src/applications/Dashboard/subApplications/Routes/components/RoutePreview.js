@@ -4,12 +4,11 @@ import { Colors } from "../../../../../Constants/Colors";
 import MiniOrder from "../../../components/MiniOrder";
 import { Popover } from "@material-ui/core";
 import OptionsIcon from "@material-ui/icons/BlurCircularRounded";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useFirestore } from "react-redux-firebase";
 import { Order as ordersModel } from "../../../../../Models/Order";
 import RoutePDF from "./RoutePDF";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import CaseIcon from "../../../../../Assets/Icons/CaseIcon";
 import { completeRoute } from "../../../../../redux/actions/RouteActions";
 
 const RoutePreview = ({ data }) => {
@@ -18,6 +17,7 @@ const RoutePreview = ({ data }) => {
     const orders = useSelector((state) => state.Firestore.data.ordersv2.orders);
     const routes = useSelector((state) => state.Firestore.data.routes.routes);
     const firestore = useFirestore();
+    const dispatch = useDispatch();
 
     const BetaRouteOrders = () => {
         let obj = {};
@@ -118,9 +118,10 @@ const RoutePreview = ({ data }) => {
                             {({ loading }) => (loading ? "Loading..." : "Route Summary")}
                         </PDFDownloadLink>
                     </p>
-                    <p className='complete' onClick={completeRoute()}>
+                    {/* <p className='complete' onClick={() => dispatch(completeRoute(data, firestore, setOpen))}>
                         Complete Route
-                    </p>
+                    </p> */}
+                    <p className='complete'>Complete Route</p>
                     <p className='delete' onClick={BetaDeleteRoute}>
                         Delete Route
                     </p>
