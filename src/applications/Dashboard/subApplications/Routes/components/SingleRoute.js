@@ -15,6 +15,7 @@ const SingleRoute = ({ data }) => {
         });
         return Object.values(obj);
     };
+    // BETA eventually move to order models
     const orderTotal = () => {
         try {
             return BetaRouteOrders()

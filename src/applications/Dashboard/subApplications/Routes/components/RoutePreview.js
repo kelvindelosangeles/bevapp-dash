@@ -10,6 +10,7 @@ import { Order as ordersModel } from "../../../../../Models/Order";
 import RoutePDF from "./RoutePDF";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import CaseIcon from "../../../../../Assets/Icons/CaseIcon";
+import { completeRoute } from "../../../../../redux/actions/RouteActions";
 
 const RoutePreview = ({ data }) => {
     const [open, setOpen] = useState(false);
@@ -114,8 +115,11 @@ const RoutePreview = ({ data }) => {
                 <Menu>
                     <p className='pdf'>
                         <PDFDownloadLink document={<RoutePDF route={BetaRouteOrders()} />} fileName={`Route.pdf`}>
-                            {({ loading }) => (loading ? "Loading..." : "Route PDF")}
+                            {({ loading }) => (loading ? "Loading..." : "Route Summary")}
                         </PDFDownloadLink>
+                    </p>
+                    <p className='complete' onClick={completeRoute()}>
+                        Complete Route
                     </p>
                     <p className='delete' onClick={BetaDeleteRoute}>
                         Delete Route
@@ -201,6 +205,12 @@ const Menu = styled.div`
         :hover {
             background-color: ${Colors.red};
             color: ${Colors.white};
+        }
+        .complete {
+            :hover {
+                background-color: ${Colors.green};
+                color: ${Colors.black};
+            }
         }
     }
 `;

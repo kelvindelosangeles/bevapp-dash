@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { Colors } from "../../Constants/Colors";
+import { Colors } from "../../../Constants/Colors";
 import { useState } from "react";
 import { useEffect } from "react";
-import Order from "../Dashboard/components/Order";
+import Order from "../components/Order";
 import store from "store";
 const Drafts = () => {
     const [drafts, setDrafts] = useState([]);
@@ -18,11 +18,11 @@ const Drafts = () => {
 
     return (
         <Component>
-            <Actions>Actions go here</Actions>
+            <Actions></Actions>
             <DraftsContainer>
                 <OrderHeader>
                     <h6>Order</h6>
-                    <h6>Store</h6>
+                    <h6>Store </h6>
                     <h6>Cases</h6>
                     <h6>Total</h6>
                     <h6></h6>
