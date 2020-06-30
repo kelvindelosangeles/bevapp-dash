@@ -109,7 +109,6 @@ const OrderPreview = ({ order, history, closeOrderPreview }) => {
                                 {i.hasOwnProperty("flavors") &&
                                     Object.entries(i.flavorsQuantity)
                                         .filter((a) => {
-                                            console.log(a);
                                             return !a[1] == "" && a[1] !== "0";
                                         })
                                         .map((x) => <p className='flavor'>{`${x[0].toLowerCase()} x ${x[1]}`}</p>)}

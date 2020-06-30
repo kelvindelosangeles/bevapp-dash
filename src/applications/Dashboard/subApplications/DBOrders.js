@@ -14,7 +14,7 @@ const DBOrders = ({ activeOrder, dispatch }) => {
             return a.details.createdAt > b.details.createdAt ? 1 : -1;
         })
         .filter((c) => {
-            return moment(c.details.createdAt).isSameOrBefore(moment());
+            return moment(c.details.createdAt).isSameOrBefore(moment(), "day");
         })
         .map((x) => {
             return <Order order={x} />;
@@ -25,7 +25,7 @@ const DBOrders = ({ activeOrder, dispatch }) => {
             return a.details.createdAt > b.details.createdAt ? 1 : -1;
         })
         .filter((c) => {
-            return moment(c.details.createdAt).isAfter(moment());
+            return moment(c.details.createdAt).isAfter(moment(), "day");
         })
         .map((x) => {
             return <Order order={x} />;

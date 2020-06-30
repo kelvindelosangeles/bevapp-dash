@@ -118,10 +118,10 @@ const RoutePreview = ({ data }) => {
                             {({ loading }) => (loading ? "Loading..." : "Route Summary")}
                         </PDFDownloadLink>
                     </p>
-                    {/* <p className='complete' onClick={() => dispatch(completeRoute(data, firestore, setOpen))}>
+                    <p className='complete' onClick={() => dispatch(completeRoute(data, firestore, setOpen))}>
                         Complete Route
-                    </p> */}
-                    <p className='complete'>Complete Route</p>
+                    </p>
+                    {/* <p className='complete'>Complete Route</p> */}
                     <p className='delete' onClick={BetaDeleteRoute}>
                         Delete Route
                     </p>
