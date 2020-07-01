@@ -38,7 +38,7 @@ const RoutePDF = ({ route }) => {
                 <View style={styles.header}>
                     <Text style={styles.header.text}>Route Sheet</Text>
                     <Text style={styles.header.text}>For route: Driver Name</Text>
-                    <Text style={styles.header.text}>06/22/2020 10:00 PM</Text>
+                    <Text style={styles.header.text}>{moment().format("LLL")}</Text>
                 </View>
                 <View style={styles.gridHeader}>
                     <Text style={styles.gridHeader.customer}>Customer</Text>
