@@ -114,7 +114,9 @@ const RoutePreview = ({ data }) => {
                 }}>
                 <Menu>
                     <p className='pdf'>
-                        <PDFDownloadLink document={<RoutePDF route={BetaRouteOrders()} />} fileName={`Route.pdf`}>
+                        <PDFDownloadLink
+                            document={<RoutePDF route={BetaRouteOrders()} driver={data.driver.firstName.toUpperCase()} />}
+                            fileName={`Route.pdf`}>
                             {({ loading }) => (loading ? "Loading..." : "Route Summary")}
                         </PDFDownloadLink>
                     </p>

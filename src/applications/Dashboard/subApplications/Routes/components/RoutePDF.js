@@ -3,7 +3,8 @@ import moment from "moment";
 import { Page, Text, View, Document } from "@react-pdf/renderer";
 import { Order as orderModel } from "../../../../../Models/Order";
 
-const RoutePDF = ({ route }) => {
+const RoutePDF = ({ route, driver }) => {
+    console.log(route);
     const routesArray = Object.values(route);
     const TotalCases = () => {
         try {
@@ -37,7 +38,7 @@ const RoutePDF = ({ route }) => {
             <Page style={styles.body}>
                 <View style={styles.header}>
                     <Text style={styles.header.text}>Route Sheet</Text>
-                    <Text style={styles.header.text}>For route: Driver Name</Text>
+                    <Text style={styles.header.text}>For route: {driver}</Text>
                     <Text style={styles.header.text}>{moment().format("LLL")}</Text>
                 </View>
                 <View style={styles.gridHeader}>
