@@ -34,25 +34,26 @@ export const completeRoute = (route, firestore, setOpen) => {
         };
 
         const docRef = firestore.collection("ordersv2").doc(weekDocument);
+        window.confirm("Are you sure you want to complete this route?") &&
+            firestore
+                .runTransaction((t) => {
+                    return t.get(docRef).then((doc) => {
+                        doc.exists
+                            ? t.update(firestore.collection("ordersv2").doc(weekDocument), completedRoute())
+                            : t.set(firestore.collection("ordersv2").doc(weekDocument), completedRoute());
 
-        firestore
-            .runTransaction((t) => {
-                return t.get(docRef).then((doc) => {
-                    doc.exists
-                        ? t.update(firestore.collection("ordersv2").doc(weekDocument), completedRoute())
-                        : t.set(firestore.collection("ordersv2").doc(weekDocument), completedRoute());
-
-                    t.set(firestore.collection("ordersv2").doc("orders"), updatedOrders);
-                    t.set(firestore.collection("routes").doc("routes"), updatedRoutes);
+                        t.set(firestore.collection("ordersv2").doc("orders"), updatedOrders);
+                        t.set(firestore.collection("routes").doc("routes"), updatedRoutes);
+                    });
+                })
+                .then(() => {
+                    console.log("transaction Successful");
+                    setOpen(false);
+                })
+                .catch((err) => {
+                    window.alert("Error Completing Route");
+                    console.log("Transaction Failed");
+                    console.log(err);
                 });
-            })
-            .then(() => {
-                console.log("transaction Successful");
-                setOpen(false);
-            })
-            .catch((err) => {
-                console.log("Transaction Failed");
-                console.log(err);
-            });
     };
 };
