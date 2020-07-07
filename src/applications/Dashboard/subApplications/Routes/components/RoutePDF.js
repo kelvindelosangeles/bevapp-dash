@@ -4,7 +4,6 @@ import { Page, Text, View, Document } from "@react-pdf/renderer";
 import { Order as orderModel } from "../../../../../Models/Order";
 
 const RoutePDF = ({ route, driver }) => {
-    console.log(route);
     const routesArray = Object.values(route);
     const TotalCases = () => {
         try {

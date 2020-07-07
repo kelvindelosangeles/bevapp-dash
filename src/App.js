@@ -77,10 +77,17 @@ export default compose(
             orders: state.Firestore.data.ordersv2,
             store: state.Firestore.data.store,
             routes: state.Firestore.data.routes,
+            testies: state.Firestore.data.testies,
         };
     }),
     firestoreConnect(() => {
-        return [{ collection: "inventory" }, { collection: "ordersv2", doc: "orders" }, { collection: "store" }, { collection: "routes" }];
+        return [
+            { collection: "inventory" },
+            { collection: "ordersv2", doc: "orders" },
+            { collection: "store" },
+            { collection: "routes" },
+            { collection: "ordersv2", storeAs: "testies" },
+        ];
         // return [{ collection: "inventory" }, { collection: "orders" }, { collection: "store" }];
     })
 )(App);

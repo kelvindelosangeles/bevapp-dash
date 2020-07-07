@@ -10,6 +10,7 @@ import { Order as ordersModel } from "../../../../../Models/Order";
 import RoutePDF from "./RoutePDF";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { completeRoute } from "../../../../../redux/actions/RouteActions";
+import TotalRoutePDF from "../../../../../Global/PrintTemplates/TotalRoutePDF";
 
 const RoutePreview = ({ data }) => {
     const [open, setOpen] = useState(false);
@@ -74,6 +75,8 @@ const RoutePreview = ({ data }) => {
         }
     };
 
+    // Tools needed to print an entire route
+
     return (
         <Component>
             <OptionsIcon ref={anchor} id='options-icon' onClick={() => setOpen(true)} />
@@ -116,14 +119,20 @@ const RoutePreview = ({ data }) => {
                     <p className='pdf'>
                         <PDFDownloadLink
                             document={<RoutePDF route={BetaRouteOrders()} driver={data.driver.firstName.toUpperCase()} />}
-                            fileName={`Route.pdf`}>
+                            fileName={`${data.driver.firstName.toUpperCase()}-Route-summary-sheet`}>
                             {({ loading }) => (loading ? "Loading..." : "Route Summary")}
+                        </PDFDownloadLink>
+                    </p>
+                    <p className='pdf'>
+                        <PDFDownloadLink
+                            document={<TotalRoutePDF route={data} orders={orders} />}
+                            fileName={`${data.driver.firstName.toUpperCase()}-Route`}>
+                            {({ loading }) => (loading ? "Loading..." : "Print Total Route")}
                         </PDFDownloadLink>
                     </p>
                     <p className='complete' onClick={() => dispatch(completeRoute(data, firestore, setOpen))}>
                         Complete Route
                     </p>
-                    {/* <p className='complete'>Complete Route</p> */}
                     <p className='delete' onClick={BetaDeleteRoute}>
                         Delete Route
                     </p>
@@ -198,6 +207,10 @@ const Menu = styled.div`
         font-weight: 600;
         border: 1px solid ${Colors.lightGrey};
         cursor: pointer;
+        text-align: center;
+    }
+    a {
+        color: ${Colors.black};
     }
     .edit {
         :hover {
