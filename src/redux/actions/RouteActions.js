@@ -8,9 +8,7 @@ export const completeRoute = (route, firestore, setOpen) => {
     // function gets the route and extracts the route ID
     const { routeID } = route.details;
     // the week document is where all routes created that day are stored
-    // const weekDocument = moment(new Date()).format("YYYYMMwE");
-    // const weekDocument = moment(new Date()).format("YYYYMMwE");
-    const weekDocument = "202007281";
+    const weekDocument = moment(new Date()).format("YYYYMMwE");
     return (dispatch, getState) => {
         // grab the orders from the dashboard to build the complete routes object
         // grab the routes from the db to build an updated list
