@@ -31,6 +31,7 @@ export const completeRoute = (route, firestore, setOpen) => {
                 },
             };
         };
+        setOpen(false);
 
         const docRef = firestore.collection("ordersv2").doc(weekDocument);
         window.confirm("Are you sure you want to complete this route?") &&
@@ -47,7 +48,6 @@ export const completeRoute = (route, firestore, setOpen) => {
                 })
                 .then(() => {
                     console.log("transaction Successful");
-                    setOpen(false);
                 })
                 .catch((err) => {
                     window.alert("Error Completing Route");
