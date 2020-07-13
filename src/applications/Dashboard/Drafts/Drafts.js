@@ -20,6 +20,9 @@ const Drafts = () => {
         <Component>
             <Actions></Actions>
             <DraftsContainer>
+                <div className='heading'>
+                    <p>Drafts</p>
+                </div>
                 <OrderHeader>
                     <h6>Order</h6>
                     <h6>Store </h6>
@@ -61,6 +64,11 @@ const DraftsContainer = styled.div`
     background-color: white;
     border-radius: 8px 0 0 0;
     padding: 32px;
+    .heading {
+        margin-bottom: 64;
+        font-size: 24px;
+        font-weight: 600;
+    }
 `;
 
 const OrderHeader = styled.div`
