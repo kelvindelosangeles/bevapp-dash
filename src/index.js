@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { StyleSheetManager, createGlobalStyle } from "styled-components";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import MomentUtils from "@date-io/moment";
 
 import { HashRouter as Router } from "react-router-dom";
 import { composeWithDevTools } from "redux-devtools-extension";
@@ -96,8 +98,10 @@ ReactDOM.render(
         <Router>
             <Provider store={store}>
                 <ReactReduxFirebaseProvider {...rrfProps}>
-                    <GlobalStyle />
-                    <App />
+                    <MuiPickersUtilsProvider utils={MomentUtils}>
+                        <GlobalStyle />
+                        <App />
+                    </MuiPickersUtilsProvider>
                 </ReactReduxFirebaseProvider>
             </Provider>
         </Router>
