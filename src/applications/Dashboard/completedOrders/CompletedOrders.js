@@ -86,6 +86,7 @@ const CompletedOrders = () => {
                                     totalCases={CalcCasesMultipleOrders(allOrders())}
                                     CalcCasesMultipleOrders={CalcCasesMultipleOrders}
                                     CalcTotalMultipleOrders={CalcTotalMultipleOrders}
+                                    theDate={theDate}
                                 />
                             }
                             fileName={`Daily Journal date`}>
