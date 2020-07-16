@@ -42,27 +42,6 @@ const DailyJournal = ({ orders, total, totalCases, CalcCasesMultipleOrders, Calc
                     );
                 })}
 
-                <View stye={dj.route}>
-                    <View style={dj.route.heading}>
-                        <Text style={dj.route.info}>Driver Name</Text>
-                        <Text style={dj.route.info}>Orders</Text>
-                        <Text style={dj.route.info}>Cases</Text>
-                        <Text style={dj.route.info}>Total</Text>
-                    </View>
-                    <View style={dj.order.heading}>
-                        <Text style={dj.order.info}>Driver Name</Text>
-                        <Text style={dj.order.info}>Orders</Text>
-                        <Text style={dj.order.info}>Cases</Text>
-                        <Text style={dj.order.info}>Total</Text>
-                    </View>
-                    <View style={dj.order.heading}>
-                        <Text style={dj.order.info}>Driver Name</Text>
-                        <Text style={dj.order.info}>Orders</Text>
-                        <Text style={dj.order.info}>Cases</Text>
-                        <Text style={dj.order.info}>Total</Text>
-                    </View>
-                </View>
-
                 <View style={dj.footer}>
                     <Text style={dj.footer.data}>Total Cases: {totalCases}</Text>
                     <Text style={dj.footer.data}>Daily total: {total}</Text>
@@ -72,10 +51,10 @@ const DailyJournal = ({ orders, total, totalCases, CalcCasesMultipleOrders, Calc
     );
 };
 
-Font.register({
-    family: "Oswald",
-    src: "https://fonts.gstatic.com/s/oswald/v13/Y_TKV6o8WovbUd3m_X9aAA.ttf",
-});
+// Font.register({
+//     family: "Oswald",
+//     src: "https://fonts.gstatic.com/s/oswald/v13/Y_TKV6o8WovbUd3m_X9aAA.ttf",
+// });
 
 const dj = StyleSheet.create({
     page: {
