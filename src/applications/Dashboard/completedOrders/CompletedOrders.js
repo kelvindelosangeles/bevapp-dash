@@ -1,22 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useFirestore } from "react-redux-firebase";
 import styled from "styled-components";
 import Application from "../../../components/app layout/Application";
 import ActionBar from "../../../components/app layout/ActionBar";
 import Body from "../../../components/app layout/Body";
+import Stat from "../../../components/action bar/Stat";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import DatePicker from "../../../components/DatePicker";
 import moment from "moment";
-import { useEffect } from "react";
-import { Colors } from "../../../Constants/Colors";
 import { Order as OrderModel } from "../../../Models/Order";
-import Stat from "../../../components/action bar/Stat";
-
+import { Colors } from "../../../Constants/Colors";
 import OrderPreview from "../../../components/OrderPreview";
+import DailyJournal from "../../../Global/PrintTemplates/DailyJournal";
 
 const CompletedOrders = () => {
     const [theDate, setTheDate] = useState(null);
     const [orders, setOrders] = useState(null);
     const firestore = useFirestore();
+
     const allOrders = () => {
         let obj = {};
         orders.forEach((y) => {
@@ -61,9 +62,6 @@ const CompletedOrders = () => {
             return "ERR";
         }
     };
-    const GenerateDailyJournal = () => {
-        window.alert("Coming Soon");
-    };
 
     useEffect(() => {
         theDate && getCompletedOrders();
@@ -73,12 +71,28 @@ const CompletedOrders = () => {
         <Application>
             <ActionBar>
                 <DatePicker theDate={theDate} setTheDate={setTheDate} label='Select a Date' />
-                {orders && <Stat color={Colors.green} title='Routes' data={orders.length} />}
-                {orders && <Stat color={Colors.blue} title='Cases' data={CalcCasesMultipleOrders(allOrders())} />}
-                {orders && <Stat color={Colors.orange} title='Total' data={`$${CalcTotalMultipleOrders(allOrders())}`} />}
+                {orders && <Stat color={Colors.blue} title='Routes' data={orders.length} />}
+                {orders && <Stat color={Colors.green} title='Total' data={`$${CalcTotalMultipleOrders(allOrders())}`} />}
+                {orders && <Stat color={Colors.orange} title='Cases' data={CalcCasesMultipleOrders(allOrders())} />}
                 <span />
                 <span />
-                {orders && <Button onClick={GenerateDailyJournal}>Download Daily Journal</Button>}{" "}
+                {orders && (
+                    <Button>
+                        <PDFDownloadLink
+                            document={
+                                <DailyJournal
+                                    orders={orders}
+                                    total={CalcTotalMultipleOrders(allOrders())}
+                                    totalCases={CalcCasesMultipleOrders(allOrders())}
+                                    CalcCasesMultipleOrders={CalcCasesMultipleOrders}
+                                    CalcTotalMultipleOrders={CalcTotalMultipleOrders}
+                                />
+                            }
+                            fileName={`Daily Journal date`}>
+                            {({ loading }) => (loading ? "Loading..." : "Download Daily Journal")}
+                        </PDFDownloadLink>
+                    </Button>
+                )}
             </ActionBar>
             <Body title='Completed Orders' header={<Header />}>
                 {orders ? (
@@ -93,16 +107,6 @@ const CompletedOrders = () => {
                                         <p>${CalcTotalMultipleOrders(a.orders)}</p>
                                     </div>
                                     {Object.values(a.orders).map((b) => {
-                                        {
-                                            /* return (
-                                            <div className='route-order'>
-                                                <p>{b.customer.address}</p>
-                                                <span />
-                                                <p>{OrderModel.CalculateCases(b.cart)}</p>
-                                                <p>${OrderModel.CalculateCart(b.cart, b.customer.specialPrices)}</p>
-                                            </div>
-                                        ); */
-                                        }
                                         return <OrderPreview order={b} />;
                                     })}
                                 </div>
@@ -134,7 +138,11 @@ const BodyContent = styled.div`
     .route {
         .route-details {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            /* grid-template-columns: repeat(4, 1fr); */
+            grid-template-columns: 120px 310px 1fr 1fr;
+            grid-column-gap: 32px;
+            /* FIXME: Make adjustable  */
+
             padding: 16px;
             margin-left: -16px;
             margin-right: -16px;
@@ -145,25 +153,13 @@ const BodyContent = styled.div`
             border-radius: 4px 4px 0 0;
             text-transform: uppercase;
         }
-        .route-order {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            padding: 16px;
-            margin-left: -16px;
-            margin-right: -16px;
-            background-color: ${Colors.lightGrey};
-            color: ${Colors.black};
-            border-radius: 0;
-            text-transform: uppercase;
-            :nth-last-of-type(even) {
-                background-color: ${Colors.white};
-            }
-        }
     }
 `;
 const HeaderComponent = styled.div`
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    /* grid-template-columns: repeat(4, 1fr); */
+    grid-template-columns: 120px 310px 1fr 1fr;
+    grid-column-gap: 32px;
     p {
         font-size: 16px;
         font-weight: 500;
@@ -173,7 +169,9 @@ const HeaderComponent = styled.div`
 const Button = styled.button`
     padding: 14px 32px;
     background-color: ${Colors.blue};
-    color: ${Colors.white};
+    a {
+        color: ${Colors.white}!important;
+    }
     font-size: 16px;
     font-weight: 600;
     outline: none;

@@ -36,7 +36,7 @@ const Order = ({ order }) => {
                 <p className='cases'>
                     <CaseIcon /> {orderModel.CalculateCases(cart)}
                 </p>
-                <p>$ {orderModel.CalculateCart(cart, customer.specialPrices)}</p>
+                <p>${orderModel.CalculateCart(cart, customer.specialPrices)}</p>
                 {/* <p>{status}</p> */}
             </Component>
             {/* <Dialog open={orderPreviewOpen} onClose={toggle} scroll='paper' maxWidth={"90vw"}>
@@ -49,6 +49,8 @@ const Component = styled.div`
     display: grid;
     grid-column-gap: 32px;
     grid-template-columns: 120px 310px 1fr 1fr;
+    /* FIXME: Make adjustable  */
+
     padding: 16px 0px;
     border-bottom: 1px solid rgba(155, 155, 155, 0.29);
     cursor: pointer;
