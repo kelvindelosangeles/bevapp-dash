@@ -1,82 +1,311 @@
-import React, { useState, Fragment } from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
-import moment from "moment";
-import Dialog from "@material-ui/core/Dialog";
+import { withRouter } from "react-router-dom";
 import { Order as orderModel } from "../Models/Order";
+import moment from "moment";
+import OptionsIcon from "@material-ui/icons/BlurCircularRounded";
 import { Colors } from "../Constants/Colors";
-import OrderPreview from "./OrderPreview";
-import CaseIcon from "../Assets/Icons/CaseIcon";
+import Popover from "@material-ui/core/Popover";
+import { useDispatch, useSelector } from "react-redux";
+import { editOrder, deleteOrder } from "../redux/actions/RapidOrderActions";
+import { useFirestore } from "react-redux-firebase";
+import CustomerPDF from "../Global/PrintTemplates/CustomerPDF";
+import WarehousePDF from "../Global/PrintTemplates/WarehousePDF";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 
-const Order = ({ order }) => {
-    const [orderPreviewOpen, setOrderPreviewOpen] = useState(false);
+const OrderPreview = (props) => {
+    // close order preview comes from the parent so that we can close the entire menu from within the action creators
+    const { order, history, closeOrderPreview, canEdit = false, canDelete = false, genInvoice = false, genCheck = false, completedDate } = props;
     const { customer, details, cart } = order;
-    // BETA
-    const ar = useSelector((state) => state.Firestore.data.routes.routes);
-    const allRouteOrders = Object.values(ar)
-        .map((a) => {
-            return a.orders;
-        })
-        .flat();
+    const [open, setOpen] = useState(false);
+    const anchor = useRef();
+    const dispatch = useDispatch();
+    const firestore = useFirestore();
+    const beverages = useSelector((state) => state.Firestore.data.inventory.beverages);
 
-    const status = allRouteOrders.indexOf(details.orderID) < 0 ? "New Order" : "Assigned";
-
-    const toggle = () => {
-        setOrderPreviewOpen(!orderPreviewOpen);
+    const ReturnSpecialPrice = (id) => {
+        try {
+            return "$" + customer.specialPrices[id].price;
+        } catch (error) {
+            return null;
+        }
+    };
+    const CalcOrderMargin = () => {
+        return (orderModel.CalculateCart(cart, null) - orderModel.CalculateCart(cart, customer.specialPrices)).toFixed(2);
     };
 
     return (
-        <Fragment>
-            <Component onClick={() => setOrderPreviewOpen(true)}>
-                <div className='id'>
-                    <p>{details.orderID.slice(7, 16)}</p>
-                    <p className='time'>{moment(details.createdAt).format("MMM, Do LT")}</p>
-                </div>
-                <p className='address'>{customer.address}</p>
-                <p className='cases'>
-                    <CaseIcon /> {orderModel.CalculateCases(cart)}
-                </p>
-                <p>${orderModel.CalculateCart(cart, customer.specialPrices)}</p>
-                {/* <p>{status}</p> */}
-            </Component>
-            {/* <Dialog open={orderPreviewOpen} onClose={toggle} scroll='paper' maxWidth={"90vw"}>
-                <OrderPreview order={order} closeOrderPreview={() => setOrderPreviewOpen(false)} />
-            </Dialog> */}
-        </Fragment>
+        <Component>
+            <OptionsIcon
+                ref={anchor}
+                className='order-options'
+                onClick={() => {
+                    setOpen(true);
+                }}
+            />
+            <div className='order-details'>
+                <CustomerDetails>
+                    <p className='name'>{customer.name}</p>
+                    <p className=''>{customer.address}</p>
+                    <p className=''>{orderModel.formatTel(customer.telephone)}</p>
+                    <p className=''>{customer.city}</p>
+                </CustomerDetails>
+                <OrderDetails>
+                    <section>
+                        <p className='heading'>Order ID</p>
+                        <p>{details.orderID.slice(7, 16)}</p>
+                    </section>
+                    <section>
+                        <p className='heading'>Ordered On</p>
+                        <p>{moment(details.createdAt).format("L")}</p>
+                    </section>
+                    <section>
+                        <p className='heading'>Placed By</p>
+                        <p>{details.createdBy}</p>
+                    </section>
+                    <section>
+                        <p className='heading'>Status</p>
+                        <p>{details.status}</p>
+                    </section>
+                </OrderDetails>
+                <OrderDetails margin={parseFloat(CalcOrderMargin())}>
+                    <section>
+                        <p className='heading'>Cases</p>
+                        <p>{orderModel.CalculateCases(cart)}</p>
+                    </section>
+                    <section>
+                        <p className='heading'>Total Margin</p>
+                        <p className='margin'>${CalcOrderMargin()}</p>
+                    </section>
+                    <section>
+                        <p className='heading'>Total</p>
+                        <p className='total'>${orderModel.CalculateCart(cart, customer.specialPrices)}</p>
+                    </section>
+                    <section>
+                        <p className='heading'></p>
+                        <p></p>
+                    </section>
+                </OrderDetails>
+                <Notes>
+                    <p className='header'>Notes</p>
+                    <p className='notes'>{details.notes}</p>
+                </Notes>
+            </div>
+            <div className='cart-header'>
+                <p>QTY</p>
+                <p>ID</p>
+                <p>Description</p>
+                <p>Cost</p>
+                <p>SP.Price</p>
+                <p>Total</p>
+            </div>
+            <Cart>
+                {Object.values(cart).map((i) => {
+                    return (
+                        <div className='item'>
+                            <p>{i.qty} x</p>
+                            <p>{i.id}</p>
+                            <div>
+                                <p>{i.description}</p>
+                                {i.hasOwnProperty("flavors") &&
+                                    Object.entries(i.flavorsQuantity)
+                                        .filter((a) => {
+                                            return !a[1] == "" && a[1] !== "0";
+                                        })
+                                        .map((x) => <p className='flavor'>{`${x[0].toLowerCase()} x ${x[1]}`}</p>)}
+                            </div>
+                            <p>${i.price}</p>
+                            <p className='special-price'>{ReturnSpecialPrice(i.id)}</p>
+                            <p>{orderModel.CalculateItem(i, customer.specialPrices)}</p>
+                        </div>
+                    );
+                })}
+            </Cart>
+            <Popover
+                open={open}
+                anchorEl={anchor.current}
+                onClose={() => setOpen(false)}
+                anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                }}
+                transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                }}>
+                <Menu>
+                    {genCheck && (
+                        <p className='pdf'>
+                            <PDFDownloadLink
+                                document={<WarehousePDF order={order} beverages={beverages} />}
+                                fileName={`${order.customer.address}-WH.pdf`}>
+                                {({ loading }) => (loading ? "Loading document..." : "Warehouse PDF")}
+                            </PDFDownloadLink>
+                        </p>
+                    )}
+                    {genInvoice && (
+                        <p className='pdf'>
+                            <PDFDownloadLink
+                                document={<CustomerPDF order={order} date={completedDate} />}
+                                fileName={`${order.customer.address}-CX.pdf`}>
+                                {({ loading }) => (loading ? "Loading document..." : "Create Invoice")}
+                            </PDFDownloadLink>
+                        </p>
+                    )}
+                    {canEdit && (
+                        <p className='edit' onClick={() => dispatch(editOrder(order, history))}>
+                            Edit Order
+                        </p>
+                    )}
+                    {canDelete && (
+                        <p className='delete' onClick={() => dispatch(deleteOrder(order, firestore, closeOrderPreview))}>
+                            Delete Order
+                        </p>
+                    )}
+                </Menu>
+            </Popover>
+        </Component>
     );
 };
 const Component = styled.div`
+    position: relative;
+    padding: 32px;
+    padding-top: 0;
     display: grid;
-    grid-column-gap: 32px;
-    grid-template-columns: 120px 310px 1fr 1fr;
-    /* FIXME: Make adjustable  */
-
-    padding: 16px 0px;
-    border-bottom: 1px solid rgba(155, 155, 155, 0.29);
-    cursor: pointer;
-    :hover {
+    grid-template-columns: repeat(4, auto);
+    grid-column-gap: 64px;
+    grid-template-areas:
+        "actions actions actions actions"
+        "orderDetails orderDetails orderDetails orderDetails"
+        "cart-header cart-header cart-header cart-header"
+        "cart cart cart cart";
+    .order-details {
+        grid-area: orderDetails;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-column-gap: 40px;
         background-color: ${Colors.lightGrey};
-        transition: background-color 300ms ease-in-out;
+        padding: 32px;
+        margin: 0 -32px;
     }
-    p {
-        font-weight: 600;
-        font-size: 16px;
+    .cart-header {
+        grid-area: cart-header;
+        display: grid;
+        font-weight: 700;
+        grid-template-columns: 60px 100px 1fr 100px 100px 100px;
+        border-top: 1px solid ${Colors.lightGrey};
+        margin: 24px -24px;
+        padding: 16px 32px;
     }
-    .address {
-        text-transform: uppercase;
-    }
-    .cases {
-        display: flex;
-        align-items: baseline;
-        svg {
-            margin-right: 8px;
-            height: 10px;
-        }
-    }
-    .time {
-        font-weight: 600;
-        font-size: 12px;
-        color: ${Colors.grey};
+    .order-options {
+        position: absolute;
+        top: 24px;
+        right: 24px;
+        cursor: pointer;
     }
 `;
-export default Order;
+
+const CustomerDetails = styled.div`
+    text-transform: uppercase;
+    display: grid;
+    grid-row-gap: 12px;
+    .name {
+        font-weight: 700;
+        font-size: 18px;
+    }
+    p {
+        font-size: 16px;
+    }
+`;
+const OrderDetails = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0 16px;
+    grid-gap: 16px;
+    p.heading {
+        font-weight: 700;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+    }
+    p {
+        white-space: nowrap;
+    }
+    p.total {
+        color: ${Colors.blue};
+        font-weight: 600;
+    }
+    p.margin {
+        color: ${({ margin }) => (margin === 0 ? null : margin > 0 ? Colors.red : Colors.green)};
+    }
+`;
+const Notes = styled.div`
+    display: grid;
+    grid-template-rows: min-content 1fr;
+
+    .header {
+        text-align: center;
+        margin-bottom: 16px;
+    }
+    .notes {
+        border: 1px solid ${Colors.lightGrey};
+        padding: 4px;
+    }
+`;
+const Cart = styled.div`
+    grid-area: cart;
+    .item {
+        :nth-of-type(even) {
+            background-color: ${Colors.lightGrey};
+        }
+        .special-price {
+            color: ${Colors.purple};
+        }
+        display: grid;
+        grid-template-columns: 60px 100px 1fr 100px 100px 100px;
+        font-weight: 500;
+        font-size: 16px;
+        margin-left: -24px;
+        margin-right: -24px;
+        padding: 16px 32px;
+        .flavor {
+            font-weight: 500;
+            margin-left: 16px;
+            text-transform: capitalize;
+        }
+    }
+`;
+const Menu = styled.div`
+    display: grid;
+    p {
+        padding: 16px 32px;
+        font-size: 16px;
+        font-weight: 600;
+        border: 1px solid ${Colors.lightGrey};
+        cursor: pointer;
+    }
+    .pdf {
+        a {
+            color: ${Colors.black};
+        }
+        :hover {
+            background-color: ${Colors.black};
+            a {
+                color: ${Colors.white};
+            }
+        }
+    }
+    .edit {
+        :hover {
+            background-color: ${Colors.yellow};
+        }
+    }
+    .delete {
+        :hover {
+            background-color: ${Colors.red};
+            color: ${Colors.white};
+        }
+    }
+`;
+export default withRouter(OrderPreview);
+
+// TODO: refactor this code and split areas into individual components

@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useFirestore } from "react-redux-firebase";
 import styled from "styled-components";
-import Application from "../../../components/app layout/Application";
-import ActionBar from "../../../components/app layout/ActionBar";
-import Body from "../../../components/app layout/Body";
+import { Application, ActionBar, Body } from "../../../components/layout/Application";
 import Stat from "../../../components/action bar/Stat";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import DatePicker from "../../../components/DatePicker";
 import moment from "moment";
 import { Order as OrderModel } from "../../../Models/Order";
 import { Colors } from "../../../Constants/Colors";
-import OrderPreview from "../../../components/OrderPreview";
-import DailyJournal from "../../../Global/PrintTemplates/DailyJournal";
+import DailyJournal from "../../../Global/PrintTemplates/DailyJournalPDF";
+import Order from "../../../components/Order";
 
 const CompletedOrders = () => {
     const [theDate, setTheDate] = useState(null);
@@ -108,7 +106,7 @@ const CompletedOrders = () => {
                                         <p>${CalcTotalMultipleOrders(a.orders)}</p>
                                     </div>
                                     {Object.values(a.orders).map((b) => {
-                                        return <OrderPreview order={b} />;
+                                        return <Order order={b} completedDate={a.details.completedAt.toDate()} />;
                                     })}
                                 </div>
                             );
@@ -139,11 +137,8 @@ const BodyContent = styled.div`
     .route {
         .route-details {
             display: grid;
-            /* grid-template-columns: repeat(4, 1fr); */
-            grid-template-columns: 120px 310px 1fr 1fr;
+            grid-template-columns: 160px 310px 1fr 1fr;
             grid-column-gap: 32px;
-            /* FIXME: Make adjustable  */
-
             padding: 16px;
             margin-left: -16px;
             margin-right: -16px;
@@ -159,7 +154,7 @@ const BodyContent = styled.div`
 const HeaderComponent = styled.div`
     display: grid;
     /* grid-template-columns: repeat(4, 1fr); */
-    grid-template-columns: 120px 310px 1fr 1fr;
+    grid-template-columns: 160px 310px 1fr 1fr;
     grid-column-gap: 32px;
     p {
         font-size: 16px;

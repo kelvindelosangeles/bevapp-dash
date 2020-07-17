@@ -3,7 +3,9 @@ import moment from "moment";
 import { Page, Text, View, Document } from "@react-pdf/renderer";
 import { Order as orderModel } from "../../Models/Order";
 
-const CustomerPDF = ({ order }) => {
+const CustomerPDF = (props) => {
+    const { order, date = moment().format("MM/DD/2020") } = props;
+
     const orderArray = Object.values(order.cart)
         .sort((a) => {
             return a.hasOwnProperty("flavors") ? 1 : -1;
@@ -38,7 +40,7 @@ const CustomerPDF = ({ order }) => {
                     <Text style={$.heading.tax}>Tax and Deposits Included</Text>
                     <View style={$.heading.thanks}>
                         <Text>Thank you for your order</Text>
-                        <Text style={$.heading.date}>{moment().format("MM/DD/2020")}</Text>
+                        <Text style={$.heading.date}>{moment(date).format("MM/DD/2020")}</Text>
                     </View>
                     <Text style={$.heading.license}>LIC.NO.CO. 1301787</Text>
                 </View>

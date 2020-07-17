@@ -51,11 +51,6 @@ const Sidebar = () => {
                         <SpePricingIcon /> <p>Special Pricing</p>
                     </div>
                 </NavLink>
-                <NavLink className='nav-group' to='/task1'>
-                    <div className='header'>
-                        <TaskIcon /> <p>Task</p>
-                    </div>
-                </NavLink>
             </div>
 
             <div className='logout-wrapper'>

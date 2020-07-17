@@ -17,8 +17,6 @@ import Dialog from "@material-ui/core/Dialog";
 
 import Spinner from "./Global/Spinner/Spinner";
 import ChangeLog from "./Global/ChangeLog";
-import Task2 from "./Global/Tasks/Task2";
-import Task1 from "./Global/Tasks/Task1";
 import Test from "./test/Test";
 import BeverageReport from "./test/Reports/BeverageReport";
 import { Colors } from "./Constants/Colors";
@@ -39,10 +37,8 @@ const App = (props) => {
                     <Route path='/rapidorder' component={RapidOrder} />
                     <Route path='/store' component={Store} />
                     <Route path='/specialpricing' component={SpecialPricing} />
-                    <Route path='/task1' component={Task1} />
                     <Route path='/report1' component={DailyJournalv2} />
                     {/* <Route path='/test' component={Test} /> */}
-                    {/* <Route path='/task2' component={Task2} />
                     {/* <Route path='/report1' component={CustomersToReachOutTo} /> */}
                     {/* <Route path='/report2' component={BeverageReport} /> */}
                 </Switch>

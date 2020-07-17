@@ -8,8 +8,7 @@ const DailyJournal = ({ orders, total, totalCases, CalcCasesMultipleOrders, Calc
         <Document>
             <Page size='A4' style={dj.page}>
                 <View style={dj.header}>
-                    <Text style={dj.header.title}>Daily Summary for {moment(theDate).format("LL")}</Text>
-                    {/* <Text>{moment().format("L")}</Text> */}
+                    <Text style={dj.header.title}>Daily Journal for {moment(theDate).format("LL")}</Text>
                 </View>
 
                 <View style={dj.pageHeading}>
@@ -76,6 +75,8 @@ const dj = StyleSheet.create({
         marginBottom: 24,
         title: {
             marginBottom: 4,
+            fontSize: 12,
+            fontWeight: 800,
         },
     },
 
