@@ -272,6 +272,7 @@ const EditBeverage = (props) => {
                             <option value={5}>Section 5</option>
                             <option value={6}>Section 6</option>
                             <option value={7}>Section 7</option>
+                            <option value={"SS"}>Short Sheet</option>
                         </select>
                     </div>
                     <div className='input-group' id='sub-section'>

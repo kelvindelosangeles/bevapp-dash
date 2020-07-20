@@ -73,7 +73,8 @@ export default compose(
             orders: state.Firestore.data.ordersv2,
             store: state.Firestore.data.store,
             routes: state.Firestore.data.routes,
-            // testies: state.Firestore.data.testies,
+            // allv2Orders: state.Firestore.data.allv2Orders,
+            // allPrevOrders: state.Firestore.data.allPrevOrders,
         };
     }),
     firestoreConnect(() => {
@@ -82,8 +83,8 @@ export default compose(
             { collection: "ordersv2", doc: "orders" },
             { collection: "store" },
             { collection: "routes" },
-            // { collection: "ordersv2", storeAs: "testies" },
+            // { collection: "ordersv2", storeAs: "allv2Orders" },
+            // { collection: "orders", storeAs: "allPrevOrders" },
         ];
-        // return [{ collection: "inventory" }, { collection: "orders" }, { collection: "store" }];
     })
 )(App);

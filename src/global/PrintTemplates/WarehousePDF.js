@@ -57,6 +57,9 @@ const WarehousePDF = ({ order, beverages }) => {
         .sort((a, b) => {
             return beverages[a.id].subSection < beverages[b.id].subSection ? -1 : 1;
         });
+    const shortSheet = Object.values(order.cart).filter((i) => {
+        return beverages[i.id].section && beverages[i.id].section === "SS";
+    });
 
     const sectionNone = Object.values(order.cart).filter((i) => {
         return !beverages[i.id].section;
@@ -64,7 +67,7 @@ const WarehousePDF = ({ order, beverages }) => {
 
     // TODO: Refactor into one function
 
-    const OrganizedCart = [section1, section2, section3, section4, section5, section6, section7, sectionNone].flat();
+    const OrganizedCart = [section1, section2, section3, section4, section5, section6, section7, sectionNone, shortSheet].flat();
 
     const orderArray = Object.values(OrganizedCart).map((i) => {
         const flavors =
@@ -84,7 +87,7 @@ const WarehousePDF = ({ order, beverages }) => {
             <View style={$.orders}>
                 <Text style={$.orders.l}>
                     {beverages[i.id].section || ""}
-                    {beverages[i.id].subSection || ""}
+                    {(beverages[i.id].section !== "SS" && beverages[i.id].subSection) || ""}
                 </Text>
                 <View style={$.orders.w}>
                     <View style={$.orders.checkBox}></View>

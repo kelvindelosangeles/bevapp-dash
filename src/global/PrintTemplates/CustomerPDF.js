@@ -196,7 +196,7 @@ const $ = {
             marginBottom: 20,
             // backgroundColor: "yellow",
             text: {
-                marginBottom: 40,
+                marginBottom: 20,
             },
         },
         line: {
