@@ -21,6 +21,7 @@ import Test from "./test/Test";
 import BeverageReport from "./test/Reports/BeverageReport";
 import { Colors } from "./Constants/Colors";
 import DailyJournalv2 from "./test/Reports/DailyJournalv2";
+import ManualTasks from "./test/ManualTasks";
 
 const App = (props) => {
     const toggleChangeLog = () => {
@@ -38,6 +39,7 @@ const App = (props) => {
                     <Route path='/store' component={Store} />
                     <Route path='/specialpricing' component={SpecialPricing} />
                     <Route path='/report1' component={DailyJournalv2} />
+                    <Route path='/manualTasks' component={ManualTasks} />
                     {/* <Route path='/test' component={Test} /> */}
                     {/* <Route path='/report1' component={CustomersToReachOutTo} /> */}
                     {/* <Route path='/report2' component={BeverageReport} /> */}

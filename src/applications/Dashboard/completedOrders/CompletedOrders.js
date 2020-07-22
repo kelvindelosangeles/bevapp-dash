@@ -14,6 +14,7 @@ import Order from "../../../components/Order";
 const CompletedOrders = () => {
     const [theDate, setTheDate] = useState(null);
     const [orders, setOrders] = useState(null);
+    const [momo, setMomo] = useState(null);
     const firestore = useFirestore();
 
     const allOrders = () => {
@@ -31,6 +32,7 @@ const CompletedOrders = () => {
                 console.log(res.data());
                 // retrieve the day with all the routes, convert to array and set to state
                 res.data() ? setOrders(Object.values(res.data())) : setOrders(null);
+                setMomo(res.data());
             })
             .catch((err) => {
                 console.log(err);
@@ -106,6 +108,7 @@ const CompletedOrders = () => {
                                         <p>${CalcTotalMultipleOrders(a.orders)}</p>
                                     </div>
                                     {Object.values(a.orders).map((b) => {
+                                        console.log(a.details);
                                         return <Order order={b} completedDate={a.details.completedAt.toDate()} />;
                                     })}
                                 </div>
