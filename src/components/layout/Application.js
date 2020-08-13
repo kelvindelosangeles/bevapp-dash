@@ -13,9 +13,9 @@ export const Application = (props) => {
 export const ActionBar = (props) => {
     const Component = styled.div`
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(min-content, 100px));
+        grid-template-columns: repeat(8, 1fr);
         justify-content: space-between;
-        grid-column-gap: 48px;
+        grid-column-gap: 24px;
         align-items: center;
         padding: 24px 32px;
         min-height: 116px;
