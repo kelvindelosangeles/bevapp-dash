@@ -11,12 +11,63 @@ import { Colors } from "../../../Constants/Colors";
 import DailyJournal from "../../../Global/PrintTemplates/DailyJournalPDF";
 import Order from "../../../components/Order";
 
+// BETA
+import ReactExport from "react-export-excel";
+
+const ExcelFile = ReactExport.ExcelFile;
+const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
+const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
+
+const Excel = ({ routes }) => {
+    const sheets = routes.map((a) => {
+        return (
+            <ExcelSheet data={Object.values(a[1].orders)} name={a[1].driver.firstName}>
+                <ExcelColumn
+                    label='Order ID'
+                    value={(col) => {
+                        return col.details.orderID;
+                    }}
+                />
+                <ExcelColumn
+                    label='Address'
+                    value={(col) => {
+                        return col.customer.address;
+                    }}
+                />
+                <ExcelColumn
+                    label='Amount'
+                    value={(col) => {
+                        return Number(OrderModel.CalculateCart(col.cart, col.customer.specialPrices)).toFixed(2);
+                    }}
+                />
+                <ExcelColumn label='Credit' value='' />
+                <ExcelColumn label='Cash' value='' />
+                <ExcelColumn label='Checks' value='' />
+                <ExcelColumn label='Sign' value='' />
+                <ExcelColumn label='Total' value='' />
+                <ExcelColumn label='' value='' />
+                <ExcelColumn label='' value='' />
+                <ExcelColumn label='Credits' value='' />
+                <ExcelColumn label='Shorts stop#' value='' />
+                <ExcelColumn label='Overs' value='' />
+            </ExcelSheet>
+        );
+    });
+    return (
+        <ExcelFile
+            filename={moment(routes[0][1].details.completedAt.toDate()).format("L")}
+            element={<Button color={Colors.yellow}>Excel File</Button>}>
+            {sheets}
+        </ExcelFile>
+    );
+};
+
 const CompletedOrders = () => {
     const [theDate, setTheDate] = useState(null);
     const [orders, setOrders] = useState(null);
-    const [momo, setMomo] = useState(null);
+    const [routes, setRoutes] = useState(null);
     const firestore = useFirestore();
-
+    // routes && console.log(routes);
     const allOrders = () => {
         let obj = {};
         orders.forEach((y) => {
@@ -29,10 +80,13 @@ const CompletedOrders = () => {
         firestore
             .get({ collection: "ordersv2", doc: weekDocument })
             .then((res) => {
-                console.log(res.data());
                 // retrieve the day with all the routes, convert to array and set to state
+
                 res.data() ? setOrders(Object.values(res.data())) : setOrders(null);
-                setMomo(res.data());
+
+                // collect the routes from this day and save it to state
+
+                res.data() ? setRoutes(Object.entries(res.data())) : setRoutes(null);
             })
             .catch((err) => {
                 console.log(err);
@@ -76,8 +130,9 @@ const CompletedOrders = () => {
                 {orders && <Stat color={Colors.orange} title='Cases' data={CalcCasesMultipleOrders(allOrders())} />}
                 <span />
                 <span />
+                {routes && <Excel routes={routes} />}
                 {orders && (
-                    <Button>
+                    <Button color={Colors.blue}>
                         <PDFDownloadLink
                             document={
                                 <DailyJournal
@@ -108,7 +163,6 @@ const CompletedOrders = () => {
                                         <p>${CalcTotalMultipleOrders(a.orders)}</p>
                                     </div>
                                     {Object.values(a.orders).map((b) => {
-                                        console.log(a.details);
                                         return <Order order={b} completedDate={a.details.completedAt.toDate()} />;
                                     })}
                                 </div>
@@ -167,7 +221,7 @@ const HeaderComponent = styled.div`
 `;
 const Button = styled.button`
     padding: 14px 32px;
-    background-color: ${Colors.blue};
+    background-color: ${({ color }) => color};
     a {
         color: ${Colors.white}!important;
     }
