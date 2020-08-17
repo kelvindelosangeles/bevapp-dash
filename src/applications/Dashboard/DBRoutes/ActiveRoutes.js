@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Colors } from "../../../../Constants/Colors";
+import { Colors } from "../../../Constants/Colors";
 import SingleRoute from "./components/SingleRoute";
 import Dialog from "@material-ui/core/Dialog";
 import CreateRoute from "./components/CreateRoute";

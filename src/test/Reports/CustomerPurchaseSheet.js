@@ -1,25 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { Order as OrderModel } from "../../Models/Order";
 
-const TheCustomer = "1230";
-const theDate = "06/01/2020";
+const TheCustomer = "823";
+const theDate = "07/15/2020";
 
 const CustomerPurchaseSheet = () => {
-    let ordersCombined = {};
+    const [test, setTest] = useState({});
     const orders = useSelector((state) => state.Firestore.data.orders);
+    const ordersv2 = useSelector((state) => state.Firestore.data.ordersv2.orders);
+    const allordersv2OBJ = {};
+    const allordersv2OBJFinal = {};
+    const allordersv2 = Object.entries(useSelector((state) => state.Firestore.data.ordersv2))
+        .filter((x) => {
+            return x[0] !== "orders";
+        })
+        .map((b) => {
+            Object.assign(allordersv2OBJ, b[1]);
+            return b[1];
+        });
+
+    Object.values(allordersv2OBJ).map((s) => {
+        Object.assign(allordersv2OBJFinal, s.orders);
+    });
+
+    console.log(allordersv2OBJFinal);
+
+    // Orders from v2 are included
+    let ordersCombined = { ...ordersv2, ...allordersv2OBJFinal };
     // Create a list of all orders
+
     Object.values(orders).forEach((i) => {
+        // console.log(i);
         Object.assign(ordersCombined, i);
     });
 
+    allordersv2.forEach((y) => {
+        // console.log(y);
+        // Object.assign(ordersCombined, y);
+    });
+
     const allOrders = Object.values(ordersCombined);
-
-    // console.log(allOrders);
-
-    console.log(allOrders);
+    console.log(allordersv2);
+    console.log(allordersv2OBJ);
+    console.log("Total Orders Combined: ", Object.values(ordersCombined).length);
 
     const data = allOrders
         .filter((i) => {
@@ -28,6 +54,8 @@ const CustomerPurchaseSheet = () => {
         .filter((a) => {
             return moment(a.details.createdAt).isAfter(moment(theDate));
         });
+
+    console.log(data);
 
     const RouteTotal = () => {
         try {
@@ -58,6 +86,7 @@ const CustomerPurchaseSheet = () => {
     };
 
     data.map((i) => {
+        // TODO: Activate for control
         console.log(i.customer.address);
     });
 
@@ -79,16 +108,20 @@ const CustomerPurchaseSheet = () => {
                     <h3>Cases</h3>
                     <h3>Total</h3>
                 </div>
-                {data.map((x) => {
-                    return (
-                        <div className='item '>
-                            <p>{x.details.orderID}</p>
-                            <p>{x.details.createdAt}</p>
-                            <p>{OrderModel.CalculateCases(x.cart)}</p>
-                            <p>$ {OrderModel.CalculateCart(x.cart, x.customer.specialPrices)}</p>
-                        </div>
-                    );
-                })}
+                {data
+                    .sort((a, b) => {
+                        return a.details.orderID > b.details.orderID ? 1 : -1;
+                    })
+                    .map((x) => {
+                        return (
+                            <div className='item '>
+                                <p>{x.details.orderID}</p>
+                                <p>{x.details.createdAt}</p>
+                                <p>{OrderModel.CalculateCases(x.cart)}</p>
+                                <p>$ {OrderModel.CalculateCart(x.cart, x.customer.specialPrices)}</p>
+                            </div>
+                        );
+                    })}
             </div>
             <div className='footer'>
                 <p>

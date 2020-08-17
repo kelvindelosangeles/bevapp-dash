@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment";
 import { Page, Text, View, Document } from "@react-pdf/renderer";
-import { Order as orderModel } from "../../../../../Models/Order";
+import { Order as orderModel } from "../../../../Models/Order";
 
 const RoutePDF = ({ route, driver }) => {
     const routesArray = Object.values(route);

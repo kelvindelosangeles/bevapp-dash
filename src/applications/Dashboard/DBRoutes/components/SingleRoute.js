@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Dialog from "@material-ui/core/Dialog";
 import RoutePreview from "./RoutePreview";
-import { Order as OrderModel } from "../../../../../Models/Order";
+import { Order as OrderModel } from "../../../../Models/Order";
 import { useSelector } from "react-redux";
 const SingleRoute = ({ data }) => {
     const [open, toggle] = useState(false);

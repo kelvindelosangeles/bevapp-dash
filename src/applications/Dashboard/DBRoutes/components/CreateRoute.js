@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Drivers } from "../../../../../Assets/Data/Drivers";
+import { Drivers } from "../../../../Assets/Data/Drivers";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
-import MiniOrder2 from "../../../components/MiniOrder2";
-import { Colors } from "../../../../../Constants/Colors";
+import MiniOrder2 from "../../components/MiniOrder2";
+
 import { useSelector, useDispatch } from "react-redux";
 import { useFirestore } from "react-redux-firebase";
 import moment from "moment";
 import shortid from "shortid";
 import { withRouter } from "react-router-dom";
+import { Colors } from "../../../../Constants/Colors";
 
 const CreateRoute = ({ close }) => {
     const [driver, setDriver] = useState(null);
