@@ -12,13 +12,17 @@ export const Application = (props) => {
 };
 export const ActionBar = (props) => {
     const Component = styled.div`
-        display: grid;
-        grid-template-columns: repeat(8, 1fr);
-        justify-content: space-between;
-        grid-column-gap: 24px;
-        align-items: center;
         padding: 24px 32px;
         min-height: 116px;
+        .MuiInputLabel-animated {
+            color: white !important;
+        }
+        .MuiAutocomplete-inputRoot[class*="MuiInput-root"] .MuiAutocomplete-input:first-child {
+            color: white !important;
+        }
+        .MuiAutocomplete-popupIndicator {
+            color: white;
+        }
     `;
     return <Component>{props.children}</Component>;
 };

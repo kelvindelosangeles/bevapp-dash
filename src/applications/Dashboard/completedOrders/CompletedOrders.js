@@ -124,31 +124,33 @@ const CompletedOrders = () => {
     return (
         <Application>
             <ActionBar>
-                <DatePicker theDate={theDate} setTheDate={setTheDate} label='Select a Date' />
-                {orders && <Stat color={Colors.blue} title='Routes' data={orders.length} />}
-                {orders && <Stat color={Colors.green} title='Total' data={`$${CalcTotalMultipleOrders(allOrders())}`} />}
-                {orders && <Stat color={Colors.orange} title='Cases' data={CalcCasesMultipleOrders(allOrders())} />}
-                <span />
-                <span />
-                {routes && <Excel routes={routes} />}
-                {orders && (
-                    <Button color={Colors.blue}>
-                        <PDFDownloadLink
-                            document={
-                                <DailyJournal
-                                    orders={orders}
-                                    total={CalcTotalMultipleOrders(allOrders())}
-                                    totalCases={CalcCasesMultipleOrders(allOrders())}
-                                    CalcCasesMultipleOrders={CalcCasesMultipleOrders}
-                                    CalcTotalMultipleOrders={CalcTotalMultipleOrders}
-                                    theDate={theDate}
-                                />
-                            }
-                            fileName={`Daily Journal date`}>
-                            {({ loading }) => (loading ? "Loading..." : "Download Daily Journal")}
-                        </PDFDownloadLink>
-                    </Button>
-                )}
+                <ActionWrapper>
+                    <DatePicker theDate={theDate} setTheDate={setTheDate} label='Select a Date' />
+                    {orders && <Stat color={Colors.blue} title='Routes' data={orders.length} />}
+                    {orders && <Stat color={Colors.green} title='Total' data={`$${CalcTotalMultipleOrders(allOrders())}`} />}
+                    {orders && <Stat color={Colors.orange} title='Cases' data={CalcCasesMultipleOrders(allOrders())} />}
+                    <span />
+                    <span />
+                    {routes && <Excel routes={routes} />}
+                    {orders && (
+                        <Button color={Colors.blue}>
+                            <PDFDownloadLink
+                                document={
+                                    <DailyJournal
+                                        orders={orders}
+                                        total={CalcTotalMultipleOrders(allOrders())}
+                                        totalCases={CalcCasesMultipleOrders(allOrders())}
+                                        CalcCasesMultipleOrders={CalcCasesMultipleOrders}
+                                        CalcTotalMultipleOrders={CalcTotalMultipleOrders}
+                                        theDate={theDate}
+                                    />
+                                }
+                                fileName={`Daily Journal date`}>
+                                {({ loading }) => (loading ? "Loading..." : "Download Daily Journal")}
+                            </PDFDownloadLink>
+                        </Button>
+                    )}
+                </ActionWrapper>
             </ActionBar>
             <Body title='Completed Orders' header={<Header />}>
                 {orders ? (
@@ -188,6 +190,13 @@ const Header = () => {
     );
 };
 
+const ActionWrapper = styled.div`
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    justify-content: space-between;
+    grid-column-gap: 24px;
+    align-items: center;
+`;
 const BodyContent = styled.div`
     display: grid;
     grid-row-gap: 48px;

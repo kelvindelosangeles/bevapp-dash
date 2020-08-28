@@ -11,6 +11,7 @@ import StoreIcon from "@material-ui/icons/Store";
 import SpePricingIcon from "@material-ui/icons/MoneyOff";
 import SignoutIcon from "@material-ui/icons/ExitToApp";
 import TaskIcon from "@material-ui/icons/DoneAllRounded";
+import Report from "@material-ui/icons/Receipt";
 import moment from "moment";
 
 const Sidebar = () => {
@@ -49,6 +50,11 @@ const Sidebar = () => {
                 <NavLink className='nav-group' to='/specialpricing'>
                     <div className='header'>
                         <SpePricingIcon /> <p>Special Pricing</p>
+                    </div>
+                </NavLink>
+                <NavLink className='nav-group' to='/cpt'>
+                    <div className='header'>
+                        <Report /> <p>CPT</p>
                     </div>
                 </NavLink>
             </div>

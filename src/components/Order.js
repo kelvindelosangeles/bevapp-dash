@@ -8,12 +8,12 @@ import CaseIcon from "../Assets/Icons/CaseIcon";
 import OrderPreview from "./OrderPreview";
 import CustomerPDF from "../Global/PrintTemplates/CustomerPDF";
 
-const Order = ({ order, completedDate }) => {
+const Order = ({ order, completedDate, generateInvoice = true }) => {
     const { customer, details, cart } = order;
     const [open, setOpen] = useState(false);
 
     return (
-        <Fragment>
+        <>
             <Component onClick={() => setOpen(true)}>
                 <div className='id'>
                     <p>{details.orderID.slice(2, 16)}</p>
@@ -26,9 +26,9 @@ const Order = ({ order, completedDate }) => {
                 <p>${orderModel.CalculateCart(cart, customer.specialPrices)}</p>
             </Component>
             <Dialog open={open} onClose={() => setOpen(false)} scroll='paper' maxWidth={"90vw"}>
-                <OrderPreview order={order} completedDate={completedDate} closeOrderPreview={() => setOpen(false)} genInvoice />
+                <OrderPreview order={order} completedDate={completedDate} closeOrderPreview={() => setOpen(false)} genInvoice={generateInvoice} />
             </Dialog>
-        </Fragment>
+        </>
     );
 };
 const Component = styled.div`
