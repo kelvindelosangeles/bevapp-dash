@@ -1,9 +1,28 @@
 import React from "react";
 import moment from "moment";
 import { Page, Text, View, Document, Font, StyleSheet } from "@react-pdf/renderer";
-import { Order as orderModel } from "../../Models/Order";
 
-const CustomerPurchaseSheet = ({ orders, theDate, customer, totalCases, totalCost }) => {
+const NonOrderReportPDF = ({ allCustomers, customers, theDate, orders }) => {
+    const getLastOrderDate = (id) => {
+        try {
+            const customerOrders = orders
+                .sort((a, b) => {
+                    return moment(a.details.createdAt).valueOf() > moment(b.details.createdAt).valueOf() ? 1 : -1;
+                })
+                .filter((a) => {
+                    return a.customer.id === id;
+                });
+
+            if (customerOrders.length === 0) {
+                return "no orders";
+            }
+            return moment(customerOrders[customerOrders.length - 1].details.createdAt).format("L");
+        } catch (error) {
+            console.log(error);
+            return "error";
+        }
+    };
+
     return (
         <Document>
             <Page style={$.page}>
@@ -17,37 +36,32 @@ const CustomerPurchaseSheet = ({ orders, theDate, customer, totalCases, totalCos
                 </View>
 
                 <View style={$.pageHeader} fixed>
-                    <Text>Customer Purchase Sheet: {customer.address}</Text>
-                    <Text>Orders since {moment(theDate).format("L")}</Text>
+                    <Text>Non Order Report</Text>
+                    <Text>No Orders Since {moment(theDate).format("L")}</Text>
                 </View>
 
                 <View style={$.ordersHeader} fixed>
                     <Text style={$.ordersHeader.index}>#</Text>
-                    <Text style={$.ordersHeader.label}>Date</Text>
-                    <Text style={$.ordersHeader.label}>Cases</Text>
-                    <Text style={$.ordersHeader.label}>Total</Text>
+                    <Text style={$.ordersHeader.label}>Customer</Text>
+                    <Text style={$.ordersHeader.label}>Telephone</Text>
+                    <Text style={$.ordersHeader.label}>Last Order Date</Text>
                 </View>
 
-                {orders
+                {customers
                     .sort((a, b) => {
-                        console.log(moment(a.details.createdAt).valueOf());
-                        return moment(a.details.createdAt).valueOf() > moment(b.details.createdAt).valueOf() ? 1 : -1;
+                        return a.address > b.address ? 1 : -1;
                     })
                     .map((a, index) => {
                         return (
-                            <View style={$.order}>
+                            <View style={$.order} wrap={false}>
                                 <Text style={$.order.index}>{index + 1}</Text>
-                                <Text style={$.order.value}>{moment(a.details.createdAt).format("LLL")}</Text>
-                                <Text style={$.order.value}>{orderModel.CalculateCases(a.cart)}</Text>
-                                <Text style={$.order.value}>${orderModel.CalculateCart(a.cart, a.customer.specialPrices)}</Text>
+                                <Text style={$.order.value}>{a.address}</Text>
+                                <Text style={$.order.value}>{a.telephone}</Text>
+                                <Text style={$.order.value}>{getLastOrderDate(a.id)}</Text>
                             </View>
                         );
                     })}
 
-                <View style={$.footer}>
-                    <Text style={$.footer.value}>Total Cases: {totalCases}</Text>
-                    <Text style={$.footer.value}>Total Cost: $ {totalCost}</Text>
-                </View>
                 <Text style={$.pageNumber} render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`} fixed />
             </Page>
         </Document>
@@ -115,14 +129,5 @@ const $ = StyleSheet.create({
             paddingTop: 4,
         },
     },
-
-    footer: {
-        paddingTop: 24,
-        marginTop: "auto",
-        value: {
-            fontSize: 11,
-            margin: "2 0",
-        },
-    },
 });
-export default CustomerPurchaseSheet;
+export default NonOrderReportPDF;

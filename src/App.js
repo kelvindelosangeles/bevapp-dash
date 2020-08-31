@@ -17,11 +17,12 @@ import Dialog from "@material-ui/core/Dialog";
 
 import Spinner from "./Global/Spinner/Spinner";
 import ChangeLog from "./Global/ChangeLog";
-import Test from "./test/Test";
 import BeverageReport from "./test/Reports/BeverageReport";
 import { Colors } from "./Constants/Colors";
 import DailyJournalv2 from "./test/Reports/DailyJournalv2";
 import ManualTasks from "./test/ManualTasks";
+import Manual from "./test/Manual";
+import NOR from "./test/NOR";
 
 const App = (props) => {
     const toggleChangeLog = () => {
@@ -44,6 +45,8 @@ const App = (props) => {
                     <Route path='/specialpricing' component={SpecialPricing} />
                     <Route path='/report1' component={DailyJournalv2} />
                     <Route path='/cpt' component={ManualTasks} />
+                    <Route path='/nor' component={NOR} />
+                    <Route path='/manual' component={Manual} />
                     {/* <Route path='/test' component={Test} /> */}
                     {/* <Route path='/report1' component={CustomersToReachOutTo} /> */}
                     {/* <Route path='/report2' component={BeverageReport} /> */}

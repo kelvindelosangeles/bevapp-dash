@@ -57,6 +57,11 @@ const Sidebar = () => {
                         <Report /> <p>CPT</p>
                     </div>
                 </NavLink>
+                <NavLink className='nav-group' to='/nor'>
+                    <div className='header'>
+                        <Report /> <p>NOR</p>
+                    </div>
+                </NavLink>
             </div>
 
             <div className='logout-wrapper'>
