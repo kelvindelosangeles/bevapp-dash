@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import firebase from "firebase";
 import { useFirestore } from "react-redux-firebase";
-import moment from "moment";
+import moment from "moment-timezone";
 
 import { ActionBar, Application, Body } from "../components/layout/Application";
 import { useEffect } from "react";
@@ -10,9 +10,12 @@ import { useEffect } from "react";
 const ManualTasks = () => {
     const firestore = useFirestore();
 
-    console.log(moment("2017-09-06T12:03:00.000Z").tz("Etc/GMT").format("lll"));
+    const nytz = "America/New_York";
+    const turtz = "Europe/Istanbul";
 
-    console.log(moment(1598885510850).format("zz"));
+    console.log(moment().valueOf());
+    console.log(moment.tz(1598888788848, nytz).format("LLL"));
+    console.log(moment.tz(1598888788848, turtz).format("LLL"));
 
     // const data []
     // useEffect(() => {
