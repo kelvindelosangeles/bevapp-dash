@@ -16,7 +16,6 @@ import { useSelector } from "react-redux";
 const NOR = () => {
     const [orders, setOrders] = useState(null);
     // BETA
-    const [filterInactiveCustomers, setFilterInactiveCustomers] = useState(true);
     const [theDate, setTheDate] = useState(`${moment().format("MM")}/01/${moment().format("YYYY")}`);
     const allCustomers = useSelector((state) => state.Firestore.data.store.customers);
 
@@ -103,9 +102,6 @@ const NOR = () => {
                 <ActionWrapper>
                     <DatePicker theDate={theDate} setTheDate={setTheDate} label='Select a Date' />
                     <Stat color={Colors.blue} title='Customers' data={getNonOrderCustomers().length || 0} />
-                    <Button color={Colors.orange} onClick={() => setFilterInactiveCustomers(!filterInactiveCustomers)}>
-                        Hide Inactive Customers
-                    </Button>
                     {orders && (
                         <Button color={Colors.blue}>
                             <PDFDownloadLink
@@ -134,12 +130,7 @@ const NOR = () => {
                             .filter((z) => {
                                 return z.address !== "123 Test blvd";
                             })
-                            .filter((f) => {
-                                {
-                                    /* This filter checks if the customer has any previous orders and removes them if the toggle is on */
-                                }
-                                return filterInactiveCustomers ? getLastOrderDate(f.id) !== "" : f;
-                            })
+
                             .map((c) => {
                                 return (
                                     <div className='customer'>
