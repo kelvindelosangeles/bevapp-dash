@@ -10,25 +10,15 @@ import { useEffect } from "react";
 const ManualTasks = () => {
     const firestore = useFirestore();
 
-    const nytz = "America/New_York";
-    const turtz = "Europe/Istanbul";
-
-    console.log(moment().valueOf());
-    console.log(moment.tz(1598888788848, nytz).format("LLL"));
-    console.log(moment.tz(1598888788848, turtz).format("LLL"));
-
-    // const data []
     // useEffect(() => {
-    //     data.forEach((a) => {
-    //         firestore
-    //             .update({ collection: "ordersv2", doc: "202008355" }, { [a[0]]: a[1] })
-    //             .then(() => {
-    //                 console.log("success");
-    //             })
-    //             .catch((err) => {
-    //                 console.log(err);
-    //             });
-    //     });
+    //     firestore
+    //         .update({ collection: "ordersv2", doc: "202009363" }, { [data[0]]: data[1] })
+    //         .then(() => {
+    //             console.log("success");
+    //         })
+    //         .catch((err) => {
+    //             console.log(err);
+    //         });
     // }, []);
 
     return (
@@ -40,3 +30,10 @@ const ManualTasks = () => {
 };
 
 export default ManualTasks;
+
+// const nytz = "America/New_York";
+// const turtz = "Europe/Istanbul";
+
+// console.log(moment().valueOf());
+// console.log(moment.tz(1598888788848, nytz).format("LLL"));
+// console.log(moment.tz(1598888788848, turtz).format("LLL"));

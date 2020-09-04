@@ -12,60 +12,52 @@ import NonOrderReportPDF from "../Global/PrintTemplates/NonOrderReportPDF";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { Order as OrderModel } from "../Models/Order";
 import { useSelector } from "react-redux";
+import { get } from "store";
 
-const NOR = () => {
+const Toggle = ({ action, on, title }) => {
+    return (
+        <ToggleComponent onClick={action} on={on}>
+            <p className='title'>{title}</p>
+            <div className='wrapper'>
+                <div className='inside' />
+            </div>
+        </ToggleComponent>
+    );
+};
+
+const NonOrderReport = () => {
     const [orders, setOrders] = useState(null);
-    // BETA
-    const [theDate, setTheDate] = useState(`${moment().format("MM")}/01/${moment().format("YYYY")}`);
+    const [inactiveFilter, setInactiveFilter] = useState(false);
     const allCustomers = useSelector((state) => state.Firestore.data.store.customers);
+    const [theDate, setTheDate] = useState(`${moment().format("MM")}/01/${moment().format("YYYY")}`);
 
-    const getOrders = async () => {
-        try {
-            const response = await firebase.firestore().collection("ordersv2").get();
-            const data = await response.docs
-                .filter((f) => {
-                    // fitlers out orders coming from orders
-                    return f.id != "orders";
-                })
-                .map((a) => {
-                    return Object.values(a.data());
-                })
-                .flat()
-                .map((b) => {
-                    return Object.values(b.orders);
-                })
-                .flat();
-
-            setOrders(data);
-        } catch (error) {
-            console.log(error);
-            window.alert("An error has occured");
-        }
-    };
-
-    const getNonOrderCustomers = () => {
+    const NonOrderCustomers = () => {
         try {
             const customersWithOrders = [
                 ...new Set(
+                    // use the list of all orders in the system
                     orders
                         .filter((a) => {
+                            // filter orders that are on or after the date selected
                             return moment(a.details.createdAt).isSameOrAfter(theDate);
                         })
                         .map((b) => {
+                            // return all of those customer ids
                             return b.customer.id;
                         })
                 ),
             ];
-            const customerWithoutOrders = Object.values(allCustomers).filter((x) => {
-                return customersWithOrders.indexOf(x.id) === -1;
-            });
-            // console.log("allCustomers", Object.values(allCustomers));
-            // console.log("customersWithOrders", customersWithOrders);
-            console.log("customerWithoutOrders", customerWithoutOrders);
-            // console.log("orders", orders);
-
+            const customerWithoutOrders = Object.values(allCustomers)
+                .filter((x) => {
+                    // take a list of all customers and filter it to customers that are not part of the customersWithOrders list
+                    return customersWithOrders.indexOf(x.id) === -1;
+                })
+                .filter((y) => {
+                    return inactiveFilter ? getLastOrderDate(y.id) !== "" : y;
+                });
             return customerWithoutOrders;
         } catch (error) {
+            console.log("error in NonOrderCustomers function");
             console.log(error);
             return [];
         }
@@ -93,6 +85,29 @@ const NOR = () => {
     };
 
     useEffect(() => {
+        const getOrders = async () => {
+            try {
+                const response = await firebase.firestore().collection("ordersv2").get();
+                const data = await response.docs
+                    .filter((f) => {
+                        // fitlers out orders coming from orders
+                        return f.id != "orders";
+                    })
+                    .map((a) => {
+                        return Object.values(a.data());
+                    })
+                    .flat()
+                    .map((b) => {
+                        return Object.values(b.orders);
+                    })
+                    .flat();
+
+                setOrders(data);
+            } catch (error) {
+                console.log(error);
+                window.alert("An error has occured");
+            }
+        };
         getOrders();
     }, []);
 
@@ -101,7 +116,14 @@ const NOR = () => {
             <ActionBar>
                 <ActionWrapper>
                     <DatePicker theDate={theDate} setTheDate={setTheDate} label='Select a Date' />
-                    <Stat color={Colors.blue} title='Customers' data={getNonOrderCustomers().length || 0} />
+                    <Stat color={Colors.blue} title='Customers' data={(orders && NonOrderCustomers().length) || 0} />
+                    <Toggle
+                        on={inactiveFilter}
+                        title={"Hide Inactive Customers"}
+                        action={() => {
+                            setInactiveFilter(!inactiveFilter);
+                        }}
+                    />
                     {orders && (
                         <Button color={Colors.blue}>
                             <PDFDownloadLink
@@ -110,7 +132,7 @@ const NOR = () => {
                                         orders={orders}
                                         theDate={theDate}
                                         allCustomers={allCustomers}
-                                        customers={getNonOrderCustomers()}
+                                        customers={NonOrderCustomers()}
                                     />
                                 }
                                 fileName={`Non Order Report ${moment().format("L")}`}>
@@ -123,14 +145,13 @@ const NOR = () => {
             <Body title='Non Order Report' header={<Header />}>
                 <CustomerWrapper>
                     {orders &&
-                        getNonOrderCustomers()
+                        NonOrderCustomers()
                             .sort((a, b) => {
                                 return a.address > b.address ? 1 : -1;
                             })
                             .filter((z) => {
                                 return z.address !== "123 Test blvd";
                             })
-
                             .map((c) => {
                                 return (
                                     <div className='customer'>
@@ -170,8 +191,8 @@ const HeaderComponent = styled.div`
 `;
 const ActionWrapper = styled.div`
     display: grid;
-    grid-template-columns: min-content 250px 1fr 1fr;
-    grid-column-gap: 32px;
+    grid-template-columns: min-content min-content min-content 1fr;
+    grid-column-gap: 56px;
     align-items: center;
 `;
 const Button = styled.button`
@@ -209,5 +230,36 @@ const CustomerWrapper = styled.div`
         }
     }
 `;
+const ToggleComponent = styled.div`
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    .title {
+        color: ${Colors.white};
+        white-space: nowrap;
+    }
+    .wrapper {
+        width: 60px;
+        height: 30px;
+        background-color: ${Colors.lightGrey};
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        .inside {
+            border-radius: 8px;
+            background-color: ${({ on }) => {
+                return on ? Colors.green : Colors.red;
+            }};
+            height: inherit;
+            width: 50%;
+            transform: scale(0.7);
+            margin-left: ${({ on }) => {
+                return on ? "unset" : "auto";
+            }};
+        }
+    }
+`;
 
-export default NOR;
+export default NonOrderReport;

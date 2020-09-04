@@ -5,24 +5,21 @@ import { Route, Switch } from "react-router-dom";
 import { connect, useSelector } from "react-redux";
 import { SnackbarProvider } from "notistack";
 import { firestoreConnect, isLoaded } from "react-redux-firebase";
+import { Colors } from "./Constants/Colors";
 import styled from "styled-components";
-
 import Sidebar from "./Global/Sidebar/Sidebar";
 import Dashboard from "./Applications/Dashboard/Dashboard";
 import RapidOrder from "./Applications/Rapid Order/RapidOrder";
 import Store from "./Applications/Store/Store";
 import SpecialPricing from "./Applications/Special Pricing/SpecialPricing";
-
 import Dialog from "@material-ui/core/Dialog";
-
 import Spinner from "./Global/Spinner/Spinner";
 import ChangeLog from "./Global/ChangeLog";
 import BeverageReport from "./test/Reports/BeverageReport";
-import { Colors } from "./Constants/Colors";
 import DailyJournalv2 from "./test/Reports/DailyJournalv2";
 import ManualTasks from "./test/ManualTasks";
 import Manual from "./test/Manual";
-import NOR from "./test/NOR";
+import NonOrderReport from "./test/NonOrderReport";
 
 const App = (props) => {
     const toggleChangeLog = () => {
@@ -45,11 +42,8 @@ const App = (props) => {
                     <Route path='/specialpricing' component={SpecialPricing} />
                     <Route path='/report1' component={DailyJournalv2} />
                     <Route path='/cpt' component={ManualTasks} />
-                    <Route path='/nor' component={NOR} />
+                    <Route path='/nor' component={NonOrderReport} />
                     <Route path='/manual' component={Manual} />
-                    {/* <Route path='/test' component={Test} /> */}
-                    {/* <Route path='/report1' component={CustomersToReachOutTo} /> */}
-                    {/* <Route path='/report2' component={BeverageReport} /> */}
                 </Switch>
                 <Dialog
                     open={open}
