@@ -19,7 +19,7 @@ import BeverageReport from "./test/Reports/BeverageReport";
 import DailyJournalv2 from "./test/Reports/DailyJournalv2";
 import ManualTasks from "./test/ManualTasks";
 import Manual from "./test/Manual";
-import NonOrderReport from "./test/NonOrderReport";
+import NonOrderReport from "./Applications/Reports/NonOrderReport";
 
 const App = (props) => {
     const toggleChangeLog = () => {
@@ -41,7 +41,7 @@ const App = (props) => {
                     <Route path='/store' component={Store} />
                     <Route path='/specialpricing' component={SpecialPricing} />
                     <Route path='/report1' component={DailyJournalv2} />
-                    <Route path='/cpt' component={ManualTasks} />
+                    <Route path='/cps' component={ManualTasks} />
                     <Route path='/nor' component={NonOrderReport} />
                     <Route path='/manual' component={Manual} />
                 </Switch>
