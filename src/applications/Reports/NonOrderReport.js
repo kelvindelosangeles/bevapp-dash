@@ -4,13 +4,13 @@ import { useEffect } from "react";
 import styled from "styled-components";
 import firebase from "firebase";
 import moment from "moment";
-import { Colors } from "../Constants/Colors";
-import Application, { ActionBar, Body } from "../components/layout/Application";
-import DatePicker from "../components/DatePicker";
-import Stat from "../components/action bar/Stat";
-import NonOrderReportPDF from "../Global/PrintTemplates/NonOrderReportPDF";
+import { Colors } from "../../Constants/Colors";
+import Application, { ActionBar, Body } from "../../components/layout/Application";
+import DatePicker from "../../components/DatePicker";
+import Stat from "../../components/action bar/Stat";
+import NonOrderReportPDF from "../../Global/PrintTemplates/NonOrderReportPDF";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { Order as OrderModel } from "../Models/Order";
+import { Order as OrderModel } from "../../Models/Order";
 import { useSelector } from "react-redux";
 
 const NOR = () => {

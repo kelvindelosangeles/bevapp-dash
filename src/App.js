@@ -22,7 +22,7 @@ import { Colors } from "./Constants/Colors";
 import DailyJournalv2 from "./test/Reports/DailyJournalv2";
 import ManualTasks from "./test/ManualTasks";
 import Manual from "./test/Manual";
-import NOR from "./test/NOR";
+import NonOrderReport from "./Applications/Reports/NonOrderReport";
 
 const App = (props) => {
     const toggleChangeLog = () => {
@@ -44,8 +44,8 @@ const App = (props) => {
                     <Route path='/store' component={Store} />
                     <Route path='/specialpricing' component={SpecialPricing} />
                     <Route path='/report1' component={DailyJournalv2} />
-                    <Route path='/cpt' component={ManualTasks} />
-                    <Route path='/nor' component={NOR} />
+                    <Route path='/cps' component={ManualTasks} />
+                    <Route path='/nor' component={NonOrderReport} />
                     <Route path='/manual' component={Manual} />
                     {/* <Route path='/test' component={Test} /> */}
                     {/* <Route path='/report1' component={CustomersToReachOutTo} /> */}

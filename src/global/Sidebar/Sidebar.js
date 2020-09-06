@@ -52,9 +52,9 @@ const Sidebar = () => {
                         <SpePricingIcon /> <p>Special Pricing</p>
                     </div>
                 </NavLink>
-                <NavLink className='nav-group' to='/cpt'>
+                <NavLink className='nav-group' to='/cps'>
                     <div className='header'>
-                        <Report /> <p>CPT</p>
+                        <Report /> <p>CPS</p>
                     </div>
                 </NavLink>
                 <NavLink className='nav-group' to='/nor'>
