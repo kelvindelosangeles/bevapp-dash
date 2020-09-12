@@ -1,17 +1,21 @@
-import moment from "moment";
+import moment from "moment-timezone";
 import uuid from "uuid";
 import store from "store";
 import underscore from "underscore";
 
 export const completeRoute = (route, firestore, setOpen) => {
     // TODO: Add logic so that a route cannot be recreated
-    // function gets the route and extracts the route ID
+    // Extract the route ID from the route details.
     const { routeID } = route.details;
-    // the week document is where all routes created that day are stored
-    const weekDocument = moment(new Date()).format("YYYYMMwE");
+    // Extract the route date from the route details.
+    const { routeDate } = route.details.dates;
+    // the week document is where all routes created that day are stored and is created from the routedate property in details
+    const weekDocument = moment(routeDate.date).format("YYYYMMwE");
     return (dispatch, getState) => {
         // grab the orders from the dashboard to build the complete routes object
         // grab the routes from the db to build an updated list
+        const now = moment().valueOf();
+        const timezone = moment.tz.guess();
         const orders = getState().Firestore.data.ordersv2.orders;
         const allRoutes = getState().Firestore.data.routes.routes;
         const updatedOrders = underscore.omit(orders, route.orders);
@@ -26,7 +30,11 @@ export const completeRoute = (route, firestore, setOpen) => {
             return {
                 [routeID]: {
                     ...route,
-                    details: { ...route.details, completedAt: new Date() },
+                    details: {
+                        ...route.details,
+                        dates: { ...route.details.dates, completedAt: { date: now, tz: timezone } },
+                        completedAt: new Date(),
+                    },
                     orders: obj,
                 },
             };

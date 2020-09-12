@@ -4,18 +4,18 @@ import { useEffect } from "react";
 import styled from "styled-components";
 import firebase from "firebase";
 import moment from "moment";
-import { Colors } from "../Constants/Colors";
-import Application, { ActionBar, Body } from "../components/layout/Application";
-import CustomerSelect from "../Global/CustomerSelect/CustomerSelect";
-import DatePicker from "../components/DatePicker";
-import Stat from "../components/action bar/Stat";
-import Order from "../components/Order";
-import CustomerPurchaseSheetPDF from "../Global/PrintTemplates/CustomerPurchaseSheetPDF";
+import { Colors } from "../../Constants/Colors";
+import Application, { ActionBar, Body } from "../../components/layout/Application";
+import CustomerSelect from "../../Global/CustomerSelect/CustomerSelect";
+import DatePicker from "../../components/DatePicker";
+import Stat from "../../components/action bar/Stat";
+import Order from "../../components/Order";
+import CustomerPurchaseSheetPDF from "../../Global/PrintTemplates/CustomerPurchaseSheetPDF";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { Order as OrderModel } from "../Models/Order";
+import { Order as OrderModel } from "../../Models/Order";
 import { useSelector } from "react-redux";
 
-const ManualTasks = () => {
+const CustomerPurchaseSheet = () => {
     const [orders, setOrders] = useState(null);
     const [customer, setCustomer] = useState(null);
     const [theDate, setTheDate] = useState(`${moment().format("MM")}/01/${moment().format("YYYY")}`);
@@ -175,4 +175,4 @@ const Button = styled.button`
     border-radius: 4px;
     white-space: nowrap;
 `;
-export default ManualTasks;
+export default CustomerPurchaseSheet;

@@ -4,8 +4,11 @@ import { DatePicker as MaterialDatePicker } from "@material-ui/pickers";
 import { createMuiTheme } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/styles";
 import { Colors } from "../Constants/Colors";
+import moment from "moment-timezone";
 
-const DatePicker = ({ theDate, setTheDate, label, light = true, disableFuture = true }) => {
+// This date picker returns the date as a valueOf value instead of a raw moment
+
+const DatePicker = ({ theDate, onChange, label, light = true, disableFuture = true }) => {
     const materialTheme = createMuiTheme({
         overrides: {
             MuiFormControl: { color: light ? "white" : "black" },
@@ -45,7 +48,13 @@ const DatePicker = ({ theDate, setTheDate, label, light = true, disableFuture = 
     return (
         <Component>
             <ThemeProvider theme={materialTheme}>
-                <MaterialDatePicker value={theDate} onChange={(date) => setTheDate(date)} autoOk label={label} disableFuture={disableFuture} />
+                <MaterialDatePicker
+                    value={theDate}
+                    onChange={(date) => onChange(moment(date).valueOf())}
+                    autoOk
+                    label={label}
+                    disableFuture={disableFuture}
+                />
             </ThemeProvider>
         </Component>
     );
