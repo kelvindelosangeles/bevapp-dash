@@ -5,24 +5,21 @@ import { Route, Switch } from "react-router-dom";
 import { connect, useSelector } from "react-redux";
 import { SnackbarProvider } from "notistack";
 import { firestoreConnect, isLoaded } from "react-redux-firebase";
+import { Colors } from "./Constants/Colors";
 import styled from "styled-components";
-
 import Sidebar from "./Global/Sidebar/Sidebar";
 import Dashboard from "./Applications/Dashboard/Dashboard";
 import RapidOrder from "./Applications/Rapid Order/RapidOrder";
 import Store from "./Applications/Store/Store";
 import SpecialPricing from "./Applications/Special Pricing/SpecialPricing";
-
 import Dialog from "@material-ui/core/Dialog";
-
 import Spinner from "./Global/Spinner/Spinner";
 import ChangeLog from "./Global/ChangeLog";
 import BeverageReport from "./test/Reports/BeverageReport";
-import { Colors } from "./Constants/Colors";
 import DailyJournalv2 from "./test/Reports/DailyJournalv2";
-import ManualTasks from "./test/ManualTasks";
 import Manual from "./test/Manual";
 import NonOrderReport from "./Applications/Reports/NonOrderReport";
+import CustomerPurchaseSheet from "./Applications/Reports/CustomerPurchaseSheet";
 
 const App = (props) => {
     const toggleChangeLog = () => {
@@ -33,6 +30,7 @@ const App = (props) => {
     return !isLoaded(props.inventory) ||
         !isLoaded(props.orders) ||
         // !isLoaded(props.allv2Orders) ||
+        // !isLoaded(props.collToDelete) ||
         !isLoaded(props.store) ||
         !isLoaded(props.routes) ? null : ( // <Spinner />
         <SnackbarProvider maxSnack={3}>
@@ -44,12 +42,9 @@ const App = (props) => {
                     <Route path='/store' component={Store} />
                     <Route path='/specialpricing' component={SpecialPricing} />
                     <Route path='/report1' component={DailyJournalv2} />
-                    <Route path='/cps' component={ManualTasks} />
+                    <Route path='/cps' component={CustomerPurchaseSheet} />
                     <Route path='/nor' component={NonOrderReport} />
                     <Route path='/manual' component={Manual} />
-                    {/* <Route path='/test' component={Test} /> */}
-                    {/* <Route path='/report1' component={CustomersToReachOutTo} /> */}
-                    {/* <Route path='/report2' component={BeverageReport} /> */}
                 </Switch>
                 <Dialog
                     open={open}
@@ -83,7 +78,7 @@ export default compose(
             store: state.Firestore.data.store,
             routes: state.Firestore.data.routes,
             // allv2Orders: state.Firestore.data.allv2Orders,
-            // allPrevOrders: state.Firestore.data.allPrevOrders,
+            // collToDelete: state.Firestore.data.collToDelete,
         };
     }),
     firestoreConnect(() => {
@@ -93,7 +88,7 @@ export default compose(
             { collection: "store" },
             { collection: "routes" },
             // { collection: "ordersv2", storeAs: "allv2Orders" },
-            // { collection: "orders", storeAs: "allPrevOrders" },
+            // { collection: "orders", storeAs: "collToDelete" },
         ];
     })
 )(App);

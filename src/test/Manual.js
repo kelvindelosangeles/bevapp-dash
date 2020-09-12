@@ -1,35 +1,39 @@
 import React from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 import firebase from "firebase";
 import { useFirestore } from "react-redux-firebase";
 import moment from "moment-timezone";
+import { useSelector } from "react-redux";
 
 import { ActionBar, Application, Body } from "../components/layout/Application";
-import { useEffect } from "react";
 
 const ManualTasks = () => {
     const firestore = useFirestore();
+    // const data = Object.entries(useSelector((state) => state.Firestore.data.collToDelete)).map((x) => x[0]);
+    // console.log(data);
 
-    const nytz = "America/New_York";
-    const turtz = "Europe/Istanbul";
-
-    console.log(moment().valueOf());
-    console.log(moment.tz(1598888788848, nytz).format("LLL"));
-    console.log(moment.tz(1598888788848, turtz).format("LLL"));
-
-    // const data []
-    // useEffect(() => {
-    //     data.forEach((a) => {
-    //         firestore
-    //             .update({ collection: "ordersv2", doc: "202008355" }, { [a[0]]: a[1] })
-    //             .then(() => {
-    //                 console.log("success");
-    //             })
-    //             .catch((err) => {
-    //                 console.log(err);
-    //             });
-    //     });
-    // }, []);
+    useEffect(() => {
+        // firestore
+        //     .update({ collection: "ordersv2", doc: "202009365" }, data)
+        //     .then(() => {
+        //         console.log("success");
+        //     })
+        //     .catch((err) => {
+        //         console.log(err);
+        //     });
+        // data.forEach((x) => {
+        //     console.log(x);
+        //     firestore
+        //         .delete({ collection: "orders", doc: x })
+        //         .then(() => {
+        //             console.log("success");
+        //         })
+        //         .catch((err) => {
+        //             console.log(err);
+        //         });
+        // });
+    }, []);
 
     return (
         <Application>
@@ -40,3 +44,10 @@ const ManualTasks = () => {
 };
 
 export default ManualTasks;
+
+// const nytz = "America/New_York";
+// const turtz = "Europe/Istanbul";
+
+// console.log(moment().valueOf());
+// console.log(moment.tz(1598888788848, nytz).format("LLL"));
+// console.log(moment.tz(1598888788848, turtz).format("LLL"));

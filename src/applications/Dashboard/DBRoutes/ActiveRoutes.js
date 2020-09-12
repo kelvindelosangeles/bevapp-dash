@@ -8,7 +8,6 @@ import { useSelector } from "react-redux";
 const ActiveRoutes = () => {
     const [open, toggle] = useState(false);
     const routes = useSelector((state) => state.Firestore.data.routes.routes);
-
     return (
         <Component>
             <Actions>

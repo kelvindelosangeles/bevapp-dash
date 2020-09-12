@@ -7,13 +7,15 @@ import MiniOrder2 from "../../components/MiniOrder2";
 
 import { useSelector, useDispatch } from "react-redux";
 import { useFirestore } from "react-redux-firebase";
-import moment from "moment";
+import moment from "moment-timezone";
 import shortid from "shortid";
 import { withRouter } from "react-router-dom";
 import { Colors } from "../../../../Constants/Colors";
+import DatePickerv2 from "../../../../components/DatePickerv2";
 
 const CreateRoute = ({ close }) => {
     const [driver, setDriver] = useState(null);
+    const [theDate, setTheDate] = useState(moment().valueOf());
     const [routeOrders, setRouteOrders] = useState([]);
     const orders = useSelector((state) => state.Firestore.data.ordersv2.orders);
     const firestore = useFirestore();
@@ -52,11 +54,20 @@ const CreateRoute = ({ close }) => {
     };
     const submitHandler = () => {
         let routeID = driver.firstName.slice(0, 3) + driver.lastName.slice(0, 1) + shortid.generate();
+        let now = moment().valueOf();
+        let timeZone = moment.tz.guess();
         let newRoute = {
             [routeID]: {
                 driver,
                 orders: routeOrders,
-                details: { createdAt: new Date().toLocaleString("en-US", { timeZone: "America/New_York" }), routeID },
+                details: {
+                    createdAt: new Date().toLocaleString("en-US", { timeZone: "America/New_York" }),
+                    dates: {
+                        createdAt: { date: now, tz: timeZone },
+                        routeDate: { date: theDate, tz: timeZone },
+                    },
+                    routeID,
+                },
             },
         };
 
@@ -86,7 +97,10 @@ const CreateRoute = ({ close }) => {
 
     return (
         <Component>
-            <div className='heading'>New Route</div>
+            <div className='heading'>
+                <p>New Route</p>
+                <DatePickerv2 light={false} label={"Route Date"} theDate={theDate} onChange={setTheDate} />
+            </div>
             <Autocomplete
                 options={Drivers}
                 getOptionLabel={(option) => option.firstName}
@@ -96,22 +110,46 @@ const CreateRoute = ({ close }) => {
                 autoComplete={false}
             />
             {driver && (
-                <React.Fragment>
-                    <Body>
-                        <div className='subheading'>Add Orders to your Route</div>
-                        {availableOrders()}
-                        <div className='actions'>
-                            <button onClick={submitHandler}>Create Route</button>
-                        </div>
-                    </Body>
-                </React.Fragment>
+                <Body>
+                    <div className='subheading'>Add Orders to your Route</div>
+                    {availableOrders()}
+                    <div className='actions'>
+                        <button onClick={submitHandler}>Create Route</button>
+                    </div>
+                </Body>
             )}
         </Component>
     );
 };
+
 const Component = styled.div`
     padding: 32px;
     position: relative;
+    .heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 24px;
+        p {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        input,
+        label {
+            color: black !important;
+            cursor: pointer;
+        }
+        .MuiFormControl-root.MuiTextField-root {
+            width: 100% !important;
+            margin-bottom: 40px;
+        }
+        .MuiInputLabel-animated {
+            color: black !important;
+        }
+    }
+    .MuiFormControl-root {
+        width: 50%;
+    }
     #options-icon {
         position: absolute;
         top: 16px;
@@ -119,23 +157,13 @@ const Component = styled.div`
         color: ${Colors.black};
         cursor: pointer;
     }
-    .heading {
-        font-size: 24px;
-        font-weight: 600;
-        margin-bottom: 32px;
-    }
-    .MuiFormControl-root.MuiTextField-root {
-        width: 40% !important;
-        margin-bottom: 40px;
-        /* FIXME: Figure out why i have to do this */
-    }
 `;
-
 const Body = styled.div`
     .subheading {
         font-size: 20px;
         font-weight: 600;
         margin-bottom: 32px;
+        margin-top: 40px;
     }
     .actions {
         padding-top: 40px;
