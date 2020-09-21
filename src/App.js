@@ -15,11 +15,11 @@ import SpecialPricing from "./Applications/Special Pricing/SpecialPricing";
 import Dialog from "@material-ui/core/Dialog";
 import Spinner from "./Global/Spinner/Spinner";
 import ChangeLog from "./Global/ChangeLog";
-import BeverageReport from "./test/Reports/BeverageReport";
 import DailyJournalv2 from "./test/Reports/DailyJournalv2";
 import Manual from "./test/Manual";
 import NonOrderReport from "./Applications/Reports/NonOrderReport";
 import CustomerPurchaseSheet from "./Applications/Reports/CustomerPurchaseSheet";
+import BeverageReport from "./Applications/Reports/BeverageReport";
 
 const App = (props) => {
     const toggleChangeLog = () => {
@@ -44,6 +44,7 @@ const App = (props) => {
                     <Route path='/report1' component={DailyJournalv2} />
                     <Route path='/cps' component={CustomerPurchaseSheet} />
                     <Route path='/nor' component={NonOrderReport} />
+                    <Route path='/bev' component={BeverageReport} />
                     <Route path='/manual' component={Manual} />
                 </Switch>
                 <Dialog

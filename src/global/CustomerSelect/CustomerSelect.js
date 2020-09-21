@@ -3,9 +3,10 @@ import React from "react";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { TextField } from "@material-ui/core";
 import styled from "styled-components";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 
-const CustomerSelect = ({ customerChangeHandler, selectedCustomer, customers }) => {
+const CustomerSelect = ({ customerChangeHandler, selectedCustomer }) => {
+    const customers = useSelector((state) => state.Firestore.data.store.customers);
     // FIXME: change the sort to numbers
     const options = Object.values(customers).map((x) => {
         const firstLetter = x.address[0].toUpperCase();
@@ -15,6 +16,8 @@ const CustomerSelect = ({ customerChangeHandler, selectedCustomer, customers }) 
             ...x,
         };
     });
+
+    console.log("Customer Select", options);
 
     return (
         <CustomerSelectWrapper>
@@ -40,8 +43,4 @@ const CustomerSelectWrapper = styled.div`
     }
 `;
 
-export default connect((state) => {
-    return {
-        customers: state.Firestore.data.store.customers,
-    };
-})(CustomerSelect);
+export default CustomerSelect;

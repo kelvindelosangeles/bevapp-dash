@@ -6,8 +6,6 @@ import { ThemeProvider } from "@material-ui/styles";
 import { Colors } from "../Constants/Colors";
 import moment from "moment-timezone";
 
-// This date picker returns the date as a valueOf value instead of a raw moment
-
 const DatePicker = ({ theDate, onChange, label, light = true, disableFuture = true }) => {
     const materialTheme = createMuiTheme({
         overrides: {
@@ -72,6 +70,7 @@ const Component = styled.div`
     input {
         font-size: 18px;
         white-space: nowrap;
+        margin-top: 16px;
     }
 `;
 export default DatePicker;
