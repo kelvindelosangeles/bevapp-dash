@@ -32,7 +32,7 @@ export class Order {
         const quantity = beverage.qty;
 
         try {
-            return "$ " + (parseFloat(generatePrice()) * parseFloat(quantity)).toFixed(2);
+            return "$" + (parseFloat(generatePrice()) * parseFloat(quantity)).toFixed(2);
         } catch (error) {
             console.log(error);
             console.log("There was a problem in CalcItem");
