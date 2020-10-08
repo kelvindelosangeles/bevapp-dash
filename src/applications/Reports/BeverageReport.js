@@ -13,7 +13,7 @@ import { Order as OrdersModel } from "../../Models/Order";
 const BeverageReport = () => {
     const [orders, setOrders] = useState(null);
     const [reportData, setReportData] = useState([]);
-    const [beverage, setBeverage] = useState(null);
+    let [beverage, setBeverage] = useState(null);
     const [theDate, setTheDate] = useState(`${moment().format("MM")}/01/${moment().format("YYYY")}`);
     const beverages = useSelector((state) => state.Firestore.data.inventory.beverages);
     const customers = useSelector((state) => state.Firestore.data.store.customers);
@@ -179,7 +179,41 @@ const BeverageReport = () => {
                 </ActionWrapper>
             </ActionBar>
             <Body title='Beverage Report' header={<Header />}>
-                <Reports>{beverageReport()}</Reports>
+                {/* <Reports>{beverageReport()}</Reports> */}
+                <div style={{ columnCount: 4, columnGap: 32 }}>
+                    {Object.values(beverages).map((x) => {
+                        beverage = x;
+                        let ordersFiltered = orders
+                            .filter((a) => {
+                                // Date Filter
+                                return moment(a.details.createdAt).isSameOrAfter(theDate);
+                            })
+                            .filter((b) => {
+                                // beverage filter
+                                return b.cart.hasOwnProperty(beverage.id);
+                            });
+                        return (
+                            ordersFiltered.length > 0 && (
+                                <div style={{ display: "flex", marginBottom: "16px" }}>
+                                    <h2 style={{ marginRight: "16px" }}>{beverage.id}</h2>
+                                    <h3>
+                                        {
+                                            (beverage.id,
+                                            ordersFiltered
+                                                .map((d) => {
+                                                    return d.cart[beverage.id].qty;
+                                                })
+                                                .reduce((j, k) => {
+                                                    return parseInt(j) + parseInt(k);
+                                                }))
+                                        }
+                                        Cases
+                                    </h3>
+                                </div>
+                            )
+                        );
+                    })}
+                </div>
             </Body>
         </Application>
     ) : (
