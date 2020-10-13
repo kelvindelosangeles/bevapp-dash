@@ -66,6 +66,7 @@ const CompletedOrders = () => {
     const [theDate, setTheDate] = useState(null);
     const [orders, setOrders] = useState(null);
     const [routes, setRoutes] = useState(null);
+
     const firestore = useFirestore();
     // routes && console.log(routes);
     const allOrders = () => {
@@ -120,6 +121,21 @@ const CompletedOrders = () => {
     useEffect(() => {
         theDate && getCompletedOrders();
     }, [theDate]);
+
+    useEffect(() => {
+        routes &&
+            routes.forEach((a) => {
+                try {
+                    console.log(a[1]);
+                    console.log(a[1].driver.firstName);
+                    console.log(moment(a[1].details.dates.routeDate.date).isBetween("10/01/20", "10/03/20"));
+                } catch (error) {
+                    console.log(a[1].driver.firstName, error);
+                }
+            });
+    }, [routes]);
+
+    // console.log(routes);
 
     return (
         <Application>

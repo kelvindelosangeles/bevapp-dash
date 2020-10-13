@@ -62,11 +62,16 @@ const Sidebar = () => {
                         <Report /> <p>NOR</p>
                     </div>
                 </NavLink>
-                <NavLink className='nav-group' to='/bev'>
+                <NavLink className='nav-group' to='/wj'>
+                    <div className='header'>
+                        <Report /> <p>WJ</p>
+                    </div>
+                </NavLink>
+                {/* <NavLink className='nav-group' to='/bev'>
                     <div className='header'>
                         <Report /> <p>BEV</p>
                     </div>
-                </NavLink>
+                </NavLink> */}
             </div>
 
             <div className='logout-wrapper'>
