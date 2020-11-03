@@ -4,7 +4,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import { TextField } from "@material-ui/core";
 import styled from "styled-components";
 
-const SmartSelect = ({ onChange, value = 0, data }) => {
+const SmartSelect = ({ onChange, value = 0, data, label = "Select a Beverage" }) => {
     const options = Object.values(data).map((x) => {
         const firstLetter = x.id[0].toUpperCase();
 
@@ -20,7 +20,7 @@ const SmartSelect = ({ onChange, value = 0, data }) => {
                 options={options.sort()}
                 groupBy={(option) => option.firstLetter}
                 getOptionLabel={(option) => option.id}
-                renderInput={(params) => <TextField {...params} label='Select a Beverage' variant='standard' fullWidth />}
+                renderInput={(params) => <TextField {...params} label={label} variant='standard' fullWidth />}
                 value={value}
                 onChange={onChange}
                 fullWidth

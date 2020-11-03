@@ -17,8 +17,6 @@ const CustomerSelect = ({ customerChangeHandler, selectedCustomer }) => {
         };
     });
 
-    console.log("Customer Select", options);
-
     return (
         <CustomerSelectWrapper>
             <Autocomplete

@@ -6,7 +6,7 @@ import { ThemeProvider } from "@material-ui/styles";
 import { Colors } from "../Constants/Colors";
 import moment from "moment-timezone";
 
-const DatePicker = ({ theDate, onChange, label, light = true, disableFuture = true }) => {
+const DatePicker = ({ theDate, onChange, label, light = true, disableFuture = true, minDate = "01/01/2000" }) => {
     const materialTheme = createMuiTheme({
         overrides: {
             MuiFormControl: { color: light ? "white" : "black" },
@@ -52,6 +52,7 @@ const DatePicker = ({ theDate, onChange, label, light = true, disableFuture = tr
                     autoOk
                     label={label}
                     disableFuture={disableFuture}
+                    minDate={minDate}
                 />
             </ThemeProvider>
         </Component>

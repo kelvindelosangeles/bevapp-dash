@@ -22,16 +22,16 @@ export class Order {
 
     static CalculateItem = (beverage, specialPrices) => {
         // Tries to extract a price from specialPrices and if theres an error it returns the original price
-        const generatePrice = () => {
-            try {
-                return specialPrices[beverage.id].price;
-            } catch (error) {
-                return beverage.price;
-            }
-        };
-        const quantity = beverage.qty;
-
         try {
+            const generatePrice = () => {
+                try {
+                    return specialPrices[beverage.id].price;
+                } catch (error) {
+                    return beverage.price;
+                }
+            };
+            const quantity = beverage.qty;
+
             return "$" + (parseFloat(generatePrice()) * parseFloat(quantity)).toFixed(2);
         } catch (error) {
             console.log(error);

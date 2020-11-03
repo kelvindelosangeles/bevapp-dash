@@ -194,6 +194,7 @@ const SPAdd = ({ match, history, beverages, firestore, customers, dispatch }) =>
 };
 
 const Grid = styled.div`
+    background-color: ${Colors.white};
     height: 100%;
     display: grid;
     grid-template-columns: 1fr 390px;
