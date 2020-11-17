@@ -2,28 +2,27 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { ActionBar, Application, Body } from "../components/layout/Application";
 import firebase from "firebase";
-
 import moment from "moment-timezone";
 
 const ManualTasks = () => {
-    const [data, setData] = useState(null);
+    // const [data, setData] = useState(null);
 
-    const testQueries = () => {
-        var colRef = firebase.firestore().collection("completedOrdersTemp");
-        var query = colRef
-            .where("customer", "==", "081be9fa")
-            .get()
-            .then((res) => {
-                res.docs.map((x) => {
-                    console.log(x.data());
-                });
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    };
+    // const testQueries = () => {
+    //     var colRef = firebase.firestore().collection("completedOrdersTemp");
+    //     var query = colRef
+    //         .where("customer", "==", "081be9fa")
+    //         .get()
+    //         .then((res) => {
+    //             res.docs.map((x) => {
+    //                 console.log(x.data());
+    //             });
+    //         })
+    //         .catch((err) => {
+    //             console.log(err);
+    //         });
+    // };
 
-    testQueries();
+    // testQueries();
 
     return (
         <Application>
