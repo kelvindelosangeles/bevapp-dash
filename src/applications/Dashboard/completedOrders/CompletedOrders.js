@@ -13,6 +13,7 @@ import Order from "../../../components/Order";
 
 // BETA
 import ReactExport from "react-export-excel";
+import ResponsiveBlock from "../../../componentsv3/responsive block";
 
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
@@ -138,60 +139,63 @@ const CompletedOrders = () => {
     // console.log(routes);
 
     return (
-        <Application>
-            <ActionBar>
-                <ActionWrapper>
-                    <DatePicker theDate={theDate} setTheDate={setTheDate} label='Select a Date' />
-                    {orders && <Stat color={Colors.blue} title='Routes' data={orders.length} />}
-                    {orders && <Stat color={Colors.green} title='Total' data={`$${CalcTotalMultipleOrders(allOrders())}`} />}
-                    {orders && <Stat color={Colors.orange} title='Cases' data={CalcCasesMultipleOrders(allOrders())} />}
-                    <span />
-                    <span />
-                    {routes && <Excel routes={routes} />}
-                    {orders && (
-                        <Button color={Colors.blue}>
-                            <PDFDownloadLink
-                                document={
-                                    <DailyJournal
-                                        orders={orders}
-                                        total={CalcTotalMultipleOrders(allOrders())}
-                                        totalCases={CalcCasesMultipleOrders(allOrders())}
-                                        CalcCasesMultipleOrders={CalcCasesMultipleOrders}
-                                        CalcTotalMultipleOrders={CalcTotalMultipleOrders}
-                                        theDate={theDate}
-                                    />
-                                }
-                                fileName={`Daily Journal date`}>
-                                {({ loading }) => (loading ? "Loading..." : "Download Daily Journal")}
-                            </PDFDownloadLink>
-                        </Button>
-                    )}
-                </ActionWrapper>
-            </ActionBar>
-            <Body title='Completed Orders' header={<Header />}>
-                {orders ? (
-                    <BodyContent>
-                        {orders.map((a) => {
-                            return (
-                                <div className='route'>
-                                    <div className='route-details'>
-                                        <p>{a.driver.firstName}</p>
-                                        <p>{Object.values(a.orders).length}</p>
-                                        <p>{CalcCasesMultipleOrders(a.orders)}</p>
-                                        <p>${CalcTotalMultipleOrders(a.orders)}</p>
+        <>
+            <ResponsiveBlock />
+            <Application>
+                <ActionBar>
+                    <ActionWrapper>
+                        <DatePicker theDate={theDate} setTheDate={setTheDate} label='Select a Date' />
+                        {orders && <Stat color={Colors.blue} title='Routes' data={orders.length} />}
+                        {orders && <Stat color={Colors.green} title='Total' data={`$${CalcTotalMultipleOrders(allOrders())}`} />}
+                        {orders && <Stat color={Colors.orange} title='Cases' data={CalcCasesMultipleOrders(allOrders())} />}
+                        <span />
+                        <span />
+                        {routes && <Excel routes={routes} />}
+                        {orders && (
+                            <Button color={Colors.blue}>
+                                <PDFDownloadLink
+                                    document={
+                                        <DailyJournal
+                                            orders={orders}
+                                            total={CalcTotalMultipleOrders(allOrders())}
+                                            totalCases={CalcCasesMultipleOrders(allOrders())}
+                                            CalcCasesMultipleOrders={CalcCasesMultipleOrders}
+                                            CalcTotalMultipleOrders={CalcTotalMultipleOrders}
+                                            theDate={theDate}
+                                        />
+                                    }
+                                    fileName={`Daily Journal date`}>
+                                    {({ loading }) => (loading ? "Loading..." : "Download Daily Journal")}
+                                </PDFDownloadLink>
+                            </Button>
+                        )}
+                    </ActionWrapper>
+                </ActionBar>
+                <Body title='Completed Orders' header={<Header />}>
+                    {orders ? (
+                        <BodyContent>
+                            {orders.map((a) => {
+                                return (
+                                    <div className='route'>
+                                        <div className='route-details'>
+                                            <p>{a.driver.firstName}</p>
+                                            <p>{Object.values(a.orders).length}</p>
+                                            <p>{CalcCasesMultipleOrders(a.orders)}</p>
+                                            <p>${CalcTotalMultipleOrders(a.orders)}</p>
+                                        </div>
+                                        {Object.values(a.orders).map((b) => {
+                                            return <Order order={b} completedDate={a.details.completedAt.toDate()} />;
+                                        })}
                                     </div>
-                                    {Object.values(a.orders).map((b) => {
-                                        return <Order order={b} completedDate={a.details.completedAt.toDate()} />;
-                                    })}
-                                </div>
-                            );
-                        })}
-                    </BodyContent>
-                ) : (
-                    <h4>No Orders Found</h4>
-                )}
-            </Body>
-        </Application>
+                                );
+                            })}
+                        </BodyContent>
+                    ) : (
+                        <h4>No Orders Found</h4>
+                    )}
+                </Body>
+            </Application>
+        </>
     );
 };
 

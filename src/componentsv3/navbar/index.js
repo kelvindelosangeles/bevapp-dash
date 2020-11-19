@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
+import WebNavbar from "./Web";
 const Navbar = () => {
     return (
         <Component>
-            <h3>this is the Navbar</h3>
+            <WebNavbar />
         </Component>
     );
 };

@@ -13,6 +13,7 @@ import AddBeverage from "./Store Routes/AddBeverage";
 import EditBeverage from "./Store Routes/EditBeverage";
 import AddCustomer from "./Store Routes/AddCustomer";
 import { Colors } from "../../Constants/Colors";
+import ResponsiveBlock from "../../componentsv3/responsive block";
 
 const Store = ({ sidebarExpanded }) => {
     const [storeToggle, setStoreToggle] = useState(true);
@@ -22,21 +23,24 @@ const Store = ({ sidebarExpanded }) => {
     };
 
     return (
-        <StoreWrapper expand={sidebarExpanded}>
-            <main>
-                <STToggle storeToggle={storeToggle} toggleStore={toggleStore} />
-                {storeToggle ? <STBeverages /> : <STCustomers />}
-            </main>
-            <Switch>
-                <Redirect exact from='/store' to='/store/home' />
-                <Route path='/store/home' component={Home} />
-                <Route path='/store/addbeverage' component={AddBeverage} />
-                <Route path='/store/editbeverage/:id' component={EditBeverage} />
-                <Route path='/store/addcustomer' component={AddCustomer} />
-            </Switch>
+        <>
+            <ResponsiveBlock />
+            <StoreWrapper expand={sidebarExpanded}>
+                <main>
+                    <STToggle storeToggle={storeToggle} toggleStore={toggleStore} />
+                    {storeToggle ? <STBeverages /> : <STCustomers />}
+                </main>
+                <Switch>
+                    <Redirect exact from='/store' to='/store/home' />
+                    <Route path='/store/home' component={Home} />
+                    <Route path='/store/addbeverage' component={AddBeverage} />
+                    <Route path='/store/editbeverage/:id' component={EditBeverage} />
+                    <Route path='/store/addcustomer' component={AddCustomer} />
+                </Switch>
 
-            {/* <STPreview /> */}
-        </StoreWrapper>
+                {/* <STPreview /> */}
+            </StoreWrapper>
+        </>
     );
 };
 

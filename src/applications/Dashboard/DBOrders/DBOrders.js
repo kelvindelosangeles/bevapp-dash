@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { Colors } from "../../../Constants/Colors";
 import Order from "../components/Order";
 import moment from "moment";
+import ResponsiveBlock from "../../../componentsv3/responsive block/index";
 
 const DBOrders = ({ activeOrder, dispatch }) => {
     const orders = useSelector((state) => state.Firestore.data.ordersv2.orders);
@@ -32,28 +33,31 @@ const DBOrders = ({ activeOrder, dispatch }) => {
         });
 
     return (
-        <Component>
-            <Statbar />
-            <OrderHeader>
-                <h6>Order</h6>
-                <h6>Store</h6>
-                <h6>Cases</h6>
-                <h6>Total</h6>
-                <h6>Status</h6>
-            </OrderHeader>
-            <OrdersContainer>
-                <div className='scroll-wrapper'>
-                    <section>
-                        <p className='section-header'>Today</p>
-                        {ordersToday}
-                    </section>
-                    <section>
-                        <p className='section-header'>Future Orders</p>
-                        {futureOrders}
-                    </section>
-                </div>
-            </OrdersContainer>
-        </Component>
+        <>
+            <ResponsiveBlock />
+            <Component>
+                <Statbar />
+                <OrderHeader>
+                    <h6>Order</h6>
+                    <h6>Store</h6>
+                    <h6>Cases</h6>
+                    <h6>Total</h6>
+                    <h6>Status</h6>
+                </OrderHeader>
+                <OrdersContainer>
+                    <div className='scroll-wrapper'>
+                        <section>
+                            <p className='section-header'>Today</p>
+                            {ordersToday}
+                        </section>
+                        <section>
+                            <p className='section-header'>Future Orders</p>
+                            {futureOrders}
+                        </section>
+                    </div>
+                </OrdersContainer>
+            </Component>
+        </>
     );
 };
 

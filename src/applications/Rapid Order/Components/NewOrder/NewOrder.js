@@ -30,12 +30,9 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
             },
         });
     };
-
     const createdAt = useMemo(() => {
         return `${new Date()}`;
     });
-
-    // .format("MMM DD, h:mm")
     const CartArray = Object.values(cart).map((i) => {
         const removeItem = () => {
             if (window.confirm(`Delete ${i.id} ?`)) {
@@ -99,7 +96,6 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
             </div>
         );
     });
-
     const submitHandler = () => {
         const NewOrder = {
             customer,
@@ -153,7 +149,7 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
                     <p className='warning'>Edit Mode</p>
                 </EditWarning>
             )}
-            <Container>
+            <Component>
                 <Controls>
                     <CustomerSelect customerChangeHandler={customerChangeHandler} selectedCustomer={customer} />
                     <SmartEntry
@@ -203,10 +199,29 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
                         </button>
                     </span>
                 </Actions>
-            </Container>
+            </Component>
         </React.Fragment>
     );
 };
+
+const Component = styled.div`
+    display: none;
+    @media (min-width: 768px) {
+        display: grid;
+        min-height: 100%;
+        width: 100%;
+        position: relative;
+        height: fit-content;
+        padding: 0 0 32px 0;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 100px 200px 1fr auto;
+        grid-template-areas:
+            "A A A"
+            "B C D"
+            "E E E"
+            ". F F";
+    }
+`;
 const EditWarning = styled.div`
     padding: 16px;
     background-color: #ffcc00;
@@ -216,22 +231,11 @@ const EditWarning = styled.div`
         text-align: center;
     }
 `;
-const Container = styled.div`
-    min-height: 100%;
-    width: 100%;
-    position: relative;
-    display: grid;
-    height: fit-content;
-    padding: 0 0 32px 0;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 100px 200px 1fr auto;
-    grid-template-areas:
-        "A A A"
-        "B C D"
-        "E E E"
-        ". F F";
-`;
 const Controls = styled.div`
+    padding: 16px;
+    display: grid;
+    grid-row-gap: 16px;
+
     width: 100%;
     position: absolute;
     grid-area: A;
@@ -257,7 +261,6 @@ const Notes = styled.section`
         font-size: 12px;
         border: none;
         resize: none;
-
         font-weight: 500;
         font-size: 14px;
     }
@@ -315,7 +318,6 @@ const Cart = styled.div`
         }
     }
 `;
-
 const Actions = styled.div`
     grid-area: F;
     justify-self: flex-end;

@@ -83,73 +83,76 @@ const Sidebar = () => {
 };
 
 const Container = styled.div`
-    grid-area: sidebar;
-    display: grid;
-    grid-template-rows: min-content min-content 1fr;
-    align-content: flex-start;
-    background-color: transparent;
-    padding: 110px 40px 32px 24px;
-    .heading {
-        color: ${Colors.white};
-        margin-bottom: 94px;
-        cursor: pointer;
-        h3 {
-            white-space: nowrap;
-            font-weight: 800;
-            font-size: 18px;
-            margin-bottom: 8px;
-        }
-        h6 {
-            font-weight: 700;
-            font-size: 12px;
-        }
-    }
-    .nav-links {
+    display: none;
+    @media (min-width: 768px) {
+        grid-area: sidebar;
         display: grid;
-        grid-row-gap: 32px;
-        p,
-        a {
-            color: ${Colors.white}!important;
-            :hover {
-                color: ${Colors.yellow}!important;
+        grid-template-rows: min-content min-content 1fr;
+        align-content: flex-start;
+        background-color: transparent;
+        padding: 110px 40px 32px 24px;
+        .heading {
+            color: ${Colors.white};
+            margin-bottom: 94px;
+            cursor: pointer;
+            h3 {
+                white-space: nowrap;
+                font-weight: 800;
+                font-size: 18px;
+                margin-bottom: 8px;
+            }
+            h6 {
+                font-weight: 700;
+                font-size: 12px;
             }
         }
-        a.nav-group {
-            .header {
-                display: flex;
+        .nav-links {
+            display: grid;
+            grid-row-gap: 32px;
+            p,
+            a {
+                color: ${Colors.white}!important;
+                :hover {
+                    color: ${Colors.yellow}!important;
+                }
             }
-            svg {
-                grid-area: icon;
-                margin-right: 16px;
-            }
-            p {
-                grid-area: main;
-                white-space: nowrap;
-                font-weight: 700;
-            }
-            .sublinks {
-                margin-top: 16px;
-                margin-left: 56px;
-                grid-area: sub;
-                display: grid;
-                grid-row-gap: 16px;
-                white-space: nowrap;
-                a {
-                    color: ${Colors.white};
+            a.nav-group {
+                .header {
+                    display: flex;
+                }
+                svg {
+                    grid-area: icon;
+                    margin-right: 16px;
+                }
+                p {
+                    grid-area: main;
+                    white-space: nowrap;
+                    font-weight: 700;
+                }
+                .sublinks {
+                    margin-top: 16px;
+                    margin-left: 56px;
+                    grid-area: sub;
+                    display: grid;
+                    grid-row-gap: 16px;
+                    white-space: nowrap;
+                    a {
+                        color: ${Colors.white};
+                    }
                 }
             }
         }
-    }
-    .logout-wrapper {
-        align-self: flex-end;
-        display: flex;
-        align-items: center;
-        p {
-            color: ${Colors.white};
-        }
-        svg {
-            margin-right: 16px;
-            color: ${Colors.white};
+        .logout-wrapper {
+            align-self: flex-end;
+            display: flex;
+            align-items: center;
+            p {
+                color: ${Colors.white};
+            }
+            svg {
+                margin-right: 16px;
+                color: ${Colors.white};
+            }
         }
     }
 `;

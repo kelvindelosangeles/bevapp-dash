@@ -5,35 +5,39 @@ import SingleRoute from "./components/SingleRoute";
 import Dialog from "@material-ui/core/Dialog";
 import CreateRoute from "./components/CreateRoute";
 import { useSelector } from "react-redux";
+import ResponsiveBlock from "../../../componentsv3/responsive block";
 const ActiveRoutes = () => {
     const [open, toggle] = useState(false);
     const routes = useSelector((state) => state.Firestore.data.routes.routes);
     return (
-        <Component>
-            <Actions>
-                <button onClick={() => toggle(true)}>Create a Route</button>
-            </Actions>
-            <RoutesContainer>
-                <div className='heading'>Active Routes</div>
-                <div className='item header'>
-                    <p>Driver</p>
-                    <p>Orders</p>
-                    <p>Cases</p>
-                    <p>Total</p>
-                    <p>Status</p>
-                </div>
-                <div className='grid'>
-                    <div className='wrapper'>
-                        {Object.values(routes).map((x) => {
-                            return <SingleRoute data={x} />;
-                        })}
+        <>
+            <ResponsiveBlock />
+            <Component>
+                <Actions>
+                    <button onClick={() => toggle(true)}>Create a Route</button>
+                </Actions>
+                <RoutesContainer>
+                    <div className='heading'>Active Routes</div>
+                    <div className='item header'>
+                        <p>Driver</p>
+                        <p>Orders</p>
+                        <p>Cases</p>
+                        <p>Total</p>
+                        <p>Status</p>
                     </div>
-                </div>
-            </RoutesContainer>
-            <Dialog open={open} scroll='paper' onClose={() => toggle(false)} fullWidth>
-                <CreateRoute close={() => toggle(false)} />
-            </Dialog>
-        </Component>
+                    <div className='grid'>
+                        <div className='wrapper'>
+                            {Object.values(routes).map((x) => {
+                                return <SingleRoute data={x} />;
+                            })}
+                        </div>
+                    </div>
+                </RoutesContainer>
+                <Dialog open={open} scroll='paper' onClose={() => toggle(false)} fullWidth>
+                    <CreateRoute close={() => toggle(false)} />
+                </Dialog>
+            </Component>
+        </>
     );
 };
 const Component = styled.div`

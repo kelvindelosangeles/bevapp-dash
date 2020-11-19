@@ -13,6 +13,7 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import { Order as OrderModel } from "../../Models/Order";
 import { useSelector } from "react-redux";
 import { get } from "store";
+import ResponsiveBlock from "../../componentsv3/responsive block";
 
 const Toggle = ({ action, on, title }) => {
     return (
@@ -30,7 +31,6 @@ const NonOrderReport = () => {
     const [inactiveFilter, setInactiveFilter] = useState(true);
     const [theDate, setTheDate] = useState(`${moment().format("MM")}/01/${moment().format("YYYY")}`);
     const allCustomers = useSelector((state) => state.Firestore.data.store.customers);
-
     const NonOrderCustomers = () => {
         try {
             const customersWithOrders = [
@@ -62,7 +62,6 @@ const NonOrderReport = () => {
             return [];
         }
     };
-
     const getLastOrderDate = (id) => {
         try {
             const customerOrders = orders
@@ -83,7 +82,6 @@ const NonOrderReport = () => {
             return "";
         }
     };
-
     useEffect(() => {
         const getOrders = async () => {
             try {
@@ -112,58 +110,61 @@ const NonOrderReport = () => {
     }, []);
 
     return (
-        <Application>
-            <ActionBar>
-                <ActionWrapper>
-                    <DatePicker theDate={theDate} setTheDate={setTheDate} label='Select a Date' />
-                    <Stat color={Colors.blue} title='Customers' data={(orders && NonOrderCustomers().length) || 0} />
-                    <Toggle
-                        on={inactiveFilter}
-                        title={"Hide Inactive Customers"}
-                        action={() => {
-                            setInactiveFilter(!inactiveFilter);
-                        }}
-                    />
-                    {orders && (
-                        <Button color={Colors.blue}>
-                            <PDFDownloadLink
-                                document={
-                                    <NonOrderReportPDF
-                                        orders={orders}
-                                        theDate={theDate}
-                                        allCustomers={allCustomers}
-                                        customers={NonOrderCustomers()}
-                                    />
-                                }
-                                fileName={`Non Order Report ${moment().format("L")}`}>
-                                {({ loading }) => (loading ? "Loading..." : "Download Report")}
-                            </PDFDownloadLink>
-                        </Button>
-                    )}
-                </ActionWrapper>
-            </ActionBar>
-            <Body title='Non Order Report' header={<Header />}>
-                <CustomerWrapper>
-                    {orders &&
-                        NonOrderCustomers()
-                            .sort((a, b) => {
-                                return a.address > b.address ? 1 : -1;
-                            })
-                            .filter((z) => {
-                                return z.address !== "123 Test blvd";
-                            })
-                            .map((c) => {
-                                return (
-                                    <div className='customer'>
-                                        <p className='address'>{c.address}</p>
-                                        <p>{c.telephone}</p>
-                                        <p className='date'>{getLastOrderDate(c.id)}</p>
-                                    </div>
-                                );
-                            })}
-                </CustomerWrapper>
-            </Body>
-        </Application>
+        <>
+            <ResponsiveBlock />
+            <Application>
+                <ActionBar>
+                    <ActionWrapper>
+                        <DatePicker theDate={theDate} setTheDate={setTheDate} label='Select a Date' />
+                        <Stat color={Colors.blue} title='Customers' data={(orders && NonOrderCustomers().length) || 0} />
+                        <Toggle
+                            on={inactiveFilter}
+                            title={"Hide Inactive Customers"}
+                            action={() => {
+                                setInactiveFilter(!inactiveFilter);
+                            }}
+                        />
+                        {orders && (
+                            <Button color={Colors.blue}>
+                                <PDFDownloadLink
+                                    document={
+                                        <NonOrderReportPDF
+                                            orders={orders}
+                                            theDate={theDate}
+                                            allCustomers={allCustomers}
+                                            customers={NonOrderCustomers()}
+                                        />
+                                    }
+                                    fileName={`Non Order Report ${moment().format("L")}`}>
+                                    {({ loading }) => (loading ? "Loading..." : "Download Report")}
+                                </PDFDownloadLink>
+                            </Button>
+                        )}
+                    </ActionWrapper>
+                </ActionBar>
+                <Body title='Non Order Report' header={<Header />}>
+                    <CustomerWrapper>
+                        {orders &&
+                            NonOrderCustomers()
+                                .sort((a, b) => {
+                                    return a.address > b.address ? 1 : -1;
+                                })
+                                .filter((z) => {
+                                    return z.address !== "123 Test blvd";
+                                })
+                                .map((c) => {
+                                    return (
+                                        <div className='customer'>
+                                            <p className='address'>{c.address}</p>
+                                            <p>{c.telephone}</p>
+                                            <p className='date'>{getLastOrderDate(c.id)}</p>
+                                        </div>
+                                    );
+                                })}
+                    </CustomerWrapper>
+                </Body>
+            </Application>
+        </>
     );
 };
 

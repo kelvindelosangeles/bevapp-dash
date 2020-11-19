@@ -14,6 +14,7 @@ import CustomerPurchaseSheetPDF from "../../Global/PrintTemplates/CustomerPurcha
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { Order as OrderModel } from "../../Models/Order";
 import { useSelector } from "react-redux";
+import ResponsiveBlock from "../../componentsv3/responsive block";
 
 const CustomerPurchaseSheet = () => {
     const [orders, setOrders] = useState(null);
@@ -46,7 +47,6 @@ const CustomerPurchaseSheet = () => {
     const customerChangeHandler = (e, value) => {
         setCustomer(value);
     };
-
     const filteredOrders =
         orders &&
         orders
@@ -76,7 +76,6 @@ const CustomerPurchaseSheet = () => {
             return "ERR";
         }
     };
-
     const CalcCasesMultipleOrders = () => {
         // TODO:101 Move to ORDER MODELS
         try {
@@ -95,43 +94,46 @@ const CustomerPurchaseSheet = () => {
     }, []);
 
     return (
-        <Application>
-            <ActionBar>
-                {orders && (
-                    <ActionWrapper>
-                        <DatePicker theDate={theDate} setTheDate={setTheDate} label='Select a Date' />
-                        <CustomerSelect customerChangeHandler={customerChangeHandler} selectedCustomer={customer} />
-                        {orders && customer && <Stat color={Colors.blue} title='Orders' data={filteredOrders.length} />}
-                        {orders && customer && <Stat color={Colors.green} title='Total Cost' data={"$" + CalcTotalMultipleOrders()} />}
-                        {orders && customer && <Stat color={Colors.orange} title='Cases' data={CalcCasesMultipleOrders()} />}
-                        {filteredOrders.length > 0 && customer && (
-                            <Button color={Colors.blue}>
-                                <PDFDownloadLink
-                                    document={
-                                        <CustomerPurchaseSheetPDF
-                                            orders={filteredOrders}
-                                            theDate={theDate}
-                                            customer={customer}
-                                            totalCases={CalcCasesMultipleOrders()}
-                                            totalCost={CalcTotalMultipleOrders()}
-                                        />
-                                    }
-                                    fileName={`Customer Purchase Sheet: ${customer.address}`}>
-                                    {({ loading }) => (loading ? "Loading..." : "Download Report")}
-                                </PDFDownloadLink>
-                            </Button>
-                        )}
-                    </ActionWrapper>
-                )}
-            </ActionBar>
-            <Body title='Customer Purchase Sheet' header={<Header />}>
-                {theDate &&
-                    customer &&
-                    filteredOrders.map((c) => {
-                        return <Order order={c} completedDate={c.details.completedAt} generateInvoice={false} />;
-                    })}
-            </Body>
-        </Application>
+        <>
+            <ResponsiveBlock />
+            <Application>
+                <ActionBar>
+                    {orders && (
+                        <ActionWrapper>
+                            <DatePicker theDate={theDate} setTheDate={setTheDate} label='Select a Date' />
+                            <CustomerSelect customerChangeHandler={customerChangeHandler} selectedCustomer={customer} />
+                            {orders && customer && <Stat color={Colors.blue} title='Orders' data={filteredOrders.length} />}
+                            {orders && customer && <Stat color={Colors.green} title='Total Cost' data={"$" + CalcTotalMultipleOrders()} />}
+                            {orders && customer && <Stat color={Colors.orange} title='Cases' data={CalcCasesMultipleOrders()} />}
+                            {filteredOrders.length > 0 && customer && (
+                                <Button color={Colors.blue}>
+                                    <PDFDownloadLink
+                                        document={
+                                            <CustomerPurchaseSheetPDF
+                                                orders={filteredOrders}
+                                                theDate={theDate}
+                                                customer={customer}
+                                                totalCases={CalcCasesMultipleOrders()}
+                                                totalCost={CalcTotalMultipleOrders()}
+                                            />
+                                        }
+                                        fileName={`Customer Purchase Sheet: ${customer.address}`}>
+                                        {({ loading }) => (loading ? "Loading..." : "Download Report")}
+                                    </PDFDownloadLink>
+                                </Button>
+                            )}
+                        </ActionWrapper>
+                    )}
+                </ActionBar>
+                <Body title='Customer Purchase Sheet' header={<Header />}>
+                    {theDate &&
+                        customer &&
+                        filteredOrders.map((c) => {
+                            return <Order order={c} completedDate={c.details.completedAt} generateInvoice={false} />;
+                        })}
+                </Body>
+            </Application>
+        </>
     );
 };
 

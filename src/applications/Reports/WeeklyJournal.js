@@ -7,6 +7,7 @@ import DatePicker from "../../components/DatePickerv2";
 import { Application, ActionBar, Body } from "../../components/layout/Application";
 import { Drivers } from "../../Assets/Data/Drivers";
 import { Order as OrderModel } from "../../Models/Order";
+import ResponsiveBlock from "../../componentsv3/responsive block";
 
 const Header = () => {
     return (
@@ -147,35 +148,38 @@ const WeeklyJournal = () => {
     };
 
     return (
-        <Application>
-            <ActionBar>
-                <ActionWrapper>
-                    <DatePicker theDate={fromDate} onChange={setFromDate} label='Select a start Date' />
-                    {fromDate && (
-                        <DatePicker theDate={toDate} onChange={setToDate} label='Select an end Date' minDate={moment(fromDate).add(1, "day")} />
+        <>
+            <ResponsiveBlock />
+            <Application>
+                <ActionBar>
+                    <ActionWrapper>
+                        <DatePicker theDate={fromDate} onChange={setFromDate} label='Select a start Date' />
+                        {fromDate && (
+                            <DatePicker theDate={toDate} onChange={setToDate} label='Select an end Date' minDate={moment(fromDate).add(1, "day")} />
+                        )}
+                        {toDate && (
+                            <button onClick={getRoutes} disabled={routes ? true : false}>
+                                Generate Report
+                            </button>
+                        )}
+                        {routes && (
+                            <button id='reset' onClick={reset}>
+                                Reset
+                            </button>
+                        )}
+                    </ActionWrapper>
+                </ActionBar>
+                <Body title={"Weekly Journal"} header={<Header />}>
+                    {routes ? (
+                        report()
+                    ) : (
+                        <LoadingMessage>Please Select a start and end date, then press generate Report to view the results</LoadingMessage>
                     )}
-                    {toDate && (
-                        <button onClick={getRoutes} disabled={routes ? true : false}>
-                            Generate Report
-                        </button>
-                    )}
-                    {routes && (
-                        <button id='reset' onClick={reset}>
-                            Reset
-                        </button>
-                    )}
-                </ActionWrapper>
-            </ActionBar>
-            <Body title={"Weekly Journal"} header={<Header />}>
-                {routes ? (
-                    report()
-                ) : (
-                    <LoadingMessage>Please Select a start and end date, then press generate Report to view the results</LoadingMessage>
-                )}
 
-                {routes && footer()}
-            </Body>
-        </Application>
+                    {routes && footer()}
+                </Body>
+            </Application>
+        </>
     );
 };
 const Component = styled.div``;

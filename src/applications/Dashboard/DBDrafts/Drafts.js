@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import Order from "../components/Order";
 import store from "store";
+import ResponsiveBlock from "../../../componentsv3/responsive block";
 const Drafts = () => {
     const [drafts, setDrafts] = useState([]);
 
@@ -17,24 +18,27 @@ const Drafts = () => {
     }, []);
 
     return (
-        <Component>
-            <Actions></Actions>
-            <DraftsContainer>
-                <div className='heading'>
-                    <p>Drafts</p>
-                </div>
-                <OrderHeader>
-                    <h6>Order</h6>
-                    <h6>Store </h6>
-                    <h6>Cases</h6>
-                    <h6>Total</h6>
-                    <h6></h6>
-                </OrderHeader>
-                {Object.values(drafts).map((x) => {
-                    return <Order order={x} />;
-                })}
-            </DraftsContainer>
-        </Component>
+        <>
+            <ResponsiveBlock />
+            <Component>
+                <Actions></Actions>
+                <DraftsContainer>
+                    <div className='heading'>
+                        <p>Drafts</p>
+                    </div>
+                    <OrderHeader>
+                        <h6>Order</h6>
+                        <h6>Store </h6>
+                        <h6>Cases</h6>
+                        <h6>Total</h6>
+                        <h6></h6>
+                    </OrderHeader>
+                    {Object.values(drafts).map((x) => {
+                        return <Order order={x} />;
+                    })}
+                </DraftsContainer>
+            </Component>
+        </>
     );
 };
 const Component = styled.div`

@@ -1,7 +1,7 @@
 import "./App.css";
 import React from "react";
 import { compose } from "redux";
-import { Route, Switch } from "react-router-dom";
+import { NavLink, Route, Switch } from "react-router-dom";
 import { connect, useSelector } from "react-redux";
 import { SnackbarProvider } from "notistack";
 import { firestoreConnect, isLoaded } from "react-redux-firebase";
@@ -21,6 +21,9 @@ import NonOrderReport from "./Applications/Reports/NonOrderReport";
 import CustomerPurchaseSheet from "./Applications/Reports/CustomerPurchaseSheet";
 import BeverageReport from "./Applications/Reports/BeverageReport";
 import WeeklyJournal from "./Applications/Reports/WeeklyJournal";
+import { hot } from "react-hot-loader/root";
+import ResponsiveBlock from "./componentsv3/responsive block";
+import TempNav from "./componentsv3/temp/TempNav";
 
 const App = (props) => {
     const toggleChangeLog = () => {
@@ -37,12 +40,13 @@ const App = (props) => {
         <SnackbarProvider maxSnack={3}>
             <AppWrapper>
                 <Sidebar />
+                <TempNav />
                 <Switch>
                     <Route path='/dashboard' component={Dashboard} />
                     <Route path='/rapidorder' component={RapidOrder} />
                     <Route path='/store' component={Store} />
                     <Route path='/specialpricing' component={SpecialPricing} />
-                    <Route path='/report1' component={DailyJournalv2} />
+                    {/* <Route path='/report1' component={DailyJournalv2} /> */}
                     <Route path='/cps' component={CustomerPurchaseSheet} />
                     <Route path='/nor' component={NonOrderReport} />
                     <Route path='/wj' component={WeeklyJournal} />
@@ -64,13 +68,16 @@ const App = (props) => {
 };
 
 const AppWrapper = styled.div`
-    height: 100vh;
-    height: calc(var(--vh, 1vh) * 100);
+    min-height: calc(var(--vh, 1vh) * 100);
     width: 100vw;
-    display: grid;
-    grid-template-columns: min-content 1fr;
-    grid-template-areas: "sidebar app";
     background-color: ${Colors.navy};
+    @media (min-width: 768px) {
+        height: 100vh;
+        height: calc(var(--vh, 1vh) * 100);
+        display: grid;
+        grid-template-columns: min-content 1fr;
+        grid-template-areas: "sidebar app";
+    }
 `;
 
 export default compose(
@@ -94,4 +101,6 @@ export default compose(
             // { collection: "orders", storeAs: "collToDelete" },
         ];
     })
-)(App);
+)(process.env.NODE_ENV === "development" ? hot(App) : App);
+
+// TODO: Prepapre for mobile rsponsiveness.  for now the app is prepped to work as it did for web and broken for mobile to accomodate each page as is
