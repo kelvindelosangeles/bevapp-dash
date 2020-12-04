@@ -5,7 +5,7 @@ import { TextField } from "@material-ui/core";
 import styled from "styled-components";
 import { connect, useSelector } from "react-redux";
 
-const CustomerSelect = ({ customerChangeHandler, selectedCustomer }) => {
+const CustomerSelect = ({ customerChangeHandler, selectedCustomer, className = null }) => {
     const customers = useSelector((state) => state.Firestore.data.store.customers);
     // FIXME: change the sort to numbers
     const options = Object.values(customers).map((x) => {
@@ -18,7 +18,7 @@ const CustomerSelect = ({ customerChangeHandler, selectedCustomer }) => {
     });
 
     return (
-        <CustomerSelectWrapper>
+        <CustomerSelectWrapper className={className}>
             <Autocomplete
                 id='combo-box-demo'
                 options={options.sort((a, b) => {
