@@ -6,15 +6,14 @@ import Home from "./Components/Home";
 import NewOrder from "./Components/NewOrder/NewOrder";
 import AddToCart from "./Components/AddToCart/AddToCart";
 import AddtoCartFlavors from "./Components/AddToCart/AddtoCartFlavors";
-import MobileNewOrder from "../../componentsv3/mobile new order";
+import NewOrderMobile from "./Components/NewOrder/NewOrderMobile";
 
 const RapidOrder = ({ atcVisible, atcfVisible, customer, dispatch }) => {
     return (
         <Container>
             {customer ? (
                 <>
-                    {/* Depending on the screen size it shows either of the two compoents. */}
-                    <MobileNewOrder /> <NewOrder />
+                    <NewOrderMobile /> <NewOrder />
                 </>
             ) : (
                 <Home />
