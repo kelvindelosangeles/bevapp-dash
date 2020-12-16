@@ -29,6 +29,10 @@ const Container = styled.div`
     position: relative;
     background-color: ${Colors.white};
     overflow: scroll;
+    /* beta  */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 `;
 
 export default connect((state) => {
