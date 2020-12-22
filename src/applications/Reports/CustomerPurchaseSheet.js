@@ -20,6 +20,7 @@ const CustomerPurchaseSheet = () => {
     const [orders, setOrders] = useState(null);
     const [customer, setCustomer] = useState(null);
     const [theDate, setTheDate] = useState(`${moment().format("MM")}/01/${moment().format("YYYY")}`);
+    const [toDate, setTheToDate] = useState(moment());
 
     const getOrders = async () => {
         try {
@@ -55,6 +56,9 @@ const CustomerPurchaseSheet = () => {
             })
             .filter((a) => {
                 return moment(a.details.createdAt).isSameOrAfter(theDate);
+            })
+            .filter((a) => {
+                return moment(a.details.createdAt).isSameOrBefore(moment(toDate).add(1, "days"));
             })
             .filter((b) => {
                 return customer ? b.customer.id === customer.id : b;
@@ -100,7 +104,8 @@ const CustomerPurchaseSheet = () => {
                 <ActionBar>
                     {orders && (
                         <ActionWrapper>
-                            <DatePicker theDate={theDate} setTheDate={setTheDate} label='Select a Date' />
+                            <DatePicker theDate={theDate} setTheDate={setTheDate} label='From Date' />
+                            <DatePicker theDate={toDate} setTheDate={setTheToDate} label='To Date' minDate={theDate} />
                             <CustomerSelect customerChangeHandler={customerChangeHandler} selectedCustomer={customer} />
                             {orders && customer && <Stat color={Colors.blue} title='Orders' data={filteredOrders.length} />}
                             {orders && customer && <Stat color={Colors.green} title='Total Cost' data={"$" + CalcTotalMultipleOrders()} />}
@@ -112,13 +117,14 @@ const CustomerPurchaseSheet = () => {
                                             <CustomerPurchaseSheetPDF
                                                 orders={filteredOrders}
                                                 theDate={theDate}
+                                                toDate={toDate}
                                                 customer={customer}
                                                 totalCases={CalcCasesMultipleOrders()}
                                                 totalCost={CalcTotalMultipleOrders()}
                                             />
                                         }
                                         fileName={`Customer Purchase Sheet: ${customer.address}`}>
-                                        {({ loading }) => (loading ? "Loading..." : "Download Report")}
+                                        {({ loading }) => (loading ? "Loading..." : "DL")}
                                     </PDFDownloadLink>
                                 </Button>
                             )}
@@ -160,9 +166,10 @@ const HeaderComponent = styled.div`
 `;
 const ActionWrapper = styled.div`
     display: grid;
-    grid-template-columns: min-content 250px auto auto auto auto;
+    grid-template-columns: min-content min-content 200px auto auto auto min-content;
     grid-column-gap: 32px;
     align-items: center;
+    justify-content: flex-start;
 `;
 const Button = styled.button`
     padding: 14px 32px;

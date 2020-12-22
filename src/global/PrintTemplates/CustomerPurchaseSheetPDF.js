@@ -3,7 +3,7 @@ import moment from "moment";
 import { Page, Text, View, Document, Font, StyleSheet } from "@react-pdf/renderer";
 import { Order as orderModel } from "../../Models/Order";
 
-const CustomerPurchaseSheet = ({ orders, theDate, customer, totalCases, totalCost }) => {
+const CustomerPurchaseSheet = ({ orders, theDate, toDate, customer, totalCases, totalCost }) => {
     return (
         <Document>
             <Page style={$.page}>
@@ -18,7 +18,9 @@ const CustomerPurchaseSheet = ({ orders, theDate, customer, totalCases, totalCos
 
                 <View style={$.pageHeader} fixed>
                     <Text>Customer Purchase Sheet: {customer.address}</Text>
-                    <Text>Orders since {moment(theDate).format("L")}</Text>
+                    <Text>
+                        Orders between {moment(theDate).format("L")} and {moment(toDate).format("L")}
+                    </Text>
                 </View>
 
                 <View style={$.ordersHeader} fixed>
@@ -118,7 +120,7 @@ const $ = StyleSheet.create({
 
     footer: {
         paddingTop: 24,
-        marginTop: "auto",
+        marginTop: 20,
         value: {
             fontSize: 11,
             margin: "2 0",
