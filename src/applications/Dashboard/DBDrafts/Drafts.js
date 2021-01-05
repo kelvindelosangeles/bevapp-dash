@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Colors } from "../../../Constants/Colors";
 import { useState } from "react";
 import { useEffect } from "react";
-import Order from "../components/Order";
+import Order from "../../../components/Order";
 import store from "store";
 import ResponsiveBlock from "../../../componentsv3/responsive block";
 const Drafts = () => {
@@ -11,9 +11,11 @@ const Drafts = () => {
 
     useEffect(() => {
         store.each((value, key) => {
-            setDrafts((prevState) => {
-                return { ...prevState, [key]: value };
-            });
+            // Checks if the value in the drafts contains a cart
+            value.hasOwnProperty("cart") &&
+                setDrafts((prevState) => {
+                    return { ...prevState, [key]: value };
+                });
         });
     }, []);
 
@@ -34,7 +36,7 @@ const Drafts = () => {
                         <h6></h6>
                     </OrderHeader>
                     {Object.values(drafts).map((x) => {
-                        return <Order order={x} />;
+                        return <Order order={x} recoverDraft={true} generateInvoice={false} canDeleteDraft={true} />;
                     })}
                 </DraftsContainer>
             </Component>
@@ -46,7 +48,6 @@ const Component = styled.div`
     display: grid;
     grid-template-rows: auto 1fr;
 `;
-
 const Actions = styled.div`
     padding: 32px;
     display: flex;
@@ -63,7 +64,6 @@ const Actions = styled.div`
         border-radius: 4px;
     }
 `;
-
 const DraftsContainer = styled.div`
     background-color: white;
     border-radius: 8px 0 0 0;
@@ -74,7 +74,6 @@ const DraftsContainer = styled.div`
         font-weight: 600;
     }
 `;
-
 const OrderHeader = styled.div`
     background-color: white;
     display: grid;

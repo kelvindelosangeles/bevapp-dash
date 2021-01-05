@@ -7,7 +7,7 @@ import OptionsIcon from "@material-ui/icons/BlurCircularRounded";
 import { Colors } from "../Constants/Colors";
 import Popover from "@material-ui/core/Popover";
 import { useDispatch, useSelector } from "react-redux";
-import { editOrder, deleteOrder } from "../redux/actions/RapidOrderActions";
+import { editOrder, deleteOrder, deleteDraft } from "../redux/actions/RapidOrderActions";
 import { useFirestore } from "react-redux-firebase";
 import CustomerPDF from "../Global/PrintTemplates/CustomerPDF";
 import WarehousePDF from "../Global/PrintTemplates/WarehousePDF";
@@ -15,7 +15,18 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 
 const OrderPreview = (props) => {
     // close order preview comes from the parent so that we can close the entire menu from within the action creators
-    const { order, history, closeOrderPreview, canEdit = false, canDelete = false, genInvoice = false, genCheck = false, completedDate } = props;
+    const {
+        order,
+        history,
+        closeOrderPreview,
+        canEdit = false,
+        canDelete = false,
+        canDeleteDraft = false,
+        genInvoice = false,
+        genCheck = false,
+        recoverDraft,
+        completedDate,
+    } = props;
     const { customer, details, cart } = order;
     const [open, setOpen] = useState(false);
     const anchor = useRef();
@@ -157,9 +168,19 @@ const OrderPreview = (props) => {
                             Edit Order
                         </p>
                     )}
+                    {recoverDraft && (
+                        <p className='edit' onClick={() => dispatch(editOrder(order, history))}>
+                            Recover Draft
+                        </p>
+                    )}
                     {canDelete && (
                         <p className='delete' onClick={() => dispatch(deleteOrder(order, firestore, closeOrderPreview))}>
                             Delete Order
+                        </p>
+                    )}
+                    {canDeleteDraft && (
+                        <p className='delete' onClick={() => dispatch(deleteDraft(order.details.orderID, history))}>
+                            Delete Draft
                         </p>
                     )}
                 </Menu>
@@ -204,7 +225,6 @@ const Component = styled.div`
         cursor: pointer;
     }
 `;
-
 const CustomerDetails = styled.div`
     text-transform: uppercase;
     display: grid;

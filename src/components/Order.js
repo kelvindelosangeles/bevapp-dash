@@ -8,7 +8,7 @@ import CaseIcon from "../Assets/Icons/CaseIcon";
 import OrderPreview from "./OrderPreview";
 import CustomerPDF from "../Global/PrintTemplates/CustomerPDF";
 
-const Order = ({ order, completedDate, generateInvoice = true }) => {
+const Order = ({ order, completedDate, generateInvoice = true, recoverDraft = false, canDeleteDraft = false }) => {
     const { customer, details, cart } = order;
     const [open, setOpen] = useState(false);
 
@@ -26,7 +26,14 @@ const Order = ({ order, completedDate, generateInvoice = true }) => {
                 <p>${orderModel.CalculateCart(cart, customer.specialPrices)}</p>
             </Component>
             <Dialog open={open} onClose={() => setOpen(false)} scroll='paper' maxWidth={"90vw"}>
-                <OrderPreview order={order} completedDate={completedDate} closeOrderPreview={() => setOpen(false)} genInvoice={generateInvoice} />
+                <OrderPreview
+                    order={order}
+                    completedDate={completedDate}
+                    closeOrderPreview={() => setOpen(false)}
+                    genInvoice={generateInvoice}
+                    recoverDraft={recoverDraft}
+                    canDeleteDraft={canDeleteDraft}
+                />
             </Dialog>
         </>
     );
