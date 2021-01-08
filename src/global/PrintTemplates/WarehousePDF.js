@@ -135,7 +135,7 @@ const WarehousePDF = ({ order, beverages }) => {
                     <Text style={$.heading.tax}>Tax and Deposits Included</Text>
                     <View style={$.heading.thanks}>
                         <Text>Thank you for your order</Text>
-                        <Text style={$.heading.date}>{moment().format("MM/DD/2020")}</Text>
+                        <Text style={$.heading.date}>{moment().format("MM/DD/YYYY")}</Text>
                     </View>
                     <Text style={$.heading.license}>LIC.NO.CO. : 1301787</Text>
                 </View>

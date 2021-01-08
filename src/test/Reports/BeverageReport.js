@@ -52,7 +52,7 @@ const BeverageReport = () => {
                                     Customer: <span>{x.customer.address}</span>
                                 </p>
                                 <p>
-                                    Order Date: <span>{moment(x.details.createdAt).format("MM/DD/2020")}</span>
+                                    Order Date: <span>{moment(x.details.createdAt).format("MM/DD/YYYY")}</span>
                                 </p>
                                 <p>
                                     Selling Price:
