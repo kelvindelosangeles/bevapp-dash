@@ -67,11 +67,11 @@ const Sidebar = () => {
                         <Report /> <p>WJ</p>
                     </div>
                 </NavLink>
-                {/* <NavLink className='nav-group' to='/bev'>
+                <NavLink className='nav-group' to='/sobi'>
                     <div className='header'>
-                        <Report /> <p>BEV</p>
+                        <Report /> <p>Sales Order By Item</p>
                     </div>
-                </NavLink> */}
+                </NavLink>
             </div>
 
             <div className='logout-wrapper'>

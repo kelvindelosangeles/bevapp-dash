@@ -24,6 +24,8 @@ import WeeklyJournal from "./Applications/Reports/WeeklyJournal";
 import { hot } from "react-hot-loader/root";
 import ResponsiveBlock from "./componentsv3/responsive block";
 import TempNav from "./componentsv3/temp/TempNav";
+import Test from "./test/test";
+import SOBI from "./Applications/Reports/SOBI";
 
 const App = (props) => {
     const toggleChangeLog = () => {
@@ -50,8 +52,9 @@ const App = (props) => {
                     <Route path='/cps' component={CustomerPurchaseSheet} />
                     <Route path='/nor' component={NonOrderReport} />
                     <Route path='/wj' component={WeeklyJournal} />
-                    <Route path='/bev' component={BeverageReport} />
-                    <Route path='/manual' component={Manual} />
+                    {/* <Route path='/bev' component={BeverageReport} /> */}
+                    <Route path='/sobi' component={SOBI} />
+                    {/* <Route path='/manual' component={Test} /> */}
                 </Switch>
                 <Dialog
                     open={open}
