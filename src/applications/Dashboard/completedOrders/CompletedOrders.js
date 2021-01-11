@@ -66,6 +66,7 @@ const Excel = ({ routes }) => {
 const CompletedOrders = () => {
     const [theDate, setTheDate] = useState(null);
     const [orders, setOrders] = useState(null);
+    const [rawOrder, setRawOrder] = useState(null);
     const [routes, setRoutes] = useState(null);
 
     const firestore = useFirestore();
@@ -77,14 +78,15 @@ const CompletedOrders = () => {
         });
         return obj;
     };
+    const weekDocument = moment(theDate).format("YYYYMMwE");
     const getCompletedOrders = () => {
-        const weekDocument = moment(theDate).format("YYYYMMwE");
         firestore
             .get({ collection: "ordersv2", doc: weekDocument })
             .then((res) => {
                 // retrieve the day with all the routes, convert to array and set to state
 
                 res.data() ? setOrders(Object.values(res.data())) : setOrders(null);
+                res.data() ? setRawOrder(res.data()) : setRawOrder(null);
 
                 // collect the routes from this day and save it to state
 
@@ -127,16 +129,14 @@ const CompletedOrders = () => {
         routes &&
             routes.forEach((a) => {
                 try {
-                    console.log(a[1]);
-                    console.log(a[1].driver.firstName);
-                    console.log(moment(a[1].details.dates.routeDate.date).isBetween("10/01/20", "10/03/20"));
+                    // console.log(a[1]);
+                    // console.log(a[1].driver.firstName);
+                    // console.log(moment(a[1].details.dates.routeDate.date).isBetween("10/01/20", "10/03/20"));
                 } catch (error) {
-                    console.log(a[1].driver.firstName, error);
+                    // console.log(a[1].driver.firstName, error);
                 }
             });
     }, [routes]);
-
-    // console.log(routes);
 
     return (
         <>
@@ -175,6 +175,7 @@ const CompletedOrders = () => {
                     {orders ? (
                         <BodyContent>
                             {orders.map((a) => {
+                                console.log();
                                 return (
                                     <div className='route'>
                                         <div className='route-details'>
@@ -184,7 +185,16 @@ const CompletedOrders = () => {
                                             <p>${CalcTotalMultipleOrders(a.orders)}</p>
                                         </div>
                                         {Object.values(a.orders).map((b) => {
-                                            return <Order order={b} completedDate={a.details.completedAt.toDate()} />;
+                                            return (
+                                                <Order
+                                                    order={b}
+                                                    completedDate={a.details.completedAt.toDate()}
+                                                    canAddPayment
+                                                    parentRoute={a}
+                                                    weekDocument={rawOrder}
+                                                    weekDocumentID={weekDocument}
+                                                />
+                                            );
                                         })}
                                     </div>
                                 );

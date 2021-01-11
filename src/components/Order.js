@@ -7,10 +7,25 @@ import { Colors } from "../Constants/Colors";
 import CaseIcon from "../Assets/Icons/CaseIcon";
 import OrderPreview from "./OrderPreview";
 import CustomerPDF from "../Global/PrintTemplates/CustomerPDF";
+import { Typography } from "@material-ui/core";
+import { VerifiedUserRounded } from "@material-ui/icons";
 
-const Order = ({ order, completedDate, generateInvoice = true, recoverDraft = false, canDeleteDraft = false }) => {
+const Order = ({
+    order,
+    completedDate,
+    generateInvoice = true,
+    recoverDraft = false,
+    canDeleteDraft = false,
+    canAddPayment = false,
+    parentRoute,
+    weekDocument,
+    weekDocumentID,
+}) => {
     const { customer, details, cart } = order;
     const [open, setOpen] = useState(false);
+    const isPaid = order.hasOwnProperty("payment");
+
+    console.log("is paid", isPaid);
 
     return (
         <>
@@ -24,21 +39,34 @@ const Order = ({ order, completedDate, generateInvoice = true, recoverDraft = fa
                     <CaseIcon /> {orderModel.CalculateCases(cart)}
                 </p>
                 <p>${orderModel.CalculateCart(cart, customer.specialPrices)}</p>
+                {isPaid && (
+                    <PaymentTag>
+                        <Typography variant='overline' style={{ color: Colors.green }}>
+                            Paid
+                        </Typography>
+                        <VerifiedUserRounded />
+                    </PaymentTag>
+                )}
             </Component>
             <Dialog open={open} onClose={() => setOpen(false)} scroll='paper' maxWidth={"90vw"}>
                 <OrderPreview
+                    parentRoute={parentRoute}
                     order={order}
                     completedDate={completedDate}
                     closeOrderPreview={() => setOpen(false)}
                     genInvoice={generateInvoice}
                     recoverDraft={recoverDraft}
                     canDeleteDraft={canDeleteDraft}
+                    canAddPayment={canAddPayment}
+                    weekDocument={weekDocument}
+                    weekDocumentID={weekDocumentID}
                 />
             </Dialog>
         </>
     );
 };
 const Component = styled.div`
+    position: relative;
     display: grid;
     grid-column-gap: 32px;
     grid-template-columns: 160px 310px 1fr 1fr;
@@ -69,6 +97,18 @@ const Component = styled.div`
         font-weight: 600;
         font-size: 12px;
         color: ${Colors.grey};
+    }
+`;
+
+const PaymentTag = styled.div`
+    height: 100%;
+    display: grid;
+    align-items: center;
+    align-content: center;
+    grid-template-columns: repeat(2, min-content);
+    grid-column-gap: 8px;
+    svg {
+        color: ${Colors.green};
     }
 `;
 export default Order;

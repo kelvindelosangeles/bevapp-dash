@@ -12,6 +12,8 @@ import { useFirestore } from "react-redux-firebase";
 import CustomerPDF from "../Global/PrintTemplates/CustomerPDF";
 import WarehousePDF from "../Global/PrintTemplates/WarehousePDF";
 import { PDFDownloadLink } from "@react-pdf/renderer";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Typography } from "@material-ui/core";
+import { useForm } from "react-hook-form";
 
 const OrderPreview = (props) => {
     // close order preview comes from the parent so that we can close the entire menu from within the action creators
@@ -22,13 +24,29 @@ const OrderPreview = (props) => {
         canEdit = false,
         canDelete = false,
         canDeleteDraft = false,
+        canAddPayment = false,
         genInvoice = false,
         genCheck = false,
         recoverDraft,
         completedDate,
+        parentRoute,
+        weekDocument,
+        weekDocumentID,
     } = props;
+    const { register, watch, handleSubmit } = useForm({
+        defaultValues: {
+            priceAdjustment: 0,
+            breakage: 0,
+            returnedContainers: 0,
+            returnedToFlair: 0,
+            cash: 0,
+            check: 0,
+            notes: "",
+        },
+    });
     const { customer, details, cart } = order;
     const [open, setOpen] = useState(false);
+    const [openPayment, setOpenPayment] = useState(false);
     const anchor = useRef();
     const dispatch = useDispatch();
     const firestore = useFirestore();
@@ -44,6 +62,73 @@ const OrderPreview = (props) => {
     const CalcOrderMargin = () => {
         return (orderModel.CalculateCart(cart, null) - orderModel.CalculateCart(cart, customer.specialPrices)).toFixed(2);
     };
+
+    const totalCredit = (
+        parseFloat(watch("priceAdjustment")) +
+        parseFloat(watch("breakage")) +
+        parseFloat(watch("returnedContainers")) +
+        parseFloat(watch("returnedToFlair"))
+    ).toFixed(2);
+    const totalPayment = (parseFloat(watch("cash")) + parseFloat(watch("check"))).toFixed(2);
+
+    const submitPaymentHandler = (data) => {
+        const { priceAdjustment, breakage, returnedContainers, returnedToFlair, cash, check, notes } = data;
+        const payment = {
+            createdAt: moment().valueOf(),
+            createdBy: "General Admin",
+            credits: {
+                priceAdjustment,
+                breakage,
+                returnedContainers,
+                returnedToFlair,
+            },
+            payments: {
+                cash,
+                check,
+            },
+            notes,
+            totalCredit,
+            totalPayment,
+        };
+        const updatedRoute = {
+            [parentRoute.details.routeID]: {
+                ...parentRoute,
+                orders: {
+                    ...parentRoute.orders,
+                    [order.details.orderID]: {
+                        ...order,
+                        payment,
+                    },
+                },
+            },
+        };
+
+        firestore
+            .update(
+                {
+                    collection: "ordersv2",
+                    doc: weekDocumentID,
+                },
+                updatedRoute
+            )
+            .then(() => {
+                console.log("successfully paid");
+                setOpenPayment(false);
+                history.push("/dashboard/completedorders");
+            })
+            .catch((err) => {
+                console.log(err, "something went wrong with the payment update process");
+            });
+    };
+
+    const cancelPaymentHandler = () => {
+        window.confirm("Are you sure you want to cancle this payment entry") && setOpenPayment(false);
+    };
+
+    const isPaid = order.hasOwnProperty("payment");
+
+    // console.log("is paid", isPaid);
+    // console.log(weekDocument, weekDocumentID, parentRoute);
 
     return (
         <Component>
@@ -183,8 +268,134 @@ const OrderPreview = (props) => {
                             Delete Draft
                         </p>
                     )}
+                    {canAddPayment && !isPaid && (
+                        <p className='edit' onClick={() => setOpenPayment(true)}>
+                            Add Payment
+                        </p>
+                    )}
                 </Menu>
             </Popover>
+            <Dialog open={openPayment} fullWidth scroll='paper'>
+                <PaymentForm onSubmit={handleSubmit(submitPaymentHandler)}>
+                    <DialogTitle>
+                        <p style={{ textAlign: "center" }}>Add Payment Details</p>
+                        <div className='payment-breakdown'>
+                            <div className='stat'>
+                                <Typography variant='overline'>Order Total</Typography>
+                                <Typography variant='caption'>{orderModel.CalculateCart(order.cart, order.customer.specialPrices)}</Typography>
+                            </div>
+                            <div className='stat'>
+                                <Typography variant='overline'>Credits </Typography>
+                                <Typography variant='caption'>$ {totalCredit}</Typography>
+                            </div>
+                            <div className='stat'>
+                                <Typography variant='overline'> Payment</Typography>
+                                <Typography variant='caption'>$ {totalPayment}</Typography>
+                            </div>
+                            <div className='stat'>
+                                <Typography variant='overline'>Total Credits</Typography>
+                                <Typography variant='caption'>number</Typography>
+                            </div>
+                        </div>
+                        <Divider />
+                    </DialogTitle>
+                    <DialogContent>
+                        <div className='input-set'>
+                            <Typography variant='overline' className='set-title'>
+                                Credits
+                            </Typography>
+                            <div className='input-group'>
+                                <Typography variant='caption'>Price Adjustment</Typography>
+                                <input
+                                    type='number'
+                                    step='.01'
+                                    name='priceAdjustment'
+                                    min={0}
+                                    max={1000}
+                                    ref={register({ required: true, min: 0, max: 1000 })}
+                                    placeholder='$0.00'
+                                />
+                            </div>
+                            <div className='input-group'>
+                                <Typography variant='caption'>Breakage</Typography>
+                                <input
+                                    type='number'
+                                    step='.01'
+                                    name='breakage'
+                                    ref={register({ required: true, min: 0, max: 1000 })}
+                                    placeholder='$0.00'
+                                />
+                            </div>
+                            <div className='input-group'>
+                                <Typography variant='caption'>Returned cans/bottles</Typography>
+                                <input
+                                    type='number'
+                                    step='.01'
+                                    name='returnedContainers'
+                                    ref={register({ required: true, min: 0, max: 1000 })}
+                                    placeholder='$0.00'
+                                />
+                            </div>
+                            <div className='input-group'>
+                                <Typography variant='caption'>Merchandise returned to Flair</Typography>
+                                <input
+                                    type='number'
+                                    step='.01'
+                                    name='returnedToFlair'
+                                    ref={register({ required: true, min: 0, max: 1000 })}
+                                    placeholder='$0.00'
+                                />
+                            </div>
+                        </div>
+
+                        <div className='input-set'>
+                            <Typography variant='overline' className='set-title'>
+                                Payment Methods
+                            </Typography>
+                            <div className='input-group'>
+                                <Typography variant='caption'>Cash</Typography>
+                                <input
+                                    type='number'
+                                    step='.01'
+                                    name='cash'
+                                    min={0}
+                                    max={1000}
+                                    ref={register({ required: true, min: 0, max: 1000 })}
+                                    placeholder='$0.00'
+                                />
+                            </div>
+                            <div className='input-group'>
+                                <Typography variant='caption'>Check</Typography>
+                                <input
+                                    type='number'
+                                    step='.01'
+                                    name='check'
+                                    min={0}
+                                    max={1000}
+                                    ref={register({ required: true, min: 0, max: 1000 })}
+                                    placeholder='$0.00'
+                                />
+                            </div>
+                        </div>
+                        <div className='input-set'>
+                            <Typography variant='overline'>Admin</Typography>
+                            <div className='input-group'>
+                                <Typography variant='caption'>Notes</Typography>
+                                <textarea name='notes' rows={3} ref={register({ required: false })}></textarea>
+                            </div>
+                        </div>
+                        <Divider />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button size='large' type='submit' variant='contained' color='primary'>
+                            Submit
+                        </Button>
+                        <Button size='large' type='button' variant='contained' color='secondary' onClick={cancelPaymentHandler}>
+                            Cancel
+                        </Button>
+                    </DialogActions>
+                </PaymentForm>
+            </Dialog>
         </Component>
     );
 };
@@ -323,6 +534,36 @@ const Menu = styled.div`
         :hover {
             background-color: ${Colors.red};
             color: ${Colors.white};
+        }
+    }
+`;
+const PaymentForm = styled.form`
+    padding: 24px;
+    .payment-breakdown {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        padding: 12px 0;
+        .stat {
+            display: grid;
+            justify-items: center;
+        }
+    }
+    .input-set {
+        display: grid;
+        grid-row-gap: 8px;
+        margin-bottom: 24px;
+        .set-title {
+        }
+    }
+    .input-group {
+        display: grid;
+        margin-left: 16px;
+        input,
+        textarea {
+            background-color: ${Colors.lightGrey};
+            border: none;
+            height: 40px;
+            padding: 8px;
         }
     }
 `;

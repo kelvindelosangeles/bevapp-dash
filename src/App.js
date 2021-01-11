@@ -54,7 +54,7 @@ const App = (props) => {
                     <Route path='/wj' component={WeeklyJournal} />
                     {/* <Route path='/bev' component={BeverageReport} /> */}
                     <Route path='/sobi' component={SOBI} />
-                    {/* <Route path='/manual' component={Test} /> */}
+                    <Route path='/test' component={Test} />
                 </Switch>
                 <Dialog
                     open={open}

@@ -1,165 +1,195 @@
-// import React from "react";
-// import styled from "styled-components";
-// import { useSelector } from "react-redux";
-// import { Order as OrderModel } from "../Models/Order";
-// import moment from "moment";
-// import CaseIcon from "../Assets/Icons/CaseIcon";
-// import { ContactsOutlined } from "@material-ui/icons";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Typography } from "@material-ui/core";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import styled from "styled-components";
+import { Colors } from "../Constants/Colors";
+const Test = () => {
+    const [paymentOpen, setPaymentOpen] = useState(true);
+    const { register, watch, handleSubmit } = useForm({
+        defaultValues: {
+            priceAdjustment: 0,
+            breakage: 0,
+            returnedContainers: 0,
+            returnedToFlair: 0,
+            cash: 0,
+            check: 0,
+            notes: "",
+        },
+    });
 
-// const orderDateID = "202006231";
-// const Driver = "House";
+    const submitPaymentHandler = (data) => {
+        console.log(data);
+    };
 
-// const Test = () => {
-//     const orders = useSelector((state) => state.Firestore.data.orders);
+    const totalCredits = (
+        parseFloat(watch("priceAdjustment")) +
+        parseFloat(watch("breakage")) +
+        parseFloat(watch("returnedContainers")) +
+        parseFloat(watch("returnedToFlair"))
+    ).toFixed(2);
+    const totalPayment = (parseFloat(watch("cash")) + parseFloat(watch("check"))).toFixed(2);
 
-//     console.log(orders);
-//     // const ordersFiltered = Object.values(orders[orderDateID]).filter((x) => {
-//     //     return (
-//     //         x.customer.address.includes("1517") ||
-//     //         x.customer.address.includes("1230") ||
-//     //         x.customer.address.includes("57") ||
-//     //         x.customer.address.includes("840") ||
-//     //         x.customer.address.includes("3611") ||
-//     //         x.customer.address.includes("1465") ||
-//     //         x.customer.address.includes("934") ||
-//     //         x.customer.address.includes("574") ||
-//     //         x.customer.address.includes("614") ||
-//     //         x.customer.address.includes("3661")
-//     //     );
-//     // });
+    return (
+        <Component>
+            <p>The Test Page</p>
+            <Dialog open={paymentOpen} fullWidth scroll='paper'>
+                <PaymentForm onSubmit={handleSubmit(submitPaymentHandler)}>
+                    <DialogTitle>
+                        <p style={{ textAlign: "center" }}>Add Payment Details</p>
+                        <div className='payment-breakdown'>
+                            <div className='stat'>
+                                <Typography variant='overline'>Order Total</Typography>
+                                <Typography variant='caption'>number</Typography>
+                            </div>
+                            <div className='stat'>
+                                <Typography variant='overline'>Credits </Typography>
+                                <Typography variant='caption'>$ {totalCredits}</Typography>
+                            </div>
+                            <div className='stat'>
+                                <Typography variant='overline'> Payment</Typography>
+                                <Typography variant='caption'>$ {totalPayment}</Typography>
+                            </div>
+                            <div className='stat'>
+                                <Typography variant='overline'>Total Credits</Typography>
+                                <Typography variant='caption'>number</Typography>
+                            </div>
+                        </div>
+                        <Divider />
+                    </DialogTitle>
+                    <DialogContent>
+                        <div className='input-set'>
+                            <Typography variant='overline' className='set-title'>
+                                Credits
+                            </Typography>
+                            <div className='input-group'>
+                                <Typography variant='caption'>Price Adjustment</Typography>
+                                <input
+                                    type='number'
+                                    step='.01'
+                                    name='priceAdjustment'
+                                    min={0}
+                                    max={1000}
+                                    ref={register({ required: true, min: 0, max: 1000 })}
+                                    placeholder='$0.00'
+                                />
+                            </div>
+                            <div className='input-group'>
+                                <Typography variant='caption'>Breakage</Typography>
+                                <input
+                                    type='number'
+                                    step='.01'
+                                    name='breakage'
+                                    ref={register({ required: true, min: 0, max: 1000 })}
+                                    placeholder='$0.00'
+                                />
+                            </div>
+                            <div className='input-group'>
+                                <Typography variant='caption'>Returned cans/bottles</Typography>
+                                <input
+                                    type='number'
+                                    step='.01'
+                                    name='returnedContainers'
+                                    ref={register({ required: true, min: 0, max: 1000 })}
+                                    placeholder='$0.00'
+                                />
+                            </div>
+                            <div className='input-group'>
+                                <Typography variant='caption'>Merchandise returned to Flair</Typography>
+                                <input
+                                    type='number'
+                                    step='.01'
+                                    name='returnedToFlair'
+                                    ref={register({ required: true, min: 0, max: 1000 })}
+                                    placeholder='$0.00'
+                                />
+                            </div>
+                        </div>
 
-//     // const RouteTotal = () => {
-//     //     try {
-//     //         return ordersFiltered
-//     //             .map((i) => {
-//     //                 return parseFloat(OrderModel.CalculateCart(i.cart, i.customer.specialPrices));
-//     //             })
-//     //             .reduce((a, b) => {
-//     //                 return a + b;
-//     //             })
-//     //             .toFixed(2);
-//     //     } catch (error) {
-//     //         console.log(error);
-//     //     }
-//     // };
-//     // const RouteCases = () => {
-//     //     try {
-//     //         return ordersFiltered
-//     //             .map((i) => {
-//     //                 return parseInt(OrderModel.CalculateCases(i.cart));
-//     //             })
-//     //             .reduce((a, b) => {
-//     //                 return a + b;
-//     //             });
-//     //     } catch (error) {
-//     //         console.log(error);
-//     //     }
-//     // };
+                        <div className='input-set'>
+                            <Typography variant='overline' className='set-title'>
+                                Payment Methods
+                            </Typography>
+                            <div className='input-group'>
+                                <Typography variant='caption'>Cash</Typography>
+                                <input
+                                    type='number'
+                                    step='.01'
+                                    name='cash'
+                                    min={0}
+                                    max={1000}
+                                    ref={register({ required: true, min: 0, max: 1000 })}
+                                    placeholder='$0.00'
+                                />
+                            </div>
+                            <div className='input-group'>
+                                <Typography variant='caption'>Check</Typography>
+                                <input
+                                    type='number'
+                                    step='.01'
+                                    name='check'
+                                    min={0}
+                                    max={1000}
+                                    ref={register({ required: true, min: 0, max: 1000 })}
+                                    placeholder='$0.00'
+                                />
+                            </div>
+                        </div>
+                        <div className='input-set'>
+                            <Typography variant='overline'>Admin</Typography>
+                            <div className='input-group'>
+                                <Typography variant='caption'>Notes</Typography>
+                                <textarea name='notes' rows={3} ref={register({ required: false })}></textarea>
+                            </div>
+                        </div>
+                        <Divider />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button size='large' type='submit' variant='contained' color='primary'>
+                            Submit
+                        </Button>
+                        <Button size='large' type='button' variant='contained' color='secondary'>
+                            Cancel
+                        </Button>
+                    </DialogActions>
+                </PaymentForm>
+            </Dialog>
+        </Component>
+    );
+};
+const Component = styled.div`
+    background-color: white;
+    padding: 24px;
+`;
 
-//     return <h1>test</h1>;
+const PaymentForm = styled.form`
+    padding: 24px;
+    .payment-breakdown {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        padding: 12px 0;
+        .stat {
+            display: grid;
+            justify-items: center;
+        }
+    }
+    .input-set {
+        display: grid;
+        grid-row-gap: 8px;
+        margin-bottom: 24px;
+        .set-title {
+        }
+    }
+    .input-group {
+        display: grid;
+        margin-left: 16px;
+        input,
+        textarea {
+            background-color: ${Colors.lightGrey};
+            border: none;
+            height: 40px;
+            padding: 8px;
+        }
+    }
+`;
 
-//     return (
-//         <Component>
-//             <div className='header'>
-//                 <p>
-//                     Driver: <span>{Driver}</span>
-//                 </p>
-//                 <p>Payment Summary</p>
-//                 <p className='date'>{moment("06/01/2020").format("ddd, MMM Do YYYY")}</p>
-//             </div>
-//             <div className='grid'>
-//                 <div className='item head'>
-//                     <h6>Address</h6>
-//                     <h6>Amounts</h6>
-//                     <h6>Cases</h6>
-//                     <h6>Credits</h6>
-//                     <h6>Checks</h6>
-//                     <h6>Cash</h6>
-//                     <h6>Total</h6>
-//                 </div>
-//                 {ordersFiltered.map((i) => {
-//                     return (
-//                         <div className='item'>
-//                             <p>{i.customer.address}</p>
-//                             <p>$ {OrderModel.CalculateCart(i.cart, i.customer.specialPrices)}</p>
-//                             <p>{OrderModel.CalculateCases(i.cart)}</p>
-//                             <p></p>
-//                             <p></p>
-//                             <p></p>
-//                             <p></p>
-//                         </div>
-//                     );
-//                 })}
-//             </div>
-
-//             <div className='totals'>
-//                 <p className='total'>
-//                     Route Total Cases : <CaseIcon />
-//                     <span>{RouteCases()}</span>
-//                 </p>
-//                 <p className='total cases'>
-//                     Route Total : <span>$ {RouteTotal()}</span>
-//                 </p>
-//             </div>
-//         </Component>
-//     );
-// };
-// const Component = styled.div`
-//     padding: 32px;
-//     .header {
-//         display: flex;
-//         justify-content: space-between;
-//         margin-bottom: 80px;
-//         p {
-//             font-size: 20px;
-//             font-weight: 600;
-//             span {
-//                 font-weight: 800;
-//             }
-//         }
-//     }
-//     .grid {
-//         margin-bottom: 80px;
-//         .item {
-//             display: grid;
-//             /* grid-column-gap: 16px; */
-//             grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr;
-//             border-bottom: 1px solid black;
-//             :nth-of-type(even) {
-//                 background-color: #d3d3d36e;
-//             }
-//             h6 {
-//                 font-size: 18px;
-//                 font-weight: 700;
-//                 padding-left: 8px;
-//             }
-//             p {
-//                 padding: 16px 8px;
-//                 border-left: 1px solid black;
-//                 border-right: 1px solid black;
-//                 text-transform: uppercase;
-//             }
-//         }
-//         .item.head {
-//             border-bottom: 1px solid black;
-//             padding-bottom: 4px;
-//             margin-bottom: 16px;
-//         }
-//     }
-//     .totals {
-//         .total {
-//             font-size: 20px;
-//             font-weight: 600;
-//             svg {
-//                 margin-right: 8px;
-//             }
-//             span {
-//                 font-weight: 800;
-//             }
-//         }
-//         .cases {
-//             margin-top: 24px;
-//         }
-//     }
-// `;
-// export default Test;
+export default Test;
