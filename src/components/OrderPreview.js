@@ -47,6 +47,7 @@ const OrderPreview = (props) => {
     const { customer, details, cart } = order;
     const [open, setOpen] = useState(false);
     const [openPayment, setOpenPayment] = useState(false);
+    const [paymentReportOpen, setPaymentReportOpen] = useState(false);
     const anchor = useRef();
     const dispatch = useDispatch();
     const firestore = useFirestore();
@@ -273,6 +274,11 @@ const OrderPreview = (props) => {
                             Add Payment
                         </p>
                     )}
+                    {isPaid && (
+                        <p className='edit' onClick={() => setPaymentReportOpen(true)}>
+                            Payment Summary
+                        </p>
+                    )}
                 </Menu>
             </Popover>
             <Dialog open={openPayment} fullWidth scroll='paper'>
@@ -293,8 +299,8 @@ const OrderPreview = (props) => {
                                 <Typography variant='caption'>$ {totalPayment}</Typography>
                             </div>
                             <div className='stat'>
-                                <Typography variant='overline'>Total Credits</Typography>
-                                <Typography variant='caption'>number</Typography>
+                                <Typography variant='overline'></Typography>
+                                <Typography variant='caption'></Typography>
                             </div>
                         </div>
                         <Divider />
@@ -395,6 +401,82 @@ const OrderPreview = (props) => {
                         </Button>
                     </DialogActions>
                 </PaymentForm>
+            </Dialog>
+            <Dialog open={paymentReportOpen} onClose={() => setPaymentReportOpen(false)} fullWidth scroll='paper'>
+                <PaymentReport>
+                    <DialogTitle>
+                        <Typography variant='overline'>Payment Report</Typography>
+                        <header>
+                            <div className='stat'>
+                                <Typography variant='caption'>Order Total</Typography>
+                                <Typography variant='subtitle2'>$ {orderModel.CalculateCart(order.cart, order.customer.specialPrices)}</Typography>
+                            </div>
+                            <div className='stat'>
+                                <Typography variant='caption'>Credits</Typography>
+                                <Typography variant='subtitle2'>$ {order.payment?.totalCredit}</Typography>
+                            </div>
+                            <div className='stat'>
+                                <Typography variant='caption'>Total payments</Typography>
+                                <Typography variant='subtitle2'>$ {order.payment?.totalPayment}</Typography>
+                            </div>
+                            <div className='stat'>
+                                <Typography variant='caption'>Driver</Typography>
+                                <Typography variant='subtitle2'>{parentRoute.driver.firstName}</Typography>
+                            </div>
+                            <div className='stat'>
+                                <Typography variant='caption'>Date</Typography>
+                                <Typography variant='subtitle2'>{moment(parentRoute.details.completedAt.toDate()).format("L")}</Typography>
+                            </div>
+                        </header>
+                        <Divider />
+                    </DialogTitle>
+                    <DialogContent>
+                        <section>
+                            <Typography variant='overline'>Credits</Typography>
+                            <div className='value'>
+                                <Typography variant='caption'>Price adjustment</Typography>
+                                <Typography variant='subtitle2'>$ {order.payment?.credits.priceAdjustment}</Typography>
+                            </div>
+                            <div className='value'>
+                                <Typography variant='caption'>Breakage</Typography>
+                                <Typography variant='subtitle2'>$ {order.payment?.credits.breakage}</Typography>
+                            </div>
+                            <div className='value'>
+                                <Typography variant='caption'>Returned cans/bottles</Typography>
+                                <Typography variant='subtitle2'>$ {order.payment?.credits.returnedContainers}</Typography>
+                            </div>
+                            <div className='value'>
+                                <Typography variant='caption'>Merchandise returned to Flair</Typography>
+                                <Typography variant='subtitle2'>$ {order.payment?.credits.returnedToFlair}</Typography>
+                            </div>
+                            <Divider />
+                        </section>
+                        <section>
+                            <Typography variant='overline'>Payment Methods</Typography>
+                            <div className='value'>
+                                <Typography variant='caption'>Cash</Typography>
+                                <Typography variant='subtitle2'>$ {order.payment?.payments.cash}</Typography>
+                            </div>
+                            <div className='value'>
+                                <Typography variant='caption'>Check</Typography>
+                                <Typography variant='subtitle2'>$ {order.payment?.payments.check}</Typography>
+                            </div>
+                        </section>
+                        <section>
+                            <Typography variant='overline'>Notes</Typography>
+                            <Typography variant='body2'>{order.payment?.notes}</Typography>
+                            <Divider />
+                        </section>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button size='large' variant='contained' color='primary'>
+                            Print Report
+                        </Button>
+                        <Button size='large' variant='outlined' color='primary' onClick={() => setPaymentReportOpen(false)}>
+                            Close
+                        </Button>
+                    </DialogActions>
+                </PaymentReport>
             </Dialog>
         </Component>
     );
@@ -564,6 +646,25 @@ const PaymentForm = styled.form`
             border: none;
             height: 40px;
             padding: 8px;
+        }
+    }
+`;
+
+const PaymentReport = styled.div`
+    padding: 24px;
+    header {
+        display: grid;
+        grid-template-columns: repeat(5, auto);
+        grid-column-gap: 12px;
+        margin-bottom: 24px;
+    }
+    section {
+        display: grid;
+        grid-row-gap: 12px;
+        margin-bottom: 24px;
+        .value {
+            display: flex;
+            justify-content: space-between;
         }
     }
 `;
