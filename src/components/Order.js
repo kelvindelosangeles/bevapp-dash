@@ -17,9 +17,9 @@ const Order = ({
     recoverDraft = false,
     canDeleteDraft = false,
     canAddPayment = false,
-    parentRoute,
-    weekDocument,
-    weekDocumentID,
+    parentRoute = null,
+    weekDocument = null,
+    weekDocumentID = null,
 }) => {
     const { customer, details, cart } = order;
     const [open, setOpen] = useState(false);

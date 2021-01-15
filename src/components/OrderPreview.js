@@ -128,9 +128,6 @@ const OrderPreview = (props) => {
 
     const isPaid = order.hasOwnProperty("payment");
 
-    // console.log("is paid", isPaid);
-    // console.log(weekDocument, weekDocumentID, parentRoute);
-
     return (
         <Component>
             <OptionsIcon
@@ -421,11 +418,11 @@ const OrderPreview = (props) => {
                             </div>
                             <div className='stat'>
                                 <Typography variant='caption'>Driver</Typography>
-                                <Typography variant='subtitle2'>{parentRoute.driver.firstName}</Typography>
+                                <Typography variant='subtitle2'>{parentRoute?.driver.firstName}</Typography>
                             </div>
                             <div className='stat'>
                                 <Typography variant='caption'>Date</Typography>
-                                <Typography variant='subtitle2'>{moment(parentRoute.details.completedAt.toDate()).format("L")}</Typography>
+                                <Typography variant='subtitle2'>{moment(parentRoute?.details.completedAt.toDate()).format("L")}</Typography>
                             </div>
                         </header>
                         <Divider />

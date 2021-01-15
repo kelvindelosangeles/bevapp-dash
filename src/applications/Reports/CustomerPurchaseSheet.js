@@ -135,7 +135,7 @@ const CustomerPurchaseSheet = () => {
                     {theDate &&
                         customer &&
                         filteredOrders.map((c) => {
-                            return <Order order={c} completedDate={c.details.completedAt} generateInvoice={false} />;
+                            return <Order order={c} completedDate={c.details.completedAt} generateInvoice={true} />;
                         })}
                 </Body>
             </Application>
