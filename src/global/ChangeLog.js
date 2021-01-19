@@ -10,21 +10,16 @@ const ChangeLog = () => {
             <p className='title'>Change Log</p>
             <Log>
                 <header>
-                    <p className='date'>May 20th, 2020</p>
-                    <p className='version'>v 1.1.4 beta</p>
+                    <p className='date'>Jan 15th, 2020</p>
+                    <p className='version'>v 2.3</p>
                 </header>
 
                 <ul>
-                    <label>Rapid Order</label>
+                    <label>Customer Purchase Sheet</label>
                     <li>
-                        <BugIcon className='bug' />
-                        When updating an item with flavors the previous flavors remain in the order.
+                        Customer Purchase sheet now displays paid orders. Select a date range, then a customer and it will list all orders inlcuding
+                        payment status and report.
                     </li>
-                </ul>
-                <ul>
-                    <label>Warehouse and Customer Copy</label>
-                    <li>Added pagination to print out with multiple pages (top right corner)</li>
-                    <li>Adding more spacing to the bottom of the customer copies.</li>
                 </ul>
             </Log>
             <Log>

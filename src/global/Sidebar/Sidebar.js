@@ -72,6 +72,11 @@ const Sidebar = () => {
                         <Report /> <p>Sales Order By Item</p>
                     </div>
                 </NavLink>
+                <NavLink className='nav-group' to='/dj'>
+                    <div className='header'>
+                        <Report /> <p>Driver Journal</p>
+                    </div>
+                </NavLink>
             </div>
 
             <div className='logout-wrapper'>
@@ -146,6 +151,7 @@ const Container = styled.div`
             align-self: flex-end;
             display: flex;
             align-items: center;
+            margin-top: 40px;
             p {
                 color: ${Colors.white};
             }
