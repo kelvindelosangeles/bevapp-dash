@@ -62,8 +62,8 @@ const DriverJournal = ({ history }) => {
         getRoutes();
     }, []);
 
-    console.log("routes", routes);
-    console.log("report Data", reportData);
+    // console.log("routes", routes);
+    // console.log("report Data", reportData);
 
     const nextStepHandler = () => {
         setActiveStep((prevState) => prevState + 1);
