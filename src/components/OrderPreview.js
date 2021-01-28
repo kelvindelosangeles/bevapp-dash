@@ -14,6 +14,7 @@ import WarehousePDF from "../Global/PrintTemplates/WarehousePDF";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Typography } from "@material-ui/core";
 import { useForm } from "react-hook-form";
+import PaymentReportPDF from "../Global/PrintTemplates/PaymentReportPDF";
 
 const OrderPreview = (props) => {
     // close order preview comes from the parent so that we can close the entire menu from within the action creators
@@ -466,9 +467,28 @@ const OrderPreview = (props) => {
                         </section>
                     </DialogContent>
                     <DialogActions>
-                        <Button size='large' variant='contained' color='primary'>
-                            Print Report
-                        </Button>
+                        <PDFDownloadLink
+                            document={
+                                <PaymentReportPDF
+                                    order={order}
+                                    total={orderModel.CalculateCart(order.cart, order.customer.specialPrices)}
+                                    driver={parentRoute ? parentRoute.driver.firstName : "n/a"}
+                                    date={moment(parentRoute?.details.completedAt.toDate()).format("L")}
+                                />
+                            }
+                            fileName={`${order.customer.address} - Payment Report - ${moment(parentRoute?.details.completedAt.toDate()).format(
+                                "L"
+                            )}`}>
+                            {({ loading }) =>
+                                loading ? (
+                                    "Loading..."
+                                ) : (
+                                    <Button size='large' variant='contained' color='primary'>
+                                        Print Report
+                                    </Button>
+                                )
+                            }
+                        </PDFDownloadLink>
                         <Button size='large' variant='outlined' color='primary' onClick={() => setPaymentReportOpen(false)}>
                             Close
                         </Button>

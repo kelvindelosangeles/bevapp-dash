@@ -5,6 +5,7 @@ import {
     Dialog,
     DialogActions,
     DialogTitle,
+    Divider,
     FormControlLabel,
     FormGroup,
     Step,
@@ -25,6 +26,8 @@ import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 import { Colors } from "../../Constants/Colors";
 import firebase from "firebase";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import SalesByItem from "../../Global/PrintTemplates/SalesByItem";
 
 const SOBI = ({ history }) => {
     const [loading, setLoading] = useState(true);
@@ -52,7 +55,9 @@ const SOBI = ({ history }) => {
         setFromDate(null);
         setToDate(null);
         setCompanyReport(true);
+        setReportData(null);
         setActiveStep(0);
+        setOpen(true);
     };
     const beverageSelectHandler = (e, data) => {
         setBeverage(data);
@@ -128,9 +133,6 @@ const SOBI = ({ history }) => {
         };
         getOrders();
     }, []);
-
-    console.log(reportData);
-    console.log(reportStats);
 
     return (
         <Component>
@@ -216,34 +218,61 @@ const SOBI = ({ history }) => {
                     </ButtonGroup>
                 </StyledDialogActions>
             </Dialog>
-            {reportData && detailedReport && (
+
+            {reportData && (
                 <React.Fragment>
                     <div className='table'>
-                        <Typography variant='h5'>Sales Order by Item Report</Typography>
+                        <Typography variant='overline'>Sales Order by Item Report</Typography>
                         <div className='grid head'>
-                            <Typography variant='h6'>Item</Typography>
-                            <Typography variant='h6'>From</Typography>
-                            <Typography variant='h6'>To</Typography>
-                            <Typography variant='h6'>Total Cases</Typography>
+                            <Typography variant='overline'>Item</Typography>
+                            <Typography variant='overline'>From</Typography>
+                            <Typography variant='overline'>To</Typography>
+                            <Typography variant='overline'>Total Cases</Typography>
+                            <Divider />
+                            <Divider />
+                            <Divider />
+                            <Divider />
                         </div>
+
                         <div className='grid '>
-                            <Typography variant='h5'>{reportStats.beverage}</Typography>
-                            <Typography variant='h5'>{reportStats.from}</Typography>
-                            <Typography variant='h5'>{reportStats.to}</Typography>
-                            <Typography variant='h5'>{reportStats.beverageCount}</Typography>
+                            <Typography variant='caption'>{reportStats.beverage}</Typography>
+                            <Typography variant='caption'>{reportStats.from}</Typography>
+                            <Typography variant='caption'>{reportStats.to}</Typography>
+                            <Typography variant='caption'>{reportStats.beverageCount}</Typography>
                         </div>
                     </div>
-                    <div className='detailed-grid'>
-                        {reportData.map((a, index) => {
-                            return (
-                                <div className='item'>
-                                    <p>{index + 1}</p>
-                                    <p>{a.customer.address}</p>
-                                    <p>{moment(a.details.createdAt).format("L")}</p>
-                                    <p>{a.cart[beverage.id].qty} cases</p>
-                                </div>
-                            );
-                        })}
+                    {reportData && detailedReport && (
+                        <div className='detailed-grid'>
+                            {reportData.map((a, index) => {
+                                return (
+                                    <div className='item'>
+                                        <Typography variant='overline'>{index + 1}</Typography>
+                                        <Typography variant='overline'>{a.customer.address}</Typography>
+                                        <Typography variant='overline'>{moment(a.details.createdAt).format("L")}</Typography>
+                                        <Typography variant='overline'>{a.cart[beverage.id].qty} cases</Typography>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    )}
+                    <div className='actions'>
+                        <PDFDownloadLink
+                            document={<SalesByItem data={reportData} stats={reportStats} detailedReport={detailedReport} />}
+                            fileName={`Sales by item Report`}>
+                            {({ loading }) =>
+                                loading ? (
+                                    "Loading..."
+                                ) : (
+                                    <Button size='large' variant='contained' color='primary'>
+                                        Download Report
+                                    </Button>
+                                )
+                            }
+                        </PDFDownloadLink>
+
+                        <Button size='large' variant='contained' color='secondary' onClick={resetHandler}>
+                            Reset
+                        </Button>
                     </div>
                 </React.Fragment>
             )}
@@ -264,7 +293,8 @@ const Component = styled.div`
     background-color: ${Colors.white};
     padding: 24px;
     display: grid;
-    grid-template-rows: auto auto 1fr;
+    grid-template-rows: max-content max-content max-content;
+    grid-row-gap: 24px;
     .loading {
         margin: auto;
         display: grid;
@@ -272,7 +302,6 @@ const Component = styled.div`
         justify-items: center;
     }
     .table {
-        margin-bottom: 100px;
         .grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -290,12 +319,19 @@ const Component = styled.div`
             padding: 40px 0 16px 0;
         }
     }
+    .actions {
+        padding: 24px;
+        background-color: ${Colors.lightGrey};
+        display: grid;
+        grid-template-columns: auto auto;
+        grid-column-gap: 16px;
+        justify-content: flex-end;
+    }
 
     .detailed-grid {
-        border: 1px solid black;
         padding: 16px;
-        border-radius: 8px;
-        max-height: 500px;
+        background-color: ${Colors.lightGrey};
+        max-height: 50vh;
         display: grid;
         grid-row-gap: 12px;
         overflow: scroll;
