@@ -80,7 +80,7 @@ const AppWrapper = styled.div`
         height: 100vh;
         height: calc(var(--vh, 1vh) * 100);
         display: grid;
-        grid-template-columns: min-content 1fr;
+        grid-template-columns: auto 1fr;
         grid-template-areas: "sidebar app";
     }
 `;
