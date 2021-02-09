@@ -22,6 +22,7 @@
         "moment": "^2.27.0",
         "moment-timezone": "^0.5.31",
         "notistack": "^0.9.9",
+        "phosphor-react": "^1.1.2",
         "rc-print": "^1.0.4",
         "react": "^16.12.0",
         "react-dom": "^16.12.0",

@@ -24,7 +24,7 @@ import WeeklyJournal from "./Applications/Reports/WeeklyJournal";
 import { hot } from "react-hot-loader/root";
 import ResponsiveBlock from "./componentsv3/responsive block";
 import TempNav from "./componentsv3/temp/TempNav";
-import Test from "./test/Test";
+import Test from "./test/test";
 import SOBI from "./Applications/Reports/SOBI";
 import DriverJournal from "./Applications/Reports/DriverJournal";
 
