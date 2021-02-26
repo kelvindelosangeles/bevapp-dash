@@ -4,11 +4,12 @@ import moment from "moment";
 import Dialog from "@material-ui/core/Dialog";
 import { Order as orderModel } from "../Models/Order";
 import { Colors } from "../Constants/Colors";
+
 import CaseIcon from "../Assets/Icons/CaseIcon";
 import OrderPreview from "./OrderPreview";
 import CustomerPDF from "../Global/PrintTemplates/CustomerPDF";
 import { Typography } from "@material-ui/core";
-import { VerifiedUserRounded } from "@material-ui/icons";
+import { VerifiedUserRounded, WarningRounded } from "@material-ui/icons";
 
 const Order = ({
     order,
@@ -23,9 +24,33 @@ const Order = ({
 }) => {
     const { customer, details, cart } = order;
     const [open, setOpen] = useState(false);
-    const isPaid = order.hasOwnProperty("payment");
 
-    console.log("is paid", isPaid);
+    const isPaid = () => {
+        const orderTotal = orderModel.CalculateCart(order.cart, order.customer.specialPrices);
+        const totalPayment = order.hasOwnProperty("payment") ? parseFloat(order.payment?.totalCredit) + parseFloat(order.payment?.totalPayment) : 0;
+
+        console.log("totalPayment", totalPayment);
+
+        if (!order.hasOwnProperty("payment")) {
+            return null;
+        }
+
+        return totalPayment < orderTotal ? (
+            <PaymentTag>
+                <Typography variant='overline' style={{ color: Colors.red, whiteSpace: "nowrap" }}>
+                    P. Paid
+                </Typography>
+                <VerifiedUserRounded style={{ color: Colors.orange }} />
+            </PaymentTag>
+        ) : (
+            <PaymentTag>
+                <Typography variant='overline' style={{ color: Colors.green }}>
+                    Paid
+                </Typography>
+                <VerifiedUserRounded style={{ color: Colors.green }} />
+            </PaymentTag>
+        );
+    };
 
     return (
         <>
@@ -39,14 +64,7 @@ const Order = ({
                     <CaseIcon /> {orderModel.CalculateCases(cart)}
                 </p>
                 <p>${orderModel.CalculateCart(cart, customer.specialPrices)}</p>
-                {isPaid && (
-                    <PaymentTag>
-                        <Typography variant='overline' style={{ color: Colors.green }}>
-                            Paid
-                        </Typography>
-                        <VerifiedUserRounded />
-                    </PaymentTag>
-                )}
+                {isPaid()}
             </Component>
             <Dialog open={open} onClose={() => setOpen(false)} scroll='paper' maxWidth={"90vw"}>
                 <OrderPreview

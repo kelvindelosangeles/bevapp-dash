@@ -10,8 +10,30 @@ const ChangeLog = () => {
             <p className='title'>Change Log</p>
             <Log>
                 <header>
+                    <p className='date'>February 26th, 2020</p>
+                    <p className='version'>v4.0.2</p>
+                </header>
+
+                <ul>
+                    <label>Payment Indicator</label>
+                    <li>New orange indicator for orders that are not completely paid off</li>
+                </ul>
+            </Log>
+            <Log>
+                <header>
+                    <p className='date'>February 25th, 2020</p>
+                    <p className='version'>v4.0.1</p>
+                </header>
+
+                <ul>
+                    <label>Payment form</label>
+                    <li>Removed the 1000 dollar max limit when entering a value.</li>
+                </ul>
+            </Log>
+            <Log>
+                <header>
                     <p className='date'>Jan 15th, 2020</p>
-                    <p className='version'>v 2.3</p>
+                    <p className='version'>v 4.0.0</p>
                 </header>
 
                 <ul>

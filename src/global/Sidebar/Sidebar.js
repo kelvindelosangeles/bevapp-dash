@@ -52,7 +52,7 @@ const Sidebar = (props) => {
         <Container>
             <header onClick={toggleChangeLog}>
                 <p className='title'>
-                    Bevapp Dash <span>v4.0.0</span>
+                    Bevapp Dash <span>v4.0.2</span>
                 </p>
                 <p className='date'>{moment().format("LL")}</p>
             </header>
@@ -164,7 +164,7 @@ const Container = styled.div`
 const MenuItemComponent = styled(NavLink)`
     display: flex;
     align-items: center;
-    padding: 8px 40px 8px 8px;
+    padding: 8px 24px 8px 8px;
     border-radius: 4px;
     cursor: pointer;
     transition: all 50ms ease-in-out;
@@ -187,9 +187,7 @@ const MenuItemComponent = styled(NavLink)`
     }
     .active {
         .icon_wrapper {
-            background-color: ${({ color }) => {
-                color;
-            }};
+            background-color: ${({ color }) => color};
         }
     }
 `;

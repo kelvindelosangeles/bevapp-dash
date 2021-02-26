@@ -315,8 +315,8 @@ const OrderPreview = (props) => {
                                     step='.01'
                                     name='priceAdjustment'
                                     min={0}
-                                    max={1000}
-                                    ref={register({ required: true, min: 0, max: 1000 })}
+                                    max={5000}
+                                    ref={register({ required: true, min: 0, max: 5000 })}
                                     placeholder='$0.00'
                                 />
                             </div>
@@ -326,7 +326,7 @@ const OrderPreview = (props) => {
                                     type='number'
                                     step='.01'
                                     name='breakage'
-                                    ref={register({ required: true, min: 0, max: 1000 })}
+                                    ref={register({ required: true, min: 0, max: 5000 })}
                                     placeholder='$0.00'
                                 />
                             </div>
@@ -336,7 +336,7 @@ const OrderPreview = (props) => {
                                     type='number'
                                     step='.01'
                                     name='returnedContainers'
-                                    ref={register({ required: true, min: 0, max: 1000 })}
+                                    ref={register({ required: true, min: 0, max: 5000 })}
                                     placeholder='$0.00'
                                 />
                             </div>
@@ -346,7 +346,7 @@ const OrderPreview = (props) => {
                                     type='number'
                                     step='.01'
                                     name='returnedToFlair'
-                                    ref={register({ required: true, min: 0, max: 1000 })}
+                                    ref={register({ required: true, min: 0, max: 5000 })}
                                     placeholder='$0.00'
                                 />
                             </div>
@@ -363,8 +363,8 @@ const OrderPreview = (props) => {
                                     step='.01'
                                     name='cash'
                                     min={0}
-                                    max={1000}
-                                    ref={register({ required: true, min: 0, max: 1000 })}
+                                    max={5000}
+                                    ref={register({ required: true, min: 0, max: 5000 })}
                                     placeholder='$0.00'
                                 />
                             </div>
@@ -375,8 +375,8 @@ const OrderPreview = (props) => {
                                     step='.01'
                                     name='check'
                                     min={0}
-                                    max={1000}
-                                    ref={register({ required: true, min: 0, max: 1000 })}
+                                    max={5000}
+                                    ref={register({ required: true, min: 0, max: 5000 })}
                                     placeholder='$0.00'
                                 />
                             </div>
