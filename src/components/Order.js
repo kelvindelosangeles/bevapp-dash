@@ -21,6 +21,7 @@ const Order = ({
     parentRoute = null,
     weekDocument = null,
     weekDocumentID = null,
+    getCompletedOrders,
 }) => {
     const { customer, details, cart } = order;
     const [open, setOpen] = useState(false);
@@ -78,6 +79,8 @@ const Order = ({
                     canAddPayment={canAddPayment}
                     weekDocument={weekDocument}
                     weekDocumentID={weekDocumentID}
+                    // TODO: View completed order comp for notes
+                    getCompletedOrders={getCompletedOrders}
                 />
             </Dialog>
         </>

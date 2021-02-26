@@ -17,6 +17,7 @@ const ChangeLog = () => {
                 <ul>
                     <label>Payment Indicator</label>
                     <li>New orange indicator for orders that are not completely paid off</li>
+                    <li>After submitting a payment the orders are updated automatically. No need to refresh :) </li>
                 </ul>
             </Log>
             <Log>

@@ -125,19 +125,6 @@ const CompletedOrders = () => {
         theDate && getCompletedOrders();
     }, [theDate]);
 
-    useEffect(() => {
-        routes &&
-            routes.forEach((a) => {
-                try {
-                    // console.log(a[1]);
-                    // console.log(a[1].driver.firstName);
-                    // console.log(moment(a[1].details.dates.routeDate.date).isBetween("10/01/20", "10/03/20"));
-                } catch (error) {
-                    // console.log(a[1].driver.firstName, error);
-                }
-            });
-    }, [routes]);
-
     return (
         <>
             <ResponsiveBlock />
@@ -193,6 +180,8 @@ const CompletedOrders = () => {
                                                     parentRoute={a}
                                                     weekDocument={rawOrder}
                                                     weekDocumentID={weekDocument}
+                                                    // TODO:: Beta -  passing this down to refresh the app each time a new payment is added
+                                                    getCompletedOrders={getCompletedOrders}
                                                 />
                                             );
                                         })}

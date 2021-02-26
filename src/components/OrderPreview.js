@@ -33,6 +33,7 @@ const OrderPreview = (props) => {
         parentRoute,
         weekDocument,
         weekDocumentID,
+        getCompletedOrders,
     } = props;
     const { register, watch, handleSubmit } = useForm({
         defaultValues: {
@@ -117,6 +118,8 @@ const OrderPreview = (props) => {
                 console.log("successfully paid");
                 setOpenPayment(false);
                 history.push("/dashboard/completedorders");
+                // TODO: BETA: View Order and completedOrder For details on this additon
+                getCompletedOrders();
             })
             .catch((err) => {
                 console.log(err, "something went wrong with the payment update process");
