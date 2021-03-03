@@ -38,8 +38,8 @@ const Order = ({
 
         return totalPayment < orderTotal ? (
             <PaymentTag>
-                <Typography variant='overline' style={{ color: Colors.red, whiteSpace: "nowrap" }}>
-                    P. Paid
+                <Typography variant='overline' style={{ color: Colors.orange, whiteSpace: "nowrap" }}>
+                    Paid
                 </Typography>
                 <VerifiedUserRounded style={{ color: Colors.orange }} />
             </PaymentTag>
