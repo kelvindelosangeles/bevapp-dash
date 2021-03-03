@@ -10,7 +10,21 @@ const ChangeLog = () => {
             <p className='title'>Change Log</p>
             <Log>
                 <header>
-                    <p className='date'>February 26th, 2020</p>
+                    <p className='date'>March 3rd, 2021</p>
+                    <p className='version'>v4.1.0</p>
+                </header>
+
+                <ul>
+                    <label>Payment Summary Report</label>
+                    <li>
+                        <NewIcon className='new' />
+                        New Summary button added to the completed orders page to genrerate and print a payment summary report
+                    </li>
+                </ul>
+            </Log>
+            <Log>
+                <header>
+                    <p className='date'>February 26th, 2021</p>
                     <p className='version'>v4.0.2</p>
                 </header>
 
@@ -22,7 +36,7 @@ const ChangeLog = () => {
             </Log>
             <Log>
                 <header>
-                    <p className='date'>February 25th, 2020</p>
+                    <p className='date'>February 25th, 2021</p>
                     <p className='version'>v4.0.1</p>
                 </header>
 
@@ -33,7 +47,7 @@ const ChangeLog = () => {
             </Log>
             <Log>
                 <header>
-                    <p className='date'>Jan 15th, 2020</p>
+                    <p className='date'>Jan 15th, 2021</p>
                     <p className='version'>v 4.0.0</p>
                 </header>
 

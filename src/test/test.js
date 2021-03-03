@@ -6,18 +6,18 @@ import Header from "../Global/PrintTemplates/components/Header";
 import { PDFViewer } from "@react-pdf/renderer";
 import PaymentReportPDF from "../Global/PrintTemplates/PaymentReportPDF";
 import PageTitle from "../Global/PrintTemplates/components/PageTitle";
+import PaymentSummary from "../Global/PrintTemplates/PaymentSummary";
 
 const Test = () => {
     return (
         <Component>
             <PDFViewer height='100%' width='100%'>
-                <PaymentReportPDF />
+                <PaymentSummary />
             </PDFViewer>
         </Component>
     );
 };
 const Component = styled.div`
     background-color: white;
-    /* padding: 24px; */
 `;
 export default Test;

@@ -14,6 +14,7 @@ import Order from "../../../components/Order";
 // BETA
 import ReactExport from "react-export-excel";
 import ResponsiveBlock from "../../../componentsv3/responsive block";
+import PaymentSummary from "../../../Global/PrintTemplates/PaymentSummary";
 
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
@@ -170,6 +171,13 @@ const CompletedOrders = () => {
                                             <p>{Object.values(a.orders).length}</p>
                                             <p>{CalcCasesMultipleOrders(a.orders)}</p>
                                             <p>${CalcTotalMultipleOrders(a.orders)}</p>
+                                            <PDFDownloadLink
+                                                document={<PaymentSummary route={a} orderTotal={CalcTotalMultipleOrders(a.orders)} />}
+                                                fileName={`${a.driver.firstName} ${
+                                                    a.details.dates && moment(a.details.dates.routeDate.date).format("L")
+                                                }.pdf`}>
+                                                {({ loading }) => (loading ? "Loading" : <Button>Summary</Button>)}
+                                            </PDFDownloadLink>
                                         </div>
                                         {Object.values(a.orders).map((b) => {
                                             return (
@@ -222,7 +230,7 @@ const BodyContent = styled.div`
     .route {
         .route-details {
             display: grid;
-            grid-template-columns: 160px 310px 1fr 1fr;
+            grid-template-columns: 160px 310px 1fr 1fr 1fr;
             grid-column-gap: 32px;
             padding: 16px;
             margin-left: -16px;
@@ -233,13 +241,17 @@ const BodyContent = styled.div`
             font-weight: 500;
             border-radius: 4px 4px 0 0;
             text-transform: uppercase;
+            align-items: center;
+            button {
+                padding: 8px 24px;
+            }
         }
     }
 `;
 const HeaderComponent = styled.div`
     display: grid;
-    /* grid-template-columns: repeat(4, 1fr); */
-    grid-template-columns: 160px 310px 1fr 1fr;
+
+    grid-template-columns: 160px 310px 1fr 1fr 1fr;
     grid-column-gap: 32px;
     p {
         font-size: 16px;

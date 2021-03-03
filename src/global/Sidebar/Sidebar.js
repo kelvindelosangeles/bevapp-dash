@@ -35,8 +35,6 @@ const Sidebar = (props) => {
         });
     };
 
-    console.log(props);
-
     const MenuItem = ({ children, to, label, color }) => {
         const location = props.location.pathname;
 
@@ -52,7 +50,7 @@ const Sidebar = (props) => {
         <Container>
             <header onClick={toggleChangeLog}>
                 <p className='title'>
-                    Bevapp Dash <span>v4.0.2</span>
+                    Bevapp Dash <span>v4.1.0</span>
                 </p>
                 <p className='date'>{moment().format("LL")}</p>
             </header>
