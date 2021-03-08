@@ -36,6 +36,17 @@ const Order = ({
             return null;
         }
 
+        if (order.payment.sign) {
+            return (
+                <PaymentTag>
+                    <Typography variant='overline' style={{ color: Colors.purple, whiteSpace: "nowrap" }}>
+                        Sign
+                    </Typography>
+                    <VerifiedUserRounded style={{ color: Colors.purple }} />
+                </PaymentTag>
+            );
+        }
+
         return totalPayment < orderTotal ? (
             <PaymentTag>
                 <Typography variant='overline' style={{ color: Colors.orange, whiteSpace: "nowrap" }}>

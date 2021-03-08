@@ -10,6 +10,21 @@ const ChangeLog = () => {
             <p className='title'>Change Log</p>
             <Log>
                 <header>
+                    <p className='date'>March 8th, 2021</p>
+                    <p className='version'>v4.2.0</p>
+                </header>
+
+                <ul>
+                    <label>Signed Orders</label>
+                    <li>
+                        <NewIcon className='new' />
+                        New Button on the payment form to allow staff to mark orders as signed. A new purple indicator will label signed orders.
+                        (note: signed orders will not allow you to enter any other payment details.)
+                    </li>
+                </ul>
+            </Log>
+            <Log>
+                <header>
                     <p className='date'>March 3rd, 2021</p>
                     <p className='version'>v4.1.0</p>
                 </header>

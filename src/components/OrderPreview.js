@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 import { Order as orderModel } from "../Models/Order";
@@ -12,9 +12,10 @@ import { useFirestore } from "react-redux-firebase";
 import CustomerPDF from "../Global/PrintTemplates/CustomerPDF";
 import WarehousePDF from "../Global/PrintTemplates/WarehousePDF";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Typography } from "@material-ui/core";
+import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Typography } from "@material-ui/core";
 import { useForm } from "react-hook-form";
 import PaymentReportPDF from "../Global/PrintTemplates/PaymentReportPDF";
+import { LocalConvenienceStoreOutlined } from "@material-ui/icons";
 
 const OrderPreview = (props) => {
     // close order preview comes from the parent so that we can close the entire menu from within the action creators
@@ -35,7 +36,7 @@ const OrderPreview = (props) => {
         weekDocumentID,
         getCompletedOrders,
     } = props;
-    const { register, watch, handleSubmit } = useForm({
+    const { register, watch, handleSubmit, reset, setValue } = useForm({
         defaultValues: {
             priceAdjustment: 0,
             breakage: 0,
@@ -73,26 +74,51 @@ const OrderPreview = (props) => {
         parseFloat(watch("returnedToFlair"))
     ).toFixed(2);
     const totalPayment = (parseFloat(watch("cash")) + parseFloat(watch("check"))).toFixed(2);
-
+    // ===============
+    // Payment Form Functions
+    // ===============
+    const signed = watch("sign");
     const submitPaymentHandler = (data) => {
-        const { priceAdjustment, breakage, returnedContainers, returnedToFlair, cash, check, notes } = data;
-        const payment = {
-            createdAt: moment().valueOf(),
-            createdBy: "General Admin",
-            credits: {
-                priceAdjustment,
-                breakage,
-                returnedContainers,
-                returnedToFlair,
-            },
-            payments: {
-                cash,
-                check,
-            },
-            notes,
-            totalCredit,
-            totalPayment,
-        };
+        const { priceAdjustment, breakage, returnedContainers, returnedToFlair, cash, check, notes, sign } = data;
+        // checks if its signed return everything empty and sign true, else sign false and other fields available for entry
+        const payment = sign
+            ? {
+                  createdAt: moment().valueOf(),
+                  createdBy: "General Admin",
+                  sign,
+                  credits: {
+                      priceAdjustment: 0.0,
+                      breakage: 0.0,
+                      returnedContainers: 0.0,
+                      returnedToFlair: 0.0,
+                  },
+                  payments: {
+                      cash: 0.0,
+                      check: 0.0,
+                  },
+                  notes,
+                  totalCredit,
+                  totalPayment,
+              }
+            : {
+                  createdAt: moment().valueOf(),
+                  createdBy: "General Admin",
+                  sign,
+                  credits: {
+                      priceAdjustment,
+                      breakage,
+                      returnedContainers,
+                      returnedToFlair,
+                  },
+                  payments: {
+                      cash,
+                      check,
+                  },
+                  notes,
+                  totalCredit,
+                  totalPayment,
+              };
+
         const updatedRoute = {
             [parentRoute.details.routeID]: {
                 ...parentRoute,
@@ -125,9 +151,17 @@ const OrderPreview = (props) => {
                 console.log(err, "something went wrong with the payment update process");
             });
     };
-
     const cancelPaymentHandler = () => {
         window.confirm("Are you sure you want to cancle this payment entry") && setOpenPayment(false);
+    };
+
+    const resetAllValues = () => {
+        setValue("priceAdjustment", "0.00");
+        setValue("breakage", "0.00");
+        setValue("returnedContainers", "0");
+        setValue("returnedToFlair", "0");
+        setValue("cash", "0");
+        setValue("check", "0");
     };
 
     const isPaid = order.hasOwnProperty("payment");
@@ -300,8 +334,10 @@ const OrderPreview = (props) => {
                                 <Typography variant='caption'>$ {totalPayment}</Typography>
                             </div>
                             <div className='stat'>
-                                <Typography variant='overline'></Typography>
-                                <Typography variant='caption'></Typography>
+                                <Typography variant='overline'>Sign</Typography>
+                                <Typography variant='caption'>
+                                    <input type='checkbox' name='sign' ref={register} onClick={resetAllValues} />
+                                </Typography>
                             </div>
                         </div>
                         <Divider />
@@ -316,6 +352,7 @@ const OrderPreview = (props) => {
                                 <input
                                     type='number'
                                     step='.01'
+                                    disabled={signed}
                                     name='priceAdjustment'
                                     min={0}
                                     max={5000}
@@ -327,6 +364,7 @@ const OrderPreview = (props) => {
                                 <Typography variant='caption'>Breakage</Typography>
                                 <input
                                     type='number'
+                                    disabled={signed}
                                     step='.01'
                                     name='breakage'
                                     ref={register({ required: true, min: 0, max: 5000 })}
@@ -337,6 +375,7 @@ const OrderPreview = (props) => {
                                 <Typography variant='caption'>Returned cans/bottles</Typography>
                                 <input
                                     type='number'
+                                    disabled={signed}
                                     step='.01'
                                     name='returnedContainers'
                                     ref={register({ required: true, min: 0, max: 5000 })}
@@ -347,6 +386,7 @@ const OrderPreview = (props) => {
                                 <Typography variant='caption'>Merchandise returned to Flair</Typography>
                                 <input
                                     type='number'
+                                    disabled={signed}
                                     step='.01'
                                     name='returnedToFlair'
                                     ref={register({ required: true, min: 0, max: 5000 })}
@@ -363,6 +403,7 @@ const OrderPreview = (props) => {
                                 <Typography variant='caption'>Cash</Typography>
                                 <input
                                     type='number'
+                                    disabled={signed}
                                     step='.01'
                                     name='cash'
                                     min={0}
@@ -375,6 +416,7 @@ const OrderPreview = (props) => {
                                 <Typography variant='caption'>Check</Typography>
                                 <input
                                     type='number'
+                                    disabled={signed}
                                     step='.01'
                                     name='check'
                                     min={0}
@@ -460,9 +502,17 @@ const OrderPreview = (props) => {
                             </div>
                             <div className='value'>
                                 <Typography variant='caption'>Check</Typography>
-                                <Typography variant='subtitle2'>$ {order.payment?.payments.check}</Typography>
+                                <Typography variant='subtitle2'>$ {order.payment && order.payment.payments.check}</Typography>
                             </div>
                         </section>
+                        {order.hasOwnProperty("payment") && order.payment.hasOwnProperty("sign") && order.payment.sign && (
+                            <section>
+                                <Typography variant='overline' style={{ color: Colors.purple }}>
+                                    Signed
+                                </Typography>
+                                <Divider />
+                            </section>
+                        )}
                         <section>
                             <Typography variant='overline'>Notes</Typography>
                             <Typography variant='body2'>{order.payment?.notes}</Typography>
@@ -492,6 +542,7 @@ const OrderPreview = (props) => {
                                 )
                             }
                         </PDFDownloadLink>
+
                         <Button size='large' variant='outlined' color='primary' onClick={() => setPaymentReportOpen(false)}>
                             Close
                         </Button>

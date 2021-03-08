@@ -51,6 +51,14 @@ const PaymentSummary = ({ route, orderTotal }) => {
         return "$" + total;
     };
 
+    const TEMPCheckSigned = (order) => {
+        try {
+            return order.payment.sign ? "Signed" : "$" + order.payment.totalPayment;
+        } catch (error) {
+            "$" + order.payment.totalPayment;
+        }
+    };
+
     return (
         <DocumentWrapper>
             <View style={$.header}>
@@ -78,7 +86,8 @@ const PaymentSummary = ({ route, orderTotal }) => {
                         <Text style={$.order.content}>{a.payment && "$" + a.payment.totalCredit}</Text>
                         <Text style={$.order.content}>{a.payment && "$" + a.payment.payments.check}</Text>
                         <Text style={$.order.content}>{a.payment && "$" + a.payment.payments.cash}</Text>
-                        <Text style={$.order.content}>{a.payment && "$" + a.payment.totalPayment}</Text>
+                        {/* <Text style={$.order.content}>{a.payment && "$" + a.payment.totalPayment}</Text> */}
+                        <Text style={$.order.content}>{a.payment && TEMPCheckSigned(a)}</Text>
                     </View>
                 );
             })}
