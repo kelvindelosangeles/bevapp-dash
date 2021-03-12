@@ -55,7 +55,7 @@ const PaymentSummary = ({ route, orderTotal }) => {
         try {
             return order.payment.sign ? "Signed" : "$" + order.payment.totalPayment;
         } catch (error) {
-            "$" + order.payment.totalPayment;
+            return "$" + order.payment.totalPayment;
         }
     };
 
