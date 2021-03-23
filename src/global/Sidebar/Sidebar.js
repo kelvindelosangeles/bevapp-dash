@@ -83,6 +83,15 @@ const Sidebar = (props) => {
                 </section>
                 <div className='divider'></div>
                 <section>
+                    <p className='section_label'>Accounts</p>
+                    <div className='grid'>
+                        <MenuItem to='/accountOverview' label='Account Overview' color={colors.green}>
+                            <Note weight='fill' />
+                        </MenuItem>
+                    </div>
+                </section>
+                <div className='divider'></div>
+                <section>
                     <p className='section_label'>Reports</p>
                     <div className='grid'>
                         <MenuItem to='/nor' label='Non order' color={colors.green}>

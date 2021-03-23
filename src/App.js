@@ -27,6 +27,7 @@ import TempNav from "./componentsv3/temp/TempNav";
 import Test from "./test/test";
 import SOBI from "./Applications/Reports/SOBI";
 import DriverJournal from "./Applications/Reports/DriverJournal";
+import AccountOverview from "./v5/pages/AccountOverview";
 
 const App = (props) => {
     const toggleChangeLog = () => {
@@ -49,6 +50,7 @@ const App = (props) => {
                     <Route path='/rapidorder' component={RapidOrder} />
                     <Route path='/store' component={Store} />
                     <Route path='/specialpricing' component={SpecialPricing} />
+                    <Route path='/accountOverview' component={AccountOverview} />
                     {/* <Route path='/report1' component={DailyJournalv2} /> */}
                     <Route path='/cps' component={CustomerPurchaseSheet} />
                     <Route path='/nor' component={NonOrderReport} />

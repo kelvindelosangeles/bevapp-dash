@@ -22,6 +22,8 @@ import RapidOrderReducer from "./redux/reducers/RapidOrderReducer";
 import DashboardReducer from "./redux/reducers/DashboardReducer";
 import SpecialPricingReducer from "./redux/reducers/SpecialPricingReducer";
 import thunk from "redux-thunk";
+import colors from "./v5/constants/Colors";
+import { accountOverviewReducer } from "./v5/redux/reducers/accountOverview";
 
 // const bevappTest = {
 //     apiKey: "AIzaSyCQhOoWbnPMT4YSUAQX5w956l7UPm73tMY",
@@ -60,6 +62,7 @@ const rootReducer = combineReducers({
     DashboardState: DashboardReducer,
     RapidOrderState: RapidOrderReducer,
     SpecialPricingState: SpecialPricingReducer,
+    AccountOverview: accountOverviewReducer,
     Firebase: firebaseReducer,
     Firestore: firestoreReducer,
 });
@@ -83,9 +86,6 @@ window.addEventListener("resize", () => {
 });
 
 const GlobalStyle = createGlobalStyle`
-
-
-
 p, h1,h2,h3,h4,h5,h6{
     margin: 0;
     padding: 0;
@@ -98,6 +98,46 @@ a{
         color: unset
     }
 }
+
+.bevapp-icon{
+    background-color: black;
+    padding: 12px;
+    height: 48px;
+    border-radius: 4px;
+    transition: all 200ms ease-in-out;
+     svg{
+            height: 24px;
+            width: 24px;
+            color: white;
+     }
+    :hover{
+    transform: scale(.90);
+    }
+    }
+
+    .bevapp-page-heading{
+        
+font-size: 24px;
+font-weight: 600;
+    }
+
+    .bevapp-input{
+        height: 48px;
+        background-color: ${colors.greyBackground};
+        border: none;
+        padding: 0 16px;
+        border-radius: 4px;
+    }
+    .bevapp-module-label{
+        font-weight: 700;
+font-size: 12px;
+text-transform: uppercase;
+margin-bottom: 16px;
+
+    }
+
+
+
 .MuiFormControl-root{
     width: -webkit-fill-available;
     cursor: pointer;
