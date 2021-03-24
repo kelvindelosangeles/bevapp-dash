@@ -5,7 +5,7 @@ import PageTitle from "./components/PageTitle";
 import { View, Text } from "@react-pdf/renderer";
 import Divider from "./components/Divider";
 
-const PaymentReportPDF = ({ order, total, driver, date }) => {
+const PaymentReportPDF = ({ order, total, driver, date, balance }) => {
     console.log(order);
     return (
         <DocumentWrapper>
@@ -15,11 +15,13 @@ const PaymentReportPDF = ({ order, total, driver, date }) => {
             <View style={$.header}>
                 <Text style={{ ...$.header.text, textTransform: "uppercase", fontSize: 7 }}>Customer</Text>
                 <Text style={{ ...$.header.text, textTransform: "uppercase", fontSize: 7 }}>Order ID</Text>
+                <Text style={{ ...$.header.text, textTransform: "uppercase", fontSize: 7 }}>Date</Text>
             </View>
             <Divider mt={6} mb={6} />
             <View style={$.header}>
                 <Text style={$.header.text}>{order.customer.address}</Text>
                 <Text style={$.header.text}>{order.details.orderID}</Text>
+                <Text style={{ ...$.header.text, textTransform: "uppercase", fontSize: 7 }}>{date}</Text>
             </View>
             <View style={$.seperator} />
             {/* ============================
@@ -30,16 +32,16 @@ const PaymentReportPDF = ({ order, total, driver, date }) => {
                 <Text style={{ ...$.header.text, textTransform: "uppercase", fontSize: 7 }}>Order total</Text>
                 <Text style={{ ...$.header.text, textTransform: "uppercase", fontSize: 7 }}>Credits</Text>
                 <Text style={{ ...$.header.text, textTransform: "uppercase", fontSize: 7 }}>Total Payments</Text>
+                <Text style={{ ...$.header.text, textTransform: "uppercase", fontSize: 7 }}>Balance</Text>
                 <Text style={{ ...$.header.text, textTransform: "uppercase", fontSize: 7 }}>Driver</Text>
-                <Text style={{ ...$.header.text, textTransform: "uppercase", fontSize: 7 }}>Date</Text>
             </View>
             <Divider mt={6} mb={6} />
             <View style={$.header}>
                 <Text style={$.header.text}>$ {total}</Text>
                 <Text style={$.header.text}>$ {order.payment.totalCredit}</Text>
                 <Text style={$.header.text}>$ {order.payment.totalPayment}</Text>
+                <Text style={$.header.text}>{balance}</Text>
                 <Text style={$.header.text}>{driver}</Text>
-                <Text style={$.header.text}>{date}</Text>
             </View>
             {/* ============================
             Credits

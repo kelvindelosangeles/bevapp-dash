@@ -2,21 +2,36 @@ import { Storefront } from "@material-ui/icons";
 import React from "react";
 import styled from "styled-components";
 import colors from "../../../constants/Colors";
-import { calculateCart, calculateMultipleOrders, formatPhoneNumber } from "../../../utilities/methods";
+import {
+    calculateBalance,
+    calculateOrder,
+    calculateMultipleOrders,
+    calculatePayment,
+    formatPhoneNumber,
+    checkPaymentStatus,
+    calculateMultipleBalances,
+    calculateMultiplePayment,
+    checkPaymentStatusMobile,
+} from "../../../utilities/methods";
 import moment from "moment-timezone";
+
 const Account = ({ customer, orders }) => {
     const { address, telephone } = customer;
     const ordersList = orders.map((a) => {
         return (
-            <div className='order'>
+            <Order mobileInidicator={checkPaymentStatusMobile(a)}>
                 <div>
-                    <p>{a.details.orderID}</p>
+                    <p>{a.details.orderID.slice(7, 16)}</p>
                     <p className='date'>{moment(a.details.createdAt).format("L")}</p>
                 </div>
-                <p>${calculateCart(a)}</p>
-                <p>$4563.00</p>
-                <p className='status'>Status</p>
-            </div>
+                <p>{calculateOrder(a)}</p>
+                <div>
+                    <p>{calculatePayment(a)}</p>
+                    <div className='mobile-balance'>{calculateBalance(a)}</div>
+                </div>
+                <p className='balance'>{calculateBalance(a)}</p>
+                {checkPaymentStatus(a)}
+            </Order>
         );
     });
 
@@ -34,6 +49,7 @@ const Account = ({ customer, orders }) => {
                 <p>Order ID</p>
                 <p>Invoice Amount</p>
                 <p>Payment</p>
+                <p className='balance'>balance</p>
                 <p className='status'>Status</p>
             </section>
             <section className='order-grid'>{ordersList}</section>
@@ -46,11 +62,11 @@ const Account = ({ customer, orders }) => {
                 </div>
                 <div>
                     <p className='bevapp-module-label'>Total Payments</p>
-                    <p className='bevapp-module-label'>$4563.49</p>
+                    <p className='bevapp-module-label'>${calculateMultiplePayment(orders)}</p>
                 </div>
                 <div>
                     <p className='bevapp-module-label'>Balance</p>
-                    <p className='bevapp-module-label'>$0.00</p>
+                    <p className='bevapp-module-label'>${calculateMultipleBalances(orders)}</p>
                 </div>
             </section>
         </Component>
@@ -92,7 +108,7 @@ const Component = styled.div`
     }
     .order-labels {
         display: grid;
-        grid-template-columns: 3fr 2fr 2fr;
+        grid-template-columns: 1fr 1fr 64px;
         grid-column-gap: 16px;
         p {
             font-size: 12px;
@@ -103,40 +119,15 @@ const Component = styled.div`
         .status {
             display: none;
         }
+        .balance {
+            display: none;
+        }
     }
     .order-grid {
         display: grid;
         grid-row-gap: 16px;
     }
-    .order {
-        display: grid;
-        grid-column-gap: 16px;
 
-        grid-template-columns: 3fr repeat(2, 2fr);
-        position: relative;
-        p {
-            text-transform: uppercase;
-            font-weight: 600;
-        }
-
-        .date {
-            font-size: 14px;
-            color: ${colors.greyLabel};
-            text-transform: capitalize;
-        }
-        .status {
-            display: none;
-        }
-        ::before {
-            content: "";
-            height: 100%;
-            width: 4px;
-            position: absolute;
-            left: -8px;
-            background-color: red;
-            border-radius: 4px 0 0 4px;
-        }
-    }
     .summary {
         p.heading {
             font-size: 12px;
@@ -154,34 +145,18 @@ const Component = styled.div`
     }
     @media (min-width: 1024px) {
         .order-labels {
-            grid-template-columns: 3fr repeat(3, 2fr);
+            grid-template-columns: repeat(5, 1fr);
             .status {
                 display: block;
             }
+            .balance {
+                display: block;
+            }
         }
-        .order {
-            grid-template-columns: 3fr repeat(3, 2fr);
 
-            ::before {
-                content: unset;
-            }
-            .status {
-                display: block;
-                padding: 4px 8px;
-                background-color: black;
-                border-radius: 6px;
-                color: white;
-                width: fit-content;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-size: 12px;
-                align-self: flex-start;
-            }
-        }
         .summary {
             display: grid;
-            grid-template-columns: 3fr repeat(3, 2fr);
+            grid-template-columns: repeat(5, 1fr);
             grid-column-gap: 16px;
             div {
                 flex-direction: column;
@@ -197,4 +172,71 @@ const Component = styled.div`
         }
     }
 `;
+const Order = styled.div`
+    display: grid;
+    grid-column-gap: 16px;
+    justify-content: space-between;
+    justify-items: left;
+    grid-template-columns: 1fr 1fr 64px;
+    position: relative;
+    p {
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+
+    .date {
+        font-size: 14px;
+        color: ${colors.greyLabel};
+        text-transform: capitalize;
+    }
+    .status {
+        display: none;
+    }
+    .mobile-balance {
+        font-weight: 600;
+        color: ${colors.greyLabel};
+        position: relative;
+        font-size: 14px;
+    }
+    .balance {
+        display: none;
+    }
+    ::before {
+        content: "";
+        height: 100%;
+        width: 6px;
+        position: absolute;
+        left: -10px;
+        background-color: ${({ mobileInidicator }) => mobileInidicator};
+        border-radius: 4px 0 0 4px;
+    }
+
+    @media (min-width: 1024px) {
+        grid-template-columns: repeat(5, 1fr);
+        ::before {
+            content: unset;
+        }
+        .status {
+            display: block;
+            padding: 4px 8px;
+            background-color: black;
+            border-radius: 6px;
+            color: white;
+            width: fit-content;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            align-self: flex-start;
+        }
+        .mobile-balance {
+            display: none;
+        }
+        .balance {
+            display: block;
+        }
+    }
+`;
 export default Account;
+
+// TODO: for cleaner code move the order component back into the main component for styling, its easier to find that way and consider using a different type of indicator

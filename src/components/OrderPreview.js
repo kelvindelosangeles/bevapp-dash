@@ -16,6 +16,7 @@ import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Di
 import { useForm } from "react-hook-form";
 import PaymentReportPDF from "../Global/PrintTemplates/PaymentReportPDF";
 import { LocalConvenienceStoreOutlined } from "@material-ui/icons";
+import { calculateBalance } from "../v5/utilities/methods";
 
 const OrderPreview = (props) => {
     // close order preview comes from the parent so that we can close the entire menu from within the action creators
@@ -463,12 +464,12 @@ const OrderPreview = (props) => {
                                 <Typography variant='subtitle2'>$ {order.payment?.totalPayment}</Typography>
                             </div>
                             <div className='stat'>
-                                <Typography variant='caption'>Driver</Typography>
-                                <Typography variant='subtitle2'>{parentRoute?.driver.firstName}</Typography>
+                                <Typography variant='caption'>Balance</Typography>
+                                <Typography variant='subtitle2'>{calculateBalance(order)}</Typography>
                             </div>
                             <div className='stat'>
-                                <Typography variant='caption'>Date</Typography>
-                                <Typography variant='subtitle2'>{moment(parentRoute?.details.completedAt.toDate()).format("L")}</Typography>
+                                <Typography variant='caption'>Driver</Typography>
+                                <Typography variant='subtitle2'>{parentRoute?.driver.firstName}</Typography>
                             </div>
                         </header>
                         <Divider />
@@ -523,6 +524,7 @@ const OrderPreview = (props) => {
                         <PDFDownloadLink
                             document={
                                 <PaymentReportPDF
+                                    balance={calculateBalance(order)}
                                     order={order}
                                     total={orderModel.CalculateCart(order.cart, order.customer.specialPrices)}
                                     driver={parentRoute ? parentRoute.driver.firstName : "n/a"}
