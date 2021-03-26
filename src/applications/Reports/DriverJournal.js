@@ -84,9 +84,12 @@ const DriverJournal = ({ history }) => {
         const data = routes
             .filter((a) => {
                 // filter between dates
+                // return a.details.dates
+                //     ? moment(a.details.dates.routeDate.date).isBetween(moment(fromDate), moment(toDate).add(1, "days"))
+                //     : moment(a.details.createdAt).isBetween(moment(fromDate), moment(toDate).add(1, "days"));
                 return a.details.dates
-                    ? moment(a.details.dates.routeDate.date).isBetween(moment(fromDate), moment(toDate).add(1, "days"))
-                    : moment(a.details.createdAt).isBetween(moment(fromDate), moment(toDate).add(1, "days"));
+                    ? moment(a.details.dates.routeDate.date).isBetween(moment(fromDate).subtract(1, "days"), moment(toDate))
+                    : moment(a.details.createdAt).isBetween(moment(fromDate).subtract(1, "days"), moment(toDate));
             })
             .filter((b) => {
                 // filter by driver name
@@ -283,6 +286,7 @@ const DriverJournal = ({ history }) => {
 const Component = styled.div`
     background-color: ${Colors.white};
     padding: 24px;
+    grid-area: app;
 `;
 
 const Report = styled.div`

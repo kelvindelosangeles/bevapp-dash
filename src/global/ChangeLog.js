@@ -10,6 +10,30 @@ const ChangeLog = () => {
             <p className='title'>Change Log</p>
             <Log>
                 <header>
+                    <p className='date'>March 24th, 2021</p>
+                    <p className='version'>v4.3.0</p>
+                </header>
+
+                <ul>
+                    <label>Account Overview</label>
+                    <li>
+                        <NewIcon className='new' />
+                        New Payment overview section packed full of features
+                    </li>
+                    <li>Get an overview of all payments made across all accounts</li>
+                    <li>View Account Balances</li>
+                    <li>Search bar lets you view by customer name </li>
+                    <li>Status indicators make it easy to see which orders need action</li>
+                    <li>Black error tags enable users to see orders where user-error may have occured. (for ex. overpayment)</li>
+                </ul>
+                <ul>
+                    <label>Payment Summary Sheet </label>
+                    <li>Balance on payment summary sheet</li>
+                    <li>Balance on Payment summary print sheet</li>
+                </ul>
+            </Log>
+            <Log>
+                <header>
                     <p className='date'>March 8th, 2021</p>
                     <p className='version'>v4.2.0</p>
                 </header>

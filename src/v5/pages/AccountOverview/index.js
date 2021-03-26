@@ -91,6 +91,7 @@ const AccountOverview = () => {
 };
 
 const Component = styled.div`
+    grid-area: app;
     background-color: ${colors.greyBackground};
     min-height: 100vh;
 `;

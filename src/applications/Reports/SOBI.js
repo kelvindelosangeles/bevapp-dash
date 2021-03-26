@@ -290,6 +290,7 @@ const StyledDialogActions = withStyles({
 })(DialogActions);
 
 const Component = styled.div`
+    grid-area: app;
     background-color: ${Colors.white};
     padding: 24px;
     display: grid;

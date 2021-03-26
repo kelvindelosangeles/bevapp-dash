@@ -120,13 +120,15 @@ const Sidebar = (props) => {
 const Container = styled.div`
     display: none;
     @media (min-width: 768px) {
-        grid-area: "sidebar";
+        grid-area: sidebar;
         background-color: ${colors.black};
         color: ${colors.white};
         padding: 80px 24px 16px 24px;
         display: block;
-        height: 100vh;
+        min-height: 100vh;
+        /* position: fixed; */
         overflow: scroll;
+        /* width: 260px; */
         header {
             margin-bottom: 80px;
             margin-left: 8px;
