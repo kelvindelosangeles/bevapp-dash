@@ -10,6 +10,21 @@ const ChangeLog = () => {
             <p className='title'>Change Log</p>
             <Log>
                 <header>
+                    <p className='date'>March 30th, 2021</p>
+                    <p className='version'>v4.3.1</p>
+                </header>
+
+                <ul>
+                    <label>Routes</label>
+                    <li>
+                        <BugIcon className='bug' />
+                        Fixed a bug where the sequence of orders in a route changed once completed. sequence is now maintained throughtout the entire
+                        app
+                    </li>
+                </ul>
+            </Log>
+            <Log>
+                <header>
                     <p className='date'>March 24th, 2021</p>
                     <p className='version'>v4.3.0</p>
                 </header>
@@ -35,7 +50,7 @@ const ChangeLog = () => {
             <Log>
                 <header>
                     <p className='date'>March 8th, 2021</p>
-                    <p className='version'>v4.2.0</p>
+                    <p className='version'>v4.3.1</p>
                 </header>
 
                 <ul>
