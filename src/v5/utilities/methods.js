@@ -1,5 +1,6 @@
 import React from "react";
 import colors from "../constants/Colors";
+import firebase from "firebase";
 export const formatPhoneNumber = (str) => {
     //Filter only numbers from the input
     let cleaned = ("" + str).replace(/\D/g, "");
@@ -159,6 +160,32 @@ export const checkPaymentStatusMobile = (order) => {
     }
 
     return colors.black;
+};
+
+// Temporary for firebase based database
+
+export const getAllOrdersFromRoutes = async () => {
+    try {
+        const response = await firebase.firestore().collection("ordersv2").get();
+        const data = await response.docs
+            .filter((f) => {
+                // fitlers out orders coming from orders
+                return f.id != "orders";
+            })
+            .map((a) => {
+                return Object.values(a.data());
+            })
+            .flat()
+            .map((b) => {
+                return Object.values(b.orders);
+            })
+            .flat();
+
+        return data;
+    } catch (error) {
+        console.log(error);
+        window.alert("An error has occured");
+    }
 };
 
 // ===NOTE===

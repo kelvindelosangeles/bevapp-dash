@@ -105,6 +105,7 @@ a{
     height: 48px;
     border-radius: 4px;
     transition: all 200ms ease-in-out;
+    
      svg{
             height: 24px;
             width: 24px;

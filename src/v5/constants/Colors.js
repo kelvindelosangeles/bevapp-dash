@@ -7,6 +7,7 @@ const colors = {
     orange: "#FFAA22",
     purple: "#AA22AA",
     red: "#EE4444",
+    shadow: "0 2px 4px 0 rgba(232, 231, 231, 0.5)",
 };
 
 export default colors;
