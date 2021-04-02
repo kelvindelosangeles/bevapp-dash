@@ -88,6 +88,9 @@ const Sidebar = (props) => {
                         <MenuItem to='/accountOverview' label='Account Overview' color={colors.green}>
                             <Note weight='fill' />
                         </MenuItem>
+                        <MenuItem to='/postSummary' label='Post Summary' color={colors.green}>
+                            <Note weight='fill' />
+                        </MenuItem>
                     </div>
                 </section>
                 <div className='divider'></div>

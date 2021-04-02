@@ -28,6 +28,7 @@ import Test from "./test/test";
 import SOBI from "./Applications/Reports/SOBI";
 import DriverJournal from "./Applications/Reports/DriverJournal";
 import AccountOverview from "./v5/pages/AccountOverview";
+import PostSummary from "./v5/pages/PostSummary";
 
 const App = (props) => {
     const toggleChangeLog = () => {
@@ -51,6 +52,7 @@ const App = (props) => {
                     <Route path='/store' component={Store} />
                     <Route path='/specialpricing' component={SpecialPricing} />
                     <Route path='/accountOverview' component={AccountOverview} />
+                    <Route path='/postSummary' component={PostSummary} />
                     {/* <Route path='/report1' component={DailyJournalv2} /> */}
                     <Route path='/cps' component={CustomerPurchaseSheet} />
                     <Route path='/nor' component={NonOrderReport} />

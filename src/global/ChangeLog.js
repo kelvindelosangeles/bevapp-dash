@@ -50,7 +50,7 @@ const ChangeLog = () => {
             <Log>
                 <header>
                     <p className='date'>March 8th, 2021</p>
-                    <p className='version'>v4.3.1</p>
+                    <p className='version'>v4.2.0</p>
                 </header>
 
                 <ul>
