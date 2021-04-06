@@ -15,6 +15,7 @@ import Order from "../../../components/Order";
 import ReactExport from "react-export-excel";
 import ResponsiveBlock from "../../../componentsv3/responsive block";
 import PaymentSummary from "../../../Global/PrintTemplates/PaymentSummary";
+import CombinedPaymentSummary from "../../../Global/PrintTemplates/CombinedPaymentSummary";
 
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
@@ -69,6 +70,9 @@ const CompletedOrders = () => {
     const [orders, setOrders] = useState(null);
     const [rawOrder, setRawOrder] = useState(null);
     const [routes, setRoutes] = useState(null);
+    // console.log("🚀 ~ file: CompletedOrders.js ~ line 70 ~ CompletedOrders ~ orders", orders);
+    // console.log("🚀 ~ file: CompletedOrders.js ~ line 72 ~ CompletedOrders ~ rawOrder", rawOrder);
+    // console.log("🚀 ~ file: CompletedOrders.js ~ line 73 ~ CompletedOrders ~ routes", routes);
 
     const firestore = useFirestore();
     // routes && console.log(routes);
@@ -138,24 +142,41 @@ const CompletedOrders = () => {
                         {orders && <Stat color={Colors.orange} title='Cases' data={CalcCasesMultipleOrders(allOrders())} />}
                         <span />
                         <span />
-                        {routes && <Excel routes={routes} />}
                         {orders && (
-                            <Button color={Colors.blue}>
-                                <PDFDownloadLink
-                                    document={
-                                        <DailyJournal
-                                            orders={orders}
-                                            total={CalcTotalMultipleOrders(allOrders())}
-                                            totalCases={CalcCasesMultipleOrders(allOrders())}
-                                            CalcCasesMultipleOrders={CalcCasesMultipleOrders}
-                                            CalcTotalMultipleOrders={CalcTotalMultipleOrders}
-                                            theDate={theDate}
-                                        />
-                                    }
-                                    fileName={`Daily Journal date`}>
-                                    {({ loading }) => (loading ? "Loading..." : "Download Daily Journal")}
-                                </PDFDownloadLink>
-                            </Button>
+                            <PDFDownloadLink
+                                document={
+                                    <CombinedPaymentSummary
+                                        orders={orders.map((a) => Object.values(a.orders)).flat()}
+                                        date={moment(theDate).format("LL")}
+                                    />
+                                }
+                                fileName={`DailyPaymentSummary.pdf`}>
+                                {({ loading }) =>
+                                    loading ? (
+                                        "Loading"
+                                    ) : (
+                                        <Button color={Colors.yellow} style={{ color: "black" }}>
+                                            Daily Payment Summary
+                                        </Button>
+                                    )
+                                }
+                            </PDFDownloadLink>
+                        )}
+                        {orders && (
+                            <PDFDownloadLink
+                                document={
+                                    <DailyJournal
+                                        orders={orders}
+                                        total={CalcTotalMultipleOrders(allOrders())}
+                                        totalCases={CalcCasesMultipleOrders(allOrders())}
+                                        CalcCasesMultipleOrders={CalcCasesMultipleOrders}
+                                        CalcTotalMultipleOrders={CalcTotalMultipleOrders}
+                                        theDate={theDate}
+                                    />
+                                }
+                                fileName={`Daily Journal date`}>
+                                {({ loading }) => (loading ? "Loading..." : <Button color={Colors.blue}>Daily Journal</Button>)}
+                            </PDFDownloadLink>
                         )}
                     </ActionWrapper>
                 </ActionBar>

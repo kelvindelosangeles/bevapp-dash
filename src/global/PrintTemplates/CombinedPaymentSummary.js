@@ -3,14 +3,11 @@ import { View, Text } from "@react-pdf/renderer";
 import DocumentWrapper from "./components/DocumentWrapper";
 import moment from "moment-timezone";
 import { Order as ordersModel } from "../../Models/Order";
+import { calculateMultipleOrders } from "../../v5/utilities/methods";
 
-const PaymentSummary = ({ route, orderTotal }) => {
-    const { orders, details, driver } = route;
-
-    const ordersArray = Object.values(orders);
-
+const PaymentSummary = ({ orders, date }) => {
     const calcTotalCredits = () => {
-        const credits = ordersArray
+        const credits = orders
             .map((a) => {
                 return a.payment ? a.payment.totalCredit : 0.0;
             })
@@ -20,7 +17,7 @@ const PaymentSummary = ({ route, orderTotal }) => {
         return "$" + credits;
     };
     const calcTotalChecks = () => {
-        const checks = ordersArray
+        const checks = orders
             .map((a) => {
                 return a.payment ? a.payment.payments.check : 0.0;
             })
@@ -30,7 +27,7 @@ const PaymentSummary = ({ route, orderTotal }) => {
         return "$" + checks;
     };
     const calcTotalCash = () => {
-        const cash = ordersArray
+        const cash = orders
             .map((a) => {
                 return a.payment ? a.payment.payments.cash : 0.0;
             })
@@ -40,7 +37,7 @@ const PaymentSummary = ({ route, orderTotal }) => {
         return "$" + cash;
     };
     const calcTotalpayment = () => {
-        const total = ordersArray
+        const total = orders
             .map((a) => {
                 return a.payment ? a.payment.totalPayment : 0.0;
             })
@@ -49,7 +46,6 @@ const PaymentSummary = ({ route, orderTotal }) => {
             });
         return "$" + total;
     };
-
     const TEMPCheckSigned = (order) => {
         try {
             return order.payment.sign ? "Signed" : "$" + order.payment.totalPayment;
@@ -61,9 +57,8 @@ const PaymentSummary = ({ route, orderTotal }) => {
     return (
         <DocumentWrapper>
             <View style={$.header}>
-                <Text style={$.header.title}>Payment summary Sheet</Text>
-                <Text style={$.header.content}>For Route : {driver.firstName}</Text>
-                <Text style={$.header.content}>{details.dates ? moment(details.dates.routeDate.date).format("L") : "N/A"}</Text>
+                <Text style={$.header.title}>Daily Payment Summary Sheet</Text>
+                <Text style={$.header.content}>{date}</Text>
             </View>
             <View style={$.dashedDivider}></View>
             <View style={$.dashedDivider}></View>
@@ -77,14 +72,14 @@ const PaymentSummary = ({ route, orderTotal }) => {
                 <Text style={$.contentHeading.content}>Total collected</Text>
             </View>
             <View style={$.solidDivider}></View>
-            {ordersArray.map((a) => {
+            {orders.map((a) => {
                 return (
                     <View style={$.order} key={a.details.orderID}>
                         <Text style={$.order.customer}>{a.customer.address}</Text>
-                        <Text style={$.order.content}>{"$" + ordersModel.CalculateCart(a.cart, a.customer.specialPrices)}</Text>
-                        <Text style={$.order.content}>{a.payment && "$" + a.payment.totalCredit}</Text>
-                        <Text style={$.order.content}>{a.payment && "$" + a.payment.payments.check}</Text>
-                        <Text style={$.order.content}>{a.payment && "$" + a.payment.payments.cash}</Text>
+                        <Text style={$.order.content}>{"$ " + ordersModel.CalculateCart(a.cart, a.customer.specialPrices)}</Text>
+                        <Text style={$.order.content}>{a.payment && "$ " + a.payment.totalCredit}</Text>
+                        <Text style={$.order.content}>{a.payment && "$ " + a.payment.payments.check}</Text>
+                        <Text style={$.order.content}>{a.payment && "$ " + a.payment.payments.cash}</Text>
                         {/* <Text style={$.order.content}>{a.payment && "$" + a.payment.totalPayment}</Text> */}
                         <Text style={$.order.content}>{a.payment && TEMPCheckSigned(a)}</Text>
                     </View>
@@ -94,7 +89,7 @@ const PaymentSummary = ({ route, orderTotal }) => {
             <View style={$.dashedDivider}></View>
             <View style={$.order}>
                 <Text style={$.order.customer}></Text>
-                <Text style={$.order.content}>{"$" + orderTotal}</Text>
+                <Text style={$.order.content}>{"$ " + calculateMultipleOrders(orders)}</Text>
                 <Text style={$.order.content}>{calcTotalCredits()}</Text>
                 <Text style={$.order.content}>{calcTotalChecks()}</Text>
                 <Text style={$.order.content}>{calcTotalCash()}</Text>

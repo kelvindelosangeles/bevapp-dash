@@ -9,6 +9,7 @@ import ResponsiveBlock from "../../../componentsv3/responsive block/index";
 
 const DBOrders = ({ activeOrder, dispatch }) => {
     const orders = useSelector((state) => state.Firestore.data.ordersv2.orders);
+    console.log("🚀 ~ file: DBOrders.js ~ line 12 ~ DBOrders ~ orders", orders);
 
     const ordersToday = Object.values(orders)
         .sort((a, b) => {
