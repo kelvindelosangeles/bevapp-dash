@@ -10,6 +10,20 @@ const ChangeLog = () => {
             <p className='title'>Change Log</p>
             <Log>
                 <header>
+                    <p className='date'>April 6th, 2021</p>
+                    <p className='version'>v4.3.2</p>
+                </header>
+
+                <ul>
+                    <label>Payment Summary</label>
+                    <li>
+                        Added a button to the completed orders page to generate a combined payment summary sheet. This sheet combines all orders from
+                        all routes for the selected date
+                    </li>
+                </ul>
+            </Log>
+            <Log>
+                <header>
                     <p className='date'>March 30th, 2021</p>
                     <p className='version'>v4.3.1</p>
                 </header>

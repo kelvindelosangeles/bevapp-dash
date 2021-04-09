@@ -4,9 +4,9 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import CustomerSelect from "../../../Global/CustomerSelect/CustomerSelect";
 import { Order as OrdersModel } from "../../../Models/Order";
-
-import { PageTitle } from "../../../Global/Layout/StyledElements";
 import { Colors } from "../../../Constants/Colors";
+import { useDispatch } from "react-redux";
+import RemoveSpecialPriceFromAll from "../../../componentsv3/removeSpecialPriceFromAll";
 
 const SPHome = ({ history, customers, beverages }) => {
     const customersWithSpecialPrices = () => {
@@ -48,71 +48,74 @@ const SPHome = ({ history, customers, beverages }) => {
                 );
             });
     };
-
     const customerChangeHandler = (e, value) => {
         return value !== null && history.push(`/specialpricing/add/${value.id}`);
     };
 
+    const dispatch = useDispatch();
+
     return (
-        <Grid>
-            <PageTitle gridArea='A'>Special Pricing Home</PageTitle>
+        <Component>
+            <header>
+                <p>Special Prices</p>
+            </header>
             <AddSPButton>
                 <p>Add a Special Price</p>
                 <CustomerSelect customerChangeHandler={customerChangeHandler} />
             </AddSPButton>
-            <SearchBar placeholder='Search' />
+            <RemoveSpecialPriceFromAll />
+
             <CustomersGrid>
                 <div className='wrapper'>{customersWithSpecialPrices()}</div>
             </CustomersGrid>
-        </Grid>
+        </Component>
     );
 };
 
-const Grid = styled.div`
+const Component = styled.div`
     background-color: ${Colors.white};
     height: 100%;
     display: grid;
     grid-template-columns: 1fr 390px;
     grid-template-rows: auto auto 1fr;
     grid-template-areas:
-        "A B"
-        "C B"
-        "D D";
+        "A A"
+        "B D"
+        "C C";
     padding: 0 32px 32px 32px;
     padding-bottom: 0;
-`;
-const SearchBar = styled.input`
-    grid-area: C;
-    background-color: red;
-    width: 100%;
-    padding: 8px 16px;
-
-    font-size: 16px;
-    background-color: ${Colors.lightGrey};
-    border-radius: 4px;
-    border: none;
-    margin-bottom: 56px;
+    header {
+        padding: 16px;
+        padding-left: 0;
+        margin-bottom: 40px;
+        grid-area: A;
+        p {
+            font-size: 24px;
+        }
+    }
 `;
 const AddSPButton = styled.div`
     grid-area: B;
     align-self: center;
-    justify-self: end;
     width: 90%;
     align-items: center;
+    justify-self: start;
+    max-width: 300px;
     padding: 18px;
+    padding-left: 0;
     border-radius: 4px;
     p {
-        justify-content: center;
+        justify-content: flex-start;
         display: flex;
         align-items: center;
-
         font-weight: 700;
-        font-size: 20px;
-        margin-bottom: 16px;
+        font-size: 12px;
+        text-transform: uppercase;
+        margin-bottom: 4px;
     }
 `;
 const CustomersGrid = styled.div`
-    grid-area: D;
+    grid-area: C;
     position: relative;
     overflow-y: scroll;
     .wrapper {
