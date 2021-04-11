@@ -10,6 +10,20 @@ const ChangeLog = () => {
             <p className='title'>Change Log</p>
             <Log>
                 <header>
+                    <p className='date'>April 11th, 2021</p>
+                    <p className='version'>v4.3.3</p>
+                </header>
+
+                <ul>
+                    <label>Daily Journal</label>
+                    <li>
+                        <BugIcon className='bug' />
+                        Fixed a bug where the daily journal and summary above completed orders was miscalculating.
+                    </li>
+                </ul>
+            </Log>
+            <Log>
+                <header>
                     <p className='date'>April 6th, 2021</p>
                     <p className='version'>v4.3.2</p>
                 </header>

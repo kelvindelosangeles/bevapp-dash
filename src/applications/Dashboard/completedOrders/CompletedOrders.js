@@ -51,8 +51,8 @@ const CompletedOrders = () => {
                 })
                 .reduce((a, b) => a + b);
         } catch (error) {
+            console.log(error);
             return "err";
-            consol.log(error);
         }
     };
     const CalcTotalMultipleOrders = (orders) => {
