@@ -30,8 +30,6 @@ const Order = ({
         const orderTotal = orderModel.CalculateCart(order.cart, order.customer.specialPrices);
         const totalPayment = order.hasOwnProperty("payment") ? parseFloat(order.payment?.totalCredit) + parseFloat(order.payment?.totalPayment) : 0;
 
-        console.log("totalPayment", totalPayment);
-
         if (!order.hasOwnProperty("payment")) {
             return null;
         }

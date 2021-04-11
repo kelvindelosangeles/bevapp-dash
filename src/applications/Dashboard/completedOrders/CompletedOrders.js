@@ -12,90 +12,31 @@ import DailyJournal from "../../../Global/PrintTemplates/DailyJournalPDF";
 import Order from "../../../components/Order";
 
 // BETA
-import ReactExport from "react-export-excel";
 import ResponsiveBlock from "../../../componentsv3/responsive block";
 import PaymentSummary from "../../../Global/PrintTemplates/PaymentSummary";
 import CombinedPaymentSummary from "../../../Global/PrintTemplates/CombinedPaymentSummary";
-
-const ExcelFile = ReactExport.ExcelFile;
-const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
-const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
-
-const Excel = ({ routes }) => {
-    const sheets = routes.map((a) => {
-        return (
-            <ExcelSheet data={Object.values(a[1].orders)} name={a[1].driver.firstName}>
-                <ExcelColumn
-                    label='Order ID'
-                    value={(col) => {
-                        return col.details.orderID;
-                    }}
-                />
-                <ExcelColumn
-                    label='Address'
-                    value={(col) => {
-                        return col.customer.address;
-                    }}
-                />
-                <ExcelColumn
-                    label='Amount'
-                    value={(col) => {
-                        return Number(OrderModel.CalculateCart(col.cart, col.customer.specialPrices)).toFixed(2);
-                    }}
-                />
-                <ExcelColumn label='Credit' value='' />
-                <ExcelColumn label='Cash' value='' />
-                <ExcelColumn label='Checks' value='' />
-                <ExcelColumn label='Sign' value='' />
-                <ExcelColumn label='Total' value='' />
-                <ExcelColumn label='' value='' />
-                <ExcelColumn label='' value='' />
-                <ExcelColumn label='Credits' value='' />
-                <ExcelColumn label='Shorts stop#' value='' />
-                <ExcelColumn label='Overs' value='' />
-            </ExcelSheet>
-        );
-    });
-    return (
-        <ExcelFile
-            filename={moment(routes[0][1].details.completedAt.toDate()).format("L")}
-            element={<Button color={Colors.yellow}>Excel File</Button>}>
-            {sheets}
-        </ExcelFile>
-    );
-};
 
 const CompletedOrders = () => {
     const [theDate, setTheDate] = useState(null);
     const [orders, setOrders] = useState(null);
     const [rawOrder, setRawOrder] = useState(null);
-    const [routes, setRoutes] = useState(null);
-    // console.log("🚀 ~ file: CompletedOrders.js ~ line 70 ~ CompletedOrders ~ orders", orders);
-    // console.log("🚀 ~ file: CompletedOrders.js ~ line 72 ~ CompletedOrders ~ rawOrder", rawOrder);
-    // console.log("🚀 ~ file: CompletedOrders.js ~ line 73 ~ CompletedOrders ~ routes", routes);
-
     const firestore = useFirestore();
-    // routes && console.log(routes);
-    const allOrders = () => {
-        let obj = {};
-        orders.forEach((y) => {
-            Object.assign(obj, y.orders);
-        });
-        return obj;
-    };
+    const allOrders =
+        rawOrder &&
+        Object.values(rawOrder)
+            .map((a) => {
+                return Object.values(a.orders);
+            })
+            .flat();
+
     const weekDocument = moment(theDate).format("YYYYMMwE");
     const getCompletedOrders = () => {
         firestore
             .get({ collection: "ordersv2", doc: weekDocument })
             .then((res) => {
                 // retrieve the day with all the routes, convert to array and set to state
-
                 res.data() ? setOrders(Object.values(res.data())) : setOrders(null);
                 res.data() ? setRawOrder(res.data()) : setRawOrder(null);
-
-                // collect the routes from this day and save it to state
-
-                res.data() ? setRoutes(Object.entries(res.data())) : setRoutes(null);
             })
             .catch((err) => {
                 console.log(err);
@@ -103,11 +44,16 @@ const CompletedOrders = () => {
     };
     const CalcCasesMultipleOrders = (orders) => {
         // TODO:101 Move to ORDER MODELS
-        return Object.values(orders)
-            .map((x) => {
-                return OrderModel.CalculateCases(x.cart);
-            })
-            .reduce((a, b) => a + b);
+        try {
+            return Object.values(orders)
+                .map((x) => {
+                    return OrderModel.CalculateCases(x.cart);
+                })
+                .reduce((a, b) => a + b);
+        } catch (error) {
+            return "err";
+            consol.log(error);
+        }
     };
     const CalcTotalMultipleOrders = (orders) => {
         // TODO:101 Move to ORDER MODELS
@@ -138,8 +84,8 @@ const CompletedOrders = () => {
                     <ActionWrapper>
                         <DatePicker theDate={theDate} setTheDate={setTheDate} label='Select a Date' />
                         {orders && <Stat color={Colors.blue} title='Routes' data={orders.length} />}
-                        {orders && <Stat color={Colors.green} title='Total' data={`$${CalcTotalMultipleOrders(allOrders())}`} />}
-                        {orders && <Stat color={Colors.orange} title='Cases' data={CalcCasesMultipleOrders(allOrders())} />}
+                        {orders && rawOrder && <Stat color={Colors.green} title='Total' data={`$${CalcTotalMultipleOrders(allOrders)}`} />}
+                        {orders && rawOrder && <Stat color={Colors.orange} title='Cases' data={CalcCasesMultipleOrders(allOrders)} />}
                         <span />
                         <span />
                         {orders && (
@@ -167,8 +113,8 @@ const CompletedOrders = () => {
                                 document={
                                     <DailyJournal
                                         orders={orders}
-                                        total={CalcTotalMultipleOrders(allOrders())}
-                                        totalCases={CalcCasesMultipleOrders(allOrders())}
+                                        total={CalcTotalMultipleOrders(allOrders)}
+                                        totalCases={CalcCasesMultipleOrders(allOrders)}
                                         CalcCasesMultipleOrders={CalcCasesMultipleOrders}
                                         CalcTotalMultipleOrders={CalcTotalMultipleOrders}
                                         theDate={theDate}
