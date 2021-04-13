@@ -58,16 +58,16 @@ const Sidebar = (props) => {
                 <section>
                     <p className='section_label'>Menu</p>
                     <div className='grid'>
-                        <MenuItem to='/dashboard' label='Dashboard' color={colors.purple}>
+                        <MenuItem to='/' label='Dashboard' color={colors.purple}>
                             <HouseSimple weight='fill' />
                         </MenuItem>
                         <MenuItem to='/rapidorder' label='Rapid Order' color={colors.yellow}>
                             <Lightning weight='fill' />
                         </MenuItem>
-                        <MenuItem to='/dashboard/drafts' label='Drafts' color={colors.yellow}>
+                        <MenuItem to='/drafts' label='Drafts' color={colors.yellow}>
                             <PencilSimple weight='fill' />
                         </MenuItem>
-                        <MenuItem to='/dashboard/routes' label='routes' color={colors.blue}>
+                        <MenuItem to='/routes' label='routes' color={colors.blue}>
                             <MapTrifold weight='fill' />
                         </MenuItem>
                         <MenuItem to='/store/home' label='store' color={colors.orange}>

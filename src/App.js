@@ -8,7 +8,6 @@ import { firestoreConnect, isLoaded } from "react-redux-firebase";
 import { Colors } from "./Constants/Colors";
 import styled from "styled-components";
 import Sidebar from "./Global/Sidebar/Sidebar";
-import Dashboard from "./Applications/Dashboard/Dashboard";
 import RapidOrder from "./Applications/Rapid Order/RapidOrder";
 import Store from "./Applications/Store/Store";
 import SpecialPricing from "./Applications/Special Pricing/SpecialPricing";
@@ -29,6 +28,11 @@ import SOBI from "./Applications/Reports/SOBI";
 import DriverJournal from "./Applications/Reports/DriverJournal";
 import AccountOverview from "./v5/pages/AccountOverview";
 import PostSummary from "./v5/pages/PostSummary";
+import DBOrders from "./Applications/Dashboard/DBOrders/DBOrders";
+import DBDrafts from "./Applications/Dashboard/DBDrafts/Drafts";
+
+import ActiveRoutes from "./Applications/Dashboard/DBRoutes/ActiveRoutes";
+import CompletedOrders from "./Applications/Dashboard/completedOrders/CompletedOrders";
 
 const App = (props) => {
     const toggleChangeLog = () => {
@@ -47,17 +51,26 @@ const App = (props) => {
                 <Sidebar />
                 <TempNav />
                 <Switch>
-                    <Route path='/dashboard' component={Dashboard} />
+                    <Route path='/' component={DBOrders} exact />
+                    {/* TODO: Rename to Dashboard */}
                     <Route path='/rapidorder' component={RapidOrder} />
+                    <Route path='/drafts' component={DBDrafts} />
+                    <Route path='/routes' component={ActiveRoutes} />
+                    {/* TODO: Rename to Routes */}
                     <Route path='/store' component={Store} />
                     <Route path='/specialpricing' component={SpecialPricing} />
+                    <Route path='/completedorders' component={CompletedOrders} />
+                    {/* =====
+                    Accounts 
+                    ===== */}
                     <Route path='/accountOverview' component={AccountOverview} />
                     <Route path='/postSummary' component={PostSummary} />
-                    {/* <Route path='/report1' component={DailyJournalv2} /> */}
+                    {/* =====
+                    Reports
+                    ===== */}
                     <Route path='/cps' component={CustomerPurchaseSheet} />
                     <Route path='/nor' component={NonOrderReport} />
                     <Route path='/wj' component={WeeklyJournal} />
-                    {/* <Route path='/bev' component={BeverageReport} /> */}
                     <Route path='/sobi' component={SOBI} />
                     <Route path='/dj' component={DriverJournal} />
                     <Route path='/test' component={Manual} />

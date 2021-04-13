@@ -46,7 +46,7 @@ const WebNavbar = () => {
                     label='Dashboard'
                     icon={<Assessment />}
                     menuItems={[
-                        <Link to='/dashboard' label='Dashboard' icon={<Assessment />} />,
+                        <Link to='/' label='Dashboard' icon={<Assessment />} />,
                         <Link to='/dashboard/Drafts' label='Drafts' icon={<Note />} />,
                         <Link to='/dashboard/Routes' label='Routes' icon={<LocalShipping />} />,
                         <Link to='/dashboard/completedOrders' label='Completed Orders' icon={<CheckCircle />} />,
