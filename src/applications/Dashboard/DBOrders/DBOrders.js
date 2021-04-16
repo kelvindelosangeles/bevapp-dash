@@ -35,7 +35,7 @@ const DBOrders = ({ activeOrder, dispatch }) => {
 
     return (
         <>
-            <ResponsiveBlock />
+            {/* <ResponsiveBlock /> */}
             <Component>
                 <Statbar />
                 <OrderHeader>

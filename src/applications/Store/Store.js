@@ -14,6 +14,7 @@ import EditBeverage from "./Store Routes/EditBeverage";
 import AddCustomer from "./Store Routes/AddCustomer";
 import { Colors } from "../../Constants/Colors";
 import ResponsiveBlock from "../../componentsv3/responsive block";
+import { UserIsAuthenticated } from "../../v5/helpers/Auth";
 
 const Store = ({ sidebarExpanded }) => {
     const [storeToggle, setStoreToggle] = useState(true);
@@ -32,10 +33,10 @@ const Store = ({ sidebarExpanded }) => {
                 </main>
                 <Switch>
                     <Redirect exact from='/store' to='/store/home' />
-                    <Route path='/store/home' component={Home} />
-                    <Route path='/store/addbeverage' component={AddBeverage} />
-                    <Route path='/store/editbeverage/:id' component={EditBeverage} />
-                    <Route path='/store/addcustomer' component={AddCustomer} />
+                    <Route path='/store/home' component={UserIsAuthenticated(Home)} />
+                    <Route path='/store/addbeverage' component={UserIsAuthenticated(AddBeverage)} />
+                    <Route path='/store/editbeverage/:id' component={UserIsAuthenticated(EditBeverage)} />
+                    <Route path='/store/addcustomer' component={UserIsAuthenticated(AddCustomer)} />
                 </Switch>
 
                 {/* <STPreview /> */}

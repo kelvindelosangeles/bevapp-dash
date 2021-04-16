@@ -33,6 +33,8 @@ import DBDrafts from "./Applications/Dashboard/DBDrafts/Drafts";
 
 import ActiveRoutes from "./Applications/Dashboard/DBRoutes/ActiveRoutes";
 import CompletedOrders from "./Applications/Dashboard/completedOrders/CompletedOrders";
+import Login from "./v5/pages/Login";
+import { UserIsAuthenticated, UserIsNotAuthenticated } from "./v5/helpers/Auth";
 
 const App = (props) => {
     const toggleChangeLog = () => {
@@ -40,40 +42,36 @@ const App = (props) => {
     };
     const open = useSelector((state) => state.GlobalState.changeLogOpen);
 
-    return !isLoaded(props.inventory) ||
-        !isLoaded(props.orders) ||
-        // !isLoaded(props.allv2Orders) ||
-        // !isLoaded(props.collToDelete) ||
-        !isLoaded(props.store) ||
-        !isLoaded(props.routes) ? null : ( // <Spinner />
+    return !isLoaded(props.inventory) || !isLoaded(props.orders) || !isLoaded(props.store) || !isLoaded(props.routes) ? null : ( // <Spinner />
         <SnackbarProvider maxSnack={3}>
             <AppWrapper>
                 <Sidebar />
                 <TempNav />
                 <Switch>
-                    <Route path='/' component={DBOrders} exact />
+                    <Route path='/' component={UserIsAuthenticated(DBOrders)} exact />
                     {/* TODO: Rename to Dashboard */}
-                    <Route path='/rapidorder' component={RapidOrder} />
-                    <Route path='/drafts' component={DBDrafts} />
-                    <Route path='/routes' component={ActiveRoutes} />
+                    <Route path='/login' component={UserIsNotAuthenticated(Login)} />
+                    <Route path='/rapidorder' component={UserIsAuthenticated(RapidOrder)} />
+                    <Route path='/drafts' component={UserIsAuthenticated(DBDrafts)} />
+                    <Route path='/routes' component={UserIsAuthenticated(ActiveRoutes)} />
                     {/* TODO: Rename to Routes */}
-                    <Route path='/store' component={Store} />
-                    <Route path='/specialpricing' component={SpecialPricing} />
-                    <Route path='/completedorders' component={CompletedOrders} />
+                    <Route path='/store' component={UserIsAuthenticated(Store)} />
+                    <Route path='/specialpricing' component={UserIsAuthenticated(SpecialPricing)} />
+                    <Route path='/completedorders' component={UserIsAuthenticated(CompletedOrders)} />
                     {/* =====
                     Accounts 
                     ===== */}
-                    <Route path='/accountOverview' component={AccountOverview} />
-                    <Route path='/postSummary' component={PostSummary} />
+                    <Route path='/accountOverview' component={UserIsAuthenticated(AccountOverview)} />
+                    <Route path='/postSummary' component={UserIsAuthenticated(PostSummary)} />
                     {/* =====
                     Reports
                     ===== */}
-                    <Route path='/cps' component={CustomerPurchaseSheet} />
-                    <Route path='/nor' component={NonOrderReport} />
-                    <Route path='/wj' component={WeeklyJournal} />
-                    <Route path='/sobi' component={SOBI} />
-                    <Route path='/dj' component={DriverJournal} />
-                    <Route path='/test' component={Manual} />
+                    <Route path='/cps' component={UserIsAuthenticated(CustomerPurchaseSheet)} />
+                    <Route path='/nor' component={UserIsAuthenticated(NonOrderReport)} />
+                    <Route path='/wj' component={UserIsAuthenticated(WeeklyJournal)} />
+                    <Route path='/sobi' component={UserIsAuthenticated(SOBI)} />
+                    <Route path='/dj' component={UserIsAuthenticated(DriverJournal)} />
+                    <Route path='/test' component={UserIsAuthenticated(Manual)} />
                 </Switch>
                 <Dialog
                     open={open}
@@ -123,6 +121,6 @@ export default compose(
             // { collection: "orders", storeAs: "collToDelete" },
         ];
     })
-)(process.env.NODE_ENV === "development" ? hot(App) : App);
+)(process.env.NODE_ENV === "development" ? hot(App) : UserIsAuthenticated(App));
 
 // TODO: Prepapre for mobile rsponsiveness.  for now the app is prepped to work as it did for web and broken for mobile to accomodate each page as is

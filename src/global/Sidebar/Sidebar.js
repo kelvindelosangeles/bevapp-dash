@@ -25,28 +25,41 @@ import {
     Storefront,
 } from "phosphor-react";
 import { colors } from "../../Constants/Colors4";
+import { ExitToAppRounded } from "@material-ui/icons";
+import { useFirebase } from "react-redux-firebase";
 
 const Sidebar = (props) => {
-    const open = useSelector((state) => state.GlobalState.drawerOpen);
+    const firebase = useFirebase();
     const dispatch = useDispatch();
+    const location = props.location.pathname;
     const toggleChangeLog = () => {
         dispatch({
             type: "TOGGLE_CHANGE_LOG",
         });
     };
 
-    const MenuItem = ({ children, to, label, color }) => {
-        const location = props.location.pathname;
+    const signoutHandler = () => {
+        firebase
+            .logout()
+            .then(() => {
+                console.log("logout successful");
+            })
+            .catch((error) => {
+                window.alert(error.message);
+                console.log(error);
+            });
+    };
 
+    const MenuItem = ({ children, to, label, color, onClick = () => {} }) => {
         return (
-            <MenuItemComponent to={to} color={color} active={location === to}>
+            <MenuItemComponent to={to} color={color} active={location === to} onClick={onClick}>
                 <div className='icon_wrapper'>{children}</div>
                 <p className='label'>{label}</p>
             </MenuItemComponent>
         );
     };
 
-    return (
+    return location.includes("login") ? null : (
         <Container>
             <header onClick={toggleChangeLog}>
                 <p className='title'>
@@ -76,7 +89,7 @@ const Sidebar = (props) => {
                         <MenuItem to='/specialPricing' label='Special Prices' color={colors.orange}>
                             <CurrencyCircleDollar weight='fill' />
                         </MenuItem>
-                        <MenuItem to='/dashboard/completedorders' label='completed orders' color={colors.orange}>
+                        <MenuItem to='/completedorders' label='completed orders' color={colors.orange}>
                             <CheckCircle weight='fill' />
                         </MenuItem>
                     </div>
@@ -115,7 +128,16 @@ const Sidebar = (props) => {
                     </div>
                 </section>
             </main>
-            <footer></footer>
+            <footer>
+                <section>
+                    <p className='section_label'>Admin</p>
+                    <div className='grid'>
+                        <MenuItem to='#' label='Log out' color={colors.white} onClick={signoutHandler}>
+                            <ExitToAppRounded weight='fill' />
+                        </MenuItem>
+                    </div>
+                </section>
+            </footer>
         </Container>
     );
 };

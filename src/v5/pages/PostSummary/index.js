@@ -12,7 +12,6 @@ const PostSummary = () => {
     const [theDate, setTheDate] = useState(moment().valueOf());
     const [orders, setOrders] = useState(null);
     const [posts, setPosts] = useState(null);
-    console.log("🚀 ~ file: index.js ~ line 15 ~ PostSummary ~ posts", posts);
 
     useEffect(() => {
         const getRoutes = async () => {
