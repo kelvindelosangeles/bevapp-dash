@@ -57,7 +57,8 @@ const App = (props) => {
                     {/* TODO: Rename to Routes */}
                     <Route path='/store' component={UserIsAuthenticated(Store)} />
                     <Route path='/specialpricing' component={UserIsAuthenticated(SpecialPricing)} />
-                    <Route path='/completedorders' component={UserIsAuthenticated(CompletedOrders)} />
+                    <Route path='/completedorders' component={CompletedOrders} />
+                    {/* TODO: Unprotected Route */}
                     {/* =====
                     Accounts 
                     ===== */}

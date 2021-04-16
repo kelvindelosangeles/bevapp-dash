@@ -120,7 +120,7 @@ const OrderPreview = (props) => {
                   totalPayment,
               };
 
-        const updatedRoute = {
+        const updatedRouteForObjects = {
             [parentRoute.details.routeID]: {
                 ...parentRoute,
                 orders: {
@@ -132,6 +132,23 @@ const OrderPreview = (props) => {
                 },
             },
         };
+        const updatedRouteForArrays = () => {
+            const routeExcludingOldVersion = parentRoute.orders.filter((a) => {
+                return a.details.orderID !== order.details.orderID;
+            });
+
+            return {
+                [parentRoute.details.routeID]: {
+                    ...parentRoute,
+                    orders: [...routeExcludingOldVersion, { ...order, payment }],
+                },
+            };
+        };
+
+        const temporaryFunctionDecider = () => {
+            // console.log("original parent route with orders", parentRoute);
+            return Array.isArray(parentRoute.orders) ? updatedRouteForArrays() : updatedRouteForObjects;
+        };
 
         firestore
             .update(
@@ -139,12 +156,12 @@ const OrderPreview = (props) => {
                     collection: "ordersv2",
                     doc: weekDocumentID,
                 },
-                updatedRoute
+                temporaryFunctionDecider()
             )
             .then(() => {
                 console.log("successfully paid");
                 setOpenPayment(false);
-                history.push("/dashboard/completedorders");
+                history.push("/completedorders");
                 // TODO: BETA: View Order and completedOrder For details on this additon
                 getCompletedOrders();
             })

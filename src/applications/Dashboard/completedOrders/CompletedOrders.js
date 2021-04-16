@@ -42,6 +42,7 @@ const CompletedOrders = () => {
                 console.log(err);
             });
     };
+
     const CalcCasesMultipleOrders = (orders) => {
         // TODO:101 Move to ORDER MODELS
         try {
