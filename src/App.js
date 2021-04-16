@@ -121,6 +121,6 @@ export default compose(
             // { collection: "orders", storeAs: "collToDelete" },
         ];
     })
-)(process.env.NODE_ENV === "development" ? hot(App) : UserIsAuthenticated(App));
+)(process.env.NODE_ENV === "development" ? hot(App) : App);
 
 // TODO: Prepapre for mobile rsponsiveness.  for now the app is prepped to work as it did for web and broken for mobile to accomodate each page as is
