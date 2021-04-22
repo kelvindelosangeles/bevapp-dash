@@ -7,8 +7,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { size } from "underscore";
 import { useFirestore } from "react-redux-firebase";
 import { submitOrder } from "../redux/actions/RapidOrderActions";
+import colors from "../v5/constants/Colors";
 
 const ManualTasks = () => {
+    const beverages = useSelector((state) => state.Firestore.data.inventory.beverages);
+
+    console.log(beverages);
     // const orders = [
     //     {
     //         cart: {
@@ -2713,14 +2717,31 @@ const ManualTasks = () => {
     return (
         <Application>
             <ActionBar></ActionBar>
-            <Body title='v3 Transition'>
-                <h1>the body</h1>
+            <Body title='Beverage Prices'>
+                {Object.values(beverages).map((a, index) => {
+                    return (
+                        <Component>
+                            <p>{index + 1}</p>
+                            <h4>{a.id}</h4>
+                            <p>$ {a.price}</p>
+                        </Component>
+                    );
+                })}
             </Body>
         </Application>
     );
 };
 
-const Component = styled.div``;
+const Component = styled.div`
+    display: grid;
+    grid-template-columns: 50px 100px 100px;
+    grid-row-gap: 16px;
+    border-bottom: 1px solid grey;
+    padding: 8px;
+    :nth-last-of-type(even) {
+        background-color: ${colors.greyBackground};
+    }
+`;
 
 export default ManualTasks;
 

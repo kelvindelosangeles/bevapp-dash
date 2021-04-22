@@ -150,6 +150,8 @@ const OrderPreview = (props) => {
             return Array.isArray(parentRoute.orders) ? updatedRouteForArrays() : updatedRouteForObjects;
         };
 
+        // console.log(Array.isArray(parentRoute.orders), temporaryFunctionDecider());
+
         firestore
             .update(
                 {
@@ -322,11 +324,17 @@ const OrderPreview = (props) => {
                             Delete Draft
                         </p>
                     )}
-                    {canAddPayment && !isPaid && (
+                    {canAddPayment && (
                         <p className='edit' onClick={() => setOpenPayment(true)}>
                             Add Payment
                         </p>
                     )}
+                    {/* FIXME: removed the conditional temprarily  */}
+                    {/* {canAddPayment && !isPaid && (
+                        <p className='edit' onClick={() => setOpenPayment(true)}>
+                            Add Payment
+                        </p>
+                    )} */}
                     {isPaid && (
                         <p className='edit' onClick={() => setPaymentReportOpen(true)}>
                             Payment Summary
