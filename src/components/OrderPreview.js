@@ -17,6 +17,7 @@ import { useForm } from "react-hook-form";
 import PaymentReportPDF from "../Global/PrintTemplates/PaymentReportPDF";
 import { LocalConvenienceStoreOutlined } from "@material-ui/icons";
 import { calculateBalance } from "../v5/utilities/methods";
+import { openPaymentForm } from "../v5/redux/actions/paymentFormActions/index";
 
 const OrderPreview = (props) => {
     // close order preview comes from the parent so that we can close the entire menu from within the action creators
@@ -325,7 +326,7 @@ const OrderPreview = (props) => {
                         </p>
                     )}
                     {canAddPayment && (
-                        <p className='edit' onClick={() => setOpenPayment(true)}>
+                        <p className='edit' onClick={() => dispatch(openPaymentForm(parentRoute, order))}>
                             Add Payment
                         </p>
                     )}

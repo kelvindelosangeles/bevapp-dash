@@ -24,6 +24,7 @@ import SpecialPricingReducer from "./redux/reducers/SpecialPricingReducer";
 import thunk from "redux-thunk";
 import colors from "./v5/constants/Colors";
 import { accountOverviewReducer } from "./v5/redux/reducers/accountOverview";
+import { paymentForm } from "./v5/redux/reducers/paymentForm";
 
 // const bevappTest = {
 //     apiKey: "AIzaSyCQhOoWbnPMT4YSUAQX5w956l7UPm73tMY",
@@ -63,6 +64,7 @@ const rootReducer = combineReducers({
     RapidOrderState: RapidOrderReducer,
     SpecialPricingState: SpecialPricingReducer,
     AccountOverview: accountOverviewReducer,
+    PaymentForm: paymentForm,
     Firebase: firebaseReducer,
     Firestore: firestoreReducer,
 });

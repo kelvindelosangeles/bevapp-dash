@@ -35,12 +35,14 @@ import ActiveRoutes from "./Applications/Dashboard/DBRoutes/ActiveRoutes";
 import CompletedOrders from "./Applications/Dashboard/completedOrders/CompletedOrders";
 import Login from "./v5/pages/Login";
 import { UserIsAuthenticated, UserIsNotAuthenticated } from "./v5/helpers/Auth";
+import PostPayment from "./v5/components/PostPayment";
 
 const App = (props) => {
     const toggleChangeLog = () => {
         props.dispatch({ type: "TOGGLE_CHANGE_LOG" });
     };
     const open = useSelector((state) => state.GlobalState.changeLogOpen);
+    const PostPaymentReady = useSelector((state) => state.PaymentForm.order);
 
     return !isLoaded(props.inventory) || !isLoaded(props.orders) || !isLoaded(props.store) || !isLoaded(props.routes) ? null : ( // <Spinner />
         <SnackbarProvider maxSnack={3}>
@@ -83,6 +85,7 @@ const App = (props) => {
                     aria-describedby='scroll-dialog-description'>
                     <ChangeLog />
                 </Dialog>
+                {PostPaymentReady && <PostPayment />}
             </AppWrapper>
         </SnackbarProvider>
     );

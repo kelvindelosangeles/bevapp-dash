@@ -35,8 +35,29 @@ const CompletedOrders = () => {
             .get({ collection: "ordersv2", doc: weekDocument })
             .then((res) => {
                 // retrieve the day with all the routes, convert to array and set to state
-                res.data() ? setOrders(Object.values(res.data())) : setOrders(null);
-                res.data() ? setRawOrder(res.data()) : setRawOrder(null);
+                return res.data();
+            })
+            .then((data) => {
+                // data is enhanced by adding the route date
+                const enhancedData = Object.values(data).map((a) => {
+                    const routeDate = () => {
+                        try {
+                            return a.details.dates.routeDate.date;
+                        } catch (error) {
+                            return moment(a.details.createdAt).valueOf();
+                        }
+                    };
+
+                    return {
+                        ...a,
+                        orders: Object.values(a.orders).map((b) => {
+                            return { ...b, routeDate: routeDate() };
+                        }),
+                    };
+                });
+
+                data ? setOrders(enhancedData) : setOrders(null);
+                data ? setRawOrder(data) : setRawOrder(null);
             })
             .catch((err) => {
                 console.log(err);
@@ -131,7 +152,6 @@ const CompletedOrders = () => {
                     {orders ? (
                         <BodyContent>
                             {orders.map((a) => {
-                                console.log();
                                 return (
                                     <div className='route'>
                                         <div className='route-details'>
