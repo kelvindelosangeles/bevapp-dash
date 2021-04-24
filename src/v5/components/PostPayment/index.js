@@ -5,31 +5,128 @@ import { Receipt, Storefront } from "phosphor-react";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+import { useFirestore } from "react-redux-firebase";
 import styled from "styled-components";
 import colors from "../../constants/Colors";
-import { closePaymentForm, submitPayment } from "../../redux/actions/paymentFormActions/index";
-import { formatPhoneNumber } from "../../utilities/methods";
+import { closePaymentForm, signPayment, postPayment } from "../../redux/actions/paymentFormActions/index";
+import { calculateOrder, formatPhoneNumber } from "../../utilities/methods";
 
 const PostPayment = () => {
     const open = useSelector((state) => state.PaymentForm.open);
     const dispatch = useDispatch();
-    const { register, handleSubmit, reset, watch } = useForm();
-    const { customer, details, payment, cart } = useSelector((state) => state.PaymentForm.order);
-    const route = useSelector((state) => state.PaymentForm.route);
+    const firestore = useFirestore();
+    const { register, handleSubmit, reset, watch, setValue } = useForm({
+        defaultValues: {
+            cash: 0,
+            check: 0,
+            breakage: 0,
+            priceAdjustment: 0,
+            returnedContainers: 0,
+            returnedToFlair: 0,
+        },
+        shouldUnregister: false,
+    });
+    const order = useSelector((state) => state.PaymentForm.order);
+    // const route = useSelector((state) => state.PaymentForm.route);
+    const { customer, details, payment, cart, routeDate } = order;
+    const [totalPayment, setTotalPayment, testRef] = useState(0);
+    const [totalCredits, setTotalCredits] = useState(0);
+    const [totalCashCheck, setTotalCashCheck] = useState(0);
 
+    const focusHandler = (e) => e.target.select();
     const submitHandler = (data) => {
-        dispatch(submitPayment(data));
+        dispatch(postPayment(data, totalCashCheck, totalCredits, firestore));
     };
     const closeHandler = () => {
         dispatch(closePaymentForm());
     };
+    const signHandler = () => {
+        const notes = watch("notes");
+        dispatch(signPayment(notes, firestore));
+    };
+    const showPaymentStatusHandler = () => {
+        const invoiceAmount = parseFloat(calculateOrder(order).substring(1));
+        if (payment && payment.sign) {
+            return (
+                <div className='pill' style={{ backgroundColor: colors.purple }}>
+                    <p>Signed</p>
+                </div>
+            );
+        }
+        if (totalPayment == 0) {
+            return null;
+        }
+        if (totalPayment == invoiceAmount) {
+            return (
+                <div className='pill' style={{ backgroundColor: colors.green }}>
+                    <p>Paid</p>
+                </div>
+            );
+        }
+        if (invoiceAmount - totalPayment > 0) {
+            return (
+                <div className='pill' style={{ backgroundColor: colors.orange }}>
+                    <p>Partial Payment</p>
+                </div>
+            );
+        }
+        if (totalPayment > invoiceAmount) {
+            return (
+                <div className='pill' style={{ backgroundColor: colors.red }}>
+                    <p>error</p>
+                </div>
+            );
+        }
+    };
 
     useEffect(() => {
-        console.log("This is coming from the post payment modal");
+        // This use effect keeps the total payment up to date
+        const check = parseFloat(Number(watch("check")));
+        const cash = parseFloat(Number(watch("cash")));
+        const breakage = parseFloat(Number(watch("breakage")));
+        const priceAdjustment = parseFloat(Number(watch("priceAdjustment")));
+        const returnedContainers = parseFloat(Number(watch("returnedContainers")));
+        const returnedToFlair = parseFloat(Number(watch("returnedToFlair")));
+
+        setTotalPayment((cash + check + breakage + priceAdjustment + returnedContainers + returnedToFlair).toFixed(2));
+    }, [watch("cash"), watch("check"), watch("breakage"), watch("priceAdjustment"), watch("returnedContainers"), watch("returnedToFlair")]);
+    useEffect(() => {
+        // This use effect keeps the total credits up to date
+        const breakage = parseFloat(Number(watch("breakage")));
+        const priceAdjustment = parseFloat(Number(watch("priceAdjustment")));
+        const returnedContainers = parseFloat(Number(watch("returnedContainers")));
+        const returnedToFlair = parseFloat(Number(watch("returnedToFlair")));
+
+        setTotalCredits((breakage + priceAdjustment + returnedContainers + returnedToFlair).toFixed(2));
+    }, [watch("breakage"), watch("priceAdjustment"), watch("returnedContainers"), watch("returnedToFlair")]);
+    useEffect(() => {
+        // This use effect keeps the total Cash/Check up to date
+        const check = parseFloat(Number(watch("check")));
+        const cash = parseFloat(Number(watch("cash")));
+
+        setTotalCashCheck((cash + check).toFixed(2));
+    }, [watch("cash"), watch("check")]);
+    useEffect(() => {
+        // This use effect populates the form if there was a previous payment made
+        const populateExistingPaymentValues = () => {
+            const { credits, payments, notes } = order.payment;
+            const { cash, check } = payments;
+            const { breakage, priceAdjustment, returnedContainers, returnedToFlair } = credits;
+            setValue("cash", cash);
+            setValue("check", check);
+            setValue("breakage", breakage);
+            setValue("priceAdjustment", priceAdjustment);
+            setValue("returnedContainers", returnedContainers);
+            setValue("returnedToFlair", returnedToFlair);
+            setValue("notes", notes);
+        };
+
+        order.payment && console.log("populating payment");
+        order.payment && populateExistingPaymentValues();
     }, []);
 
     return (
-        <Dialog open={open} scroll='paper' onClose={closeHandler}>
+        <Dialog open={open} scroll='paper' disableBackdropClick>
             <Component onSubmit={handleSubmit(submitHandler)}>
                 <header>
                     <p className='title'>Payment Form</p>
@@ -44,49 +141,55 @@ const PostPayment = () => {
                         <div className='label'>
                             <Receipt /> Order Details
                         </div>
-                        {/* <p>{moment(route?.dates?.routeDate.date || route?.completedAt?.toDate()).format("LL")}</p> */}
-                        <p>(718) 832-2392</p>
+                        <p>Date: {moment(routeDate).format("L")}</p>
+                        <p>
+                            Total: <span>{calculateOrder(order)}</span>
+                        </p>
                     </section>
                 </header>
                 <section className='payments form'>
-                    <p className='section_label'>Payments</p>
+                    <p className='section_label'>
+                        Payments: <span>${totalCashCheck}</span>
+                    </p>
                     <div className='input_group'>
                         <p className='label'>Cash</p>
                         <div className='input_wrapper'>
-                            <input type='number' name='cash' ref={register()} />
+                            <input type='number' step='any' name='cash' min={0} ref={register()} onFocus={focusHandler} />
                         </div>
                     </div>
                     <div className='input_group'>
                         <p className='label'>Check</p>
                         <div className='input_wrapper'>
-                            <input type='number' name='check' ref={register()} />
+                            <input type='number' step='any' name='check' min={0} ref={register()} onFocus={focusHandler} />
                         </div>
                     </div>
                 </section>
                 <section className='credits form'>
-                    <p className='section_label'>Credits</p>
+                    <p className='section_label'>
+                        Credits: <span>${totalCredits}</span>
+                    </p>
                     <div className='input_group'>
                         <p className='label'>Breakage</p>
                         <div className='input_wrapper'>
-                            <input type='number' name='breakage' ref={register()} />
+                            <input type='number' step='any' name='breakage' min={0} ref={register()} onFocus={focusHandler} />
                         </div>
                     </div>
                     <div className='input_group'>
                         <p className='label'>Price Adjustment</p>
                         <div className='input_wrapper'>
-                            <input type='number' name='priceAdjustment' ref={register()} />
+                            <input type='number' step='any' name='priceAdjustment' min={0} ref={register()} onFocus={focusHandler} />
                         </div>
                     </div>
                     <div className='input_group'>
                         <p className='label'>Returned Cans/Bottles</p>
                         <div className='input_wrapper'>
-                            <input type='number' name='returnedContainers' ref={register()} />
+                            <input type='number' step='any' name='returnedContainers' min={0} ref={register()} onFocus={focusHandler} />
                         </div>
                     </div>
                     <div className='input_group'>
                         <p className='label'>Merchandise Returned to Flair</p>
                         <div className='input_wrapper'>
-                            <input type='number' name='cash' ref={register()} />
+                            <input type='number' step='any' name='returnedToFlair' min={0} ref={register()} onFocus={focusHandler} />
                         </div>
                     </div>
                 </section>
@@ -100,32 +203,29 @@ const PostPayment = () => {
                     <p className='section_label'>Payment Summary</p>
                     <div className='stat'>
                         <p className='label'>Invoice Total</p>
-                        <p className='value'>$34.99</p>
+                        <p className='value'>{calculateOrder(order)}</p>
                     </div>
                     <div className='stat'>
                         <p className='label'>Payment Total</p>
-                        <p className='value'>$34.99</p>
+                        <p className='value'>${totalPayment}</p>
                     </div>
                     <div className='stat'>
                         <p className='label'>Payment Status</p>
-                        <div className='pill'>
-                            <p>Paid</p>
-                        </div>
+                        {showPaymentStatusHandler()}
                     </div>
                 </section>
                 <section className='actions'>
                     <button type='submit' id='submit'>
                         Post Payment
                     </button>
-                    <button name='sign' id='sign'>
+                    <button name='sign' id='sign' type='button' onClick={signHandler}>
                         Sign
                     </button>
-                    <button name='cancel' id='cancel'>
+                    <button name='cancel' id='cancel' type='button' onClick={closeHandler}>
                         Cancel
                     </button>
                 </section>
             </Component>
-            )
         </Dialog>
     );
 };
@@ -181,6 +281,9 @@ const Component = styled.form`
         }
         section.order_details {
             grid-area: details;
+            span {
+                font-weight: 800;
+            }
         }
     }
     section.form {
@@ -190,6 +293,13 @@ const Component = styled.form`
             font-size: 14px;
             text-transform: uppercase;
             margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            span {
+                margin-left: 12px;
+                font-weight: 800;
+                font-size: 20px;
+            }
         }
         .input_group {
             margin-bottom: 16px;
@@ -200,13 +310,26 @@ const Component = styled.form`
                 font-size: 14px;
                 margin-bottom: 8px;
             }
+            .input_wrapper {
+                position: relative;
+                ::before {
+                    content: "$";
+                    font-size: 14px;
+                    position: absolute;
+                    left: 8px;
+                    top: 50%;
+                    transform: translate(0, -50%);
+                }
+            }
             input,
             textarea {
                 padding: 0 8px;
+                padding-left: 18px;
                 width: 100%;
                 border: none;
                 background-color: ${colors.greyBackground};
                 height: 40px;
+                font-size: 16px;
             }
             textarea {
                 height: unset;
@@ -255,6 +378,7 @@ const Component = styled.form`
                 background-color: black;
                 border-radius: 6px;
                 color: white;
+                text-transform: uppercase;
             }
         }
     }
@@ -272,6 +396,13 @@ const Component = styled.form`
             font-weight: 600;
             color: ${colors.white};
             border-radius: 4px;
+            transition: all 150ms ease-in-out;
+            :hover {
+                transform: scale(1.05);
+            }
+            :active {
+                transform: scale(0.95);
+            }
         }
         #cancel {
             background-color: ${colors.red};

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useFirestore } from "react-redux-firebase";
+import { useFirestore, useFirestoreConnect } from "react-redux-firebase";
 import styled from "styled-components";
 import { Application, ActionBar, Body } from "../../../components/layout/Application";
 import Stat from "../../../components/action bar/Stat";
@@ -15,6 +15,7 @@ import Order from "../../../components/Order";
 import ResponsiveBlock from "../../../componentsv3/responsive block";
 import PaymentSummary from "../../../Global/PrintTemplates/PaymentSummary";
 import CombinedPaymentSummary from "../../../Global/PrintTemplates/CombinedPaymentSummary";
+import { useSelector } from "react-redux";
 
 const CompletedOrders = () => {
     const [theDate, setTheDate] = useState(null);
@@ -30,6 +31,14 @@ const CompletedOrders = () => {
             .flat();
 
     const weekDocument = moment(theDate).format("YYYYMMwE");
+    const TempTriggerCompletedOrders = useSelector((state) => state.PaymentForm.order);
+    useFirestoreConnect([
+        {
+            collection: "/ordersv2/202104144",
+            storeAs: "completedOrders",
+        },
+    ]);
+
     const getCompletedOrders = () => {
         firestore
             .get({ collection: "ordersv2", doc: weekDocument })
@@ -60,10 +69,11 @@ const CompletedOrders = () => {
                 data ? setRawOrder(data) : setRawOrder(null);
             })
             .catch((err) => {
+                setRawOrder(null);
+                setOrders(null);
                 console.log(err);
             });
     };
-
     const CalcCasesMultipleOrders = (orders) => {
         // TODO:101 Move to ORDER MODELS
         try {
@@ -97,6 +107,11 @@ const CompletedOrders = () => {
     useEffect(() => {
         theDate && getCompletedOrders();
     }, [theDate]);
+
+    useEffect(() => {
+        theDate && getCompletedOrders();
+        // there should be an error here because were using date and not as a dependency
+    }, [TempTriggerCompletedOrders]);
 
     return (
         <>

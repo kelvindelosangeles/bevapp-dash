@@ -80,7 +80,7 @@ const OrderPreview = (props) => {
     // Payment Form Functions
     // ===============
     const signed = watch("sign");
-    const submitPaymentHandler = (data) => {
+    const postPaymentHandler = (data) => {
         const { priceAdjustment, breakage, returnedContainers, returnedToFlair, cash, check, notes, sign } = data;
         // checks if its signed return everything empty and sign true, else sign false and other fields available for entry
         const payment = sign
@@ -344,7 +344,7 @@ const OrderPreview = (props) => {
                 </Menu>
             </Popover>
             <Dialog open={openPayment} fullWidth scroll='paper'>
-                <PaymentForm onSubmit={handleSubmit(submitPaymentHandler)}>
+                <PaymentForm onSubmit={handleSubmit(postPaymentHandler)}>
                     <DialogTitle>
                         <p style={{ textAlign: "center" }}>Add Payment Details</p>
                         <div className='payment-breakdown'>

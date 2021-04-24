@@ -18,6 +18,12 @@ export const paymentForm = (state = initialState, action) => {
         case "CLOSE_PAYMENT_FORM":
             // reset the form
             return initialState;
+        case "POST_PAYMENT":
+            // reset the form
+            return initialState;
+        case "SIGN_PAYMENT":
+            // reset the form
+            return initialState;
         default:
             return state;
     }

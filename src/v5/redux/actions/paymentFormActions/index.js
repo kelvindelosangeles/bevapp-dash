@@ -1,3 +1,6 @@
+import moment from "moment-timezone";
+import { paymentForm } from "../../reducers/paymentForm";
+
 export const openPaymentForm = (route, order) => (dispatch) => {
     dispatch({
         type: "OPEN_PAYMENT_FORM",
@@ -12,60 +15,43 @@ export const closePaymentForm = () => (dispatch) => {
         type: "CLOSE_PAYMENT_FORM",
     });
 };
-
-export const submitPayment = (data) => (dispatch, getState) => {
-    const state = getState().PaymentForm;
-
-    console.log(state);
-    console.log(data);
-};
-
-const submitPaymentHandler = (data) => {
-    const { priceAdjustment, breakage, returnedContainers, returnedToFlair, cash, check, notes, sign } = data;
-    // checks if its signed return everything empty and sign true, else sign false and other fields available for entry
-    const payment = sign
-        ? {
-              createdAt: moment().valueOf(),
-              createdBy: "General Admin",
-              sign,
-              credits: {
-                  priceAdjustment: 0.0,
-                  breakage: 0.0,
-                  returnedContainers: 0.0,
-                  returnedToFlair: 0.0,
-              },
-              payments: {
-                  cash: 0.0,
-                  check: 0.0,
-              },
-              notes,
-              totalCredit,
-              totalPayment,
-          }
-        : {
-              createdAt: moment().valueOf(),
-              createdBy: "General Admin",
-              sign,
-              credits: {
-                  priceAdjustment,
-                  breakage,
-                  returnedContainers,
-                  returnedToFlair,
-              },
-              payments: {
-                  cash,
-                  check,
-              },
-              notes,
-              totalCredit,
-              totalPayment,
-          };
+export const postPayment = (data, totalPayment, totalCredit, firestore) => (dispatch, getState) => {
+    const { cash, check, breakage, priceAdjustment, returnedContainers, returnedToFlair, notes } = data;
+    const route = getState().PaymentForm.route;
+    const order = getState().PaymentForm.order;
+    const orderHasPayment = Boolean(order.payment);
+    const createdAt = orderHasPayment ? order.payment.createdAt : moment().valueOf();
+    const weekDocument = () => {
+        try {
+            return moment(route.details.dates.routeDate.date).format("YYYYMMwE");
+        } catch (error) {
+            return moment(route.details.createdAt).format("YYYYMMwE");
+        }
+    };
+    const payment = {
+        createdAt,
+        createdBy: "General Admin",
+        notes,
+        sign: false,
+        totalCredit: String(totalCredit),
+        totalPayment: String(totalPayment),
+        credits: {
+            breakage,
+            priceAdjustment,
+            returnedContainers,
+            returnedToFlair,
+        },
+        payments: {
+            cash,
+            check,
+        },
+    };
 
     const updatedRouteForObjects = {
-        [parentRoute.details.routeID]: {
-            ...parentRoute,
+        [route.details.routeID]: {
+            ...route,
             orders: {
-                ...parentRoute.orders,
+                ...route.orders,
                 [order.details.orderID]: {
                     ...order,
                     payment,
@@ -74,41 +60,126 @@ const submitPaymentHandler = (data) => {
         },
     };
     const updatedRouteForArrays = () => {
-        const routeExcludingOldVersion = parentRoute.orders.filter((a) => {
+        const routeExcludingOldVersion = route.orders.filter((a) => {
             return a.details.orderID !== order.details.orderID;
         });
 
         return {
-            [parentRoute.details.routeID]: {
-                ...parentRoute,
+            [route.details.routeID]: {
+                ...route,
                 orders: [...routeExcludingOldVersion, { ...order, payment }],
             },
         };
     };
-
     const temporaryFunctionDecider = () => {
         // console.log("original parent route with orders", parentRoute);
-        return Array.isArray(parentRoute.orders) ? updatedRouteForArrays() : updatedRouteForObjects;
+        return Array.isArray(route.orders) ? updatedRouteForArrays() : updatedRouteForObjects;
     };
 
-    // console.log(Array.isArray(parentRoute.orders), temporaryFunctionDecider());
+    const postToFirebase = () => {
+        try {
+            firestore
+                .update(
+                    {
+                        collection: "ordersv2",
+                        doc: weekDocument(),
+                    },
+                    temporaryFunctionDecider()
+                )
+                .then(() => {
+                    console.log("successfully paid");
+                    dispatch({
+                        type: "POST_PAYMENT",
+                    });
+                })
+                .catch((err) => {
+                    console.log(err, "something went wrong with the payment update process");
+                });
+        } catch (error) {
+            console.log(error);
+            window.alert("an error occured, contact admin");
+        }
+    };
+
+    postToFirebase();
+};
+export const signPayment = (notes, firestore) => (dispatch, getState) => {
+    const route = getState().PaymentForm.route;
+    const order = getState().PaymentForm.order;
+    const orderHasPayment = Boolean(order.payment);
+    const createdAt = orderHasPayment ? order.payment.createdAt : moment().valueOf();
+    const weekDocument = () => {
+        try {
+            return moment(route.details.dates.routeDate.date).format("YYYYMMwE");
+        } catch (error) {
+            return moment(route.details.createdAt).format("YYYYMMwE");
+        }
+    };
+    const payment = {
+        createdAt,
+        createdBy: "General Admin",
+        notes,
+        sign: true,
+        totalCredit: "0.00",
+        totalPayment: "0.00",
+        credits: {
+            breakage: "",
+            priceAdjustment: "",
+            returnedContainers: "",
+            returnedToFlair: "",
+        },
+        payments: {
+            cash: "",
+            check: "",
+        },
+    };
+
+    const updatedRouteForObjects = {
+        [route.details.routeID]: {
+            ...route,
+            orders: {
+                ...route.orders,
+                [order.details.orderID]: {
+                    ...order,
+                    payment,
+                },
+            },
+        },
+    };
+    const updatedRouteForArrays = () => {
+        const routeExcludingOldVersion = route.orders.filter((a) => {
+            return a.details.orderID !== order.details.orderID;
+        });
+
+        return {
+            [route.details.routeID]: {
+                ...route,
+                orders: [...routeExcludingOldVersion, { ...order, payment }],
+            },
+        };
+    };
+    const temporaryFunctionDecider = () => {
+        // console.log("original parent route with orders", parentRoute);
+        return Array.isArray(route.orders) ? updatedRouteForArrays() : updatedRouteForObjects;
+    };
 
     firestore
         .update(
             {
                 collection: "ordersv2",
-                doc: weekDocumentID,
+                doc: weekDocument(),
             },
             temporaryFunctionDecider()
         )
         .then(() => {
-            console.log("successfully paid");
-            setOpenPayment(false);
-            history.push("/completedorders");
-            // TODO: BETA: View Order and completedOrder For details on this additon
-            getCompletedOrders();
+            console.log("successfully signed payment");
+            dispatch({
+                type: "SIGN_PAYMENT",
+            });
         })
         .catch((err) => {
             console.log(err, "something went wrong with the payment update process");
         });
 };
+
+// TODO: When the user updates a payment it shouldnt change the created date
