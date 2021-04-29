@@ -14,12 +14,16 @@ import {
     checkPaymentStatusMobile,
 } from "../../../utilities/methods";
 import moment from "moment-timezone";
+import { useDispatch } from "react-redux";
+import { openPaymentForm } from "../../../redux/actions/paymentFormActions";
 
 const Account = ({ customer, orders }) => {
+    const dispatch = useDispatch();
+
     const { address, telephone } = customer;
     const ordersList = orders.map((a) => {
         return (
-            <Order mobileInidicator={checkPaymentStatusMobile(a)}>
+            <Order mobileInidicator={checkPaymentStatusMobile(a)} onClick={() => dispatch(openPaymentForm(a.parentRoute, a))}>
                 <div>
                     <p>{a.details.orderID.slice(7, 16)}</p>
                     <p className='date'>{moment(a.details.createdAt).format("L")}</p>
@@ -179,6 +183,7 @@ const Order = styled.div`
     justify-items: left;
     grid-template-columns: 1fr 1fr 64px;
     position: relative;
+    cursor: pointer;
     p {
         text-transform: uppercase;
         font-weight: 600;

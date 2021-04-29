@@ -9,6 +9,7 @@ import Header from "./components/Header";
 import { useSelector } from "react-redux";
 import firebase from "firebase";
 import { useForm } from "react-hook-form";
+import PostPayment from "../../components/PostPayment";
 
 const AccountOverview = () => {
     const [routes, setRoutes] = useState(null);
@@ -18,10 +19,12 @@ const AccountOverview = () => {
     const customers = Object.values(useSelector((state) => state.Firestore.data.store.customers));
     const { register, watch } = useForm();
     const searchFilter = watch("search");
+    const PostPaymentReady = useSelector((state) => state.PaymentForm.order);
 
     useEffect(() => {
         const getRoutes = async () => {
             try {
+                console.log("running the get routes function");
                 const response = await firebase.firestore().collection("ordersv2").get();
                 const data = await response.docs
                     .filter((f) => {
@@ -32,12 +35,18 @@ const AccountOverview = () => {
                         return Object.values(a.data());
                     })
                     .flat();
-                // .map((b) => {
-                //     return Object.values(b.orders);
-                // })
-                // .flat();
+                // enhacned data to include the route within the order to update payment status
+                const dataEnhanced = data.map((a) => {
+                    const ordersEnhanced = Object.values(a.orders).map((b) => {
+                        return { ...b, parentRoute: a };
+                    });
 
-                setRoutes(data);
+                    return { ...a, orders: ordersEnhanced };
+                });
+
+                // trying to send the route via data enhanced
+                // setRoutes(data);
+                setRoutes(dataEnhanced);
             } catch (error) {
                 console.log(error);
                 window.alert("An error has occured");
@@ -86,6 +95,8 @@ const AccountOverview = () => {
             <Header register={register} />
             <DateRange startDate={startDate} endDate={endDate} />
             {accounts}
+
+            {PostPaymentReady && <PostPayment />}
         </Component>
     );
 };

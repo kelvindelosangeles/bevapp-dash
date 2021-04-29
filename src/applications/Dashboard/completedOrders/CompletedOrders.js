@@ -16,6 +16,7 @@ import ResponsiveBlock from "../../../componentsv3/responsive block";
 import PaymentSummary from "../../../Global/PrintTemplates/PaymentSummary";
 import CombinedPaymentSummary from "../../../Global/PrintTemplates/CombinedPaymentSummary";
 import { useSelector } from "react-redux";
+import PostPayment from "../../../v5/components/PostPayment";
 
 const CompletedOrders = () => {
     const [theDate, setTheDate] = useState(null);
@@ -32,6 +33,7 @@ const CompletedOrders = () => {
 
     const weekDocument = moment(theDate).format("YYYYMMwE");
     const TempTriggerCompletedOrders = useSelector((state) => state.PaymentForm.order);
+    const PostPaymentReady = useSelector((state) => state.PaymentForm.order);
 
     const getCompletedOrders = () => {
         firestore
@@ -199,6 +201,7 @@ const CompletedOrders = () => {
                     )}
                 </Body>
             </Application>
+            {PostPaymentReady && <PostPayment />}
         </>
     );
 };

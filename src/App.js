@@ -42,7 +42,7 @@ const App = (props) => {
         props.dispatch({ type: "TOGGLE_CHANGE_LOG" });
     };
     const open = useSelector((state) => state.GlobalState.changeLogOpen);
-    const PostPaymentReady = useSelector((state) => state.PaymentForm.order);
+    // const PostPaymentReady = useSelector((state) => state.PaymentForm.order);
 
     return !isLoaded(props.inventory) || !isLoaded(props.orders) || !isLoaded(props.store) || !isLoaded(props.routes) ? null : ( // <Spinner />
         <SnackbarProvider maxSnack={3}>
@@ -85,7 +85,7 @@ const App = (props) => {
                     aria-describedby='scroll-dialog-description'>
                     <ChangeLog />
                 </Dialog>
-                {PostPaymentReady && <PostPayment />}
+                {/* {PostPaymentReady && <PostPayment />} */}
             </AppWrapper>
         </SnackbarProvider>
     );
