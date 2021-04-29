@@ -63,7 +63,7 @@ const Sidebar = (props) => {
         <Container>
             <header onClick={toggleChangeLog}>
                 <p className='title'>
-                    Bevapp Dash <span>v4.3.3</span>
+                    Bevapp Dash <span>v4.4.0</span>
                 </p>
                 <p className='date'>{moment().format("LL")}</p>
             </header>

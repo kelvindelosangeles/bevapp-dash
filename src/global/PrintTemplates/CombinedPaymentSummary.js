@@ -3,7 +3,7 @@ import { View, Text } from "@react-pdf/renderer";
 import DocumentWrapper from "./components/DocumentWrapper";
 import moment from "moment-timezone";
 import { Order as ordersModel } from "../../Models/Order";
-import { calculateMultipleOrders } from "../../v5/utilities/methods";
+import { calculateBalance, calculateMultipleBalances, calculateMultipleOrders } from "../../v5/utilities/methods";
 
 const PaymentSummary = ({ orders, date }) => {
     const calcTotalCredits = () => {
@@ -19,7 +19,7 @@ const PaymentSummary = ({ orders, date }) => {
     const calcTotalChecks = () => {
         const checks = orders
             .map((a) => {
-                return a.payment ? a.payment.payments.check : 0.0;
+                return a.payment ? Number(a.payment.payments.check) : 0.0;
             })
             .reduce((a, b) => {
                 return (parseFloat(a) + parseFloat(b)).toFixed(2);
@@ -29,7 +29,7 @@ const PaymentSummary = ({ orders, date }) => {
     const calcTotalCash = () => {
         const cash = orders
             .map((a) => {
-                return a.payment ? a.payment.payments.cash : 0.0;
+                return a.payment ? Number(a.payment.payments.cash) : 0.0;
             })
             .reduce((a, b) => {
                 return (parseFloat(a) + parseFloat(b)).toFixed(2);
@@ -70,6 +70,7 @@ const PaymentSummary = ({ orders, date }) => {
                 <Text style={$.contentHeading.content}>Check</Text>
                 <Text style={$.contentHeading.content}>Cash</Text>
                 <Text style={$.contentHeading.content}>Total collected</Text>
+                <Text style={$.contentHeading.content}>Balance</Text>
             </View>
             <View style={$.solidDivider}></View>
             {orders.map((a) => {
@@ -78,10 +79,10 @@ const PaymentSummary = ({ orders, date }) => {
                         <Text style={$.order.customer}>{a.customer.address}</Text>
                         <Text style={$.order.content}>{"$ " + ordersModel.CalculateCart(a.cart, a.customer.specialPrices)}</Text>
                         <Text style={$.order.content}>{a.payment && "$ " + a.payment.totalCredit}</Text>
-                        <Text style={$.order.content}>{a.payment && "$ " + a.payment.payments.check}</Text>
-                        <Text style={$.order.content}>{a.payment && "$ " + a.payment.payments.cash}</Text>
-                        {/* <Text style={$.order.content}>{a.payment && "$" + a.payment.totalPayment}</Text> */}
+                        <Text style={$.order.content}>{a.payment && "$ " + Number(a.payment.payments.check)}</Text>
+                        <Text style={$.order.content}>{a.payment && "$ " + Number(a.payment.payments.cash)}</Text>
                         <Text style={$.order.content}>{a.payment && TEMPCheckSigned(a)}</Text>
+                        <Text style={$.order.content}>{a.payment && calculateBalance(a)}</Text>
                     </View>
                 );
             })}
@@ -94,6 +95,7 @@ const PaymentSummary = ({ orders, date }) => {
                 <Text style={$.order.content}>{calcTotalChecks()}</Text>
                 <Text style={$.order.content}>{calcTotalCash()}</Text>
                 <Text style={$.order.content}>{calcTotalpayment()}</Text>
+                <Text style={$.order.content}>${calculateMultipleBalances(orders)}</Text>
             </View>
         </DocumentWrapper>
     );
@@ -126,16 +128,17 @@ const $ = {
         display: "flex",
         flexDirection: "row",
         customer: {
-            flexBasis: "25%",
+            flexBasis: "20%",
             textTransform: "uppercase",
-            fontSize: 8,
+            fontSize: 6,
             paddingTop: 24,
+            paddingRight: 4,
         },
         content: {
             paddingTop: 24,
-            fontSize: 8,
+            fontSize: 6,
             textTransform: "uppercase",
-            flexBasis: "15%",
+            flexBasis: "13.3%",
         },
     },
     order: {
@@ -145,14 +148,15 @@ const $ = {
         marginBottom: 4,
         borderBottom: "1 solid lightgrey",
         customer: {
-            flexBasis: "25%",
+            flexBasis: "20%",
             textTransform: "uppercase",
             fontSize: 8,
+            paddingRight: 8,
         },
         content: {
             fontSize: 8,
             textTransform: "uppercase",
-            flexBasis: "15%",
+            flexBasis: "13.3%",
         },
     },
 };

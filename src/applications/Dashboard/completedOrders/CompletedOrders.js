@@ -32,12 +32,6 @@ const CompletedOrders = () => {
 
     const weekDocument = moment(theDate).format("YYYYMMwE");
     const TempTriggerCompletedOrders = useSelector((state) => state.PaymentForm.order);
-    useFirestoreConnect([
-        {
-            collection: "/ordersv2/202104144",
-            storeAs: "completedOrders",
-        },
-    ]);
 
     const getCompletedOrders = () => {
         firestore

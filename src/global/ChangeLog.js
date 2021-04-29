@@ -10,6 +10,30 @@ const ChangeLog = () => {
             <p className='title'>Change Log</p>
             <Log>
                 <header>
+                    <p className='date'>April 27th, 2021</p>
+                    <p className='version'>v4.4.0</p>
+                </header>
+                <ul>
+                    <label>Add Payment form</label>
+                    <li>Simpler and cleaner User interface to make adding payments easier</li>
+                    <li>
+                        <NewIcon className='new' />
+                        More information about the order to help keep track of which order is being worked on
+                    </li>
+                    <li>
+                        <NewIcon className='new' />
+                        Payment indicator now lets you know the status of the payment before you submit to avoid errors
+                    </li>
+                    <li>When you click on an entry the entire field highlights</li>
+                    <li>Update Payments</li>
+                </ul>
+                <ul>
+                    <label>Payment Summary Sheet</label>
+                    <li>Payment summary sheet now inlcudes the balance and total balance</li>
+                </ul>
+            </Log>
+            <Log>
+                <header>
                     <p className='date'>April 11th, 2021</p>
                     <p className='version'>v4.3.3</p>
                 </header>
