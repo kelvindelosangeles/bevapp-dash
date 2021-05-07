@@ -57,6 +57,7 @@ const OrderPreview = (props) => {
     const dispatch = useDispatch();
     const firestore = useFirestore();
     const beverages = useSelector((state) => state.Firestore.data.inventory.beverages);
+    const showCost = useSelector((state) => state.Firebase.profile.showCost);
 
     const ReturnSpecialPrice = (id) => {
         try {
@@ -268,8 +269,8 @@ const OrderPreview = (props) => {
                                         .map((x) => <p className='flavor'>{`${x[0].toLowerCase()} x ${x[1]}`}</p>)}
                             </div>
                             <p>${i.price}</p>
-                            <p className='special-price'>{ReturnSpecialPrice(i.id)}</p>
-                            <p>{orderModel.CalculateItem(i, customer.specialPrices)}</p>
+                            {showCost ? <p className='special-price'>{ReturnSpecialPrice(i.id)}</p> : <p></p>}
+                            {showCost ? <p>{orderModel.CalculateItem(i, customer.specialPrices)}</p> : <p></p>}
                         </div>
                     );
                 })}
