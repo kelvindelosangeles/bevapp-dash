@@ -6,11 +6,10 @@ import { Colors } from "../../../Constants/Colors";
 import Order from "../components/Order";
 import moment from "moment";
 import ResponsiveBlock from "../../../componentsv3/responsive block/index";
+import { useFirestoreConnect } from "react-redux-firebase";
 
 const DBOrders = ({ activeOrder, dispatch }) => {
     const orders = useSelector((state) => state.Firestore.data.ordersv2.orders);
-    console.log("🚀 ~ file: DBOrders.js ~ line 12 ~ DBOrders ~ orders", orders);
-
     const ordersToday = Object.values(orders)
         .sort((a, b) => {
             return a.details.createdAt > b.details.createdAt ? 1 : -1;

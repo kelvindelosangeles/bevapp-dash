@@ -16,6 +16,8 @@ import { cancelOrder, saveToDrafts, removeFromCart, updateCustomer, submitOrder 
 
 const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
     const open = useSelector((state) => state.GlobalState.drawerOpen);
+    const user = useSelector((state) => state.Firebase.profile);
+
     const [smartEntryID, setSmartEntryID] = useState("");
     const [smartEntryQty, setSmartEntryQty] = useState("");
     const orderID = useSelector((state) => state.RapidOrderState.orderID);
@@ -89,8 +91,8 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
                 <p>
                     {i.description} {flavors()}
                 </p>
-                <p>$ {i.price}</p>
-                <p className='specialPrice'>{hasSpecialPrice()}</p>
+                {user.showCost ? <p>$ {i.price}</p> : <p> </p>}
+                {user.showCost ? <p className='specialPrice'>{hasSpecialPrice()}</p> : <p> </p>}
                 <p className='item-total'>{OrdersModel.CalculateItem(i, customer.specialPrices)}</p>
                 <DeleteIcon onClick={removeItem} />
             </div>
