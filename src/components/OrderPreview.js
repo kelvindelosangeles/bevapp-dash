@@ -268,9 +268,9 @@ const OrderPreview = (props) => {
                                         })
                                         .map((x) => <p className='flavor'>{`${x[0].toLowerCase()} x ${x[1]}`}</p>)}
                             </div>
-                            <p>${i.price}</p>
+                            {showCost ? <p>${i.price}</p> : <p></p>}
                             {showCost ? <p className='special-price'>{ReturnSpecialPrice(i.id)}</p> : <p></p>}
-                            {showCost ? <p>{orderModel.CalculateItem(i, customer.specialPrices)}</p> : <p></p>}
+                            <p>{orderModel.CalculateItem(i, customer.specialPrices)}</p>
                         </div>
                     );
                 })}
