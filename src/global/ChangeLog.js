@@ -10,6 +10,29 @@ const ChangeLog = () => {
             <p className='title'>Change Log</p>
             <Log>
                 <header>
+                    <p className='date'>May 12th, 2021</p>
+                    <p className='version'>v4.4.1</p>
+                </header>
+                <ul>
+                    <label>Account Overview</label>
+                    <li>
+                        <NewIcon className='new' />
+                        New Open invoice filter on the Accounts Overview Page. This will allow the staff to see only orders that are either signed or
+                        missing a payments ("open")
+                    </li>
+                    <li>
+                        <NewIcon className='new' />
+                        Add a payment from the Account Overview Page.
+                    </li>
+                    <li>
+                        <BugIcon className='bug' />
+                        Once a payment is posted the account overview page will not update automatically. To see the changes please refresh. This will
+                        be updated to refresh automatically soon
+                    </li>
+                </ul>
+            </Log>
+            <Log>
+                <header>
                     <p className='date'>April 27th, 2021</p>
                     <p className='version'>v4.4.0</p>
                 </header>

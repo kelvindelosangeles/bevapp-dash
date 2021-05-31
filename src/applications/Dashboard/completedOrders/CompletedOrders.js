@@ -17,6 +17,7 @@ import PaymentSummary from "../../../Global/PrintTemplates/PaymentSummary";
 import CombinedPaymentSummary from "../../../Global/PrintTemplates/CombinedPaymentSummary";
 import { useSelector } from "react-redux";
 import PostPayment from "../../../v5/components/PostPayment";
+import RoutePDF from "../DBRoutes/components/RoutePDF";
 
 const CompletedOrders = () => {
     const [theDate, setTheDate] = useState(null);
@@ -176,6 +177,11 @@ const CompletedOrders = () => {
                                                     a.details.dates && moment(a.details.dates.routeDate.date).format("L")
                                                 }.pdf`}>
                                                 {({ loading }) => (loading ? "Loading" : <Button>Summary</Button>)}
+                                            </PDFDownloadLink>
+                                            <PDFDownloadLink
+                                                document={<RoutePDF route={a.orders} driver={a.driver.firstName.toUpperCase()} />}
+                                                fileName={`${a.driver.firstName.toUpperCase()}-Route-summary-sheet`}>
+                                                {({ loading }) => (loading ? "Loading..." : <Button>Route Summary</Button>)}
                                             </PDFDownloadLink>
                                         </div>
                                         {Object.values(a.orders).map((b) => {

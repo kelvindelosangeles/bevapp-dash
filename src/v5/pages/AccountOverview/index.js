@@ -10,12 +10,14 @@ import { useSelector } from "react-redux";
 import firebase from "firebase";
 import { useForm } from "react-hook-form";
 import PostPayment from "../../components/PostPayment";
+import Options from "./components/Options";
 
 const AccountOverview = () => {
     const [routes, setRoutes] = useState(null);
     const startDate = useState(moment().subtract(30, "days").valueOf());
     const endDate = useState(moment().valueOf());
     const [accounts, setAccounts] = useState([]);
+    const [openInvoiceFilter, setOpenInvoiceFilter] = useState(false);
     const customers = Object.values(useSelector((state) => state.Firestore.data.store.customers));
     const { register, watch } = useForm();
     const searchFilter = watch("search");
@@ -76,9 +78,14 @@ const AccountOverview = () => {
                 })
                 .map((b) => {
                     // orders filtered by customer to inject into the account
-                    const ordersFilterByCustomer = routesFlattenedByOrder.filter((c) => {
-                        return c.customer.address == b.address;
-                    });
+                    const ordersFilterByCustomer = routesFlattenedByOrder
+                        .filter((c) => {
+                            return c.customer.address == b.address;
+                        })
+                        .filter((c) => {
+                            // if the open invoice filter is on return orders that do not have payments , oterwise show all orders
+                            return openInvoiceFilter ? !c.payment || c.payment.sign : c;
+                        });
                     // hide accounts that dont contain orders
                     return ordersFilterByCustomer.length > 0 && <Account customer={b} orders={ordersFilterByCustomer} />;
                 });
@@ -87,15 +94,15 @@ const AccountOverview = () => {
         };
 
         routes && generateListOfAccounts();
-    }, [routes, searchFilter, startDate[0], endDate[0]]);
+    }, [routes, searchFilter, openInvoiceFilter, startDate[0], endDate[0]]);
 
     return (
         <Component>
             <MobileNavbar />
             <Header register={register} />
             <DateRange startDate={startDate} endDate={endDate} />
+            <Options openInvoiceFilter={openInvoiceFilter} setOpenInvoiceFilter={setOpenInvoiceFilter} />
             {accounts}
-
             {PostPaymentReady && <PostPayment />}
         </Component>
     );
