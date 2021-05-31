@@ -176,7 +176,7 @@ const CompletedOrders = () => {
                                                 fileName={`${a.driver.firstName} ${
                                                     a.details.dates && moment(a.details.dates.routeDate.date).format("L")
                                                 }.pdf`}>
-                                                {({ loading }) => (loading ? "Loading" : <Button>Summary</Button>)}
+                                                {({ loading }) => (loading ? "Loading" : <Button> Payment Summary</Button>)}
                                             </PDFDownloadLink>
                                             <PDFDownloadLink
                                                 document={<RoutePDF route={a.orders} driver={a.driver.firstName.toUpperCase()} />}

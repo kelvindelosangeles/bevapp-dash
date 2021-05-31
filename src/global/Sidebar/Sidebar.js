@@ -25,7 +25,7 @@ import {
     Storefront,
 } from "phosphor-react";
 import { colors } from "../../Constants/Colors4";
-import { ExitToAppRounded, Settings } from "@material-ui/icons";
+import { ExitToAppRounded, Settings, SettingsBackupRestoreRounded } from "@material-ui/icons";
 import { useFirebase } from "react-redux-firebase";
 
 const Sidebar = (props) => {
@@ -130,10 +130,13 @@ const Sidebar = (props) => {
             </main>
             <footer>
                 <section>
-                    <p className='section_label'>Admin</p>
+                    <p className='section_label'>System</p>
                     <div className='grid'>
                         <MenuItem to='#' label='Settings' color={colors.white} onClick={() => dispatch({ type: "TOGGLE_SETTINGS" })}>
                             <Settings weight='fill' />
+                        </MenuItem>
+                        <MenuItem to='/backup' label='backup' color={colors.white}>
+                            <SettingsBackupRestoreRounded weight='fill' />
                         </MenuItem>
                         <MenuItem to='#' label='Log out' color={colors.white} onClick={signoutHandler}>
                             <ExitToAppRounded weight='fill' />
