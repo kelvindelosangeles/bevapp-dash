@@ -36,6 +36,7 @@ import CompletedOrders from "./Applications/Dashboard/completedOrders/CompletedO
 import Login from "./v5/pages/Login";
 import { UserIsAuthenticated, UserIsNotAuthenticated } from "./v5/helpers/Auth";
 import Settings from "./v5/components/Settings";
+import Costs from "./v5/pages/Costs";
 
 const App = (props) => {
     // const uid = useSelector((state) => state.Firebase.auth.uid);
@@ -67,6 +68,7 @@ const App = (props) => {
                     ===== */}
                     <Route path='/accountOverview' component={UserIsAuthenticated(AccountOverview)} />
                     <Route path='/postSummary' component={UserIsAuthenticated(PostSummary)} />
+                    <Route path='/costs' component={UserIsAuthenticated(Costs)} />
                     {/* =====
                     Reports
                     ===== */}

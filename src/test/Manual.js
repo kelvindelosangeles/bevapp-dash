@@ -9,7 +9,9 @@ const ManualTasks = () => {
         <Application>
             <ActionBar></ActionBar>
             <Body title='Beverage Prices'>
-                <h1>Hello</h1>
+                <Component>
+                    <h1>Hello</h1>
+                </Component>
             </Body>
         </Application>
     );
