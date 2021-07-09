@@ -75,7 +75,7 @@ const App = (props) => {
                     <Route path='/wj' component={UserIsAuthenticated(WeeklyJournal)} />
                     <Route path='/sobi' component={UserIsAuthenticated(SOBI)} />
                     <Route path='/dj' component={UserIsAuthenticated(DriverJournal)} />
-                    <Route path='/test' component={UserIsAuthenticated(Manual)} />
+                    <Route path='/manual' component={UserIsAuthenticated(Manual)} />
                 </Switch>
                 <Dialog
                     open={open}
