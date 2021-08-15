@@ -22,6 +22,7 @@ import {
     Notebook,
     PencilSimple,
     Receipt,
+    Star,
     Storefront,
 } from "phosphor-react";
 import { colors } from "../../Constants/Colors4";
@@ -50,11 +51,13 @@ const Sidebar = (props) => {
             });
     };
 
-    const MenuItem = ({ children, to, label, color, onClick = () => {} }) => {
+    const MenuItem = ({ children, to, label, color, special = false, onClick = () => {} }) => {
         return (
             <MenuItemComponent to={to} color={color} active={location === to} onClick={onClick}>
                 <div className='icon_wrapper'>{children}</div>
-                <p className='label'>{label}</p>
+                <p className='label' style={{ color: special && colors.yellow }}>
+                    {label}
+                </p>
             </MenuItemComponent>
         );
     };
@@ -91,6 +94,9 @@ const Sidebar = (props) => {
                         </MenuItem>
                         <MenuItem to='/completedorders' label='completed orders' color={colors.orange}>
                             <CheckCircle weight='fill' />
+                        </MenuItem>
+                        <MenuItem to='/costs' label='Costs Project' color={colors.yellow} special>
+                            <Star weight='fill' />
                         </MenuItem>
                     </div>
                 </section>
