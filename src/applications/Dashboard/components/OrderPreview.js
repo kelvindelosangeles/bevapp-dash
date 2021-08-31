@@ -12,6 +12,7 @@ import { useFirestore } from "react-redux-firebase";
 import CustomerPDF from "../../../Global/PrintTemplates/CustomerPDF";
 import WarehousePDF from "../../../Global/PrintTemplates/WarehousePDF";
 import { PDFDownloadLink } from "@react-pdf/renderer";
+import colors from "../../../v5/constants/Colors";
 
 const OrderPreview = ({ order, history, closeOrderPreview }) => {
     // close order preview comes from the parent so that we can close the entire menu from within the action creators
@@ -78,12 +79,12 @@ const OrderPreview = ({ order, history, closeOrderPreview }) => {
                         <p className='margin'>${CalcOrderMargin()}</p>
                     </section>
                     <section>
-                        <p className='heading'>Total</p>
+                        <p className='heading'>Total Sale</p>
                         <p className='total'>${orderModel.CalculateCart(cart, customer.specialPrices)}</p>
                     </section>
                     <section>
-                        <p className='heading'></p>
-                        <p></p>
+                        <p className='heading'>Total Cost</p>
+                        <p>${orderModel.CalculateCost(cart)}</p>
                     </section>
                 </OrderDetails>
                 <Notes>
@@ -96,6 +97,7 @@ const OrderPreview = ({ order, history, closeOrderPreview }) => {
                 <p>ID</p>
                 <p>Description</p>
                 <p>Cost</p>
+                <p>Price</p>
                 <p>SP.Price</p>
                 <p>Total</p>
             </div>
@@ -114,8 +116,9 @@ const OrderPreview = ({ order, history, closeOrderPreview }) => {
                                         })
                                         .map((x) => <p className='flavor'>{`${x[0].toLowerCase()} x ${x[1]}`}</p>)}
                             </div>
-                            {showCost ? <p>${i.price}</p> : <p></p>}
-                            {showCost ? <p className='special-price'>{ReturnSpecialPrice(i.id)}</p> : <p></p>}
+                            <p style={{ color: colors.purple }}>{i?.cost}</p>
+                            <p>${i.price}</p>
+                            <p className='special-price'>{ReturnSpecialPrice(i.id)}</p>
                             <p>{orderModel.CalculateItem(i, customer.specialPrices)}</p>
                         </div>
                     );
@@ -182,7 +185,7 @@ const Component = styled.div`
         grid-area: cart-header;
         display: grid;
         font-weight: 700;
-        grid-template-columns: 60px 100px 1fr 100px 100px 100px;
+        grid-template-columns: 60px 100px 1fr 100px 100px 100px 100px;
         border-top: 1px solid ${Colors.lightGrey};
         margin: 24px -24px;
         padding: 16px 32px;
@@ -251,7 +254,7 @@ const Cart = styled.div`
             color: ${Colors.purple};
         }
         display: grid;
-        grid-template-columns: 60px 100px 1fr 100px 100px 100px;
+        grid-template-columns: 60px 100px 1fr 100px 100px 100px 100px;
         font-weight: 500;
         font-size: 16px;
         margin-left: -24px;

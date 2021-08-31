@@ -18,6 +18,7 @@ import CombinedPaymentSummary from "../../../Global/PrintTemplates/CombinedPayme
 import { useSelector } from "react-redux";
 import PostPayment from "../../../v5/components/PostPayment";
 import RoutePDF from "../DBRoutes/components/RoutePDF";
+import colors from "../../../v5/constants/Colors";
 
 const CompletedOrders = () => {
     const [theDate, setTheDate] = useState(null);
@@ -170,19 +171,30 @@ const CompletedOrders = () => {
                                             <p>{a.driver.firstName}</p>
                                             <p>{Object.values(a.orders).length}</p>
                                             <p>{CalcCasesMultipleOrders(a.orders)}</p>
+                                            <p>{OrderModel.CalculateMultipleCost(a.orders)}</p>
                                             <p>${CalcTotalMultipleOrders(a.orders)}</p>
-                                            <PDFDownloadLink
-                                                document={<PaymentSummary route={a} orderTotal={CalcTotalMultipleOrders(a.orders)} />}
-                                                fileName={`${a.driver.firstName} ${
-                                                    a.details.dates && moment(a.details.dates.routeDate.date).format("L")
-                                                }.pdf`}>
-                                                {({ loading }) => (loading ? "Loading" : <Button> Payment Summary</Button>)}
-                                            </PDFDownloadLink>
-                                            <PDFDownloadLink
-                                                document={<RoutePDF route={a.orders} driver={a.driver.firstName.toUpperCase()} />}
-                                                fileName={`${a.driver.firstName.toUpperCase()}-Route-summary-sheet`}>
-                                                {({ loading }) => (loading ? "Loading..." : <Button>Route Summary</Button>)}
-                                            </PDFDownloadLink>
+                                            <div style={{ display: "grid", gridRowGap: 8 }}>
+                                                <PDFDownloadLink
+                                                    document={<PaymentSummary route={a} orderTotal={CalcTotalMultipleOrders(a.orders)} />}
+                                                    fileName={`${a.driver.firstName} ${
+                                                        a.details.dates && moment(a.details.dates.routeDate.date).format("L")
+                                                    }.pdf`}>
+                                                    {({ loading }) =>
+                                                        loading ? "Loading" : <Button style={{ width: "100%" }}> Payment Summary</Button>
+                                                    }
+                                                </PDFDownloadLink>
+                                                <PDFDownloadLink
+                                                    document={<RoutePDF route={a.orders} driver={a.driver.firstName.toUpperCase()} />}
+                                                    fileName={`${a.driver.firstName.toUpperCase()}-Route-summary-sheet`}>
+                                                    {({ loading }) =>
+                                                        loading ? (
+                                                            "Loading..."
+                                                        ) : (
+                                                            <Button style={{ width: "100%", backgroundColor: colors.orange }}>Route Summary</Button>
+                                                        )
+                                                    }
+                                                </PDFDownloadLink>
+                                            </div>
                                         </div>
                                         {Object.values(a.orders).map((b) => {
                                             return (
@@ -218,7 +230,8 @@ const Header = () => {
             <p>Driver</p>
             <p>Orders</p>
             <p>Cases</p>
-            <p>Total</p>
+            <p>Total Cost</p>
+            <p>Total Sales</p>
         </HeaderComponent>
     );
 };
@@ -236,7 +249,7 @@ const BodyContent = styled.div`
     .route {
         .route-details {
             display: grid;
-            grid-template-columns: 160px 310px 1fr 1fr 1fr;
+            grid-template-columns: 160px 190px repeat(3, 80px) 1fr;
             grid-column-gap: 32px;
             padding: 16px;
             margin-left: -16px;
@@ -256,9 +269,10 @@ const BodyContent = styled.div`
 `;
 const HeaderComponent = styled.div`
     display: grid;
-
-    grid-template-columns: 160px 310px 1fr 1fr 1fr;
+    /* grid-template-columns: 160px 310px repeat(3, 40px) 1fr; */
+    grid-template-columns: 160px 190px repeat(3, 80px) 1fr;
     grid-column-gap: 32px;
+
     p {
         font-size: 16px;
         font-weight: 500;

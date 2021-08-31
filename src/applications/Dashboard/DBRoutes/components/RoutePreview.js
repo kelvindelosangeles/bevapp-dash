@@ -91,6 +91,7 @@ const RoutePreview = ({ data }) => {
                         <p>Cases</p>
                         <span>{BetaTotalCases()}</span>
                     </div>
+
                     <div className='data'>
                         <p>Route Total</p>
                         <span>${orderTotal()}</span>

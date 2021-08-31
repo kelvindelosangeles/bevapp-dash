@@ -19,6 +19,7 @@ const EditBeverage = (props) => {
     const [packaging, setPackaging] = useState("");
     const [size, setSize] = useState("");
     const [price, setPrice] = useState("");
+    const [cost, setCost] = useState("");
     const [flavors, setFlavors] = useState(null);
     const [newFlavor, setNewFlavor] = useState(null);
     const [section, setSection] = useState("unset");
@@ -34,6 +35,7 @@ const EditBeverage = (props) => {
         setDescription(item.description);
         setPackaging(item.packaging);
         setSize(item.size);
+        setCost(item.cost);
         setPrice(item.price);
         item.hasOwnProperty("section") ? setSection(item.section) : setSection(0);
         item.hasOwnProperty("subSection") ? setSubSection(item.subSection) : setSubSection(0);
@@ -45,6 +47,17 @@ const EditBeverage = (props) => {
     }, [props.match.params.id]);
 
     const submitHandler = (e) => {
+        if (isNaN(+cost)) {
+            window.alert("cost must be a number");
+            setCost("");
+            return;
+        }
+        if (cost.split("").includes("e")) {
+            window.alert("cost must be a number");
+            setCost("");
+            return;
+        }
+
         e.preventDefault();
         // The Logic is currently working but i can clean this up
         // perhaps solve this with a big try catch
@@ -61,6 +74,7 @@ const EditBeverage = (props) => {
                 subSection,
                 price,
                 flavors,
+                cost,
             },
         };
         const itemWithoutFlavors = {
@@ -74,6 +88,7 @@ const EditBeverage = (props) => {
                 size,
                 section,
                 subSection,
+                cost,
             },
         };
         let updatedItem = hasFlavors && flavors && flavors.length > 0 ? itemWithFlavors : itemWithoutFlavors;
@@ -251,6 +266,10 @@ const EditBeverage = (props) => {
                         <label htmlFor=''>Price</label>
                         <input value={price} type='number' min='1' max='100' step='0.01' required onChange={(e) => setPrice(e.target.value)} />
                     </div>
+                    <div className='input-group' id='cost'>
+                        <label htmlFor=''>Cost</label>
+                        <input value={cost} type='text' required onChange={(e) => setCost(e.target.value)} />
+                    </div>
                     <div className='input-group' id='description'>
                         <label htmlFor=''>Description</label>
                         <input value={description} required onChange={(e) => setDescription(e.target.value)} />
@@ -348,6 +367,7 @@ const Container = styled.div`
             "E F"
             "G H"
             "I  I"
+            "p ."
             "J  K"
             "L M";
         #has-flavors {
@@ -395,6 +415,9 @@ const Container = styled.div`
         }
         #sub-section {
             grid-area: K;
+        }
+        #cost {
+            grid-area: p;
         }
 
         label {
