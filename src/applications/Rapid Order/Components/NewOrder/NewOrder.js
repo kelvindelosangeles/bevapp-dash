@@ -13,6 +13,7 @@ import OrderDetails from "../../../../Global/OrderPreview/OrderDetails";
 import CartHeader from "./Components/CartHeader";
 import { useSnackbar } from "notistack";
 import { cancelOrder, saveToDrafts, removeFromCart, updateCustomer, submitOrder } from "../../../../redux/actions/RapidOrderActions";
+import colors from "../../../../v5/constants/Colors";
 
 const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
     const open = useSelector((state) => state.GlobalState.drawerOpen);
@@ -91,6 +92,7 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
                 <p>
                     {i.description} {flavors()}
                 </p>
+                <p style={{ color: colors.purple }}>${i?.cost}</p>
                 {user.showCost ? <p>$ {i.price}</p> : <p> </p>}
                 {user.showCost ? <p className='specialPrice'>{hasSpecialPrice()}</p> : <p> </p>}
                 <p className='item-total'>{OrdersModel.CalculateItem(i, customer.specialPrices)}</p>
@@ -296,7 +298,7 @@ const Cart = styled.div`
             padding: 8px 16px;
             border-radius: 4px;
             grid-column-gap: 16px;
-            grid-template-columns: 1fr 1fr 3fr 1fr 1fr 1fr 20px;
+            grid-template-columns: 1fr 1fr 2fr 1fr 1fr 1fr 1fr 20px;
             font-size: 16px;
             :nth-of-type(even) {
                 background-color: ${Colors.lightGrey};

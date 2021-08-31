@@ -18,9 +18,23 @@ const AddBeverage = (props) => {
     const [packaging, setPackaging] = useState("");
     const [size, setSize] = useState("");
     const [price, setPrice] = useState("");
+    const [cost, setCost] = useState("");
 
     const submitHandler = (e) => {
         e.preventDefault();
+        if (isNaN(+cost)) {
+            window.alert("cost must be a number");
+            setCost("");
+            e.preventDefault();
+            return;
+        }
+        if (cost.split("").includes("e")) {
+            window.alert("cost must be a number");
+            setCost("");
+            e.preventDefault();
+            return;
+        }
+
         if (itemID.includes(".")) {
             alert("If the Item ID contains a decimal point, please contact the administrator to add this item manually for you.");
         } else {
@@ -41,6 +55,7 @@ const AddBeverage = (props) => {
                         packaging &&
                         description !== "" &&
                         size !== "" &&
+                        cost !== "" &&
                         price !== "" &&
                         props.firestore
                             .update(
@@ -57,6 +72,7 @@ const AddBeverage = (props) => {
                                         packaging,
                                         size,
                                         price,
+                                        cost,
                                     },
                                 }
                             )
@@ -184,6 +200,17 @@ const AddBeverage = (props) => {
                         }}
                     />
                 </div>
+                <div style={{ gridArea: "i" }}>
+                    <p>Cost</p>
+                    <input
+                        required
+                        type='text'
+                        value={cost}
+                        onChange={(e) => {
+                            setCost(e.target.value);
+                        }}
+                    />
+                </div>
                 <button style={{ gridArea: "h" }}>Submit</button>
             </Form>
         </AddBeverageWrapper>
@@ -217,6 +244,7 @@ const Form = styled.form`
         "c d"
         "e e"
         "f g"
+        "i ."
         "h h";
     p {
         margin-bottom: 8px;

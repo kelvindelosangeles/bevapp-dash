@@ -27,16 +27,16 @@ const STBeverages = (props) => {
         });
 
     return (
-        <STBeveragesWrspper>
+        <STBeveragesWrapper>
             <BeverageSearch onSubmit={(e) => e.preventDefault()}>
                 <input type='text' placeholder='Search' onChange={beverageSearchHandler} value={beverageSearch} />
             </BeverageSearch>
             <div className='test'>{beveragesList}</div>
-        </STBeveragesWrspper>
+        </STBeveragesWrapper>
     );
 };
 
-const STBeveragesWrspper = styled.div`
+const STBeveragesWrapper = styled.div`
     position: relative;
     width: 100%;
     height: 100%;

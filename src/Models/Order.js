@@ -62,6 +62,40 @@ export class Order {
         }
     };
 
+    static CalculateCost = (cart) => {
+        //Pass in a cart object to calculate the total
+        try {
+            let cartArray = Object.values(cart);
+            let itemTotals = cartArray.map((i) => {
+                const cost = i.cost || "0";
+                return (parseFloat(cost) * i.qty).toFixed(2);
+            });
+            let combinedTotals = itemTotals.reduce((a, b) => {
+                return (parseFloat(a) + parseFloat(b)).toFixed(2);
+            });
+            return combinedTotals;
+        } catch (err) {
+            console.log(err);
+            return "Err";
+        }
+    };
+    static CalculateMultipleCost = (orders) => {
+        try {
+            const costs = orders.map((a) => {
+                return this.CalculateCost(a.cart);
+            });
+            if (costs.length > 1) {
+                return costs.reduce((a, b) => {
+                    return (+a + +b).toFixed(2);
+                });
+            } else {
+                return costs[0];
+            }
+        } catch (error) {
+            return "err";
+        }
+    };
+
     static CalculateCases = (cart) => {
         try {
             let cartArray = Object.values(cart);
