@@ -10,6 +10,7 @@ import { Order as OrderModel } from "../../../Models/Order";
 import { Colors } from "../../../Constants/Colors";
 import DailyJournal from "../../../Global/PrintTemplates/DailyJournalPDF";
 import Order from "../../../components/Order";
+import underscore from "underscore";
 
 // BETA
 import ResponsiveBlock from "../../../componentsv3/responsive block";
@@ -45,6 +46,11 @@ const CompletedOrders = () => {
                 return res.data();
             })
             .then((data) => {
+                if (Object.values(data).length < 1) {
+                    setRawOrder(null);
+                    setOrders(null);
+                    return;
+                }
                 // data is enhanced by adding the route date
                 const enhancedData = Object.values(data).map((a) => {
                     const routeDate = () => {
@@ -102,25 +108,50 @@ const CompletedOrders = () => {
         }
     };
 
-    const deleteRoute = (route) => {
-        const testOrder = route.orders[0];
-        console.log(testOrder);
-        firestore
-            .update(
-                {
-                    collection: "ordersv2",
-                    doc: "orders",
-                },
-                { [testOrder.details.orderID]: testOrder }
-            )
-            .then((a) => {
-                console.log("sucess");
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+    const reverseRoute = async (route) => {
+        const testOrders = route.orders;
+        Object.values(testOrders).map((a) => {
+            firestore
+                .update(
+                    {
+                        collection: "ordersv2",
+                        doc: "orders",
+                    },
+                    { [a.details.orderID]: a }
+                )
+                .then((a) => {
+                    console.log("sucess");
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        });
+
+        alert("All order for this route have been readded to the dashboard, please confirm all orders are there before deleting this route");
     };
 
+    const deleteRoute = (route) => {
+        const updatedWeekDocument = { [weekDocument]: underscore.omit(rawOrder, route.details.routeID) };
+        console.log(updatedWeekDocument[weekDocument]);
+        console.log(weekDocument);
+        window.confirm("Are you sure you want to delete this route") &&
+            window.confirm("This action is Irreversible") &&
+            window.confirm("Final check, route will be deleted") &&
+            firestore
+                .set(
+                    {
+                        collection: "ordersv2",
+                        doc: weekDocument,
+                    },
+                    updatedWeekDocument[weekDocument]
+                )
+                .then((a) => {
+                    console.log("successfully deleted route");
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+    };
     useEffect(() => {
         theDate && getCompletedOrders();
     }, [theDate]);
@@ -206,15 +237,14 @@ const CompletedOrders = () => {
                                                     document={<RoutePDF route={a.orders} driver={a.driver.firstName.toUpperCase()} />}
                                                     fileName={`${a.driver.firstName.toUpperCase()}-Route-summary-sheet`}>
                                                     {({ loading }) =>
-                                                        loading ? (
-                                                            "Loading..."
-                                                        ) : (
-                                                            <Button style={{ width: "100%", backgroundColor: colors.orange }}>Route Summary</Button>
-                                                        )
+                                                        loading ? "Loading..." : <Button style={{ width: "100%" }}>Route Summary</Button>
                                                     }
                                                 </PDFDownloadLink>
-                                                <Button style={{ width: "100%", backgroundColor: colors.red }} onClick={() => deleteRoute(a)}>
+                                                <Button style={{ width: "100%", backgroundColor: colors.orange }} onClick={() => reverseRoute(a)}>
                                                     Reverse Route
+                                                </Button>
+                                                <Button style={{ width: "100%", backgroundColor: colors.red }} onClick={() => deleteRoute(a)}>
+                                                    Delete Route
                                                 </Button>
                                             </div>
                                         </div>
