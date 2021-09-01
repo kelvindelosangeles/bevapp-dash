@@ -11,13 +11,14 @@ import STBeverages from "./Components/STBeverages";
 import Home from "./Store Routes/Home";
 import AddBeverage from "./Store Routes/AddBeverage";
 import EditBeverage from "./Store Routes/EditBeverage";
+import EditCustomer from "./Store Routes/EditCustomer";
 import AddCustomer from "./Store Routes/AddCustomer";
 import { Colors } from "../../Constants/Colors";
 import ResponsiveBlock from "../../componentsv3/responsive block";
 import { UserIsAuthenticated } from "../../v5/helpers/Auth";
 
 const Store = ({ sidebarExpanded }) => {
-    const [storeToggle, setStoreToggle] = useState(true);
+    const [storeToggle, setStoreToggle] = useState(false);
 
     const toggleStore = () => {
         setStoreToggle(!storeToggle);
@@ -37,6 +38,7 @@ const Store = ({ sidebarExpanded }) => {
                     <Route path='/store/addbeverage' component={UserIsAuthenticated(AddBeverage)} />
                     <Route path='/store/editbeverage/:id' component={UserIsAuthenticated(EditBeverage)} />
                     <Route path='/store/addcustomer' component={UserIsAuthenticated(AddCustomer)} />
+                    <Route path='/store/editcustomer/:id' component={UserIsAuthenticated(EditCustomer)} />
                 </Switch>
 
                 {/* <STPreview /> */}

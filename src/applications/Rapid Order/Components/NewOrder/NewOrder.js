@@ -165,7 +165,7 @@ const NewOrder = ({ cart, customer, firestore, dispatch, notes }) => {
                 </Controls>
 
                 {/* Customer Details ============== */}
-                <CustomerDetails name={customer.name} address={customer.address} telephone={customer.telephone} gridArea='B' />
+                <CustomerDetails name={customer.name} address={customer.address} telephone={customer.telephone} alias={customer.alias} gridArea='B' />
                 <OrderDetails orderID={orderID} createdAt={createdAt} status={"New Order"} gridArea='C' />
                 <Notes>
                     <h3>NOTES</h3>

@@ -10,7 +10,7 @@ const Order = ({ order }) => {
         <Component>
             <DragHandleIcon />
             <div>
-                <p className='address'>{order.customer.address}</p>
+                <p className='address'>{order.customer.alias || order.customer.address}</p>
                 <p className='date'>{moment(order.details.createdAt).format("L")}</p>
             </div>
             <p className='cases'>

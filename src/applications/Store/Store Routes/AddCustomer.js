@@ -62,7 +62,7 @@ const AddCustomer = ({ firestore }) => {
                         collection: "store",
                         doc: "customers",
                     },
-                    { [values.id]: values }
+                    { [values.id]: { ...values, specialID: values.address.replace(/\s/g, ""), disabled: false, alias: values.address } }
                 )
                 .then(() => {
                     console.log("Successfully Added A Customer");

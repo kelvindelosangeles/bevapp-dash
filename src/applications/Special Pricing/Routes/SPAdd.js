@@ -159,7 +159,7 @@ const SPAdd = ({ match, history, beverages, firestore, customers, dispatch }) =>
             <CustomerDetails>
                 <h6>{customer.name}</h6>
                 <p>
-                    <AddressIcon /> {customer.address}
+                    <AddressIcon /> {customer.alias || customer.address}
                 </p>
                 <p>
                     <PhoneIcon /> {OrdersModel.formatTel(customer.telephone)}

@@ -48,6 +48,9 @@ const NonOrderReport = () => {
                 ),
             ];
             const customerWithoutOrders = Object.values(allCustomers)
+                .filter((z) => {
+                    return !z.disabled;
+                })
                 .filter((x) => {
                     // take a list of all customers and filter it to customers that are not part of the customersWithOrders list
                     return customersWithOrders.indexOf(x.id) === -1;
@@ -155,7 +158,7 @@ const NonOrderReport = () => {
                                 .map((c) => {
                                     return (
                                         <div className='customer'>
-                                            <p className='address'>{c.address}</p>
+                                            <p className='address'>{c.alias || c.address}</p>
                                             <p>{c.telephone}</p>
                                             <p className='date'>{getLastOrderDate(c.id)}</p>
                                         </div>

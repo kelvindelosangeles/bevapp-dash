@@ -24,9 +24,10 @@ import {
     Receipt,
     Star,
     Storefront,
+    Printer,
 } from "phosphor-react";
 import { colors } from "../../Constants/Colors4";
-import { ExitToAppRounded, Settings, SettingsBackupRestoreRounded } from "@material-ui/icons";
+import { ExitToAppRounded, Print, Settings, SettingsBackupRestoreRounded } from "@material-ui/icons";
 import { useFirebase } from "react-redux-firebase";
 
 const Sidebar = (props) => {
@@ -95,9 +96,9 @@ const Sidebar = (props) => {
                         <MenuItem to='/completedorders' label='completed orders' color={colors.orange}>
                             <CheckCircle weight='fill' />
                         </MenuItem>
-                        <MenuItem to='/costs' label='Costs Project' color={colors.yellow} special>
+                        {/* <MenuItem to='/costs' label='Costs Project' color={colors.yellow} special>
                             <Star weight='fill' />
-                        </MenuItem>
+                        </MenuItem> */}
                     </div>
                 </section>
                 <div className='divider'></div>
@@ -109,6 +110,21 @@ const Sidebar = (props) => {
                         </MenuItem>
                         <MenuItem to='/postSummary' label='Post Summary' color={colors.green}>
                             <Note weight='fill' />
+                        </MenuItem>
+                    </div>
+                </section>
+                <div className='divider'></div>
+                <section>
+                    <p className='section_label'>Printouts</p>
+                    <div className='grid'>
+                        <MenuItem to='/customerspo' label='Customer List' color={colors.green}>
+                            <Printer weight='fill' />
+                        </MenuItem>
+                        <MenuItem to='/pricespo' label='Pricelist' color={colors.green}>
+                            <Printer weight='fill' />
+                        </MenuItem>
+                        <MenuItem to='/specialpricespo' label=' Sp. Price List' color={colors.green}>
+                            <Printer weight='fill' />
                         </MenuItem>
                     </div>
                 </section>
@@ -141,9 +157,9 @@ const Sidebar = (props) => {
                         <MenuItem to='#' label='Settings' color={colors.white} onClick={() => dispatch({ type: "TOGGLE_SETTINGS" })}>
                             <Settings weight='fill' />
                         </MenuItem>
-                        <MenuItem to='/backup' label='backup' color={colors.white}>
+                        {/* <MenuItem to='/backup' label='backup' color={colors.white}>
                             <SettingsBackupRestoreRounded weight='fill' />
-                        </MenuItem>
+                        </MenuItem> */}
                         <MenuItem to='#' label='Log out' color={colors.white} onClick={signoutHandler}>
                             <ExitToAppRounded weight='fill' />
                         </MenuItem>

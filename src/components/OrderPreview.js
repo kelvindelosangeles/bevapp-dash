@@ -200,7 +200,7 @@ const OrderPreview = (props) => {
             <div className='order-details'>
                 <CustomerDetails>
                     <p className='name'>{customer.name}</p>
-                    <p className=''>{customer.address}</p>
+                    <p className=''>{order.customer.alias || order.customer.address}</p>
                     <p className=''>{orderModel.formatTel(customer.telephone)}</p>
                     <p className=''>{customer.city}</p>
                 </CustomerDetails>
@@ -297,7 +297,7 @@ const OrderPreview = (props) => {
                         <p className='pdf'>
                             <PDFDownloadLink
                                 document={<WarehousePDF order={order} beverages={beverages} />}
-                                fileName={`${order.customer.address}-WH.pdf`}>
+                                fileName={`${order.customer.alias || order.customer.address}-WH.pdf`}>
                                 {({ loading }) => (loading ? "Loading document..." : "Warehouse PDF")}
                             </PDFDownloadLink>
                         </p>
@@ -306,7 +306,7 @@ const OrderPreview = (props) => {
                         <p className='pdf'>
                             <PDFDownloadLink
                                 document={<CustomerPDF order={order} date={completedDate} />}
-                                fileName={`${order.customer.address}-CX.pdf`}>
+                                fileName={`${order.customer.alias || order.customer.address}-CX.pdf`}>
                                 {({ loading }) => (loading ? "Loading document..." : "Create Invoice")}
                             </PDFDownloadLink>
                         </p>
@@ -563,9 +563,9 @@ const OrderPreview = (props) => {
                                     date={moment(parentRoute?.details.completedAt.toDate()).format("L")}
                                 />
                             }
-                            fileName={`${order.customer.address} - Payment Report - ${moment(parentRoute?.details.completedAt.toDate()).format(
-                                "L"
-                            )}`}>
+                            fileName={`${order.customer.alias || order.customer.address} - Payment Report - ${moment(
+                                parentRoute?.details.completedAt.toDate()
+                            ).format("L")}`}>
                             {({ loading }) =>
                                 loading ? (
                                     "Loading..."

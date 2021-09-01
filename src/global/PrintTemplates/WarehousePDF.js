@@ -131,7 +131,7 @@ const WarehousePDF = ({ order, beverages }) => {
                     <Text>(718) 993-5555</Text>
                 </View>
                 <View style={$.heading} fixed>
-                    <Text style={$.heading.customer}>{order.customer.address}</Text>
+                    <Text style={$.heading.customer}>{order.customer.alias || order.customer.address}</Text>
                     <Text style={$.heading.tax}>Tax and Deposits Included</Text>
                     <View style={$.heading.thanks}>
                         <Text>Thank you for your order</Text>

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Order as OrdersModel } from "../../Models/Order";
 
 const CustomerDetails = (props) => {
-    const { name, address, telephone, gridArea } = props;
+    const { name, address, alias, telephone, gridArea } = props;
     const formatTel = (tel) => {
         return `(${tel.slice(0, 3)}) ${tel.slice(3, 6)} ${tel.slice(6, 10)} `;
     };
@@ -12,7 +12,7 @@ const CustomerDetails = (props) => {
         <Container gridArea={gridArea}>
             <div>
                 <h3>{name}</h3>
-                <p>{address}</p>
+                <p>{alias}</p>
                 <p>{OrdersModel.formatTel(telephone)}</p>
                 <p>NYC</p>
             </div>

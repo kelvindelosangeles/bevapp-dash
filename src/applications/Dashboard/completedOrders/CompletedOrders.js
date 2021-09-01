@@ -102,6 +102,25 @@ const CompletedOrders = () => {
         }
     };
 
+    const deleteRoute = (route) => {
+        const testOrder = route.orders[0];
+        console.log(testOrder);
+        firestore
+            .update(
+                {
+                    collection: "ordersv2",
+                    doc: "orders",
+                },
+                { [testOrder.details.orderID]: testOrder }
+            )
+            .then((a) => {
+                console.log("sucess");
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
     useEffect(() => {
         theDate && getCompletedOrders();
     }, [theDate]);
@@ -194,6 +213,9 @@ const CompletedOrders = () => {
                                                         )
                                                     }
                                                 </PDFDownloadLink>
+                                                <Button style={{ width: "100%", backgroundColor: colors.red }} onClick={() => deleteRoute(a)}>
+                                                    Reverse Route
+                                                </Button>
                                             </div>
                                         </div>
                                         {Object.values(a.orders).map((b) => {

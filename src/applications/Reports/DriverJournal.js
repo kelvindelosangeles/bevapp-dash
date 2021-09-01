@@ -270,7 +270,7 @@ const DriverJournal = ({ history }) => {
                             return (
                                 <div className='order'>
                                     <Typography variant='overline'>{index + 1}</Typography>
-                                    <Typography variant='overline'>{a.customer.address}</Typography>
+                                    <Typography variant='overline'>{a.customer.alias || a.customer.address}</Typography>
                                     <Typography variant='overline'>{moment(a.details.createdAt).format("L")}</Typography>
                                     <Typography variant='overline'>$ {OrdersModel.CalculateCart(a.cart, a.customer.specialPrices)}</Typography>
                                     <Typography variant='overline'>{OrdersModel.CalculateCases(a.cart)}</Typography>

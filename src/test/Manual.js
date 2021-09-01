@@ -7,24 +7,25 @@ import colors from "../v5/constants/Colors";
 
 const ManualTasks = () => {
     const firestore = useFirestore();
-    const beverages = useSelector((state) => state.Firestore.data.inventory.beverages);
-    let beveragesModified = Object.values(beverages).reduce((o, key) => ({ ...o, [key.id]: { ...key, cost: "25.00" } }), {});
-    console.log("the beverages", beveragesModified);
+    const customers = useSelector((state) => state.Firestore.data.store.customers);
+    let customersModified = Object.values(customers).reduce((o, key) => ({ ...o, [key.id]: { ...key, alias: key.address } }), {});
 
-    // const updateFirestore = firestore
-    //     .set(
-    //         {
-    //             collection: "inventory",
-    //             doc: "beverages",
-    //         },
-    //         beveragesModified
-    //     )
-    //     .then(() => {
-    //         console.log("Successfully updated beverages");
-    //     })
-    //     .catch((err) => {
-    //         console.log(err);
-    //     });
+    // const setCustomers = () => {
+    //     firestore
+    //         .set(
+    //             {
+    //                 collection: "store",
+    //                 doc: "customers",
+    //             },
+    //             customersModified
+    //         )
+    //         .then(() => {
+    //             console.log("success");
+    //         })
+    //         .catch((err) => {
+    //             console.log(err);
+    //         });
+    // };
 
     return (
         <Application>
@@ -32,7 +33,7 @@ const ManualTasks = () => {
             <Body title='Beverage Prices'>
                 <Component>
                     <h1>Hello</h1>
-                    {/* <button onClick={() => updateFirestore}>Update Firestore</button> */}
+                    {/* <button onClick={setCustomers}></button> */}
                 </Component>
             </Body>
         </Application>

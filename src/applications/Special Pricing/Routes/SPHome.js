@@ -11,6 +11,9 @@ import RemoveSpecialPriceFromAll from "../../../componentsv3/removeSpecialPriceF
 const SPHome = ({ history, customers, beverages }) => {
     const customersWithSpecialPrices = () => {
         return Object.values(customers)
+            .filter((z) => {
+                return !z.disabled;
+            })
             .filter((i) => {
                 return i.specialPrices;
             })
@@ -37,7 +40,7 @@ const SPHome = ({ history, customers, beverages }) => {
 
                 return (
                     <StyledCustomer>
-                        <h5 onClick={goToCustomer}>{x.address}</h5>
+                        <h5 onClick={goToCustomer}>{x.alias || x.address}</h5>
                         <h6>Beverage ID</h6>
                         <h6>Sales Price</h6>
                         <h6>Special Price</h6>

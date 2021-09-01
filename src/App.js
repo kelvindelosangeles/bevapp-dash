@@ -37,6 +37,9 @@ import Login from "./v5/pages/Login";
 import { UserIsAuthenticated, UserIsNotAuthenticated } from "./v5/helpers/Auth";
 import Settings from "./v5/components/Settings";
 import Costs from "./v5/pages/Costs";
+import CustomersWrapper from "./v5/pages/Printouts/customers/CustomersWrapper";
+import PricesWrapper from "./v5/pages/Printouts/prices/PricesWrapper";
+import SpecialPricesWrapper from "./v5/pages/Printouts/specialPrices/SpecialPricesWrapper";
 
 const App = (props) => {
     // const uid = useSelector((state) => state.Firebase.auth.uid);
@@ -69,6 +72,12 @@ const App = (props) => {
                     <Route path='/accountOverview' component={UserIsAuthenticated(AccountOverview)} />
                     <Route path='/postSummary' component={UserIsAuthenticated(PostSummary)} />
                     <Route path='/costs' component={UserIsAuthenticated(Costs)} />
+                    {/* =====
+                    Printouts
+                    ===== */}
+                    <Route path='/customerspo' component={UserIsAuthenticated(CustomersWrapper)} />
+                    <Route path='/pricespo' component={UserIsAuthenticated(PricesWrapper)} />
+                    <Route path='/specialpricespo' component={UserIsAuthenticated(SpecialPricesWrapper)} />
                     {/* =====
                     Reports
                     ===== */}

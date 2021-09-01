@@ -3,28 +3,59 @@ import styled from "styled-components";
 import { Colors } from "../../../Constants/Colors";
 import { connect } from "react-redux";
 import { Order as OrdersModel } from "../../../Models/Order";
+import { Delete, Edit, ToggleOff } from "@material-ui/icons";
+import { Link } from "react-router-dom";
+import { useFirestore } from "react-redux-firebase";
 
 const formatTel = (tel) => {
     return `(${tel.slice(0, 3)}) ${tel.slice(3, 6)} ${tel.slice(6, 10)} `;
 };
 
 const STCustomers = ({ customers }) => {
+    const firestore = useFirestore();
     const [customerSearch, setCustomerSearch] = useState("");
     const customerSearchHandler = (e) => {
         setCustomerSearch(e.target.value);
+    };
+    const disableCustomer = (customer) => {
+        window.confirm("Are you sure you want to disable this customer") && console.log(customer);
+        firestore
+            .update(
+                {
+                    collection: "store",
+                    doc: "customers",
+                },
+                { [customer.id]: { ...customer, disabled: !customer.disabled } }
+            )
+            .then(() => {
+                console.log("success");
+            })
+            .catch((err) => {
+                console.log(err);
+                alert("Error disableing customer");
+            });
     };
 
     const customersList = Object.values(customers)
         .filter((i) => {
             return i.name && i.address.includes(customerSearch);
         })
-        .map((i) => {
+        .map((p) => {
             return (
-                i.name && (
+                p.name && (
                     <Xstomer>
-                        <p>{i.name}</p>
-                        <p>{i.address}</p>
-                        <p> {OrdersModel.formatTel(i.telephone)}</p>
+                        <p style={{ fontSize: 10, textTransform: "uppercase", color: "red", fontWeight: 800 }}>{p.disabled && "disabled"}</p>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <p>{p.alias}</p>
+                        <p> {OrdersModel.formatTel(p.telephone)}</p>
+                        <Link to={`/store/editcustomer/${p.specialID}`}>
+                            <button style={{ color: "black", backgroundColor: "white", borderRadius: 8, padding: 4 }}>{<Edit />}</button>
+                        </Link>
+                        <button style={{ color: "red", borderRadius: 8, padding: 4 }} onClick={() => disableCustomer(p)}>
+                            {<ToggleOff style={{ color: p.disabled ? "red" : "green" }} />}
+                        </button>
                     </Xstomer>
                 )
             );
@@ -77,14 +108,16 @@ const CustomersContainer = styled.div`
 `;
 const Xstomer = styled.div`
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr auto auto;
+    grid-column-gap: 16px;
+    align-items: center;
     padding: 16px;
     border-radius: 4px 4px 0 0;
     border-bottom: 1px solid ${Colors.grey};
     p {
         font-weight: 600;
         font-size: 15px;
-        text-transform: capitalize;
+        text-transform: uppercase;
     }
 `;
 

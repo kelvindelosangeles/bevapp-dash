@@ -32,7 +32,7 @@ const Order = ({ order }) => {
                     <p>{details.orderID.slice(7, 16)}</p>
                     <p className='time'>{moment(details.createdAt).format("MMM, Do LT")}</p>
                 </div>
-                <p className='address'>{customer.address}</p>
+                <p className='address'>{customer.alias || customer.address}</p>
                 <p className='cases'>
                     <CaseIcon /> {orderModel.CalculateCases(cart)}
                 </p>

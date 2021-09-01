@@ -47,7 +47,7 @@ const OrderPreview = ({ order, history, closeOrderPreview }) => {
             <div className='order-details'>
                 <CustomerDetails>
                     <p className='name'>{customer.name}</p>
-                    <p className=''>{customer.address}</p>
+                    <p className=''>{order.customer.alias || order.customer.address}</p>
                     <p className=''>{orderModel.formatTel(customer.telephone)}</p>
                     <p className=''>{customer.city}</p>
                 </CustomerDetails>
@@ -140,12 +140,14 @@ const OrderPreview = ({ order, history, closeOrderPreview }) => {
                     <p className='pdf'>
                         <PDFDownloadLink
                             document={<WarehousePDF order={order} beverages={beverages} />}
-                            fileName={`${order.customer.address}-WH.pdf`}>
+                            fileName={`${order.customer.alias || order.customer.address}-WH.pdf`}>
                             {({ loading }) => (loading ? "Loading document..." : "Warehouse PDF")}
                         </PDFDownloadLink>
                     </p>
                     <p className='pdf'>
-                        <PDFDownloadLink document={<CustomerPDF order={order} />} fileName={`${order.customer.address}-CX.pdf`}>
+                        <PDFDownloadLink
+                            document={<CustomerPDF order={order} />}
+                            fileName={`${order.customer.alias || order.customer.address}-CX.pdf`}>
                             {({ loading }) => (loading ? "Loading document..." : "Customer PDF")}
                         </PDFDownloadLink>
                     </p>

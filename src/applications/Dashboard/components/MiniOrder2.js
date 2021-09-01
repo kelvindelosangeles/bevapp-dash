@@ -9,7 +9,7 @@ const MiniOrder2 = ({ data, onClick, active }) => {
         <Component onClick={onClick} active={active}>
             <div className='indicator' />
             <div>
-                <p>{data.customer.address}</p>
+                <p>{data.customer.alias || data.customer.address}</p>
                 <p className='date'>{moment(data.details.createdAt).format("L")}</p>
             </div>
             <p className='cases'>
